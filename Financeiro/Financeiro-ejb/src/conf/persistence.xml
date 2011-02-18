@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="financeiro" transaction-type="JTA">
+    <provider>oracle.toplink.essentials.PersistenceProvider</provider>
+    <jta-data-source>financeiro</jta-data-source>
+    <mapping-file>xml/consultas.xml</mapping-file>
+    <mapping-file>xml/report.xml</mapping-file>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <!--property name="toplink.ddl-generation" value="create-tables"/-->
+      <!--property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/-->
+      <!--property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/financeiro"/-->
+      <!--property name="toplink.jdbc.user" value="root"/-->
+      <!--property name="toplink.jdbc.password" value="102030"/-->
+      <property name="toplink.target-database" value="Auto"/>
+      <property name="toplink.logging.exceptions" value="true"/>
+      <!--property name="toplink.logging.level" value="fine"/-->
+      <property name="toplink.logging.level" value="OFF"/>
+    </properties>
+  </persistence-unit>
+</persistence>

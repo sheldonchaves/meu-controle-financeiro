@@ -1,0 +1,354 @@
+/* 
+    Document   : global
+    Created on : 07/03/2010, 19:58:32
+    Author     : Guilherme
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.fieldset_bvb {
+margin : 20px;
+padding: 10px;
+border : 3px solid #5d7343;
+border-style: inset;
+background-color: #f9f7f1;
+}
+
+.linha1{
+    background-color: #F8F8F8;
+}
+.linha2{
+    background-color: #f9f7f1;
+}
+.linha3{
+    background-color: #f4f2cc;
+}
+.espacoEsquerda{
+    margin-left:50px;
+}
+
+body{
+    background: #f9f7f1 url('/financeiro/imagens/sup2.png') repeat-x top;
+}
+
+.logoPrincipalCoelce{
+    /*clear:both;*/
+    padding-top: 5px;
+}
+.zwzdireita{
+    float: right;
+    margin-left: 200px;
+    margin-top: 30px;
+}
+.zxwa{
+    margin-top: -300px;
+}
+
+.tablePrincipal{
+  float:left;
+  margin-top: -10px;
+}
+.imagemesquerda{
+    float:left;
+    padding-right:20px;
+    padding-bottom:10px;
+}
+
+
+.inerpagina{
+    float:left;
+    margin-left: 30px;
+    margin-top: 50px;
+    width: 1000px;
+}
+.inerpaginalogin{
+    float:left;
+    margin-left: 10px;
+    margin-top: 12px;
+    width: 500px;
+    font-family: Arial,Helvetica,sans-serif;
+}
+.menuPrincipal{
+   position:absolute;
+   top:70px;
+   left:5px;
+}
+.menuPrincipalLogin{
+    margin-left:15px;
+    margin-top:15px;
+    vertical-align:top;
+}
+root { 
+    display: block;
+}
+.red {
+    color: red;
+    font-size: small;
+    font-family: Arial,Helvetica,sans-serif;
+}
+.redsmall {
+    color: red;
+    font-size: x-small;
+    font-family: Arial,Helvetica,sans-serif;
+}
+.blue{
+    color: #3333ff;
+    font-size: small;
+    font-family: Arial,Helvetica,sans-serif;
+}
+
+.zzz{
+    color: #667c4b;
+    font-weight: bold;
+}
+.zzy{
+    color: #990000;
+    font-weight: bold;
+}
+.totais{
+
+    font-weight: bold;
+}
+.orange{
+    color: #ff6600;
+    font-size: small;
+    font-family: Arial,Helvetica,sans-serif;
+}
+.orange2{
+    color: #ff6600;
+    font-size: x-small;
+    font-family: Arial,Helvetica,sans-serif;
+}
+.green{
+    color: #006600;
+    font-size: small;
+    font-family: Arial,Helvetica,sans-serif;
+}
+.coelcefontstylecolorBig{
+    color:#e85c09;
+    font-family: Georgia,'Times New Roman',times,serif;
+    font-size: 1.2em;
+    margin-top:25px;
+}
+
+.coelcefontstylecolor{
+    color:#e85c09;
+    font-family: Georgia,'Times New Roman',times,serif;
+    font-size: 0.8em;
+    margin-top:25px;
+}
+.coelcefontcolor{
+    color:#000066;
+    background-color:#f3f2f2;
+}
+.coelcefontcolor a:houver{
+    color:#000066;
+    background-color:#f4f2cc;
+}
+.principal{
+    margin-top: 0px;
+}
+.center{
+    text-align: center;
+}
+.esquerda{
+    text-align:left;
+}
+.direita{
+    text-align:right;
+}
+.todoConteudo{
+    width: 900px;
+}
+.fontsmall{
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 12px;
+}
+
+.panelbarativo{
+    font-family: 'Times New Roman',Times,serif;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.tiraborda a{
+    text-decoration: none;
+    border: transparent;
+}
+.tiraborda a:hover{
+    color:#666666;
+}
+.tiraborda{
+    vertical-align: middle;
+    text-align: justify;
+    background-position: left center;
+}
+
+
+.bordacinza a{
+
+}
+.bordacinza a:hover{
+    color:#666666;
+}
+.bordacinza{
+    vertical-align: middle;
+    text-align: justify;
+    background-position: left center;
+}
+
+.bordacinzaverde a{
+    color: #009900;
+}
+.bordacinzaverde a:hover{
+    color:#666666;
+}
+.bordacinzaverde{
+    vertical-align: middle;
+    text-align: justify;
+    background-position: left center;
+    color: #009900;
+}
+
+.bordacinzared a{
+    color: #cc0000;
+}
+.bordacinzared a:hover{
+    color:#666666;
+}
+.bordacinzared{
+    vertical-align: middle;
+    text-align: justify;
+    background-position: left center;
+    color: #cc0000;
+}
+
+.bordacinzacenter a{
+    color:transparent;
+
+}
+.bordacinzacenter a:hover{
+    color:#666666;
+}
+.bordacinzacenter{
+    vertical-align: middle;
+    text-align: justify;
+    background-position: left center;
+    text-align: center;
+}
+
+.fundodifernte{
+    background-color: #e0e0e0;
+    font-family: 'Times New Roman',Times,serif;
+    font-weight: bold;
+    font-size: 12px;
+}
+.center60{
+    text-align: center;
+    width:50%;
+}
+
+.reportTable tfoot td{
+    font-weight: bold;
+    background-color: #e6e6e6;
+}
+
+.reportTable table{
+    border-right-style: solid;
+    border-left-style: solid;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-right-width: 2px;
+    border-left-width: 2px;
+    border-bottom-width: 2px;
+    border-top-width: 2px;
+    border-right-color: #cccccc;
+    border-left-color: #cccccc;
+    border-bottom-color: #cccccc;
+    border-top-color: #cccccc;
+    border-collapse:	collapse;
+}
+
+.reportTable th {
+    background-color:	#e6ffff;
+    border-right-color: #cccccc;
+    border-left-color: #cccccc;
+    border-bottom-color: #cccccc;
+    border-top-color: #cccccc;
+    border-right-style: solid;
+    border-left-style: solid;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-right-width: 2px;
+    border-left-width: 2px;
+    border-bottom-width: 2px;
+    border-top-width: 2px;
+    text-align:center;
+    padding:3px;
+    border-spacing:0px;
+}
+
+.reportTable td {
+    background-color:	#ffffff;
+    border-right-color: #cccccc;
+    border-left-color: #cccccc;
+    border-bottom-color: #cccccc;
+    border-top-color: #cccccc;
+    border-right-style: solid;
+    border-left-style: solid;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    text-align:center;
+    padding:3px;
+    border-spacing:0px;
+}
+
+.reportTable tr {
+    background-color:	#ffffff;
+    border-right-color: #cccccc;
+    border-left-color: #cccccc;
+    border-bottom-color: #cccccc;
+    border-top-color: #cccccc;
+    border-right-style: solid;
+    border-left-style: solid;
+    border-bottom-style: solid;
+    border-top-style: solid;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-top-width: 1px;
+    text-align:center;
+    padding:3px;
+    border-spacing:0px;
+}
+
+.emailConf{
+
+    margin-right:20px;
+    margin-top:20px;
+}
+
+.headerTeste{
+    padding-bottom:5px;
+}
+
+.tablePricipalTitleProjeto{
+    font-family: Georgia,'Times New Roman',times,serif;
+    color: #f4f2cc;
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 60px;
+}
+.ourofonte{
+    font-family: 'Courier New',Courier,monospace;
+    color: #c29632;
+}

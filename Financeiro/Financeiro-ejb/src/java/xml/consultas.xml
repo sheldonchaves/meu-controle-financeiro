@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0">
+
+    <named-query name="buscaContasProprietario">
+        <query>
+			Select c From ContaBancaria c Where c.user = :proprietario
+        </query>
+    </named-query>
+
+    <named-query name="buscaContasProprietarioConjuge">
+        <query>
+			Select c From ContaBancaria c Where c.user = :proprietario OR c.user = :conjugeUser
+        </query>
+    </named-query>
+
+    <named-query name="buscaProprietarioLogin">
+        <query>
+			Select p From User p Where p.login = :login
+        </query>
+    </named-query>
+
+    <named-query name="buscaProprietarioQtdadeContas">
+        <query>
+			Select p From User p Where SIZE(p.contasBancarias) = :q
+        </query>
+    </named-query>
+
+    <named-query name="deletaContasBancarias">
+        <query>
+			Delete From ContaBancaria c Where c.agencia = :agencia and c.numeroConta = :numeroConta
+        </query>
+    </named-query>
+
+    <named-query name="buscaCartaoCreditoProprietario">
+        <query>
+			Select cc From CartaoCreditoUnico As cc Where cc.user = :proprietario
+        </query>
+    </named-query>
+
+    <named-query name="buscaCartaoCreditoProprietarioConjuge">
+        <query>
+			Select cc From CartaoCreditoUnico As cc Where cc.user = :proprietario OR cc.user = :userConjuge
+        </query>
+    </named-query>
+
+    <named-query name="buscaCartaoCreditoNumero">
+        <query>
+			Select cc From CartaoCreditoUnico As cc Where cc.numeroCartao = :numeroCartao
+        </query>
+    </named-query>
+
+    <named-query name="buscaCartaoCreditoStatus">
+        <query>
+			Select cc From CartaoCreditoUnico As cc Where cc.statusCartao = :statusCartao AND cc.user = :proprietario
+        </query>
+    </named-query>
+
+    <named-query name="buscaCartaoCreditoStatusConjuge">
+        <query>
+			Select cc From CartaoCreditoUnico As cc Where cc.statusCartao = :statusCartao AND (cc.user = :proprietario OR cc.user = :conjugeUser)
+        </query>
+    </named-query>
+
+    <named-query name="buscaGrupsByRole">
+        <query>
+			Select g From Grups g Where g.groupName = :role
+        </query>
+    </named-query>
+
+    <named-query name="buscaGrupoGastoDescricao">
+        <query>
+			Select g From GrupoGasto g Where g.grupoGasto = :grupoGasto and g.user = :user
+        </query>
+    </named-query>
+
+    <named-query name="buscaGrupoReceitaDescricao">
+        <query>
+			Select g From GrupoReceita g Where g.grupoReceita = :grupoReceita and g.user = :user
+        </query>
+    </named-query>
+
+    <named-query name="buscarGrupoGastoSelecao">
+        <query>
+			Select g From GrupoGasto g Where (g.user = :user OR g.user is null) and g.status = :status
+        </query>
+    </named-query>
+
+    <named-query name="buscarGrupoGastoSelecaoConjuge">
+        <query>
+			Select g From GrupoGasto g Where (g.user = :user OR g.user = :conjugeUser OR g.user is null) and g.status = :status
+        </query>
+    </named-query>
+
+    <named-query name="buscarGrupoReceitaSelecao">
+        <query>
+			Select g From GrupoReceita g Where (g.user = :user OR g.user is null) and g.status = :status
+        </query>
+    </named-query>
+
+    <named-query name="buscarGrupoReceitaSelecaoConjuge">
+        <query>
+			Select g From GrupoReceita g Where (g.user = :user OR g.user = :conjugeUser OR g.user is null) and g.status = :status
+        </query>
+    </named-query>
+
+    <named-query name="buscarGrupoGastoEdicao">
+        <query>
+			Select g From GrupoGasto g Where g.user = :user OR g.user is null
+        </query>
+    </named-query>
+
+    <named-query name="buscarGrupoGastoEdicaoConjuge">
+        <query>
+			Select g From GrupoGasto g Where g.user = :user OR g.user = :conjugeUser OR g.user is null
+        </query>
+    </named-query>
+
+    <named-query name="buscarGrupoReceitaEdicao">
+        <query>
+			Select g From GrupoReceita g Where g.user = :user OR g.user is null
+        </query>
+    </named-query>
+
+    <named-query name="buscarGrupoReceitaEdicaoConjuge">
+        <query>
+			Select g From GrupoReceita g Where g.user = :user OR g.user = :conjugeUser OR g.user is null
+        </query>
+    </named-query>
+
+    <named-query name="buscarGrupoGastoPorNome">
+        <query>
+			Select g From GrupoGasto g Where g.grupoGasto = :grupoGasto
+        </query>
+    </named-query>
+
+    <named-query name="buscarGrupoReceitaPorNome">
+        <query>
+			Select g From GrupoReceita g Where g.grupoReceita = :grupoReceita
+        </query>
+    </named-query>
+
+    <named-query name="buscarContasPorData">
+        <query>
+		Select c From ContaPagar c Where c.dataVencimento Between :dataInit and :dataFim and c.statusPagamento = :statusPagamento and c.user = :user
+        </query>
+    </named-query>
+
+    <named-query name="buscarContasPorDataConjuge">
+        <query>
+		Select c From ContaPagar c Where c.dataVencimento Between :dataInit and :dataFim and c.statusPagamento = :statusPagamento and (c.user = :user OR c.user = :userConjuge)
+        </query>
+    </named-query>
+
+    <named-query name="buscarContasPorData2">
+        <query>
+		Select c From ContaPagar c 
+                Where c.dataVencimento Between :dataInit and :dataFim
+                AND c.user = :user
+        </query>
+    </named-query>
+
+    <named-query name="buscarContasPorData2Conjuge">
+        <query>
+		Select c From ContaPagar c
+                Where c.dataVencimento Between :dataInit and :dataFim
+                AND (c.user = :user OR c.user = :conjugeUser)
+        </query>
+    </named-query>
+
+    <named-query name="buscarContasPorData3">
+        <query>
+		Select c From ContaPagar c 
+                Where c.statusPagamento = :statusPagamento
+                AND c.user = :user
+                AND c.dataVencimento >= :dataVencimento
+                ORDER BY c.dataVencimento ASC, c.valor DESC
+        </query>
+    </named-query>
+    
+    <named-query name="buscarContasPorData3Conjuge">
+        <query>
+		Select c From ContaPagar c
+                Where c.statusPagamento = :statusPagamento
+                AND (c.user = :user OR c.user = :conjugeUser)
+                AND c.dataVencimento >= :dataVencimento
+                ORDER BY c.dataVencimento ASC, c.valor DESC
+        </query>
+    </named-query>
+
+    <named-query name="buscarReceitasNaoRecebidas">
+        <query>
+		Select c From ContaReceber c 
+                Where c.statusReceita = :statusReceita
+                AND c.user = :user
+                AND c.dataPagamento >= :dataPagamento
+                ORDER BY c.dataPagamento ASC, c.valor DESC
+        </query>
+    </named-query>
+
+<named-query name="buscarReceitasNaoRecebidasConjuge">
+        <query>
+		Select c From ContaReceber c
+                Where c.statusReceita = :statusReceita
+                AND (c.user = :user OR c.user = :conjugeUser)
+                AND c.dataPagamento >= :dataPagamento
+                ORDER BY c.dataPagamento ASC, c.valor DESC
+        </query>
+    </named-query>
+
+    <named-query name="buscarReceitasPorData">
+        <query>
+		Select c From ContaReceber c
+                Where c.dataPagamento Between :dataInit and :dataFim
+                AND c.statusReceita = :statusReceita
+                AND c.user = :user
+        </query>
+    </named-query>
+
+    <named-query name="buscarReceitasPorDataConjuge">
+        <query>
+		Select c From ContaReceber c
+                Where c.dataPagamento Between :dataInit and :dataFim
+                AND c.statusReceita = :statusReceita
+                AND (c.user = :user OR c.user = :conjugeUser)
+        </query>
+    </named-query>
+
+    <named-query name="buscarReceitasPorData2">
+        <query>
+		Select c From ContaReceber c 
+                Where c.dataPagamento Between :dataInit and :dataFim
+                AND c.user = :user
+        </query>
+    </named-query>
+
+    <named-query name="buscarReceitasPorData2Conjuge">
+        <query>
+		Select c From ContaReceber c
+                Where c.dataPagamento Between :dataInit and :dataFim
+                AND (c.user = :user OR c.user = :conjugeUser)
+        </query>
+    </named-query>
+
+    <named-query name="buscarUserLembreteConta">
+        <query>
+		Select u From LembreteConta u Where u.status = :status
+        </query>
+    </named-query>
+
+    <named-query name="buscarUserLembreteConta2">
+        <query>
+		Select u From LembreteConta u Where u.user = :user
+        </query>
+    </named-query>
+
+    <named-query name="buscarUserLembreteConta2Conjuge">
+        <query>
+		Select u From LembreteConta u
+                Where (u.user = :user OR u.user = :conjugeUser)
+        </query>
+    </named-query>
+
+    <named-query name="deletarContaPagarReceberPorIdentificador">
+        <query>
+		Delete From ContaPagar cp 
+                Where cp.identificador = :identificador
+                AND cp.statusPagamento = :statusPagamento
+                AND cp.parcelaAtual >= :parcelaAtual
+        </query>
+    </named-query>
+
+    <named-query name="buscarCartoesDependentes">
+        <query>
+            Select ccu From CartaoCreditoUnico ccu
+            Where ccu.cartaoCreditoTitular = :cartaoCreditoTitular
+        </query>
+    </named-query>
+
+    <named-query name="buscarContasPorCartaoCredito">
+        <query>
+            Select ct From ContaPagar ct
+            Where ct.cartaoCreditoUnico = :cartaoCreditoUnico
+            AND ct.dataVencimento Between :dataInit and :dataFim
+            ORDER BY ct.statusPagamento, ct.valor DESC
+        </query>
+    </named-query>
+</entity-mappings>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only">
+        <Node id="principal/principal.jsp" x="24" y="66" zoom="true"/>
+        <Node id="welcome.jsp" x="858" y="94" zoom="true"/>
+    </Scope>
+    <Scope Scope="Project">
+        <Node id="index.jsp" x="856" y="56" zoom="true"/>
+        <Node id="provisoes/acumulado.jsp" x="681" y="231" zoom="true"/>
+        <Node id="principal/pagas.jsp" x="27" y="104" zoom="true"/>
+        <Node id="cadastro/contas/receita.jsp" x="323" y="232" zoom="true"/>
+        <Node id="cadastro/contabancaria.jsp" x="319" y="43" zoom="true"/>
+        <Node id="cadastro/usuarios.jsp" x="319" y="106" zoom="true"/>
+        <Node id="cadastro/grupogasto.jsp" x="319" y="137" zoom="true"/>
+        <Node id="cadastro/conjuge.jsp" x="325" y="293" zoom="true"/>
+        <Node id="login/login.jsp" x="862" y="131" zoom="true"/>
+        <Node id="cadastro/contas/debito.jsp" x="321" y="197" zoom="true"/>
+        <Node id="pessoal/aviso.jsp" x="582" y="80" zoom="true"/>
+        <Node id="provisoes/observacao.jsp" x="686" y="326" zoom="true"/>
+        <Node id="cadastro/cartaocredito.jsp" x="319" y="71" zoom="true"/>
+        <Node id="auxiliar/acumuladointerface.jsp" x="1028" y="202" zoom="true"/>
+        <Node id="auxiliar/cartaointerface.jsp" x="1029" y="233" zoom="true"/>
+        <Node id="auxiliar/enxertocontasbancarias.jsp" x="1034" y="293" zoom="true"/>
+        <Node id="cadastro/cartaocreditodependente.jsp" x="323" y="264" zoom="true"/>
+        <Node id="cadastro/gruporeceita.jsp" x="321" y="166" zoom="true"/>
+        <Node id="auxiliar/grupogastointerface.jsp" x="1030" y="263" zoom="true"/>
+        <Node id="principal/inicial.jsp" x="26" y="32" zoom="true"/>
+        <Node id="pessoal/senha.jsp" x="588" y="49" zoom="true"/>
+        <Node id="principal/pagarcartaocredito.jsp" x="27" y="137" zoom="true"/>
+        <Node id="provisoes/cartaocredito.jsp" x="680" y="261" zoom="true"/>
+        <Node id="provisoes/grupogasto.jsp" x="679" y="201" zoom="true"/>
+        <Node id="provisoes/grupogastodet.jsp" x="680" y="293" zoom="true"/>
+        <Node id="principal/principal.jsp" x="24" y="66" zoom="true"/>
+        <Node id="welcome.jsp" x="858" y="94" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations">
+        <Node id="principal/principal.jsp" x="24" y="66" zoom="true"/>
+        <Node id="welcome.jsp" x="858" y="94" zoom="true"/>
+    </Scope>
+</Scene>

@@ -1,0 +1,272 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<faces-config version="1.2" 
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+    <application>
+        <resource-bundle>
+            <base-name>portugues</base-name>
+            <var>texto</var>
+        </resource-bundle>
+        <message-bundle>portugues</message-bundle>
+    </application>
+    <managed-bean>
+        <description>Controle de Login</description>
+        <managed-bean-name>LoginCT</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.LoginCT</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>Controle da Pagina Inicial</description>
+        <managed-bean-name>PageIniControl</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.PaginaInicialFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Controla a pagina a ser exibida</description>
+        <managed-bean-name>FluxoExibicaoFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.principal.FluxoExibicaoFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Cadastro de Cartoes de Creditos</description>
+        <managed-bean-name>cartaoCreditoFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.cadastro.CartaoCreditoFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Cadastro e Edicao de novas contas bancarias</description>
+        <managed-bean-name>ContaBancariaFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.cadastro.ContaBancariaFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Cadastro de usuarios</description>
+        <managed-bean-name>usuarioFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.adm.UsuarioFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Cadastro de Grupos Receita e Gasto</description>
+        <managed-bean-name>grupoFinanceiroFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.cadastro.GrupoFinanceiroFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Cadastro de Conta com pagamento tipo debito em conta corrente</description>
+        <managed-bean-name>debitoEmContaFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.cadastro.contas.PagamentoContaFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>Bean de Receita Financeira</description>
+        <managed-bean-name>receitaFinanceiraFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.cadastro.contas.ReceitaFinanceiraFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Gerenciar contas em aberto</description>
+        <managed-bean-name>contasEmAberto</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.principal.ContasEmAbertoFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>Contas ja movimentadas</description>
+        <managed-bean-name>contasConfirmadas</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.principal.ContasConfirmadasFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Acumulado Mensal</description>
+        <managed-bean-name>acumulado</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.provisoes.AcumuladoFaces</managed-bean-class>
+
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Controle de alteracao de senha</description>
+        <managed-bean-name>senhaFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.pessoal.SenhaFaces</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>Lembrete para envio de avisos de contas em atraso</description>
+        <managed-bean-name>lembreteContaFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.pessoal.LembreteContaFaces</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Proximos vencimentos do cartao</description>
+        <managed-bean-name>cartaoCreditoFaces1</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.provisoes.CartaoCreditoFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Grupos Gastos Pagamentos</description>
+        <managed-bean-name>grupoGastoPagamentosDTOFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.provisoes.GrupoGastoPagamentosFaces</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Demonstrativos de gasto por grupo de gasto</description>
+        <managed-bean-name>grupoGastoDetalheDTOFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.provisoes.GrupoGastoDetalheDTOFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Bean para cadastrado de cartao de credito de dependentes</description>
+        <managed-bean-name>cartaoCreditoDependenteFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.cadastro.CartaoCreditoDependenteFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <description>Bean para cadastro de conjuge</description>
+        <managed-bean-name>conjugeCadFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.cadastro.ConjugeCadFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Bean responsavel por coletar informações da conta e passar para página enxertada</description>
+        <managed-bean-name>enxertoContasGerencial</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.enxerto.EnxertoContasGerencial</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Bean utilizado para pagamento de cartoes de creditos</description>
+        <managed-bean-name>contasCartaoCreditoFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.principal.ContasCartaoCreditoFaces</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <description>Procura contas por observacao</description>
+        <managed-bean-name>observacoesFaces</managed-bean-name>
+        <managed-bean-class>br.com.financeiro.beansjsf.provisoes.ObservacoesFaces</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <!-- Nevegação -->
+    <navigation-rule>
+        <navigation-case>
+            <description>Chama a pagina principal/principal.jsp de qualquer bean JSF</description>
+            <from-outcome>principal</from-outcome>
+            <to-view-id>/principal/principal.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <navigation-case>
+            <description>Retorna para página de login de qualquer bean JSF</description>
+            <from-outcome>deslogar</from-outcome>
+            <to-view-id>/welcome.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+<!-- Conversores -->
+    <converter>
+        <converter-id>EnumTipoContaConverter</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.EnumTipoContaConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>EnumFormaPagamentoConverter</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.EnumFormaPagamentoConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>EnumFormaRecebimentoConverter</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.EnumFormaRecebimentoConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>EnumStatusPagamentoConverter</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.EnumStatusPagamentoConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>CartaoCreditoUnicoConverter</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.CartaoCreditoUnicoConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>GrupoReceitaConverter</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.GrupoReceitaConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>GrupoGastoConverter</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.GrupoGastoConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>MoneyConverter</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.MoneyConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>ContaBancariaConversor</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.ContaBancariaConversor</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>ContaBancariaConverter</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.ContaBancariaConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>NumeroCartaoCreditoConversor</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.NumeroCartaoCreditoConversor</converter-class>
+    </converter>
+
+    <converter>
+        <converter-id>GrupsConverter</converter-id>
+        <converter-class>br.com.financeiro.auxjsf.conversores.GrupsConverter</converter-class>
+    </converter>
+
+<!-- Validadores -->
+    <validator>
+        <validator-id>CartaoCreditoValidador</validator-id>
+        <validator-class>br.com.financeiro.auxjsf.validador.CartaoCreditoValidador</validator-class>
+    </validator>
+
+    <validator>
+        <validator-id>CartaoCreditoUnicoValidador</validator-id>
+        <validator-class>br.com.financeiro.auxjsf.validador.CartaoCreditoUnicoValidador</validator-class>
+    </validator>
+    
+    <validator>
+        <validator-id>EmailValidador</validator-id>
+        <validator-class>br.com.financeiro.auxjsf.validador.EmailValidador</validator-class>
+    </validator>
+    
+</faces-config>
+
+
+
+

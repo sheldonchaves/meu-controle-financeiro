@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0">
+
+    <named-query name="reportPagamentoAcumuladoMes">
+        <query>
+			Select SUM(cp.valor)
+                        From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND cp.user = :user
+        </query>
+    </named-query>
+
+    <named-query name="reportPagamentoAcumuladoMesConjuge">
+        <query>
+			Select SUM(cp.valor)
+                        From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND (cp.user = :user OR cp.user = :conjugeUser)
+        </query>
+    </named-query>
+
+    <named-query name="reportReceitaAcumuladaMes">
+        <query>
+			Select SUM(cp.valor)
+                        From ContaReceber cp
+                        Where cp.dataPagamento Between :dataI AND :dataF
+                        AND cp.user = :user
+        </query>
+    </named-query>
+
+    <named-query name="reportReceitaAcumuladaMesConjuge">
+        <query>
+			Select SUM(cp.valor)
+                        From ContaReceber cp
+                        Where cp.dataPagamento Between :dataI AND :dataF
+                        AND (cp.user = :user OR cp.user = :conjugeUser)
+        </query>
+    </named-query>
+
+    <named-query name="reportContaPagarFormaPagto">
+        <query>
+			Select cp.cartaoCreditoUnico.empresaCartao, SUM(cp.valor) 
+                        From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND cp.user = :user
+                        AND cp.cartaoCreditoUnico is not null
+                        AND cp.formaPagamento = :formaPagamento
+                        GROUP BY cp.cartaoCreditoUnico.empresaCartao
+                        ORDER BY cp.cartaoCreditoUnico.empresaCartao
+        </query>
+    </named-query>
+
+    <named-query name="reportContaPagarFormaPagtoConjuge">
+        <query>
+			Select cp.cartaoCreditoUnico.empresaCartao, SUM(cp.valor)
+                        From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND (cp.user = :user OR cp.user = :conjugeUser)
+                        AND cp.cartaoCreditoUnico is not null
+                        AND cp.formaPagamento = :formaPagamento
+                        GROUP BY cp.cartaoCreditoUnico.empresaCartao
+                        ORDER BY cp.cartaoCreditoUnico.empresaCartao
+        </query>
+    </named-query>
+
+    <named-query name="reportBuscarNPagoPago">
+        <query>
+			Select SUM(cp.valor) From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND cp.user = :user
+                        AND cp.statusPagamento = :statusPagamento
+        </query>
+    </named-query>
+
+    <named-query name="reportBuscarNPagoPagoConjuge">
+        <query>
+			Select SUM(cp.valor) From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND (cp.user = :user OR cp.user = :conjugeUser)
+                        AND cp.statusPagamento = :statusPagamento
+        </query>
+    </named-query>
+    
+    <named-query name="buscarGastoPorGrupoGasto">
+        <query>
+			Select cp.grupoGasto.grupoGasto, SUM(cp.valor) From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND cp.user = :user
+                        AND cp.statusPagamento = :statusPagamento
+                        Group by cp.grupoGasto.grupoGasto
+                        Order by cp.grupoGasto.grupoGasto
+        </query>
+    </named-query>
+
+    <named-query name="buscarGastoPorGrupoGastoConjuge">
+        <query>
+			Select cp.grupoGasto.grupoGasto, SUM(cp.valor) From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND (cp.user = :user OR cp.user = :conjugeUser)
+                        AND cp.statusPagamento = :statusPagamento
+                        Group by cp.grupoGasto.grupoGasto
+                        Order by cp.grupoGasto.grupoGasto
+        </query>
+    </named-query>
+
+    <named-query name="buscarGastoPorGrupoGasto2">
+        <query>
+			Select cp.grupoGasto.grupoGasto, SUM(cp.valor) From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND cp.user = :user
+                        Group by cp.grupoGasto.grupoGasto
+                        Order by cp.grupoGasto.grupoGasto
+        </query>
+    </named-query>
+
+    <named-query name="buscarGastoPorGrupoGasto2Conjuge">
+        <query>
+			Select cp.grupoGasto.grupoGasto, SUM(cp.valor) From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND (cp.user = :user OR cp.user = :conjugeUser)
+                        Group by cp.grupoGasto.grupoGasto
+                        Order by cp.grupoGasto.grupoGasto
+        </query>
+    </named-query>
+
+    <named-query name="buscarContasPorGrupoGasto">
+        <query>
+			Select cp From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND cp.user = :user
+                        AND cp.grupoGasto = :grupoGasto
+                        Order by cp.dataVencimento, cp.valor DESC
+        </query>
+    </named-query>
+
+        <named-query name="buscarContasPorGrupoGastoConjuge">
+        <query>
+			Select cp From ContaPagar cp
+                        Where cp.dataVencimento Between :dataI AND :dataF
+                        AND (cp.user = :user OR cp.user = :conjugeUser)
+                        AND cp.grupoGasto = :grupoGasto
+                        Order by cp.dataVencimento, cp.valor DESC
+        </query>
+    </named-query>
+   
+</entity-mappings>
