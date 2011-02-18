@@ -4,6 +4,6 @@
       <title>Financeiro :: Login</title>
    </head>
    <body>
-      <p>Por favor, aguarde a página ser carregada.</p>
+      <p>Por favor, aguarde a pagina ser carregada.</p>
    </body>
 </html>
