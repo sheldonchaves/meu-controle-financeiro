@@ -58,7 +58,7 @@ public class LembreteContas implements MessageListener {
     }
 
     private void sendMail(String email, String subject, String body) throws NamingException, MessagingException {
-        SimpleAuth auth = new SimpleAuth("gbvbahia01@gmail.com", "lucas!1010");
+        SimpleAuth auth = new SimpleAuth("gbvbahia01@gmail.com", "xxx");
         Properties p = new Properties();
         p.put("mail.host", "gmail-smtp.l.google.com");
         p.put("mail.debug", "false");
