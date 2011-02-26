@@ -18,12 +18,8 @@
     <html>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-            <link href="${pageContext.servletContext.contextPath}\imagens\icon.ico" rel="shortcut icon" type="image/icon">
-            <link href="${pageContext.servletContext.contextPath}\imagens\icon.ico" rel='shortcut icon'/>
-            <link href="${pageContext.servletContext.contextPath}\imagens\icon.ico" type="image/x-icon" rel="icon"/>
-            <link href="${pageContext.servletContext.contextPath}\imagens\icon.ico" type="image/x-icon" rel='shortcut icon'/>
-            <link href="${pageContext.servletContext.contextPath}\imagens\icon.ico" rel='apple-touch-icon'/>
-            <link href="${pageContext.servletContext.contextPath}\imagens\icon.ico" type='image/x-icon'/>
+            <link rel="shortcut icon" href="${pageContext.servletContext.contextPath}\imagens\favicon.ico" type="image/x-icon" />
+
             <a4j:loadStyle src="/CSS/css.css"></a4j:loadStyle>
             <title><h:outputText value="#{texto.principalTitle}"/></title>
             <a4j:loadScript src="/js/js.js"/>
