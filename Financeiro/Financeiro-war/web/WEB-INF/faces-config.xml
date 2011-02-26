@@ -264,7 +264,7 @@
         <validator-id>EmailValidador</validator-id>
         <validator-class>br.com.financeiro.auxjsf.validador.EmailValidador</validator-class>
     </validator>
-    
+
 </faces-config>
 
 

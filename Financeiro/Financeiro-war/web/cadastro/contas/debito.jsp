@@ -63,6 +63,21 @@
                     </h:selectOneMenu>
                     <rich:message for="cartaoCreditoinp" styleClass="red" rendered="#{debitoEmContaFaces.renderedCartaoCredito}" id="cartaoCreditoinpmsg"/>
 
+                                        <h:outputLabel value="#{texto.contaPaga}:" for="contaPagaInp" id="contaPagaLabel" title="#{texto.titleContaPaga}"/>
+                    <h:selectBooleanCheckbox value="#{debitoEmContaFaces.contaParcelaPaga}" id="contaPagaInp" title="#{texto.titleContaPaga}" disabled="#{debitoEmContaFaces.contaPagar.id != null}">
+                        <a4j:support event="onclick" ajaxSingle="true" reRender="formdebito" />
+                    </h:selectBooleanCheckbox>
+                    <rich:message for="contaPagaInp" styleClass="red"/>
+
+                    <h:outputLabel value="#{texto.debitarDe}:" id="debitarDeLabel" for="debitarDe" rendered="#{debitoEmContaFaces.contaParcelaPaga}" />
+                    <rich:comboBox value="#{debitoEmContaFaces.contaBancaria}" id="debitarDe" enableManualInput="false"
+                                   defaultLabel="#{texto.selecione}" width="220" listWidth="300" disabled="#{debitoEmContaFaces.contaPagar.id != null}"
+                                   required="true" requiredMessage="#{texto.campoObrigatorio}" rendered="#{debitoEmContaFaces.contaParcelaPaga}">
+                        <f:converter converterId="ContaBancariaConverter"/>
+                        <f:selectItems value="#{debitoEmContaFaces.contaBancarias}"/>
+                    </rich:comboBox>
+                    <rich:message for="debitarDe" styleClass="red" rendered="#{debitoEmContaFaces.contaParcelaPaga}"/>
+
                     <h:outputLabel value="#{texto.contaDestino}:" for="contaDestinoinp" id="contaDestinolabel" rendered="#{debitoEmContaFaces.renderedContaTransferencia}"/>
                     <rich:comboBox value="#{debitoEmContaFaces.contaPagar.contaPara}" id="contaDestinoinp" label="contaDestinolabel" enableManualInput="false"
                                    rendered="#{debitoEmContaFaces.renderedContaTransferencia}" defaultLabel="#{texto.selecione}" width="150"
@@ -98,7 +113,7 @@
                     <rich:message for="parcelaTotalinp" styleClass="red"/>
 
                     <h:outputLabel value="#{texto.salvaParcelas}:" id="salvaParcelaslabel" for="salvaParcelasinp"/>
-                    <h:selectBooleanCheckbox value="#{debitoEmContaFaces.salvarParcelas}" id="salvaParcelasinp" label="salvaParcelaslabel"
+                    <h:selectBooleanCheckbox value="#{debitoEmContaFaces.salvarParcelas}" id="salvaParcelasinp" 
                                              disabled="#{debitoEmContaFaces.contaPagar.id != null}"/>
                     <rich:message for="salvaParcelasinp" styleClass="red"/>
 

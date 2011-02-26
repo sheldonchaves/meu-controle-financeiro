@@ -10,9 +10,11 @@ import br.com.financeiro.ejbbeans.interfaces.CartaoCreditoLocal;
 import br.com.financeiro.ejbbeans.interfaces.ContaBancariaLocal;
 import br.com.financeiro.ejbbeans.interfaces.ContaPagarReceberLocal;
 import br.com.financeiro.ejbbeans.interfaces.GrupoFinanceiroLocal;
+import br.com.financeiro.ejbbeans.interfaces.MovimentacaoFinanceiraLocal;
 import br.com.financeiro.entidades.CartaoCreditoUnico;
 import br.com.financeiro.entidades.ContaBancaria;
 import br.com.financeiro.entidades.ContaPagar;
+import br.com.financeiro.entidades.MovimentacaoFinanceira;
 import br.com.financeiro.entidades.User;
 import br.com.financeiro.entidades.detalhes.GrupoGasto;
 import br.com.financeiro.entidades.enums.FormaPagamento;
@@ -42,30 +44,53 @@ import javax.servlet.http.HttpSession;
  *
  * @author gbvbahia
  */
-public class PagamentoContaFaces  implements Observer{
+public class PagamentoContaFaces implements Observer {
+
+    @EJB
+    private MovimentacaoFinanceiraLocal movimentacaoFinanceiraBean;
+
     @EJB
     private CartaoCreditoLocal cartaoCreditoBean;
+
     @EJB
     private ContaBancariaLocal contaBancariaBean;
+
     @EJB
     private GrupoFinanceiroLocal grupoFinanceiroBean;
+
     @EJB
     private ContaPagarReceberLocal contaPagarReceberBean;
-    
+
     private ContaPagar contaPagar;
+
+    private ContaBancaria contaBancaria;
+
     private Locale locale = new Locale("pt", "BR");
+
     private User proprietario;
+
     private boolean salvarParcelas;
+
     private DataModel dataModel;
+
     private boolean renderedCartaoCredito = false;
+
     private boolean renderedContaTransferencia = false;
+
     private boolean exibirCadConta = false;
+
     private boolean exibirCadContaDiaria = false;
+
+    private boolean contaParcelaPaga = false;
+
     private int diaria = 7;
+
     private boolean excluirParcelamento = false;
+
     private Date initBusca;
+
     private int limiteContas = 10;
-    
+
     public PagamentoContaFaces() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         proprietario = (User) session.getAttribute(LoginCT.SESSION_PROPRIETARIO);
@@ -76,20 +101,20 @@ public class PagamentoContaFaces  implements Observer{
         clean(null);
     }
 
-    public void pegarConta(ActionEvent event){
+    public void pegarConta(ActionEvent event) {
         this.contaPagar = (ContaPagar) this.dataModel.getRowData();
     }
 
-    public void sugerirDataCC(ActionEvent event){
+    public void sugerirDataCC(ActionEvent event) {
         this.contaPagar.setDataVencimento(this.contaPagar.getCartaoCreditoUnico().getProximoVencimento());
     }
 
     public void apagar(ActionEvent event) {
         try {
-            if(excluirParcelamento){
-            this.contaPagarReceberBean.deletarContaPagarReceberPorIdentificador(this.contaPagar.getIdentificador(), this.contaPagar.getContaParcelaAtual());
-            }else{
-            this.contaPagarReceberBean.deletarContaPagarReceber(this.contaPagar);
+            if (excluirParcelamento) {
+                this.contaPagarReceberBean.deletarContaPagarReceberPorIdentificador(this.contaPagar.getIdentificador(), this.contaPagar.getContaParcelaAtual());
+            } else {
+                this.contaPagarReceberBean.deletarContaPagarReceber(this.contaPagar);
             }
             clean(event);
             ControleObserver.notificaObservers(proprietario);
@@ -109,11 +134,20 @@ public class PagamentoContaFaces  implements Observer{
             this.contaPagarReceberBean.salvarContaPagarReceber(contaPagar);
             if (salvarParcelas) {
                 ContaPagar debito = null;
-                for (debito = contaPagar; (debito = aumentaParcela(debito)) != null;) {
+                for (debito = contaPagar; (debito = aumentaParcela(debito, exibirCadContaDiaria, diaria)) != null;) {
                     this.contaPagarReceberBean.salvarContaPagarReceber(debito);
                 }
             }
+            if (contaParcelaPaga) {
+                contaPagar.setMovimentacaoFinanceira(new MovimentacaoFinanceira());
+                contaPagar.getMovimentacaoFinanceira().setContaBancaria(contaBancaria);
+                movimentacaoFinanceiraBean.criarMovimentacaoFinanceira(contaPagar);
+                ControleObserver.notificaObservers(proprietario);
+            }
             UtilMetodos.messageFactoringFull("contaPagarSalva", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            if (contaParcelaPaga) {
+                UtilMetodos.messageFactoringFull("movimentacaoCriada", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            }
             clean(event);
             ControleObserver.notificaObservers(proprietario);
         } catch (ContaPagarReceberValueException e) {
@@ -125,6 +159,7 @@ public class PagamentoContaFaces  implements Observer{
     }
 
     public void clean(ActionEvent event) {
+        contaBancaria = new ContaBancaria();
         contaPagar = new ContaPagar();
         contaPagar.setUser(proprietario);
         contaPagar.setStatusPagamento(StatusPagamento.NAO_PAGA);
@@ -135,6 +170,7 @@ public class PagamentoContaFaces  implements Observer{
         this.exibirCadConta = false;
         this.exibirCadContaDiaria = false;
         this.excluirParcelamento = false;
+        this.contaParcelaPaga = false;
     }
 
     public List<SelectItem> getGrupoGastoItens() {
@@ -145,39 +181,39 @@ public class PagamentoContaFaces  implements Observer{
         return toReturn;
     }
 
-    public List<SelectItem> getFormaPagamentoItens(){
+    public List<SelectItem> getFormaPagamentoItens() {
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
-        for(FormaPagamento fp : FormaPagamento.values()){
+        for (FormaPagamento fp : FormaPagamento.values()) {
             toReturn.add(new SelectItem(fp, fp.toString()));
         }
         return toReturn;
     }
 
-    public List<SelectItem> getContaBancarias(){
+    public List<SelectItem> getContaBancarias() {
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
-        for(ContaBancaria cb : this.contaBancariaBean.contasProprietario(proprietario)){
+        for (ContaBancaria cb : this.contaBancariaBean.contasProprietario(proprietario)) {
             toReturn.add(new SelectItem(cb, cb.getLabel()));
         }
         return toReturn;
     }
 
-    public List<SelectItem> getCartaoCreditoItens(){
+    public List<SelectItem> getCartaoCreditoItens() {
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
         toReturn.add(new SelectItem("Selecione", "Selecione"));
-        for(CartaoCreditoUnico cc : this.cartaoCreditoBean.buscaCartaoPorStatus(true,proprietario)){
+        for (CartaoCreditoUnico cc : this.cartaoCreditoBean.buscaCartaoPorStatus(true, proprietario)) {
             toReturn.add(new SelectItem(cc, cc.getLabelCartao()));
         }
         return toReturn;
     }
 
-    public void formaPagamentoListener(ValueChangeEvent event){
-        if(event.getNewValue().equals(FormaPagamento.CARTAO_DE_CREDITO)){
+    public void formaPagamentoListener(ValueChangeEvent event) {
+        if (event.getNewValue().equals(FormaPagamento.CARTAO_DE_CREDITO)) {
             this.renderedCartaoCredito = true;
             this.renderedContaTransferencia = false;
-        }else if(event.getNewValue().equals(FormaPagamento.TRASFERENCIA_ELETRONICA)){
+        } else if (event.getNewValue().equals(FormaPagamento.TRASFERENCIA_ELETRONICA)) {
             this.renderedCartaoCredito = false;
             this.renderedContaTransferencia = true;
-        }else{
+        } else {
             this.renderedCartaoCredito = false;
             this.renderedContaTransferencia = false;
         }
@@ -191,7 +227,7 @@ public class PagamentoContaFaces  implements Observer{
     public void setContaPagar(ContaPagar contaPagar) {
         this.contaPagar = contaPagar;
     }
-   
+
     public Locale getLocale() {
         return locale;
     }
@@ -204,12 +240,14 @@ public class PagamentoContaFaces  implements Observer{
         this.salvarParcelas = salvarParcelas;
     }
 
-       public void atualizaModelContas(ActionEvent event){
+    public void atualizaModelContas(ActionEvent event) {
         this.dataModel = new ListDataModel(this.contaPagarReceberBean.buscarContasNaoPagas(proprietario, initBusca, limiteContas));
     }
 
     public DataModel getDataModel() {
-        if(this.dataModel == null) atualizaModelContas(null);
+        if (this.dataModel == null) {
+            atualizaModelContas(null);
+        }
         return dataModel;
     }
 
@@ -233,11 +271,20 @@ public class PagamentoContaFaces  implements Observer{
         this.renderedContaTransferencia = renderedContaTransferencia;
     }
 
-    //PRIVADOS
-    private ContaPagar aumentaParcela(ContaPagar contaPagar) {
+    /**
+     *Default, somente mesmo pacote.
+     * Atributos exibirCadContaDiaria e diasIntervalo
+     * Deverão ser informados somente para intervalos em dias
+     * Para conta de intervalo em meses passar false e 0 como parâmetros
+     * @param contaPagar
+     * @param exibirCadContaDiaria
+     * @param qtdade
+     * @return
+     */
+    static ContaPagar aumentaParcela(ContaPagar contaPagar, boolean exibirCadContaDiaria, int diasIntervalo) {
         if (contaPagar.getParcelaTotal() > contaPagar.getParcelaAtual()) {
             ContaPagar toReturn = new ContaPagar();
-            toReturn.setDataVencimento(aumentaDate(contaPagar.getDataVencimento()));
+            toReturn.setDataVencimento(aumentaDate(contaPagar.getDataVencimento(), exibirCadContaDiaria, diasIntervalo));
             toReturn.setGrupoGasto(contaPagar.getGrupoGasto());
             toReturn.setJuros(contaPagar.getJuros());
             toReturn.setObservacao(contaPagar.getObservacao());
@@ -256,9 +303,9 @@ public class PagamentoContaFaces  implements Observer{
         }
     }
 
-    private Date aumentaDate(Date dataVencimento) {
-        if(this.exibirCadContaDiaria == true){
-            return UtilMetodos.aumentaDiaDate(dataVencimento, diaria);
+    private static Date aumentaDate(Date dataVencimento, boolean exibirCadContaDiaria, int qtdade) {
+        if (exibirCadContaDiaria == true) {
+            return UtilMetodos.aumentaDiaDate(dataVencimento, qtdade);
         }
         return UtilMetodos.aumentaMesDate(dataVencimento, 1);
     }
@@ -304,7 +351,7 @@ public class PagamentoContaFaces  implements Observer{
     }
 
     public void setExibirCadContaDiaria(boolean exibirCadContaDiaria) {
-        if(exibirCadContaDiaria){
+        if (exibirCadContaDiaria) {
             setSalvarParcelas(exibirCadContaDiaria);
         }
         this.exibirCadContaDiaria = exibirCadContaDiaria;
@@ -316,5 +363,21 @@ public class PagamentoContaFaces  implements Observer{
 
     public void setDiaria(int diaria) {
         this.diaria = diaria;
+    }
+
+    public boolean isContaParcelaPaga() {
+        return contaParcelaPaga;
+    }
+
+    public void setContaParcelaPaga(boolean contaParcelaPaga) {
+        this.contaParcelaPaga = contaParcelaPaga;
+    }
+
+    public ContaBancaria getContaBancaria() {
+        return contaBancaria;
+    }
+
+    public void setContaBancaria(ContaBancaria contaBancaria) {
+        this.contaBancaria = contaBancaria;
     }
 }

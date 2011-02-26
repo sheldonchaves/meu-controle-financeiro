@@ -16,14 +16,14 @@
         <Node id="login/login.jsp" x="862" y="131" zoom="true"/>
         <Node id="cadastro/contas/debito.jsp" x="321" y="197" zoom="true"/>
         <Node id="pessoal/aviso.jsp" x="582" y="80" zoom="true"/>
-        <Node id="provisoes/observacao.jsp" x="686" y="326" zoom="true"/>
         <Node id="cadastro/cartaocredito.jsp" x="319" y="71" zoom="true"/>
+        <Node id="provisoes/observacao.jsp" x="686" y="326" zoom="true"/>
         <Node id="auxiliar/acumuladointerface.jsp" x="1028" y="202" zoom="true"/>
         <Node id="auxiliar/cartaointerface.jsp" x="1029" y="233" zoom="true"/>
-        <Node id="auxiliar/enxertocontasbancarias.jsp" x="1034" y="293" zoom="true"/>
         <Node id="cadastro/cartaocreditodependente.jsp" x="323" y="264" zoom="true"/>
-        <Node id="cadastro/gruporeceita.jsp" x="321" y="166" zoom="true"/>
+        <Node id="auxiliar/enxertocontasbancarias.jsp" x="1034" y="293" zoom="true"/>
         <Node id="auxiliar/grupogastointerface.jsp" x="1030" y="263" zoom="true"/>
+        <Node id="cadastro/gruporeceita.jsp" x="321" y="166" zoom="true"/>
         <Node id="principal/inicial.jsp" x="26" y="32" zoom="true"/>
         <Node id="pessoal/senha.jsp" x="588" y="49" zoom="true"/>
         <Node id="principal/pagarcartaocredito.jsp" x="27" y="137" zoom="true"/>

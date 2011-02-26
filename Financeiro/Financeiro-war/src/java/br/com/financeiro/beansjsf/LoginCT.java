@@ -89,9 +89,12 @@ public class LoginCT {
     
     public void criaBanco(ActionEvent event) {
         User pro = new User();
-        pro.setLogin("gbvbahia");
+        pro.setLogin("hjohh");
         pro.setFirst_name("Guilherme");
         pro.setLast_name("Braga");
+        //Você receberá um email com sua senha neste e-mail.
+        //Configure br.com.financeiro.ejbbeans.timeservices.LembreteContas
+        //Para enviar e-mail, a senha não está correta.
         pro.setEmail("gbvbahia01@hotmail.com");
         try {
             proprietarioBean.salvarproprietario(pro, getURLFinanceiro());
@@ -106,8 +109,8 @@ public class LoginCT {
         }
         pro = proprietarioBean.buscaProprietarioLogin("gbvbahia", true);
         ContaBancaria cb = new ContaBancaria();
-        cb.setAgencia("44369");
-        cb.setNumeroConta("400319");
+        cb.setAgencia("40017");
+        cb.setNumeroConta("701238");
         cb.setNomeBanco("Banco do Brasil");
         cb.setObservacao("Conta corrente no Banco do Brasil");
         cb.setSaldo(0.00);
@@ -135,8 +138,11 @@ public class LoginCT {
             Logger.getLogger(LoginCT.class.getName()).log(Level.SEVERE, null, ex);
         }
         FacesMessage msg = new FacesMessage("Tabelas criadas e dados inseridos!");
+        FacesMessage msg2 = new FacesMessage("Você receberá um email informando sua senha!");
         msg.setSeverity(FacesMessage.SEVERITY_INFO);
+        msg2.setSeverity(FacesMessage.SEVERITY_INFO);
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(null, msg2);
     }
     private String getURLFinanceiro(){
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
