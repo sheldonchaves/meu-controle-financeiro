@@ -95,7 +95,6 @@
         <description>Acumulado Mensal</description>
         <managed-bean-name>acumulado</managed-bean-name>
         <managed-bean-class>br.com.financeiro.beansjsf.provisoes.AcumuladoFaces</managed-bean-class>
-
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
