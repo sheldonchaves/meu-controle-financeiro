@@ -11,6 +11,7 @@ import br.com.financeiro.auxjsf.classes.comparators.AcumuladoComparator;
 import br.com.financeiro.auxjsf.classes.interfaces.AcumuladoInterface;
 import br.com.financeiro.auxjsf.classes.interfaces.TipoValorInterface;
 import br.com.financeiro.auxjsf.jfreechart.ParetoJfreeChart;
+import br.com.financeiro.auxjsf.observadores.ControleObserver;
 import br.com.financeiro.beansjsf.LoginCT;
 import br.com.financeiro.ejbbeans.interfaces.CartaoCreditoLocal;
 import br.com.financeiro.ejbbeans.interfaces.RelatoriosLocal;
@@ -32,6 +33,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -49,7 +52,7 @@ import org.jfree.chart.JFreeChart;
  *
  * @author gbvbahia
  */
-public class CartaoCreditoFaces {
+public class CartaoCreditoFaces implements Observer{
     @EJB
     private CartaoCreditoLocal cartaoCreditoBean;
 
@@ -77,6 +80,7 @@ public class CartaoCreditoFaces {
     public CartaoCreditoFaces() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         proprietario = (User) session.getAttribute(LoginCT.SESSION_PROPRIETARIO);
+        ControleObserver.addBeanObserver(proprietario, this);
         //Logger.getLogger(AcumuladoFaces.class.getName()).log(Level.INFO, "Um bean CartaoCreditoFaces acaba de ser criado!");
     }
 
@@ -274,7 +278,7 @@ public class CartaoCreditoFaces {
                 UtilMetodos.getResourceBundle("paretoCClegendaHorizontalPercentual", fc),
                 UtilMetodos.getResourceBundle("paretoCClegendaVerticalPercentual", fc),
                 mapPareto, null);
-        mapPareto = new LinkedHashMap<String, Double>();
+        //mapPareto = new LinkedHashMap<String, Double>();
         ((JFreeChart) grafico).getTitle().setFont(new Font("Arial", Font.BOLD, 17));
         ((JFreeChart) grafico).getTitle().setPaint(new java.awt.Color(102, 124, 75));//#999999
          String fileName = System.currentTimeMillis() + "";
@@ -326,4 +330,11 @@ public class CartaoCreditoFaces {
         //Logger.getLogger(AcumuladoFaces.class.getName()).log(Level.INFO, caminho + File.separator + this.proprietario.getId() + ".png");
         return caminho + File.separator + this.proprietario.getId() + "_" + nome + ".png";
     }
+
+    public void update(Observable o, Object arg) {
+        mapPareto = new LinkedHashMap<String, Double>();
+        atualizaValoresCartao(null);
+        atualizarListaContasCartaoCredito(null);
+    }
+
 }
