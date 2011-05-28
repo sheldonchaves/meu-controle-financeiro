@@ -99,10 +99,23 @@ public class CartaoCreditoFaces implements Observer{
             }
             totalFatura += cp.getValor();
         }
+        mapPareto = new LinkedHashMap<String, Double>();
         this.carregaMapPareto(toReturn);
         this.dataModelContas = new ListDataModel(toReturn);
     }
 
+    private void carregaMapPareto(List<ContaPagar> listContas){
+        for(ContaPagar cp : listContas){
+            if(mapPareto.containsKey(cp.getGrupoGasto().getGrupoGasto())){
+                double tmp = mapPareto.get(cp.getGrupoGasto().getGrupoGasto());
+                mapPareto.remove(cp.getGrupoGasto().getGrupoGasto());
+                mapPareto.put(cp.getGrupoGasto().getGrupoGasto(), cp.getContaValor() + tmp);
+            }else{
+                mapPareto.put(cp.getGrupoGasto().getGrupoGasto(), cp.getContaValor());
+            }
+        }
+    }
+    
     public List<SelectItem> getCartoesCredito() {
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
         toReturn.add(new SelectItem("Selecione", "Selecione"));
@@ -292,17 +305,7 @@ public class CartaoCreditoFaces implements Observer{
         return "/temp/" + this.proprietario.getId() + "_" + fileName + ".png";
     }
 
-    private void carregaMapPareto(List<ContaPagar> listContas){
-        for(ContaPagar cp : listContas){
-            if(mapPareto.containsKey(cp.getGrupoGasto().getGrupoGasto())){
-                double tmp = mapPareto.get(cp.getGrupoGasto().getGrupoGasto());
-                mapPareto.remove(cp.getGrupoGasto().getGrupoGasto());
-                mapPareto.put(cp.getGrupoGasto().getGrupoGasto(), cp.getContaValor() + tmp);
-            }else{
-                mapPareto.put(cp.getGrupoGasto().getGrupoGasto(), cp.getContaValor());
-            }
-        }
-    }
+
 
        private void deletaFiles(String excecaoNome) {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
