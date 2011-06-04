@@ -43,8 +43,6 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraLocal {
     @EJB
-    private ReceitaFinanceiraLocal receitaFinanceiraBean1;
-    @EJB
     private GrupoFinanceiroLocal grupoFinanceiroBean;
 
     @EJB
@@ -113,6 +111,9 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraLocal {
             em.merge(contaPagar);
             em.merge(contaBancaria);
             if(contaPagar.getContaPara() != null){
+                if(contaPagar.getContaPara().equals(contaBancaria)){
+                    throw new MovimentacaoFinanceiraException("Você está tentando retirar dinheiro de uma conta e transferindo para a mesma conta. Recadastre a conta informando uma outra conta de origem ou de destino.");
+                }
                 this.completaTrasnferencia(contaPagar.getContaPara(), contaPagar);
             }
         }

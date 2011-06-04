@@ -20,6 +20,7 @@ import br.com.financeiro.entidades.detalhes.GrupoGasto;
 import br.com.financeiro.entidades.enums.FormaPagamento;
 import br.com.financeiro.entidades.enums.StatusPagamento;
 import br.com.financeiro.excecoes.ContaPagarReceberValueException;
+import br.com.financeiro.excecoes.MovimentacaoFinanceiraException;
 import br.com.financeiro.utils.UtilMetodos;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -155,6 +156,11 @@ public class PagamentoContaFaces implements Observer {
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             FacesContext.getCurrentInstance().addMessage(null, msg);
             Logger.getLogger(PagamentoContaFaces.class.getName()).log(Level.INFO, "ContaPagarReceberValueException");
+        } catch (MovimentacaoFinanceiraException e) {
+            FacesMessage msg = new FacesMessage(e.getMessage());
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            Logger.getLogger(PagamentoContaFaces.class.getName()).log(Level.INFO, "MovimentacaoFinanceiraException");
         }
     }
 
