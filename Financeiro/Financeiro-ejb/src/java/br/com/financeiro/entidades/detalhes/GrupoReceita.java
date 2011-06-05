@@ -20,7 +20,7 @@ public class GrupoReceita implements Serializable, Comparable<GrupoReceita> {
     @Column(name="id",nullable=false, unique=true)
     private Integer id;
 
-    @Column(name="grupo_receita",length=255, unique=true, nullable=false)
+    @Column(name="grupo_receita",length=255, unique=false, nullable=false)
     private String grupoReceita;
 
     @Column(name="status", nullable=false)

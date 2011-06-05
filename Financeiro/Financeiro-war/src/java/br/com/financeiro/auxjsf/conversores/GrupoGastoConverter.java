@@ -4,7 +4,9 @@
  */
 package br.com.financeiro.auxjsf.conversores;
 
+import br.com.financeiro.beansjsf.LoginCT;
 import br.com.financeiro.ejbbeans.interfaces.GrupoFinanceiroLocal;
+import br.com.financeiro.entidades.User;
 import br.com.financeiro.entidades.detalhes.GrupoGasto;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +16,7 @@ import javax.faces.convert.Converter;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -25,7 +28,9 @@ public class GrupoGastoConverter implements Converter {
         if (value == null || value.trim().equals("")) {
             return value;
         }
-        return lookupGrupoFinanceiroBeanLocal().buscarGrupoGastoPorNome(value);
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        User user = (User) session.getAttribute(LoginCT.SESSION_PROPRIETARIO);
+        return lookupGrupoFinanceiroBeanLocal().buscarGrupoGastoPorNome(value, user);
     }
 
     public String getAsString(FacesContext context, UIComponent component, Object value) {
@@ -35,8 +40,12 @@ public class GrupoGastoConverter implements Converter {
         if (value.equals("")) {
             return "";
         }
-        GrupoGasto gg = (GrupoGasto) value;
-        return gg.getGrupoGasto();
+        if (value instanceof GrupoGasto) {
+            GrupoGasto gg = (GrupoGasto) value;
+            return gg.getGrupoGasto();
+        } else {
+            return value.toString();
+        }
     }
 
     private GrupoFinanceiroLocal lookupGrupoFinanceiroBeanLocal() {

@@ -132,13 +132,31 @@
 
     <named-query name="buscarGrupoGastoPorNome">
         <query>
-			Select g From GrupoGasto g Where g.grupoGasto = :grupoGasto
+			Select g From GrupoGasto g 
+                        Where g.grupoGasto = :grupoGasto
+                        AND g.user = :user
+        </query>
+    </named-query>
+    
+    <named-query name="buscarGrupoGastoPorNome2">
+        <query>
+			Select g From GrupoGasto g 
+                        Where g.grupoGasto = :grupoGasto
         </query>
     </named-query>
 
     <named-query name="buscarGrupoReceitaPorNome">
         <query>
-			Select g From GrupoReceita g Where g.grupoReceita = :grupoReceita
+			Select g From GrupoReceita g 
+                        Where g.grupoReceita = :grupoReceita
+                        AND g.user = :user
+        </query>
+    </named-query>
+
+   <named-query name="buscarGrupoReceitaPorNome2">
+        <query>
+			Select g From GrupoReceita g 
+                        Where g.grupoReceita = :grupoReceita
         </query>
     </named-query>
 

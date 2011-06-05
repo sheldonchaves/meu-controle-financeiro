@@ -126,7 +126,7 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraLocal {
         contaReceber.setContaValor(contaPagar.getContaValor());
         contaReceber.setDataPagamento(new Date());
         contaReceber.setFormaRecebimento(FormaRecebimento.TRASFERENCIA_ELETRONICA);
-        contaReceber.setGrupoReceita(grupoFinanceiroBean.buscarGrupoReceitaPorNome("Transferência Automática"));
+        contaReceber.setGrupoReceita(grupoFinanceiroBean.buscarGrupoReceitaPorNome("Transferência Automática", null));
         contaReceber.setObservacao(contaPagar.getObservacao());
         contaReceber.setParcelaAtual(contaPagar.getContaParcelaAtual());
         contaReceber.setParcelaTotal(contaPagar.getContaParcelaTotal());

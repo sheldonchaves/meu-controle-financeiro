@@ -26,9 +26,9 @@ public interface GrupoFinanceiroLocal {
 
     List<GrupoReceita> buscarGrupoReceitaParaSelecao(User user);
 
-    GrupoGasto buscarGrupoGastoPorNome(String nomeGasto);
+    GrupoGasto buscarGrupoGastoPorNome(String nomeGasto, User user);
 
-    GrupoReceita buscarGrupoReceitaPorNome(String nomeReceita);
+    GrupoReceita buscarGrupoReceitaPorNome(String nomeReceita, User user);
 
     /**
      * Retorna todos os grupos gasto idependete do status.
