@@ -11,7 +11,6 @@ import br.com.financeiro.ejbbeans.timeservices.interfaces.TimerContasLocal;
 import br.com.financeiro.ejbbeans.timeservices.utilitarias.SimpleEmail;
 import br.com.financeiro.entidades.ContaPagar;
 import br.com.financeiro.entidades.LembreteConta;
-import br.com.financeiro.entidades.enums.FormaPagamento;
 import br.com.financeiro.entidades.enums.StatusPagamento;
 import br.com.financeiro.utils.UtilBeans;
 import java.util.ArrayList;
@@ -68,10 +67,10 @@ public class TimeServiceBean implements TimeServiceLocal {
      */
     static {
         Calendar c = Calendar.getInstance();
-        //c.add(Calendar.DAY_OF_MONTH, 1);//PRODUÇÃO
+        c.add(Calendar.DAY_OF_MONTH, 1);//PRODUÇÃO
         Logger.getLogger(TimeServiceBean.class.getName()).log(Level.WARNING, "******* ATENÇÃO ATENÇÃO ******   ALTERAR A O DIA PARA O PROXIMO DIA!");
-        //c.set(Calendar.HOUR_OF_DAY, 3);//PRODUÇÃO
-        c.add(Calendar.SECOND, 30);//TESTE
+        c.set(Calendar.HOUR_OF_DAY, 3);//PRODUÇÃO
+        //c.add(Calendar.SECOND, 30);//TESTE
         horaExecucao = c.getTime();
         intervalo = 1000 * 60 * 60 * 24 * 1;
     }
