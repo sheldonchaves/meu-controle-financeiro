@@ -151,7 +151,7 @@ public class TimeServiceBean implements TimeServiceLocal {
         body += "Forma de Pagamento: " + cp.getFormaPagamento().getFormaPagamento();
         body += "<br>";
         if (cp.getFormaPagamento().equals(FormaPagamento.CARTAO_DE_CREDITO)) {
-            body += "Cartão de Crédito: " + cp.getFormaPagamento().getFormaPagamento();
+            body += "Cartão de Crédito: " + cp.getCartaoCreditoUnico();
             body += "<br>";
         }
         return body;
