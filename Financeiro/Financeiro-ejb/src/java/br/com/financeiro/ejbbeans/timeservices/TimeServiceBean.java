@@ -14,6 +14,7 @@ import br.com.financeiro.entidades.LembreteConta;
 import br.com.financeiro.entidades.enums.FormaPagamento;
 import br.com.financeiro.entidades.enums.StatusPagamento;
 import br.com.financeiro.utils.UtilBeans;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -67,12 +68,10 @@ public class TimeServiceBean implements TimeServiceLocal {
      */
     static {
         Calendar c = Calendar.getInstance();
-        //c.set(Calendar.HOUR_OF_DAY, 23);
-        //c.set(Calendar.MINUTE, 59);
-        c.add(Calendar.DAY_OF_MONTH, 1);
-        //Logger.getLogger(TimeServiceBean.class.getName()).log(Level.WARNING, "******* ATENÇÃO ATENÇÃO ******   ALTERAR A O DIA PARA O PROXIMO DIA!");
-        c.set(Calendar.HOUR_OF_DAY, 3);
-        //c.add(Calendar.SECOND, 30);
+        //c.add(Calendar.DAY_OF_MONTH, 1);//PRODUÇÃO
+        Logger.getLogger(TimeServiceBean.class.getName()).log(Level.WARNING, "******* ATENÇÃO ATENÇÃO ******   ALTERAR A O DIA PARA O PROXIMO DIA!");
+        //c.set(Calendar.HOUR_OF_DAY, 3);//PRODUÇÃO
+        c.add(Calendar.SECOND, 30);//TESTE
         horaExecucao = c.getTime();
         intervalo = 1000 * 60 * 60 * 24 * 1;
     }
@@ -90,8 +89,23 @@ public class TimeServiceBean implements TimeServiceLocal {
                 d.add(Calendar.DAY_OF_MONTH, 6);
                 List<ContaPagar> lcp = this.contaPagarReceberBean.buscarContasPorData(c.getTime(), d.getTime(), StatusPagamento.NAO_PAGA, lc.getUser());
                 String body = "";
+                List<ContaPagar> contasAtrasadas = new ArrayList<ContaPagar>();
+                List<ContaPagar> contasOK = new ArrayList<ContaPagar>();
                 for (ContaPagar cp : lcp) {
-                    body += this.verificaTempo(lc, cp);
+                    String tempo = this.verificaTempo(lc, cp);
+                    if (tempo == null) {
+                        //faz nada
+                    } else if (tempo.equals("OK")) {
+                        contasOK.add(cp);
+                    } else if (tempo.equals("NOK")) {
+                        contasAtrasadas.add(cp);
+                    }
+                }
+                if (!contasAtrasadas.isEmpty()) {
+                    body += corpoTableEmail(contasAtrasadas, true);
+                }
+                if (!contasOK.isEmpty()) {
+                    body += corpoTableEmail(contasOK, false);
                 }
                 body = StringUtils.replace(body, "null", "");
                 if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
@@ -119,42 +133,42 @@ public class TimeServiceBean implements TimeServiceLocal {
             Calendar c = Calendar.getInstance();
             c.add(Calendar.DAY_OF_MONTH, i);
             if (comparaDiaMesAno(c, agora)) {
-                return corpoEmail(cp, false);
+                return "OK";
             } else if (contaAtrazada(agora)) {
-                return corpoEmail(cp, true);
+                return "NOK";
             }
         }
         return null;
     }
 
-    private String corpoEmail(ContaPagar cp, boolean atrasada) {
-        String body = "";
-        body += "<br>";
-        if (atrasada) {
-            body += "<h4>Conta Vencida</h4>";
-        } else {
-            body += "<h4>Conta a Vencer</h4>";
-
+    private String corpoTableEmail(List<ContaPagar> listCP, boolean atrasada) {
+        String toReturn = atrasada ? "<h4>Contas Vencidas</h4>" : "<h4>Contas à Vencer</h4>";
+        toReturn += "<table> "
+                + "<thead><tr>"
+                + "<th>Observação</th>"
+                + "<th>Vencimento</th>"
+                + "<th>Valor</th>"
+                + "<th>Grupo Gasto</th>"
+                + "<th>Parcela Atual</th>"
+                + "<th>Total Parcelas</th>"
+                + "<th>Forma de Pagamento</th>"
+                + "<th>Cartão de Crédito</th>"
+                + "</tr></thead>"
+                + "<tbody>";
+        for (ContaPagar cp : listCP) {
+            toReturn += "<tr>";
+            toReturn += "<td align='left'>" + cp.getObservacao() + "</td>";
+            toReturn += "<td align='center'>" + UtilBeans.getDataString(cp.getDataVencimento()) + "</td>";
+            toReturn += "<td align='center'>" + UtilBeans.currencyFormat(cp.getContaValor()) + "</td>";
+            toReturn += "<td align='left'>" + cp.getGrupoGasto().getGrupoGasto() + "</td>";
+            toReturn += "<td align='justify'>" + cp.getParcelaAtual().toString() + "</td>";
+            toReturn += "<td align='center'>" + cp.getParcelaTotal().toString() + "</td>";
+            toReturn += "<td align='center'>" + cp.getFormaPagamento().getFormaPagamento() + "</td>";
+            toReturn += "<td align='center'>" + cp.getCartaoCreditoUnico() + "</td>";
+            toReturn += "</tr>";
         }
-        body += "Observação: " + cp.getObservacao();
-        body += "<br>";
-        body += "Vencimento: " + UtilBeans.getDataString(cp.getDataVencimento());
-        body += "<br>";
-        body += "Valor: " + UtilBeans.currencyFormat(cp.getContaValor());
-        body += "<br>";
-        body += "Grupo Gasto: " + cp.getGrupoGasto().getGrupoGasto();
-        body += "<br>";
-        body += "Parcela Atual: " + cp.getParcelaAtual().toString();
-        body += "<br>";
-        body += "Total de Parcelas: " + cp.getParcelaTotal().toString();
-        body += "<br>";
-        body += "Forma de Pagamento: " + cp.getFormaPagamento().getFormaPagamento();
-        body += "<br>";
-        if (cp.getFormaPagamento().equals(FormaPagamento.CARTAO_DE_CREDITO)) {
-            body += "Cartão de Crédito: " + cp.getCartaoCreditoUnico();
-            body += "<br>";
-        }
-        return body;
+        toReturn += "</tbody></table>";
+        return toReturn;
     }
 
     private boolean comparaDiaMesAno(Calendar init, Calendar fim) {
