@@ -160,8 +160,8 @@ public class TimeServiceBean implements TimeServiceLocal {
             toReturn += "<td align='left'>" + cp.getObservacao() + "</td>";
             toReturn += "<td align='center'>" + UtilBeans.getDataString(cp.getDataVencimento()) + "</td>";
             toReturn += "<td align='center'>" + UtilBeans.currencyFormat(cp.getContaValor()) + "</td>";
-            toReturn += "<td align='left'>" + cp.getGrupoGasto().getGrupoGasto() + "</td>";
-            toReturn += "<td align='justify'>" + cp.getParcelaAtual().toString() + "</td>";
+            toReturn += "<td align='center'>" + cp.getGrupoGasto().getGrupoGasto() + "</td>";
+            toReturn += "<td align='center'>" + cp.getParcelaAtual().toString() + "</td>";
             toReturn += "<td align='center'>" + cp.getParcelaTotal().toString() + "</td>";
             toReturn += "<td align='center'>" + cp.getFormaPagamento().getFormaPagamento() + "</td>";
             toReturn += "<td align='center'>" + cp.getCartaoCreditoUnico() + "</td>";
