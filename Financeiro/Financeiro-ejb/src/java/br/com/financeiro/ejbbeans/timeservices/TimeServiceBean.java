@@ -68,7 +68,7 @@ public class TimeServiceBean implements TimeServiceLocal {
     static {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_MONTH, 1);//PRODUÇÃO
-        Logger.getLogger(TimeServiceBean.class.getName()).log(Level.WARNING, "******* ATENÇÃO ATENÇÃO ******   ALTERAR A O DIA PARA O PROXIMO DIA!");
+        //Logger.getLogger(TimeServiceBean.class.getName()).log(Level.WARNING, "******* ATENÇÃO ATENÇÃO ******   ALTERAR A O DIA PARA O PROXIMO DIA!");
         c.set(Calendar.HOUR_OF_DAY, 3);//PRODUÇÃO
         //c.add(Calendar.SECOND, 30);//TESTE
         horaExecucao = c.getTime();
