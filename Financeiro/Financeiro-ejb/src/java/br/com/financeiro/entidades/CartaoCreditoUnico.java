@@ -165,4 +165,11 @@ public class CartaoCreditoUnico implements Serializable, Comparable<CartaoCredit
         }
         return getLabelCartao().compareTo(o.getLabelCartao());
     }
+
+    @Override
+    public String toString() {
+        return this.getLabelCartao();
+    }
+    
+    
 }
