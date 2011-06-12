@@ -4,13 +4,14 @@
  */
 package br.com.financeiro.beansjsf.provisoes;
 
+import br.com.financeiro.auxjsf.charts.CartaoCreditoChart;
+import br.com.financeiro.auxjsf.charts.factoring.ChartStore;
 import br.com.financeiro.auxjsf.classes.AcumuladoHelper;
 import br.com.financeiro.auxjsf.classes.LinhasReportHelper;
 import br.com.financeiro.auxjsf.classes.TipoValor;
 import br.com.financeiro.auxjsf.classes.comparators.AcumuladoComparator;
 import br.com.financeiro.auxjsf.classes.interfaces.AcumuladoInterface;
 import br.com.financeiro.auxjsf.classes.interfaces.TipoValorInterface;
-import br.com.financeiro.auxjsf.jfreechart.ParetoJfreeChart;
 import br.com.financeiro.auxjsf.observadores.ControleObserver;
 import br.com.financeiro.beansjsf.LoginCT;
 import br.com.financeiro.ejbbeans.interfaces.CartaoCreditoLocal;
@@ -21,10 +22,6 @@ import br.com.financeiro.entidades.User;
 import br.com.financeiro.entidades.enums.FormaPagamento;
 import br.com.financeiro.entidades.enums.StatusPagamento;
 import br.com.financeiro.utils.UtilMetodos;
-import java.awt.Font;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -35,8 +32,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -44,32 +39,43 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
-import org.apache.commons.lang.StringUtils;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
 
 /**
  *
  * @author gbvbahia
  */
-public class CartaoCreditoFaces implements Observer{
+public class CartaoCreditoFaces implements Observer {
+
     @EJB
     private CartaoCreditoLocal cartaoCreditoBean;
 
     @EJB
     private RelatoriosLocal relatoriosBean;
+
     private Locale locale = new Locale("pt", "BR");
+
     private User proprietario;
+
     private int meses = 2;
+
     private Date dataReferencia = Calendar.getInstance().getTime();
+
     private DataModel cartaoDataModel;
+
     private LinhasReportHelper linhasReportHelper;
+
     private CartaoCreditoUnico cartaoCreditoUnico;
+
     private Date mesCartao;
+
     private double totalPagar;
+
     private double totalFatura;
+
     private DataModel dataModelContas;
+
     private Map<String, Double> mapPareto;
+
     {
         mapPareto = new LinkedHashMap<String, Double>();
         Calendar c = Calendar.getInstance();
@@ -89,7 +95,7 @@ public class CartaoCreditoFaces implements Observer{
         this.dataModelContas = null;
     }
 
-     public void atualizarListaContasCartaoCredito(ActionEvent event) {
+    public void atualizarListaContasCartaoCredito(ActionEvent event) {
         List<ContaPagar> toReturn = this.cartaoCreditoBean.buscarContasPorCartaoCredito(cartaoCreditoUnico, mesCartao);
         this.totalPagar = 0.0;
         this.totalFatura = 0.0;
@@ -104,18 +110,18 @@ public class CartaoCreditoFaces implements Observer{
         this.dataModelContas = new ListDataModel(toReturn);
     }
 
-    private void carregaMapPareto(List<ContaPagar> listContas){
-        for(ContaPagar cp : listContas){
-            if(mapPareto.containsKey(cp.getGrupoGasto().getGrupoGasto())){
+    private void carregaMapPareto(List<ContaPagar> listContas) {
+        for (ContaPagar cp : listContas) {
+            if (mapPareto.containsKey(cp.getGrupoGasto().getGrupoGasto())) {
                 double tmp = mapPareto.get(cp.getGrupoGasto().getGrupoGasto());
                 mapPareto.remove(cp.getGrupoGasto().getGrupoGasto());
                 mapPareto.put(cp.getGrupoGasto().getGrupoGasto(), cp.getContaValor() + tmp);
-            }else{
+            } else {
                 mapPareto.put(cp.getGrupoGasto().getGrupoGasto(), cp.getContaValor());
             }
         }
     }
-    
+
     public List<SelectItem> getCartoesCredito() {
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
         toReturn.add(new SelectItem("Selecione", "Selecione"));
@@ -123,6 +129,17 @@ public class CartaoCreditoFaces implements Observer{
             toReturn.add(new SelectItem(cc, cc.getLabelCartao()));
         }
         return toReturn;
+    }
+
+    public String getPareto() {
+        ChartStore cs = new CartaoCreditoChart(FacesContext.getCurrentInstance(), proprietario, locale);
+        return cs.getCaminhoChar(new Object[]{mapPareto, mesCartao});
+    }
+
+    public void update(Observable o, Object arg) {
+        mapPareto = new LinkedHashMap<String, Double>();
+        atualizaValoresCartao(null);
+        atualizarListaContasCartaoCredito(null);
     }
 
     private DataModel geraCartoes() {
@@ -135,14 +152,15 @@ public class CartaoCreditoFaces implements Observer{
         }
         Collections.sort(toDataModel, new AcumuladoComparator());
         List<List<TipoValorInterface>> listAll = new ArrayList<List<TipoValorInterface>>();
-        
+
         //VERIFICA QUAL A QUANTIDADE MAIOR DE CARTÕES EM UM MES E GARANTE A ORDEM INSERINDO CARTÕES VAZIOS
         //ONDE A QUANTIDADE É MENOR
         int mes = 0;
         int totalMes = 0;
         for (AcumuladoInterface acu : toDataModel) {
-            if(totalMes < acu.getTipoValorInterface().size())
+            if (totalMes < acu.getTipoValorInterface().size()) {
                 totalMes = acu.getTipoValorInterface().size();
+            }
         }
         for (AcumuladoInterface acu : toDataModel) {
             for (int g = 0; g < totalMes; g++) {
@@ -279,65 +297,4 @@ public class CartaoCreditoFaces implements Observer{
     public void setDataModelContas(DataModel dataModelContas) {
         this.dataModelContas = dataModelContas;
     }
-
-    public String getPareto(){
-        FacesContext fc = FacesContext.getCurrentInstance();
-        ParetoJfreeChart pareto = new ParetoJfreeChart();
-        SimpleDateFormat sd = new SimpleDateFormat("MMMM", locale);
-        JFreeChart grafico = pareto.getParetoChart(
-                UtilMetodos.getResourceBundle("tituloParetoCC", fc).replace("*", "(" + sd.format(mesCartao) +")"),
-                UtilMetodos.getResourceBundle("paretoCCLegendaHorizontal", fc),
-                UtilMetodos.getResourceBundle("paretoCCLegendaVertical", fc),
-                UtilMetodos.getResourceBundle("paretoCClegendaHorizontalPercentual", fc),
-                UtilMetodos.getResourceBundle("paretoCClegendaVerticalPercentual", fc),
-                mapPareto, null);
-        //mapPareto = new LinkedHashMap<String, Double>();
-        ((JFreeChart) grafico).getTitle().setFont(new Font("Arial", Font.BOLD, 17));
-        ((JFreeChart) grafico).getTitle().setPaint(new java.awt.Color(102, 124, 75));//#999999
-         String fileName = System.currentTimeMillis() + "";
-        File file = new File(getCaminhoLogo(fileName));
-        try {
-            ChartUtilities.saveChartAsPNG(file, grafico, 1050, 320);
-        } catch (IOException ex) {
-            Logger.getLogger(AcumuladoFaces.class.getName()).log(Level.SEVERE, "Problema na rederização do gráfico!", ex);
-        }
-        deletaFiles(this.proprietario.getId() + "_" + fileName + ".png");
-        return "/temp/" + this.proprietario.getId() + "_" + fileName + ".png";
-    }
-
-
-
-       private void deletaFiles(String excecaoNome) {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        File file = new File(session.getServletContext().getRealPath("temp"));
-        File[] files = file.listFiles();
-        for (File f : files) {
-            Calendar c = Calendar.getInstance();
-            Calendar ff = Calendar.getInstance();
-            ff.setTime(new Date(f.lastModified()));
-            int diaH = c.get(Calendar.DAY_OF_MONTH);
-            int diaF = ff.get(Calendar.DAY_OF_MONTH);
-            if (StringUtils.substringBefore(f.getName(), "_").equals(StringUtils.substringBefore(excecaoNome, "_"))
-                    && !StringUtils.substringAfter(f.getName(), "_").equals(StringUtils.substringAfter(excecaoNome, "_"))
-                    && diaH != diaF) {
-                f.delete();
-            }
-        }
-    }
-
-    private String getCaminhoLogo(String nome) {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        String caminho = session.getServletContext().getRealPath("temp");
-        File temp = new File(caminho);
-        temp.mkdir();
-        //Logger.getLogger(AcumuladoFaces.class.getName()).log(Level.INFO, caminho + File.separator + this.proprietario.getId() + ".png");
-        return caminho + File.separator + this.proprietario.getId() + "_" + nome + ".png";
-    }
-
-    public void update(Observable o, Object arg) {
-        mapPareto = new LinkedHashMap<String, Double>();
-        atualizaValoresCartao(null);
-        atualizarListaContasCartaoCredito(null);
-    }
-
 }
