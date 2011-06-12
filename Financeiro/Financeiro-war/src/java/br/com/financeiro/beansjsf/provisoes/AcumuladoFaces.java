@@ -4,6 +4,8 @@
  */
 package br.com.financeiro.beansjsf.provisoes;
 
+import br.com.financeiro.auxjsf.charts.AcumuladoChart;
+import br.com.financeiro.auxjsf.charts.factoring.ChartStore;
 import br.com.financeiro.auxjsf.classes.AcumuladoHelper;
 import br.com.financeiro.auxjsf.classes.LinhasReportHelper;
 import br.com.financeiro.auxjsf.classes.TipoValor;
@@ -14,34 +16,19 @@ import br.com.financeiro.beansjsf.LoginCT;
 import br.com.financeiro.ejbbeans.interfaces.RelatoriosLocal;
 import br.com.financeiro.entidades.User;
 import br.com.financeiro.utils.UtilMetodos;
-import java.awt.Color;
-import java.awt.Font;
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.servlet.http.HttpSession;
-import org.apache.commons.lang.StringUtils;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -51,11 +38,17 @@ public class AcumuladoFaces {
 
     @EJB
     private RelatoriosLocal relatoriosBean;
+
     private Locale locale = new Locale("pt", "BR");
+
     private User proprietario;
+
     private Date dataReferencia = Calendar.getInstance().getTime();
+
     private int meses = 2;
+
     private DataModel acumuladoHelperDataModel;
+
     private LinhasReportHelper linhasReportHelper;
 
     private void clean() {
@@ -145,66 +138,9 @@ public class AcumuladoFaces {
         return this.acumuladoHelperDataModel;
     }
 
-
-
     public String getGraficoAcumulado() throws ParseException {
-        List<AcumuladoInterface> acumulados = (List<AcumuladoInterface>) getAcumuladoHelperDataModel().getWrappedData();
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        SimpleDateFormat sd = new SimpleDateFormat("MMM'/'yyyy", this.locale);
-        for (AcumuladoInterface ai : acumulados) {
-            for (TipoValorInterface tv : ai.getTipoValorInterface()) {
-                dataset.addValue(tv.getValor(), tv.getTipo(), sd.format(ai.getMesAno()));
-            }
-        }
-        JFreeChart grafico = ChartFactory.createBarChart(
-                UtilMetodos.getResourceBundle("realizadoXprovisionado", FacesContext.getCurrentInstance()),
-                UtilMetodos.getResourceBundle("periodo", FacesContext.getCurrentInstance()),
-                UtilMetodos.getResourceBundle("emReais", FacesContext.getCurrentInstance()),
-                dataset, PlotOrientation.VERTICAL, true, false, false);
-        CategoryPlot plot = grafico.getCategoryPlot();
-        plot.setBackgroundPaint(Color.LIGHT_GRAY);
-        plot.setDomainGridlinePaint(Color.BLUE);
-        CategoryItemRenderer renderer = plot.getRenderer();
-        renderer.setSeriesPaint(0, Color.GREEN);
-        renderer.setSeriesPaint(1, Color.RED);
-        ((JFreeChart) grafico).getTitle().setFont(new Font("Arial", Font.BOLD, 17));
-        ((JFreeChart) grafico).getTitle().setPaint(new java.awt.Color(102, 124, 75));
-        String fileName = System.currentTimeMillis() + "";
-        File file = new File(getCaminhoLogo(fileName));
-        try {
-            ChartUtilities.saveChartAsPNG(file, grafico, 1050, 320);
-        } catch (IOException ex) {
-            Logger.getLogger(AcumuladoFaces.class.getName()).log(Level.SEVERE, "Problema na rederização do gráfico!", ex);
-        }
-        deletaFiles(this.proprietario.getId() + "_" + fileName + ".png");
-        return "/temp/" + this.proprietario.getId() + "_" + fileName + ".png";
-    }
-
-    private void deletaFiles(String excecaoNome) {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        File file = new File(session.getServletContext().getRealPath("temp"));
-        File[] files = file.listFiles();
-        for (File f : files) {
-            Calendar c = Calendar.getInstance();
-            Calendar ff = Calendar.getInstance();
-            ff.setTime(new Date(f.lastModified()));
-            int diaH = c.get(Calendar.DAY_OF_MONTH);
-            int diaF = ff.get(Calendar.DAY_OF_MONTH);
-            if (StringUtils.substringBefore(f.getName(), "_").equals(StringUtils.substringBefore(excecaoNome, "_"))
-                    && !StringUtils.substringAfter(f.getName(), "_").equals(StringUtils.substringAfter(excecaoNome, "_"))
-                    && diaH != diaF) {
-                f.delete();
-            }
-        }
-    }
-
-    private String getCaminhoLogo(String nome) {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        String caminho = session.getServletContext().getRealPath("temp");
-        File temp = new File(caminho);
-        temp.mkdir();
-        //Logger.getLogger(AcumuladoFaces.class.getName()).log(Level.INFO, caminho + File.separator + this.proprietario.getId() + ".png");
-        return caminho + File.separator + this.proprietario.getId() + "_" + nome + ".png";
+        ChartStore cs = new AcumuladoChart(FacesContext.getCurrentInstance(), proprietario, locale);
+        return cs.getCaminhoChar(new Object[]{this.acumuladoHelperDataModel.getWrappedData()});
     }
 
     public LinhasReportHelper getLinhasReportHelper() {
