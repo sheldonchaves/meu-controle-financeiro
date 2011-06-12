@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.financeiro.auxjsf.charts.factoring;
+package br.com.financeiro.auxjsf.charts.store;
 
 import br.com.financeiro.entidades.User;
 import java.io.File;

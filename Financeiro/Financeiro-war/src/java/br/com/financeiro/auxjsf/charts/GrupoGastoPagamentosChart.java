@@ -4,7 +4,7 @@
  */
 package br.com.financeiro.auxjsf.charts;
 
-import br.com.financeiro.auxjsf.charts.factoring.ChartStore;
+import br.com.financeiro.auxjsf.charts.store.ChartStore;
 
 import br.com.financeiro.beansjsf.provisoes.AcumuladoFaces;
 

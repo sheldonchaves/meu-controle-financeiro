@@ -5,7 +5,7 @@
 package br.com.financeiro.beansjsf.provisoes;
 
 import br.com.financeiro.auxjsf.charts.GrupoGastoPagamentosChart;
-import br.com.financeiro.auxjsf.charts.factoring.ChartStore;
+import br.com.financeiro.auxjsf.charts.store.ChartStore;
 import br.com.financeiro.auxjsf.classes.AcumuladoHelper;
 import br.com.financeiro.auxjsf.classes.LinhasReportHelper;
 import br.com.financeiro.auxjsf.classes.TipoValor;

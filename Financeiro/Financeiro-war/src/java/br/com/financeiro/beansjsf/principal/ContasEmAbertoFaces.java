@@ -5,7 +5,7 @@
 package br.com.financeiro.beansjsf.principal;
 
 import br.com.financeiro.auxjsf.charts.ContasEmAbertoChart;
-import br.com.financeiro.auxjsf.charts.factoring.ChartStore;
+import br.com.financeiro.auxjsf.charts.store.ChartStore;
 import br.com.financeiro.beansjsf.LoginCT;
 import br.com.financeiro.auxjsf.observadores.ControleObserver;
 import br.com.financeiro.beansjsf.cadastro.contas.PagamentoContaFaces;
