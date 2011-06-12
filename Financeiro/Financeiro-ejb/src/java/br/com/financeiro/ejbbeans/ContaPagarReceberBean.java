@@ -153,7 +153,7 @@ public class ContaPagarReceberBean implements ContaPagarReceberLocal {
 
     @Override
     public List<ContaPagar> buscarContasPagarObservacao(String observacao, Date inicial, User user) {
-        Query q = em.createQuery(getObsQuery(false).replace("*", observacao));
+        Query q = em.createQuery(getObsQuery(user.getConjugeUser() == null ? false : true).replace("*", observacao));
         q.setParameter("dataI", inicial, TemporalType.DATE);
         q.setParameter("user", user);
         if (user.getConjugeUser() != null) {
