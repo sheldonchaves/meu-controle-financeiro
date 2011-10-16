@@ -43,9 +43,24 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center">
-                    <ui:insert name="centerPos">
-                            <h:inputText value="Helo" required="true" requiredMessage="Campo Obrigatório" label="Campo"/>
-                    </ui:insert>
+                    <h:panelGroup id="conteudoCentralSuperiorGroup">
+                        <TABLE  width="100%">
+                            <TD align="left" valign="top" style="width: 200px;">
+                            <ui:insert name="menuCenterPos">
+                                <h:form id="formMenu">
+                                    <p:menu style="width:190px;"  type="sliding" backLabel="#{msg.voltar}">
+                                        <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
+                                    </p:menu>
+                                </h:form>
+                            </ui:insert>
+                            </TD>
+                            <TD align="left" valign="top">
+                            <ui:insert name="conteudoCenterPos">
+                                <ui:include src="../cadastro/DetalheMovimentacao.xhtml"/>
+                            </ui:insert>
+                            </TD>
+                        </TABLE>
+                    </h:panelGroup>
                 </p:layoutUnit>
 
             </p:layout>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui:composition template="../templates/tempprincipal.xhtml"
-                xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.prime.com.tr/ui">
-    <ui:define name="centerPos">
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                >
+    <f:subview id="cadastroCertificacaoEmbutido" rendered="#{fluxoCadastro.exibirCadastroDetalheMovimentacao}">
         <h:panelGroup id="cadDetalheGroup">
             <h:form id="formDetalheMovimentacao">
 
@@ -36,16 +36,13 @@
                         </p:commandButton>
                         <p:spacer height="3" width="10"/>
                         <p:commandButton value="#{msg.novo}" image="ui-icon ui-icon-refresh" actionListener="#{detalheMovimentacao.clean()}" 
-                                         immediate="true" update="messages,formDetalheMovimentacao">
+                                         immediate="true" update="messages,formDetalheMovimentacao,conteudoCentralSuperiorGroup">
                         </p:commandButton>
                     </h:panelGroup>
                 </h:panelGrid>
 
             </h:form>
         </h:panelGroup>
-    </ui:define>
-
-
-
+    </f:subview>
 </ui:composition>
 
