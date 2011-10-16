@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0">
+
+    <named-query name="DetalheUsuarioBean.buscarDetalheUsuarioPorDetalheMovimentacaoUsuario">
+        <query>
+			Select distinct du From DetalheUsuario du
+                        Where du.usuario = :usuario
+                        AND du.detalheMovimentacao = :detalheMovimentacao
+        </query>
+    </named-query>
+    
+    <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuario">
+        <query>
+			Select distinct du.detalheMovimentacao From DetalheUsuario du
+                        Where du.usuario = :usuario
+        </query>
+    </named-query>
+    
+    <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoNaoUtilizadaPorUsuario">
+        <query>
+			Select distinct dm From DetalheMovimentacao dm
+                        Where dm not in(
+                        Select distinct du.detalheMovimentacao From DetalheUsuario du
+                        Where du.usuario = :usuario
+                        )
+        </query>
+    </named-query>
+    
+        
+    <named-query name="DetalheUsuarioBean.apagarTodosDetalheUsuarioPorUsuario">
+        <query>
+			Delete From DetalheUsuario du
+                        Where du.usuario = :usuario
+                        
+        </query>
+    </named-query>
+    
+    <named-query name="DetalheUsuarioBean.criarVinculoPadraoDetalheMovimentacaoComUsuario">
+        <query>
+			Select distinct dm From DetalheMovimentacao dm
+                        Where dm.geral = :geral
+                        
+        </query>
+    </named-query>
+    
+        <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorDetalhe">
+        <query>
+			Select distinct dm From DetalheMovimentacao dm
+                        Where dm.detalhe = :detalhe
+                        
+        </query>
+    </named-query>
+    
+</entity-mappings>
