@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="../templates/tempprincipal.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.prime.com.tr/ui">
+    <ui:define name="centerPos">
+        <h:panelGroup id="cadDetalheGroup">
+            <h:form id="formDetalheMovimentacao">
+
+                <h:panelGrid columns="3">
+
+                    <h:outputLabel value="#{msg.detalhe}:"/>
+                    <p:inputText value="#{detalheMovimentacao.detalheMovimentacao.detalhe}" label="#{msg.detalhe}" id="detalheMovimentacao"
+                                 required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="255" binding="#{detalheMovimentacao.input}"
+                                 size="40">
+                        <f:validateLength maximum="255"/>
+                    </p:inputText>
+                    <p:message for="detalheMovimentacao"/>
+
+
+                    <h:outputLabel value="#{msg.status}:"/>
+                    <p:selectBooleanCheckbox value="#{detalheMovimentacao.detalheMovimentacao.status}" id="statusMovimentacao"/>
+                    <p:message for="statusMovimentacao"/>
+
+
+                    <h:outputLabel value="#{msg.geral}:"/>
+                    <p:selectBooleanCheckbox value="#{detalheMovimentacao.detalheMovimentacao.geral}" id="geralMovimentacao"/>
+                    <p:message for="geralMovimentacao"/>
+
+                    <h:outputLabel value=""/>
+                    <h:panelGroup>
+                        <p:commandButton value="#{msg.salvar}" image="ui-icon ui-icon-disk" actionListener="#{detalheMovimentacao.salvarDetalheMovimentacao()}"
+                                         update="messages,formDetalheMovimentacao">
+                        </p:commandButton>
+                        <p:spacer height="3" width="10"/>
+                        <p:commandButton value="#{msg.novo}" image="ui-icon ui-icon-refresh" actionListener="#{detalheMovimentacao.clean()}" 
+                                         immediate="true" update="messages,formDetalheMovimentacao">
+                        </p:commandButton>
+                    </h:panelGroup>
+                </h:panelGrid>
+
+            </h:form>
+        </h:panelGroup>
+    </ui:define>
+
+
+
+</ui:composition>
+

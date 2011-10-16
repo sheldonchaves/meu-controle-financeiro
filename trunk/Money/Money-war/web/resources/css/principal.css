@@ -1,0 +1,36 @@
+/*
+    Document   : global
+    Created on : 07/03/2010, 19:58:32
+    Author     : Guilherme
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+body{
+    font-size: xx-small;
+}
+
+root {
+    display: block;
+}
+
+a{
+    color: inactiveborder;
+}
+
+.ui-growl {
+left:120px;
+top: 10px;
+}
+
+form{
+    font-size: xx-small;
+}
+table{
+    font-size: xx-small;
+}

@@ -1,0 +1,12 @@
+
+.menuExemplo {
+    background: url('/saber/resources/img/loginLock_16.png') no-repeat;
+    height:16px;
+    width:16px;
+    padding-right: 2px;
+}
+
+.gearAdd{
+    background-image: url('/money/resources/img/edit_add.png') !important;
+}
+

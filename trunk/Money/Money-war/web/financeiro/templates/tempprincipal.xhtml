@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <f:view>
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html" />
+            <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/img/favicon.ico" type="image/x-icon" />
+            <link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/resources/css/principal.css" />
+            <link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/resources/css/iconmenu.css" />
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/js.js" />
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/shBrushJava.js" />
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/shCore.js" />
+            <title>
+                <ui:insert name="pageTitle">
+                    <h:outputText value="#{msg.loginTitleTemplate}"/>
+                </ui:insert>
+            </title>
+        </h:head>
+
+        <h:body>
+
+            <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="1500"/> 
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="false">
+                    <ui:insert name="topPos">
+                        <h:outputText value="Top unit content." />
+                    </ui:insert>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="150" header="#{msg.movimentacoes}" resizable="false" closable="false" collapsible="false">
+                    <ui:insert name="southPos">
+                        <h:outputText value="South unit content." />
+                    </ui:insert>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="200" header="#{msg.contas}" resizable="true" closable="false" collapsible="true">
+                    <ui:insert name="westPos">
+                        <h:outputText value="West unit content." />
+                    </ui:insert>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <ui:insert name="centerPos">
+                            <h:inputText value="Helo" required="true" requiredMessage="Campo Obrigatório" label="Campo"/>
+                    </ui:insert>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+    </f:view>
+</html>
