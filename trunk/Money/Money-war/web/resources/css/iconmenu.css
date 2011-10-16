@@ -1,9 +1,9 @@
 
-.menuExemplo {
-    background: url('/saber/resources/img/loginLock_16.png') no-repeat;
-    height:16px;
-    width:16px;
-    padding-right: 2px;
+.info {
+    background: url('/money/resources/img/I_24.png') no-repeat;
+    height:24px !important;
+    width:24px !important;
+    margin-top: -4px !important;
 }
 
 .gearAdd{
