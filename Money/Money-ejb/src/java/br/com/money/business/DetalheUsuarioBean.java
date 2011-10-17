@@ -68,11 +68,13 @@ public class DetalheUsuarioBean implements DetalheUsuarioBeanLocal {
     public List<DetalheMovimentacao> buscarDetalheMovimentacaoNaoUtilizadaPorUsuario(Usuario usuario) {
         Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoNaoUtilizadaPorUsuario");
         q.setParameter("usuario", usuario);
+
         return q.getResultList();
     }
 
     /**
      * Busca DetalheMovimentacao pelo atributo detalhe passado como parâmetro.
+     * Utilizado na VALIDAÇÃO NÃO INSERIR FILTROS
      * @param detalhe
      * @return DetalheMovimentacao ou nulo se não encontrar.
      */
@@ -130,10 +132,12 @@ public class DetalheUsuarioBean implements DetalheUsuarioBeanLocal {
     }
 
     @Override
-    public void salvarDetalheMovimentacao(DetalheMovimentacao detalheMovimentacao) throws ValidacaoException {
+    public void salvarDetalheMovimentacao(DetalheMovimentacao detalheMovimentacao, Usuario usuairo) throws ValidacaoException {
         detalheMobvimentacaoValidador.validar(detalheMovimentacao, this, null);
         if (detalheMovimentacao.getId() == null) {
             manager.persist(detalheMovimentacao);
+            manager.flush();
+            salvarDetalheUsuario(new DetalheUsuario(detalheMovimentacao, usuairo));
         } else {
             manager.merge(detalheMovimentacao);
         }

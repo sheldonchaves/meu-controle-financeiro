@@ -12,30 +12,29 @@ import javax.persistence.*;
  * @author gbvbahia
  */
 @Entity
-@Table(name="money_detalhe_movimentacao")
-public class DetalheMovimentacao implements ValidadoInterface {
+@Table(name = "money_detalhe_movimentacao")
+public class DetalheMovimentacao implements ValidadoInterface, Comparable<DetalheMovimentacao> {
+
     private static final long serialVersionUID = 1L;
+
     public static final int QUANTIDADE_CARACTERES_DETALHE = 255;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id",nullable=false,unique=true)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name="ds_detalhe", length=QUANTIDADE_CARACTERES_DETALHE, unique=true, nullable=false)
+    @Column(name = "ds_detalhe", length = QUANTIDADE_CARACTERES_DETALHE, unique = true, nullable = false)
     private String detalhe;
 
-    @Column(name="fl_status", nullable=false)
-    private boolean status = true;
-    
     /**
      * Define se o detalhe é para todos os usuários<br>
      * Se true será utilizado por todos.<br>
      * Se false será somente para quem habilitar.
      */
-    @Column(name="fl_geral", nullable=false)
+    @Column(name = "fl_geral", nullable = false)
     private boolean geral = false;
-    
+
     public Long getId() {
         return id;
     }
@@ -58,14 +57,6 @@ public class DetalheMovimentacao implements ValidadoInterface {
 
     public void setGeral(boolean geral) {
         this.geral = geral;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     @Override
@@ -95,6 +86,18 @@ public class DetalheMovimentacao implements ValidadoInterface {
 
     @Override
     public String toString() {
-        return "DetalheMovimentacao{" + "id=" + id + ", detalhe=" + detalhe + ", status=" + status + ", geral=" + geral + '}';
+        return "DetalheMovimentacao{" + "id=" + id + ", detalhe=" + detalhe + ", geral=" + geral + '}';
+    }
+
+    @Override
+    public int compareTo(DetalheMovimentacao o) {
+        int i = 0;
+        if (i == 0) {
+            i = this.detalhe.compareTo(o.detalhe);
+        }
+        if (i == 0) {
+            i = this.id.compareTo(o.id);
+        }
+        return i;
     }
 }
