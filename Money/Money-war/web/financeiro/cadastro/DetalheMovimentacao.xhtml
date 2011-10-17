@@ -6,43 +6,71 @@
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 >
     <f:subview id="cadastroCertificacaoEmbutido" rendered="#{fluxoCadastro.exibirCadastroDetalheMovimentacao}">
-        <h:panelGroup id="cadDetalheGroup">
-            <h:form id="formDetalheMovimentacao">
+        <TABLE>
+            <TD align="left" valign="top" style="width: 200px;">
+            <h:panelGroup id="cadDetalheGroup">
+                <h:form id="formDetalheMovimentacao">
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="#{msg.detalhe}:"/>
+                        <p:inputText value="#{detalheMovimentacao.detalheMovimentacao.detalhe}" label="#{msg.detalhe}" id="detalheMovimentacao"
+                                     required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="255" binding="#{detalheMovimentacao.input}"
+                                     size="40">
+                            <f:validateLength maximum="255"/>
+                        </p:inputText>
+                        <p:message for="detalheMovimentacao"/>
 
-                <h:panelGrid columns="3">
+                        <h:outputLabel value="#{msg.geral}:" rendered="${sessionScope['ADMIN'] != null }"/>
+                        <p:selectBooleanCheckbox value="#{detalheMovimentacao.detalheMovimentacao.geral}" id="geralMovimentacao"
+                                                 rendered="${sessionScope['ADMIN'] != null }"/>
+                        <p:message for="geralMovimentacao" rendered="${sessionScope['ADMIN'] != null }"/>
 
-                    <h:outputLabel value="#{msg.detalhe}:"/>
-                    <p:inputText value="#{detalheMovimentacao.detalheMovimentacao.detalhe}" label="#{msg.detalhe}" id="detalheMovimentacao"
-                                 required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="255" binding="#{detalheMovimentacao.input}"
-                                 size="40">
-                        <f:validateLength maximum="255"/>
-                    </p:inputText>
-                    <p:message for="detalheMovimentacao"/>
+                        <h:outputLabel value=""/>
+                        <h:panelGroup>
+                            <p:commandButton value="#{msg.salvar}" image="ui-icon ui-icon-disk" actionListener="#{detalheMovimentacao.salvarDetalheMovimentacao()}"
+                                             update="messages,conteudoCentralSuperiorGroup">
+                            </p:commandButton>
+                            <p:spacer height="3" width="10"/>
+                            <p:commandButton value="#{msg.novo}" image="ui-icon ui-icon-refresh" actionListener="#{detalheMovimentacao.clean()}" 
+                                             immediate="true" update="messages,conteudoCentralSuperiorGroup">
+                            </p:commandButton>
+                        </h:panelGroup>
+                    </h:panelGrid>
 
+                </h:form>
+            </h:panelGroup>
+            </TD>
+            
+            <TD align="left" valign="top" style="width: 100px;">
+            <h:panelGroup id="cadDetalheTableGroup">
+                <h:form id="formDetalheMovimentacaoTable">
+                    <p:dataTable value="#{detalheMovimentacao.detalhes}" var="detalhe" 
+                                 id="tableCertificacao" rows="3" paginator="true" 
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                 {NextPageLink} {LastPageLink}" 
+                                 emptyMessage="#{msg.semRegistrosEcontrados}">
+                       
+                        <p:column id="col1" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.detalhe}"/>
+                            </f:facet>
+                            <h:outputText value="#{detalhe.detalhe}"/>
+                        </p:column>
 
-                    <h:outputLabel value="#{msg.status}:"/>
-                    <p:selectBooleanCheckbox value="#{detalheMovimentacao.detalheMovimentacao.status}" id="statusMovimentacao"/>
-                    <p:message for="statusMovimentacao"/>
-
-
-                    <h:outputLabel value="#{msg.geral}:"/>
-                    <p:selectBooleanCheckbox value="#{detalheMovimentacao.detalheMovimentacao.geral}" id="geralMovimentacao"/>
-                    <p:message for="geralMovimentacao"/>
-
-                    <h:outputLabel value=""/>
-                    <h:panelGroup>
-                        <p:commandButton value="#{msg.salvar}" image="ui-icon ui-icon-disk" actionListener="#{detalheMovimentacao.salvarDetalheMovimentacao()}"
-                                         update="messages,formDetalheMovimentacao">
-                        </p:commandButton>
-                        <p:spacer height="3" width="10"/>
-                        <p:commandButton value="#{msg.novo}" image="ui-icon ui-icon-refresh" actionListener="#{detalheMovimentacao.clean()}" 
-                                         immediate="true" update="messages,formDetalheMovimentacao,conteudoCentralSuperiorGroup">
-                        </p:commandButton>
-                    </h:panelGroup>
-                </h:panelGrid>
-
-            </h:form>
-        </h:panelGroup>
+                        <p:column id="col2" styleClass="center" style="width: 20px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.editar}"/>
+                            </f:facet>
+                            <p:commandLink update="conteudoCentralSuperiorGroup" 
+                                           id="buttonBlock" styleClass="ui-button_link">
+                                <h:graphicImage library="img" name="I_edit_24.png" rendered="#{!detalhe.geral || sessionScope['ADMIN'] != null}"/>
+                                <f:setPropertyActionListener value="#{detalhe}" target="#{detalheMovimentacao.detalheMovimentacao}" />  
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </h:panelGroup>
+            </TD>
+        </TABLE>
     </f:subview>
 </ui:composition>
 
