@@ -9,7 +9,10 @@ import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.DetalheUsuarioBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.DetalheMovimentacao;
+import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -29,7 +32,7 @@ import org.apache.commons.lang.StringUtils;
  */
 @ManagedBean(name = "detalheMovimentacao")
 @ViewScoped
-public class DetalheMovimentacaoManager implements InterfaceManager {
+public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
 
     @EJB
     private DetalheUsuarioBeanLocal detalheUsuarioBean;
@@ -39,7 +42,6 @@ public class DetalheMovimentacaoManager implements InterfaceManager {
 
     //@ManagedProperty("#{selectItemManager}")
     //private SelectItemManager selectItemManager;
-
     private HtmlInputText input;
 
     private DetalheMovimentacao detalheMovimentacao;
@@ -57,18 +59,30 @@ public class DetalheMovimentacaoManager implements InterfaceManager {
     @Override
     public void init() {
         detalheMovimentacao = new DetalheMovimentacao();
+        ControleObserver.addBeanObserver(loginManager.getUsuario(), this);
         Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "DetalheMovimentacaoManager.init() executado!");
     }
 
     @PreDestroy
     @Override
     public void end() {
+        ControleObserver.removeBeanObserver(loginManager.getUsuario(), this);
         Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "DetalheMovimentacaoManager.end() executado!");
     }
 
     //====================
     //Métodos de Negócio
     //====================
+    @Override
+    public void update(Observable o, Object arg) {
+        int[] args = (int[]) arg;
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] == ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO) {
+                atualizarModel();
+            }
+        }
+    }
+
     public void clean() {
         this.detalheMovimentacao = new DetalheMovimentacao();
         this.input.setSubmittedValue("");
@@ -76,10 +90,14 @@ public class DetalheMovimentacaoManager implements InterfaceManager {
 
     public void salvarDetalheMovimentacao() {
         try {
-            detalheUsuarioBean.salvarDetalheMovimentacao(detalheMovimentacao);
-            clean();
+            detalheUsuarioBean.salvarDetalheMovimentacao(detalheMovimentacao, loginManager.getUsuario());
             UtilMetodos.messageFactoringFull("detalheMovimentacaoCadastradoOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-            ControleObserver.notificaObservers(null, ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
+            if (detalheMovimentacao.isGeral()) {
+                ControleObserver.notificaObservers(null, ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
+            } else {
+                ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
+            }
+            clean();
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
                 UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
@@ -87,6 +105,11 @@ public class DetalheMovimentacaoManager implements InterfaceManager {
                 UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
             }
         }
+    }
+
+    private void atualizarModel() {
+        this.detalhes = this.detalheUsuarioBean.buscarDetalheMovimentacaoPorUsuario(this.loginManager.getUsuario());
+        Collections.sort(detalhes);
     }
 
     //====================
@@ -115,6 +138,7 @@ public class DetalheMovimentacaoManager implements InterfaceManager {
     }
 
     public List<DetalheMovimentacao> getDetalhes() {
+        if(this.detalhes == null) atualizarModel();
         return detalhes;
     }
 

@@ -4,8 +4,8 @@
     <Scope Scope="Project">
         <Node id="index.html" x="400" y="150" zoom="true"/>
         <Node id="templogin.xhtml" x="150" y="300" zoom="true"/>
-        <Node id="index.xhtml" x="150" y="150" zoom="true"/>
         <Node id="financeiro/templates/tempprincipal.xhtml" x="611" y="199" zoom="true"/>
+        <Node id="index.xhtml" x="150" y="150" zoom="true"/>
         <Node id="financeiro/templates/tempstatus.xhtml" x="610" y="261" zoom="true"/>
         <Node id="financeiro/cadastro/DetalheMovimentacao.xhtml" x="645" y="65" zoom="true"/>
         <Node id="financeiro/principal.xhtml" x="650" y="150" zoom="true"/>
