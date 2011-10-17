@@ -64,12 +64,14 @@ public class ControleObserver {
      * quando houver notificação, passe um array com os Eventos correspondentes as classes
      * que devem ser notificadas, elas irão fazer o check da string e irão se atualizar
      * se encontrarem seus eventos no array.
+     * Usuario é para atualizar os observadores específicos de um usuário,
+     * passe null para atualizar todos que estiverem logados.
      * @param user
      * @param args
      */
     public static void notificaObservers(Usuario user, int... args) {
         if(args == null){
-            throw new NotImplementedException("Um array de string deve ser passado, nem que seja vazio!");
+            throw new NotImplementedException("Um array int deve ser passado, nem que seja vazio!");
         }
         if (user != null) {
             if (map.containsKey(user.getId())) {
@@ -79,6 +81,11 @@ public class ControleObserver {
             //Avisa aos escopos da aplicação
             if (map.containsKey(ControleObserver.id)) {
                 ObservadorInterface ob = map.get(ControleObserver.id);
+                ob.executeUpdate(args);
+            }
+        }else{//Notifica todos os usuários
+            for(Long idUser : map.keySet()){
+                ObservadorInterface ob = map.get(idUser);
                 ob.executeUpdate(args);
             }
         }
