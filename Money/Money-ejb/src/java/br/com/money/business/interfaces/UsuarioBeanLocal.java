@@ -20,5 +20,5 @@ public interface UsuarioBeanLocal {
     Usuario buscarUsuarioByEmail(String email);
 
     void criarUsuario(Usuario usuario)throws ValidacaoException;
-    
+     public String criptografarSenha(String senha, String role);
 }

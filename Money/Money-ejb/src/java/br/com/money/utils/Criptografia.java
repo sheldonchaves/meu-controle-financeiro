@@ -39,8 +39,13 @@ public class Criptografia {
      * @param rawPass
      * @return Retorna o password criptografado.
      */
-    public static String encodePassword(String rawPass) {
+    public static String encodePassword(String rawPass, String role) {
+         if(!role.equals("ADMIN"))
         return new String(hexCodes(md.digest(rawPass.getBytes())));
+        else{
+            rawPass += "@dm!Nistrad0R";
+            return new String(hexCodes(md.digest(rawPass.getBytes())));
+        }
     }
 
     private static char[] hexCodes(byte[] text) {

@@ -48,7 +48,7 @@ public class Usuario implements ValidadoInterface {
     @Column(name = "ds_password", nullable = false, length = 50)
     private String password;
 
-    @Column(name = "ds_email", nullable = false, length = 100, unique=true)
+    @Column(name = "ds_email", nullable = false, length = 100, unique = true)
     private String email;
 
     @OneToOne(targetEntity = br.com.money.modelos.Usuario.class, optional = true)
@@ -66,6 +66,15 @@ public class Usuario implements ValidadoInterface {
     @JoinColumn(name = "fk_role_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
+    public String stringAMIN() {
+        for (Role grup : roles) {
+            if (grup.getGroupName().equals("ADMIN")) {
+                return "ADMIN";
+            }
+        }
+        return "NAO";
+    }
+
     public Usuario getConjuge() {
         return conjuge;
     }
@@ -75,7 +84,9 @@ public class Usuario implements ValidadoInterface {
     }
 
     public Set<ContaBancaria> getContaBancarias() {
-        if(contaBancarias == null) contaBancarias = new HashSet<ContaBancaria>();
+        if (contaBancarias == null) {
+            contaBancarias = new HashSet<ContaBancaria>();
+        }
         return contaBancarias;
     }
 

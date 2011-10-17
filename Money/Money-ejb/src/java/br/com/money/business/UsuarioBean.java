@@ -28,22 +28,23 @@ import org.apache.commons.lang.StringUtils;
  */
 @Stateless
 public class UsuarioBean implements UsuarioBeanLocal {
+
     @EJB
     private EmailSendLocal emailSendBean;
-    
-    @EJB(beanName="usuarioValidador")
+
+    @EJB(beanName = "usuarioValidador")
     private ValidadorInterface usuarioValidador;
 
-     @PersistenceContext(name="jdbc/money")
+    @PersistenceContext(name = "jdbc/money")
     private EntityManager manager;
-    
+
     @Override
     public Usuario buscarUsuarioByLogin(String login) {
         Query q = manager.createNamedQuery("UsuarioBean.buscarUsuarioByLogin");
         q.setParameter("login", login);
-        try{
-        return (Usuario) q.getSingleResult();
-        }catch(NoResultException e){
+        try {
+            return (Usuario) q.getSingleResult();
+        } catch (NoResultException e) {
             return null;
         }
     }
@@ -52,19 +53,19 @@ public class UsuarioBean implements UsuarioBeanLocal {
     public Usuario buscarUsuarioByEmail(String email) {
         Query q = manager.createNamedQuery("UsuarioBean.buscarUsuarioByEmail");
         q.setParameter("email", email);
-        try{
-        return (Usuario) q.getSingleResult();
-        }catch(NoResultException e){
+        try {
+            return (Usuario) q.getSingleResult();
+        } catch (NoResultException e) {
             return null;
         }
     }
 
     @Override
-    public void criarUsuario(Usuario usuario) throws ValidacaoException{
-         String newPass = null;
+    public void criarUsuario(Usuario usuario) throws ValidacaoException {
+        String newPass = null;
         if (StringUtils.isBlank(usuario.getPassword())) {
             newPass = this.geraSenha();
-            usuario.setPassword(Criptografia.encodePassword(newPass));
+            usuario.setPassword(Criptografia.encodePassword(newPass, usuario.stringAMIN()));
         }
         usuarioValidador.validar(usuario, this, null);
         if (usuario.getId() == null) {
@@ -75,13 +76,18 @@ public class UsuarioBean implements UsuarioBeanLocal {
         manager.flush();
         if (newPass != null) {
             avisaSenhaEmail(newPass, "http://sabercertificacao.com.br/money", usuario);
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "E-mail enviado ao usuário: {0} {1} para: {2}", new Object[]{usuario.getFirstName(),usuario.getLastName(), usuario.getEmail()});
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "E-mail enviado ao usuário: {0} {1} para: {2}", new Object[]{usuario.getFirstName(), usuario.getLastName(), usuario.getEmail()});
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Não foi enviado e-mail ao usuário: {0} {1} para: {2}", new Object[]{usuario.getFirstName(),usuario.getLastName(), usuario.getEmail()});
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Não foi enviado e-mail ao usuário: {0} {1} para: {2}", new Object[]{usuario.getFirstName(), usuario.getLastName(), usuario.getEmail()});
         }
     }
 
-     private String geraSenha() {
+    @Override
+    public String criptografarSenha(String senha, String role) {
+        return Criptografia.encodePassword(senha, role);
+    }
+
+    private String geraSenha() {
         Random r = new Random();
         String[] a = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
         String[] b = {"!", "#", "@", "&", "$"};
@@ -99,13 +105,13 @@ public class UsuarioBean implements UsuarioBeanLocal {
         senha += d[D];
         senha += b[B];
         senha += a[A2];
-        senha += c[C2];        
+        senha += c[C2];
         senha += d[D2];
         senha += a[A];
         return senha;
     }
 
-       private void avisaSenhaEmail(String newPass, String url, Usuario usuario) {
+    private void avisaSenhaEmail(String newPass, String url, Usuario usuario) {
         String body = this.bodyEmail(newPass, url, usuario);
         SimpleEmail simple = new SimpleEmail();
         simple.setBody(body);
