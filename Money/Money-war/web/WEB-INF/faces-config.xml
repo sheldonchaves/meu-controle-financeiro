@@ -14,4 +14,22 @@
         </resource-bundle>
         <message-bundle>Messages</message-bundle>
     </application>
+    
+    <navigation-rule>
+        <navigation-case>
+            <description>Retorna para página de login de qualquer bean JSF</description>
+            <from-outcome>deslogar</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    
+        <navigation-rule>
+        <navigation-case>
+            <description>Vai para página principal de qualquer local</description>
+            <from-outcome>principal</from-outcome>
+            <to-view-id>/financeiro/principal.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

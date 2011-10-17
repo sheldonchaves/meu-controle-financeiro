@@ -1,12 +1,44 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ui:composition template="templogin.xhtml"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.prime.com.tr/ui">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <f:view>
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html" />
+            <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/img/favicon.ico" type="image/x-icon" />
+            <link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/resources/css/principal.css" />
+            <link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/resources/css/iconmenu.css" />
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/js.js" />
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/shBrushJava.js" />
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/shCore.js" />
+            <title>
+                <ui:insert name="pageTitle">
+                    <h:outputText value="#{msg.loginTitleTemplate}"/>
+                </ui:insert>
+            </title>
+        </h:head>
+             <h:body>
 
-    <ui:define name="conteudo">
+            <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="1500"/> 
+
+        <h:form id="logarForm">
+            <h:panelGrid columns="2" styleClass="fonteLogin">
+                <h:outputText value="#{msg.login}:" id="outlogin"/>
+                <p:inputText value="#{loginManager.usuario.login}" id="inplogin" size="20" maxlength="50"/>
+
+                <h:outputText value="#{msg.senha}:" id="outsenha"/>
+                <p:password value="#{loginManager.usuario.password}" id="inpsenha" size="20" feedback="false" minLength="0" maxlength="20"/>
+
+                <h:outputText value="" id="outnullo"/>
+                <p:commandButton action="#{loginManager.logar}" update="messages" 
+                                 id="botaologar" image="ui-icon ui-icon-key" value="#{msg.entrar}">
+                   
+                </p:commandButton>
+            </h:panelGrid>
+        </h:form>
         
-    </ui:define>
-</ui:composition>
+
+        </h:body>
+    </f:view>
+</html>
