@@ -75,5 +75,5 @@ public interface DetalheUsuarioBeanLocal {
      * @param detalheMovimentacao
      * @throws ValidacaoException 
      */
-    public void salvarDetalheMovimentacao(DetalheMovimentacao detalheMovimentacao) throws ValidacaoException;
+    public void salvarDetalheMovimentacao(DetalheMovimentacao detalheMovimentacao,  Usuario usuairo) throws ValidacaoException;
 }
