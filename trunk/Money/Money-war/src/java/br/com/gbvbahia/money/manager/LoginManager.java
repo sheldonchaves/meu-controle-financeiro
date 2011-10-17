@@ -45,6 +45,7 @@ public class LoginManager implements InterfaceManager {
         Usuario prop = usuarioBean.buscarUsuarioByLogin(usuario.getLogin());
         if (prop != null && prop.getPassword().equals(this.usuarioBean.criptografarSenha(usuario.getPassword(), prop.stringAMIN()))) {
             insereProprietarioSession(prop);
+            this.usuario = prop;
             return "principal";
         } else {
             UtilMetodos.messageFactoringFull("loginInvalido", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
