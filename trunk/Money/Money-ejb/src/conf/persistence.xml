@@ -9,7 +9,7 @@
     <properties>
       <property name="eclipselink.ddl-generation" value="create-tables"/>
       <!-- OFF SEVERE WARNING INFO CONFIG FINE FINER FINEST ALL -->
-      <property name="eclipselink.logging.level" value="ALL"/>
+      <property name="eclipselink.logging.level" value="WARNING"/>
     </properties>
   </persistence-unit>
 </persistence>
