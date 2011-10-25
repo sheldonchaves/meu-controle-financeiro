@@ -8,6 +8,7 @@ import br.com.money.business.interfaces.UsuarioBeanLocal;
 import br.com.money.business.jms.jmsEmailUtilitarios.SimpleEmail;
 import br.com.money.business.jms.jmsEmailUtilitarios.interfaces.EmailSendLocal;
 import br.com.money.exceptions.ValidacaoException;
+import br.com.money.modelos.Role;
 import br.com.money.modelos.Usuario;
 import br.com.money.utils.Criptografia;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
@@ -28,16 +29,28 @@ import org.apache.commons.lang.StringUtils;
  */
 @Stateless
 public class UsuarioBean implements UsuarioBeanLocal {
+    @EJB
+    private ValidadorInterface usuarioValidador;
 
     @EJB
     private EmailSendLocal emailSendBean;
-
-    @EJB(beanName = "usuarioValidador")
-    private ValidadorInterface usuarioValidador;
-
+    
     @PersistenceContext(name = "jdbc/money")
     private EntityManager manager;
 
+    
+    @Override
+    public Role buscarRoleByName(String nomeRole) {
+        Query q = manager.createNamedQuery("UsuarioBean.buscarRoleByName");
+        q.setParameter("groupName", nomeRole);
+        try {
+            final Role toReturn = (Role) q.getSingleResult();
+            return toReturn;
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    
     @Override
     public Usuario buscarUsuarioByLogin(String login) {
         Query q = manager.createNamedQuery("UsuarioBean.buscarUsuarioByLogin");
@@ -60,6 +73,17 @@ public class UsuarioBean implements UsuarioBeanLocal {
         }
     }
 
+    
+    @Override
+    public void criarRole(Role role) {
+        if(role.getId() == null){
+            manager.persist(role);
+        }else{
+            manager.merge(role);
+        }
+        manager.flush();
+    }
+    
     @Override
     public void criarUsuario(Usuario usuario) throws ValidacaoException {
         String newPass = null;
@@ -86,6 +110,7 @@ public class UsuarioBean implements UsuarioBeanLocal {
     public String criptografarSenha(String senha, String role) {
         return Criptografia.encodePassword(senha, role);
     }
+
 
     private String geraSenha() {
         Random r = new Random();

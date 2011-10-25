@@ -5,6 +5,7 @@
 package br.com.money.business.interfaces;
 
 import br.com.money.exceptions.ValidacaoException;
+import br.com.money.modelos.Role;
 import br.com.money.modelos.Usuario;
 import javax.ejb.Local;
 
@@ -21,4 +22,8 @@ public interface UsuarioBeanLocal {
 
     void criarUsuario(Usuario usuario)throws ValidacaoException;
      public String criptografarSenha(String senha, String role);
+
+    Role buscarRoleByName(String nomeRole);
+
+    void criarRole(Role role);
 }
