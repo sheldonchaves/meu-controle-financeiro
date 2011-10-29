@@ -8,6 +8,7 @@ import br.com.money.business.interfaces.DetalheUsuarioBeanLocal;
 import br.com.money.exceptions.DetalheMovimentacaoException;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.DetalheMovimentacao;
+import br.com.money.modelos.Usuario;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
 import javax.ejb.Stateless;
 import org.apache.commons.lang.StringUtils;
@@ -33,7 +34,11 @@ public class DetalheMobvimentacaoValidador implements ValidadorInterface<Detalhe
             lancarException("detalheMovimentacaoDetalheLong", "Detalhe Movimentação");
         }
 
-        DetalheMovimentacao detalhe = bean.buscarDetalheMovimentacaoPorDetalhe(entidade.getDetalhe());
+        if(entidade.getUsuarioProprietario() == null || entidade.getUsuarioProprietario().getId() == null){
+            lancarException("detalheMovimentacaoUsuarioNull", "Usuário Proprietário");
+        }
+        
+        DetalheMovimentacao detalhe = bean.buscarDetalheMovimentacaoPorDetalheUsuario(entidade.getDetalhe(), entidade.getUsuarioProprietario());
         if (entidade.getId() == null && detalhe != null) {
             lancarException("detalheMovimentacaoDetalheExiste", "Detalhe Movimentação");
         }

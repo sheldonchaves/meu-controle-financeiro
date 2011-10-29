@@ -8,7 +8,6 @@ import br.com.money.business.interfaces.DetalheUsuarioBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.DetalheMovimentacao;
 import br.com.money.modelos.Usuario;
-import br.com.money.modelos.embeddedId.DetalheUsuario;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
 import java.util.List;
 import javax.ejb.EJB;
@@ -27,29 +26,29 @@ public class DetalheUsuarioBean implements DetalheUsuarioBeanLocal {
 
     @EJB(beanName = "detalheMobvimentacaoValidador")
     private ValidadorInterface detalheMobvimentacaoValidador;
-
-    @EJB(beanName = "detalheUsuarioValidador")
-    private ValidadorInterface detalheUsuarioValidador;
-
-    @PersistenceContext(name="jdbc/money")
+    @PersistenceContext(name = "jdbc/money")
     private EntityManager manager;
 
     /**
-     * Apaga todos os relacionamentos entre usuario e DetalheMovimentacao,
-     * que é DetalheUsuario
-     * @param usuario 
+     * Devolve uma lista com todos os Detalhes Movimentação de um usuário
+     * @param usuario
+     * @param ativo Se o detalhe está ativado pelo usuario
+     * @return 
+     * @NamedQuary true
      */
     @Override
-    public void apagarTodosDetalheUsuarioPorUsuario(Usuario usuario) {
-        Query q = manager.createNamedQuery("DetalheUsuarioBean.apagarTodosDetalheUsuarioPorUsuario");
+    public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuarioFlag(Usuario usuario, boolean flag) {
+        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuarioFlag");
         q.setParameter("usuario", usuario);
-        q.executeUpdate();
+        q.setParameter("ativo", flag);
+        return q.getResultList();
     }
 
     /**
      * Devolve uma lista com todos os Detalhes Movimentação de um usuário
      * @param usuario
      * @return 
+     * @NamedQuary true
      */
     @Override
     public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuario(Usuario usuario) {
@@ -59,29 +58,17 @@ public class DetalheUsuarioBean implements DetalheUsuarioBeanLocal {
     }
 
     /**
-     * Devolve uma lista com todos Detalhes Movimentação que não são vinculados ao
-     * usuário passado como argumento
-     * @param usuario
-     * @return 
-     */
-    @Override
-    public List<DetalheMovimentacao> buscarDetalheMovimentacaoNaoUtilizadaPorUsuario(Usuario usuario) {
-        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoNaoUtilizadaPorUsuario");
-        q.setParameter("usuario", usuario);
-
-        return q.getResultList();
-    }
-
-    /**
      * Busca DetalheMovimentacao pelo atributo detalhe passado como parâmetro.
      * Utilizado na VALIDAÇÃO NÃO INSERIR FILTROS
      * @param detalhe
      * @return DetalheMovimentacao ou nulo se não encontrar.
+     * @NamedQuary true
      */
     @Override
-    public DetalheMovimentacao buscarDetalheMovimentacaoPorDetalhe(String detalhe) {
-        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorDetalhe");
+    public DetalheMovimentacao buscarDetalheMovimentacaoPorDetalheUsuario(String detalhe, Usuario usuario) {
+        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorDetalheUsuario");
         q.setParameter("detalhe", detalhe);
+        q.setParameter("usuario", usuario);
         try {
             return (DetalheMovimentacao) q.getSingleResult();
         } catch (NoResultException e) {
@@ -90,56 +77,29 @@ public class DetalheUsuarioBean implements DetalheUsuarioBeanLocal {
     }
 
     /**
-     * Busca um DetalheUsuario pelo Usuario e DetalheMovimentacao
-     * @param detalheUsuario
-     * @param usuario
-     * @return 
+     * Buscar detalhe movimentação por Id
+     * @param id
+     * @return Detalhe Movimentação com mesmo id
+     * @NamedQuary false
      */
     @Override
-    public DetalheUsuario buscarDetalheUsuarioPorDetalheMovimentacaoUsuario(DetalheMovimentacao Detalhemovimentacao, Usuario usuario) {
-        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheUsuarioPorDetalheMovimentacaoUsuario");
-        q.setParameter("detalheMovimentacao", Detalhemovimentacao);
-        q.setParameter("usuario", usuario);
-        try {
-            return (DetalheUsuario) q.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+    public DetalheMovimentacao buscarDetalheMovimentacaoPorId(long id) {
+        return manager.find(DetalheMovimentacao.class, id);
     }
 
     /**
-     * Restaura os vinculos do usuario com DetalheMovimentação para
-     * os DetalheMovimentação flegado geral para true.
-     * @param usuario 
+     * Salva ou Atualiza o Detalhe Movimentação Passado
+     * @param detalheMovimentacao
+     * @throws ValidacaoException
+     * @NamedQuary false
      */
     @Override
-    public void criarVinculoPadraoDetalheMovimentacaoComUsuario(Usuario usuario) throws ValidacaoException {
-        apagarTodosDetalheUsuarioPorUsuario(usuario);
-        Query q = manager.createNamedQuery("DetalheUsuarioBean.criarVinculoPadraoDetalheMovimentacaoComUsuario");
-        q.setParameter("geral", true);
-        List<DetalheMovimentacao> detalhes = q.getResultList();
-        for (DetalheMovimentacao det : detalhes) {
-            DetalheUsuario du = new DetalheUsuario(det, usuario);
-            salvarDetalheUsuario(du);
-        }
-    }
-
-    @Override
-    public void salvarDetalheUsuario(DetalheUsuario detalheUsuario) throws ValidacaoException {
-        detalheUsuarioValidador.validar(detalheUsuario, this, null);
-        manager.persist(detalheUsuario);
-        manager.flush();
-    }
-
-    @Override
-    public void salvarDetalheMovimentacao(DetalheMovimentacao detalheMovimentacao, Usuario usuairo) throws ValidacaoException {
-        detalheMobvimentacaoValidador.validar(detalheMovimentacao, this, null);
+    public void salvarDetalheMovimentacao(DetalheMovimentacao detalheMovimentacao) throws ValidacaoException {
+        this.detalheMobvimentacaoValidador.validar(detalheMovimentacao, this, null);
         if (detalheMovimentacao.getId() == null) {
-            manager.persist(detalheMovimentacao);
-            manager.flush();
-            salvarDetalheUsuario(new DetalheUsuario(detalheMovimentacao, usuairo));
+            this.manager.persist(detalheMovimentacao);
         } else {
-            manager.merge(detalheMovimentacao);
+            this.manager.merge(detalheMovimentacao);
         }
         manager.flush();
     }

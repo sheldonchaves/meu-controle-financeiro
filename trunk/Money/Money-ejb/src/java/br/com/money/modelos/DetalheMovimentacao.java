@@ -12,7 +12,9 @@ import javax.persistence.*;
  * @author gbvbahia
  */
 @Entity
-@Table(name = "money_detalhe_movimentacao")
+@Table(name = "money_detalhe_movimentacao",
+uniqueConstraints =
+@UniqueConstraint(name = "uk_detalhe_usuario", columnNames = {"ds_detalhe", "fk_usuario"}))
 public class DetalheMovimentacao implements ValidadoInterface, Comparable<DetalheMovimentacao> {
 
     private static final long serialVersionUID = 1L;
@@ -24,16 +26,20 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "ds_detalhe", length = QUANTIDADE_CARACTERES_DETALHE, unique = true, nullable = false)
+    @Column(name = "ds_detalhe", length = QUANTIDADE_CARACTERES_DETALHE, unique = false, nullable = false)
     private String detalhe;
 
+    @ManyToOne
+    @JoinColumn(name="fk_usuario", referencedColumnName="id")
+    private Usuario usuarioProprietario;
+    
     /**
      * Define se o detalhe é para todos os usuários<br>
      * Se true será utilizado por todos.<br>
      * Se false será somente para quem habilitar.
      */
-    @Column(name = "fl_geral", nullable = false)
-    private boolean geral = false;
+    @Column(name = "fl_ativo", nullable = false)
+    private boolean ativo = true;
 
     public Long getId() {
         return id;
@@ -51,12 +57,12 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
         this.detalhe = detalhe;
     }
 
-    public boolean isGeral() {
-        return geral;
+    public boolean isAtivo() {
+        return ativo;
     }
 
-    public void setGeral(boolean geral) {
-        this.geral = geral;
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     @Override
@@ -64,6 +70,14 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
+    }
+
+    public Usuario getUsuarioProprietario() {
+        return usuarioProprietario;
+    }
+
+    public void setUsuarioProprietario(Usuario usuarioProprietario) {
+        this.usuarioProprietario = usuarioProprietario;
     }
 
     @Override
@@ -86,7 +100,7 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
 
     @Override
     public String toString() {
-        return "DetalheMovimentacao{" + "id=" + id + ", detalhe=" + detalhe + ", geral=" + geral + '}';
+        return "DetalheMovimentacao{" + "id=" + id + ", detalhe=" + detalhe + ", ativo=" + ativo + '}';
     }
 
     @Override
