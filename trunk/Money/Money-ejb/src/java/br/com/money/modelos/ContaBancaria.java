@@ -5,7 +5,7 @@
 package br.com.money.modelos;
 
 import br.com.money.enums.TipoConta;
-import java.io.Serializable;
+import br.com.money.vaidators.interfaces.ValidadoInterface;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -31,16 +31,17 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "money_conta_bancaria",
 uniqueConstraints =
 @UniqueConstraint(name = "uk_nomeconta_tipoconta", columnNames = {"ds_conta", "tipoConta"}))
-public class ContaBancaria implements Serializable {
+public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancaria> {
 
     private static final long serialVersionUID = 1L;
+    public static final int CARACTERES_NOME_CONTA = 100;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id",nullable=false,unique=true)
     private Long id;
 
-    @Column(name = "ds_conta", nullable = false, length = 100, unique=true)
+    @Column(name = "ds_conta", nullable = false, length = CARACTERES_NOME_CONTA)
     private String nomeConta;
 
     @Column(name = "en_tipo", nullable = false)
@@ -125,5 +126,39 @@ public class ContaBancaria implements Serializable {
     @Override
     public String toString() {
         return "br.com.money.modelos.ContaBancaria[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(ContaBancaria o) {
+        int i = 0;
+        if(i == 0)i = this.nomeConta.compareTo(o.nomeConta);
+        if(i == 0)i = this.tipoConta.compareTo(o.tipoConta);
+        if(i == 0)i = this.id.compareTo(o.id);
+        return i;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ContaBancaria other = (ContaBancaria) obj;
+        if ((this.nomeConta == null) ? (other.nomeConta != null) : !this.nomeConta.equals(other.nomeConta)) {
+            return false;
+        }
+        if (this.tipoConta != other.tipoConta) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + (this.tipoConta != null ? this.tipoConta.hashCode() : 0);
+        return hash;
     }
 }

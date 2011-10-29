@@ -8,7 +8,6 @@ import br.com.money.business.interfaces.DetalheUsuarioBeanLocal;
 import br.com.money.exceptions.DetalheMovimentacaoException;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.DetalheMovimentacao;
-import br.com.money.modelos.Usuario;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
 import javax.ejb.Stateless;
 import org.apache.commons.lang.StringUtils;

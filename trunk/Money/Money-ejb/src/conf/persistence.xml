@@ -5,6 +5,7 @@
     <jta-data-source>jdbc/money</jta-data-source>
     <mapping-file>xml/consultas_DetalheUsuarioBean.xml</mapping-file>
     <mapping-file>xml/consultas_UsuarioBean.xml</mapping-file>
+    <mapping-file>xml/consultas_ContaBancariaBean.xml</mapping-file>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.ddl-generation" value="create-tables"/>
