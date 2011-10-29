@@ -21,13 +21,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  *
  * @author gbvbahia
  */
 @Entity
-@Table(name = "money_conta_bancaria")
+@Table(name = "money_conta_bancaria",
+uniqueConstraints =
+@UniqueConstraint(name = "uk_nomeconta_tipoconta", columnNames = {"ds_conta", "tipoConta"}))
 public class ContaBancaria implements Serializable {
 
     private static final long serialVersionUID = 1L;
