@@ -28,7 +28,7 @@ a{
 }
 
 .ui-growl {
-left:120px;
+right:20px;
 top: 10px;
 }
 
@@ -43,4 +43,12 @@ table{
     background-color: transparent !important; 
     background-repeat: no-repeat !important;
     border: none !important;
+}
+
+.red {
+    color: red;
+}
+
+.green{
+    color: #006600;
 }

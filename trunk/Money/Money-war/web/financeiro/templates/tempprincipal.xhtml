@@ -21,7 +21,7 @@
 
         <h:body>
 
-            <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="1500"/> 
+            <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="2500"/> 
             <p:layout fullPage="true">
 
                 <p:layoutUnit position="north" size="70" resizable="false" closable="false" collapsible="false">
@@ -37,14 +37,36 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="west" size="200" header="#{msg.contas}" resizable="true" closable="false" collapsible="true">
-                    <ui:insert name="westPos">
-                        <h:outputText value="West unit content." />
-                    </ui:insert>
+                    <h:panelGroup id="conteudoEsquerdoGroup">
+                        <ui:insert name="westPos">
+                            <TABLE  width="100%">
+                                <ui:repeat value="#{contaBancariaManager.contasBancarias}" var="conta">
+                                    <TR>
+                                        <TD align="left" valign="top">
+                                    <h:outputText value="#{conta.tipoConta.abreviacao}"/>
+
+                                    </TD>
+                                    <TD align="left" valign="top">
+                                    <h:outputText value="#{conta.nomeConta}"/>
+                                    </TD>
+                                    <TD align="right" valign="top">
+                                    <h:outputText value="#{conta.saldo}" rendered="#{conta.saldo ge 0}" styleClass="green">
+                                        <f:converter converterId="moneyConverter"/>
+                                    </h:outputText>
+                                    <h:outputText value="#{conta.saldo}" rendered="#{conta.saldo lt 0}" styleClass="red">
+                                        <f:converter converterId="moneyConverter"/>
+                                    </h:outputText>
+                                    </TD>
+                                    </TR>
+                                </ui:repeat>
+                            </TABLE>
+                        </ui:insert>
+                    </h:panelGroup>
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center" >
                     <p:layout style="min-width:400px;min-height:200px;" id="layout"> 
-                        
+
                         <p:layoutUnit position="north" resizable="true" scrollable="true">  
                             <h:panelGroup id="conteudoCentralSuperiorGroup">
                                 <TABLE  width="100%">
@@ -67,13 +89,13 @@
                                 </TABLE>
                             </h:panelGroup>
                         </p:layoutUnit>
-                        
+
                         <p:layoutUnit position="center" resizable="true" scrollable="true"> 
                             <h:panelGroup id="conteudoCentralInferiorGroup">
 
                             </h:panelGroup>
                         </p:layoutUnit>
-                    
+
                     </p:layout>
                 </p:layoutUnit>
 

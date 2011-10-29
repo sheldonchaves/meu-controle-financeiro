@@ -41,9 +41,10 @@ public class ContaBancariaManager implements InterfaceManager, Observer {
     private SelectItemManager selectItemManager;
     
     private ContaBancaria contaBancaria;
+    private List<ContaBancaria> contasBancarias;
     
-     private HtmlInputText contaInput;
-     private HtmlInputText saldoInput;
+    private HtmlInputText contaInput;
+    private HtmlInputText saldoInput;
     private HtmlSelectOneMenu selctTipoConta;
     
     /** Creates a new instance of ContaBancariaManager */
@@ -76,7 +77,7 @@ public class ContaBancariaManager implements InterfaceManager, Observer {
         try{
             contaBancariaBean.salvarContaBancaria(contaBancaria);
             UtilMetodos.messageFactoringFull("contaBancariaCadastradoOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
+            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_BANCARIA);
             clean();
         }catch(ValidacaoException v){
             if (!StringUtils.isBlank(v.getAtributoName())) {
@@ -92,7 +93,7 @@ public class ContaBancariaManager implements InterfaceManager, Observer {
         int[] args = (int[]) arg;
         for (int i = 0; i < args.length; i++) {
             if (args[i] == ControleObserver.Eventos.CAD_CONTA_BANCARIA) {
-                //atualizarModel();
+                atualizarModel();
             }
         }
     }
@@ -111,9 +112,29 @@ public class ContaBancariaManager implements InterfaceManager, Observer {
             selctTipoConta.setValue(null);
         }
     }
+    
+    private void atualizarModel() {
+        this.contasBancarias = this.contaBancariaBean.buscarContaBancariasPorUsuario(loginManager.getUsuario());
+    }
+    
     //====================
     //Table Actions
     //====================
+    
+    public void apagarConta(ContaBancaria cb){
+        try{
+            this.contaBancariaBean.apagarContaBancaria(cb.getId());
+            UtilMetodos.messageFactoringFull("contaBancariaDeleteOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+             ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_BANCARIA);
+        }catch(ValidacaoException v){
+             if (!StringUtils.isBlank(v.getAtributoName())) {
+                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+            } else {
+                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+            }
+        }
+    }
+    
     //====================
     //SelectItem
     //====================
@@ -171,5 +192,14 @@ public class ContaBancariaManager implements InterfaceManager, Observer {
 
     public void setSaldoInput(HtmlInputText saldoInput) {
         this.saldoInput = saldoInput;
+    }
+
+    public List<ContaBancaria> getContasBancarias() {
+        if(contasBancarias == null) atualizarModel();
+        return contasBancarias;
+    }
+
+    public void setContasBancarias(List<ContaBancaria> contasBancarias) {
+        this.contasBancarias = contasBancarias;
     }
 }

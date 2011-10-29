@@ -40,7 +40,7 @@
                         <h:outputLabel value=""/>
                         <h:panelGroup>
                             <p:commandButton value="#{msg.salvar}" image="ui-icon ui-icon-disk" actionListener="#{contaBancariaManager.salvarContaBancaria()}"
-                                             update="messages,conteudoCentralSuperiorGroup">
+                                             update="messages,conteudoCentralSuperiorGroup,conteudoEsquerdoGroup">
                             </p:commandButton>
                             <p:spacer height="3" width="10"/>
                             <p:commandButton value="#{msg.novo}" image="ui-icon ui-icon-refresh" actionListener="#{contaBancariaManager.clean()}" 
@@ -57,7 +57,46 @@
             <TD align="left" valign="top" style="width: 100px;">
             <h:panelGroup id="cadContaTableGroup">
                 <h:form id="formContaBancariaTable">
-
+                    <p:dataTable value="#{contaBancariaManager.contasBancarias}" var="conta" 
+                                 id="tableCertificacao" rows="3" paginator="true" 
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                 {NextPageLink} {LastPageLink}" 
+                                 emptyMessage="#{msg.semRegistrosEcontrados}">
+                        
+                        <p:column id="col1" style="width: 100px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.conta}"/>
+                            </f:facet>
+                            <h:outputText value="#{conta.nomeConta}"/>
+                        </p:column>
+                        
+                        <p:column id="col2" style="width: 100px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.tipo}"/>
+                            </f:facet>
+                            <h:outputText value="#{conta.tipoConta.tipoContaString}"/>
+                        </p:column>
+                        
+                        <p:column id="col3" styleClass="center" style="width: 80px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.saldo}"/>
+                            </f:facet>
+                            <h:outputText value="#{conta.saldo}">
+                                <f:converter converterId="moneyConverter"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                         <p:column id="col4" styleClass="center" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.remover}"/>
+                            </f:facet>
+                             <p:commandLink update="conteudoCentralSuperiorGroup,conteudoEsquerdoGroup" actionListener="#{contaBancariaManager.apagarConta(conta)}"
+                                           id="buttonEdit" styleClass="ui-button_link">
+                                <h:graphicImage library="img" name="erase_16.png"/>
+                            </p:commandLink>
+                        </p:column>
+                        
+                    </p:dataTable>
                 </h:form>
             </h:panelGroup>
             </TD>
