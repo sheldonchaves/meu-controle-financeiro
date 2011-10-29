@@ -8,16 +8,16 @@ import javax.ejb.ApplicationException;
 
 /**
  *
- * @author gbvbahia
+ * @author Guilherme
  */
 @ApplicationException(rollback = true)
-public class DetalheUsuarioException extends ValidacaoException{
+public class ContaBancariaException extends ValidacaoException{
 
-    public DetalheUsuarioException(String msg) {
+    public ContaBancariaException(String msg) {
         super(msg);
     }
 
-    public DetalheUsuarioException(String message, String atributoName) {
+    public ContaBancariaException(String message, String atributoName) {
         super(message, atributoName);
     }
     

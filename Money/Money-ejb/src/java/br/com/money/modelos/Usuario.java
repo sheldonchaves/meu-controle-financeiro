@@ -5,7 +5,6 @@
 package br.com.money.modelos;
 
 import br.com.money.vaidators.interfaces.ValidadoInterface;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
