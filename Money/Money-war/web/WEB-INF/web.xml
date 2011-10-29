@@ -42,4 +42,10 @@
         <param-name>timezone</param-name>
         <param-value>GMT-3</param-value>
     </context-param>
+    <ejb-local-ref>
+        <ejb-ref-name>DetalheUsuarioBean</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>br.com.money.business.interfaces.DetalheUsuarioBeanLocal</local>
+        <ejb-link>Money-ejb.jar#DetalheUsuarioBean</ejb-link>
+    </ejb-local-ref>
 </web-app>

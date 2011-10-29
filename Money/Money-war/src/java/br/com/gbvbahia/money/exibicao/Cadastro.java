@@ -22,7 +22,6 @@ public class Cadastro extends FluxoExibicaoMaster {
     private enum PaginaFluxo {
 
         CADASTRO_DETALHE_MOVIMENTACAO;
-
     }
 
     /** Creates a new instance of Cadastro */
@@ -33,6 +32,8 @@ public class Cadastro extends FluxoExibicaoMaster {
     public void fluxoExibirCadastroDetalheMovimentacao() {
         alterarTela(PaginaFluxo.CADASTRO_DETALHE_MOVIMENTACAO);
     }
+
+
 
     private void alterarTela(PaginaFluxo paginaLogin) {
         exibirCadastroDetalheMovimentacao = (PaginaFluxo.CADASTRO_DETALHE_MOVIMENTACAO.equals(paginaLogin));
@@ -57,5 +58,4 @@ public class Cadastro extends FluxoExibicaoMaster {
     public void setExibirCadastroDetalheMovimentacao(boolean exibirCadastroDetalheMovimentacao) {
         this.exibirCadastroDetalheMovimentacao = exibirCadastroDetalheMovimentacao;
     }
-    
 }
