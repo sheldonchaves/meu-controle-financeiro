@@ -18,10 +18,11 @@ import javax.faces.context.FacesContext;
 public class Cadastro extends FluxoExibicaoMaster {
 
     private boolean exibirCadastroDetalheMovimentacao;
+    private boolean exibirCadastroContaBancaria;
 
     private enum PaginaFluxo {
 
-        CADASTRO_DETALHE_MOVIMENTACAO;
+        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA;
     }
 
     /** Creates a new instance of Cadastro */
@@ -33,10 +34,13 @@ public class Cadastro extends FluxoExibicaoMaster {
         alterarTela(PaginaFluxo.CADASTRO_DETALHE_MOVIMENTACAO);
     }
 
-
+    public void fluxoExibirCadastroContaBancaria() {
+        alterarTela(PaginaFluxo.CADASTRO_CONTA_BANCARIA);
+    }
 
     private void alterarTela(PaginaFluxo paginaLogin) {
         exibirCadastroDetalheMovimentacao = (PaginaFluxo.CADASTRO_DETALHE_MOVIMENTACAO.equals(paginaLogin));
+        exibirCadastroContaBancaria = (PaginaFluxo.CADASTRO_CONTA_BANCARIA.equals(paginaLogin));
         definirAtributos(paginaLogin);
     }
 
@@ -45,6 +49,9 @@ public class Cadastro extends FluxoExibicaoMaster {
         switch (paginaLogin) {
             case CADASTRO_DETALHE_MOVIMENTACAO:
                 this.tituloPanel = UtilMetodos.getResourceBundle("titlePanelCadastroDetalheMovimentacao", fc);
+                break;
+            case CADASTRO_CONTA_BANCARIA:
+                this.tituloPanel = UtilMetodos.getResourceBundle("titlePanelCadastroContaBancaria", fc);
                 break;
             default:
                 throw new AssertionError("Não foi definido case para a enum: " + paginaLogin.toString());
@@ -57,5 +64,13 @@ public class Cadastro extends FluxoExibicaoMaster {
 
     public void setExibirCadastroDetalheMovimentacao(boolean exibirCadastroDetalheMovimentacao) {
         this.exibirCadastroDetalheMovimentacao = exibirCadastroDetalheMovimentacao;
+    }
+
+    public boolean isExibirCadastroContaBancaria() {
+        return exibirCadastroContaBancaria;
+    }
+
+    public void setExibirCadastroContaBancaria(boolean exibirCadastroContaBancaria) {
+        this.exibirCadastroContaBancaria = exibirCadastroContaBancaria;
     }
 }

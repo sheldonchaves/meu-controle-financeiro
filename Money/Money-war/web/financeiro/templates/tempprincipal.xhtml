@@ -53,6 +53,7 @@
                                         <h:form id="formMenu">
                                             <p:menu style="width:190px;"  type="sliding" backLabel="#{msg.voltar}">
                                                 <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
+                                                <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaBancaria}" action="#{fluxoCadastro.fluxoExibirCadastroContaBancaria()}" icon="conta" />
                                             </p:menu>
                                         </h:form>
                                     </ui:insert>
@@ -60,6 +61,7 @@
                                     <TD align="left" valign="top">
                                     <ui:insert name="conteudoCenterPos">
                                         <ui:include src="../cadastro/DetalheMovimentacao.xhtml"/>
+                                        <ui:include src="../cadastro/ContaBancaria.xhtml"/>
                                     </ui:insert>
                                     </TD>
                                 </TABLE>
