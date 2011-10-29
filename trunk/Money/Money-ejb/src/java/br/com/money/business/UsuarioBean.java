@@ -29,7 +29,7 @@ import org.apache.commons.lang.StringUtils;
  */
 @Stateless
 public class UsuarioBean implements UsuarioBeanLocal {
-    @EJB
+    @EJB(beanName="usuarioValidador")
     private ValidadorInterface usuarioValidador;
 
     @EJB
