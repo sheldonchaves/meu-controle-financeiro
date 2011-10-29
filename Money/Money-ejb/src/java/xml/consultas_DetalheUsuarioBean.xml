@@ -4,52 +4,29 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
 	version="1.0">
 
-    <named-query name="DetalheUsuarioBean.buscarDetalheUsuarioPorDetalheMovimentacaoUsuario">
-        <query>
-			Select distinct du From DetalheUsuario du
-                        Where du.usuario = :usuario
-                        AND du.detalheMovimentacao = :detalheMovimentacao
-        </query>
-    </named-query>
-    
-    <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuario">
-        <query>
-			Select distinct du.detalheMovimentacao From DetalheUsuario du
-                        Where du.usuario = :usuario
-        </query>
-    </named-query>
-    
-    <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoNaoUtilizadaPorUsuario">
-        <query>
-			Select distinct dm From DetalheMovimentacao dm
-                        Where dm not in(
-                        Select distinct du.detalheMovimentacao From DetalheUsuario du
-                        Where du.usuario = :usuario
-                        )
-        </query>
-    </named-query>
-    
-        
-    <named-query name="DetalheUsuarioBean.apagarTodosDetalheUsuarioPorUsuario">
-        <query>
-			Delete From DetalheUsuario du
-                        Where du.usuario = :usuario
-                        
-        </query>
-    </named-query>
-    
-    <named-query name="DetalheUsuarioBean.criarVinculoPadraoDetalheMovimentacaoComUsuario">
-        <query>
-			Select distinct dm From DetalheMovimentacao dm
-                        Where dm.geral = :geral
-                        
-        </query>
-    </named-query>
-    
-        <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorDetalhe">
+   
+    <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorDetalheUsuario">
         <query>
 			Select distinct dm From DetalheMovimentacao dm
                         Where dm.detalhe = :detalhe
+                        And dm.usuarioProprietario = :usuario
+                        
+        </query>
+    </named-query>
+    
+    <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuarioFlag">
+        <query>
+			Select distinct dm From DetalheMovimentacao dm
+                        Where dm.ativo = :ativo
+                        And dm.usuarioProprietario = :usuario
+                        
+        </query>
+    </named-query>
+    
+       <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuario">
+        <query>
+			Select distinct dm From DetalheMovimentacao dm
+                        Where dm.usuarioProprietario = :usuario
                         
         </query>
     </named-query>
