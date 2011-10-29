@@ -12,6 +12,11 @@
         </query>
     </named-query>
     
-   
+    <named-query name="ContaBancariaBean.buscarContaBancariasPorUsuario">
+        <query>
+			Select distinct c From ContaBancaria c
+                        Where c.user = :user
+        </query>
+    </named-query>
    
 </entity-mappings>

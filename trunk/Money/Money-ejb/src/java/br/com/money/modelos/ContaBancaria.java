@@ -30,7 +30,7 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "money_conta_bancaria",
 uniqueConstraints =
-@UniqueConstraint(name = "uk_nomeconta_tipoconta", columnNames = {"ds_conta", "tipoConta"}))
+@UniqueConstraint(name = "uk_nomeconta_tipoconta", columnNames = {"ds_conta", "en_tipo"}))
 public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancaria> {
 
     private static final long serialVersionUID = 1L;
@@ -132,7 +132,7 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
     public int compareTo(ContaBancaria o) {
         int i = 0;
         if(i == 0)i = this.nomeConta.compareTo(o.nomeConta);
-        if(i == 0)i = this.tipoConta.compareTo(o.tipoConta);
+        if(i == 0)i = this.tipoConta.getOrdem().compareTo(o.tipoConta.getOrdem());
         if(i == 0)i = this.id.compareTo(o.id);
         return i;
     }

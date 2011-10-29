@@ -6,7 +6,9 @@ package br.com.money.business;
 
 import br.com.money.business.interfaces.ContaBancariaBeanLocal;
 import br.com.money.enums.TipoConta;
+import br.com.money.exceptions.ContaBancariaException;
 import br.com.money.modelos.ContaBancaria;
+import br.com.money.modelos.Usuario;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -14,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.*;
 
 /**
  *
@@ -47,6 +50,28 @@ public class ContaBancariaBean implements ContaBancariaBeanLocal {
             return (ContaBancaria) q.getSingleResult();
         } catch (NoResultException e) {
             return null;
+        }
+    }
+
+    @Override
+    public List<ContaBancaria> buscarContaBancariasPorUsuario(Usuario usuario) {
+        Query q = manager.createNamedQuery("ContaBancariaBean.buscarContaBancariasPorUsuario");
+        q.setParameter("user", usuario);
+        final List<ContaBancaria> resultList = q.getResultList();
+        Collections.sort(resultList);
+        return resultList;
+    }
+
+    @Override
+    public void apagarContaBancaria(Long id) {
+        ContaBancaria toDelete = manager.find(ContaBancaria.class, id);
+        if (toDelete != null) {
+            if (toDelete.getMovimentacaoFinanceira().isEmpty()) {
+                manager.remove(toDelete);
+                manager.flush();
+            } else {
+                throw new ContaBancariaException("contaComMovimentacaoToDelete");
+            }
         }
     }
 }
