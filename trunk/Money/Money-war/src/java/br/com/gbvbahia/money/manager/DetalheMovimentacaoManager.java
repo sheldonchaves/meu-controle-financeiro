@@ -36,12 +36,14 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
 
     @EJB
     private DetalheUsuarioBeanLocal detalheUsuarioBean;
+    
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
-    //@ManagedProperty("#{selectItemManager}")
-    //private SelectItemManager selectItemManager;
+
     private HtmlInputText input;
+
     private DetalheMovimentacao detalheMovimentacao;
+    
     private List<DetalheMovimentacao> detalhes;
 
     /** Creates a new instance of DetalheMovimentacaoManager */
