@@ -6,7 +6,10 @@
     margin-top: -4px !important;
 }
 
-.gearAdd{
-    background-image: url('/money/resources/img/edit_add.png') !important;
+.block{
+    background-image: url('/money/resources/img/uncheck_24.png') !important;
 }
 
+.desblock{
+    background-image: url('/money/resources/img/check_24.png') !important;
+}

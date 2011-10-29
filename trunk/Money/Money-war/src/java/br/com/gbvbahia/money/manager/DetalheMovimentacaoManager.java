@@ -36,16 +36,12 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
 
     @EJB
     private DetalheUsuarioBeanLocal detalheUsuarioBean;
-
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
-
     //@ManagedProperty("#{selectItemManager}")
     //private SelectItemManager selectItemManager;
     private HtmlInputText input;
-
     private DetalheMovimentacao detalheMovimentacao;
-
     private List<DetalheMovimentacao> detalhes;
 
     /** Creates a new instance of DetalheMovimentacaoManager */
@@ -58,7 +54,7 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
     @PostConstruct
     @Override
     public void init() {
-        detalheMovimentacao = new DetalheMovimentacao();
+        clean();
         ControleObserver.addBeanObserver(loginManager.getUsuario(), this);
         Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "DetalheMovimentacaoManager.init() executado!");
     }
@@ -85,18 +81,17 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
 
     public void clean() {
         this.detalheMovimentacao = new DetalheMovimentacao();
+        this.detalheMovimentacao.setUsuarioProprietario(loginManager.getUsuario());
+        if(input != null){
         this.input.setSubmittedValue("");
+        }
     }
 
     public void salvarDetalheMovimentacao() {
         try {
-            detalheUsuarioBean.salvarDetalheMovimentacao(detalheMovimentacao, loginManager.getUsuario());
+            detalheUsuarioBean.salvarDetalheMovimentacao(detalheMovimentacao);
             UtilMetodos.messageFactoringFull("detalheMovimentacaoCadastradoOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-            if (detalheMovimentacao.isGeral()) {
-                ControleObserver.notificaObservers(null, ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
-            } else {
-                ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
-            }
+            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
             clean();
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
@@ -115,6 +110,13 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
     //====================
     //Table Actions
     //====================
+    
+    public void bloqDesbloqDetalhe(DetalheMovimentacao det){
+        det.setAtivo(!det.isAtivo());
+        this.detalheMovimentacao = det;
+        salvarDetalheMovimentacao();
+    }
+    
     //====================
     //SelectItem
     //====================
@@ -138,7 +140,9 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
     }
 
     public List<DetalheMovimentacao> getDetalhes() {
-        if(this.detalhes == null) atualizarModel();
+        if (this.detalhes == null) {
+            atualizarModel();
+        }
         return detalhes;
     }
 

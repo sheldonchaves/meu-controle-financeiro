@@ -5,7 +5,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.prime.com.tr/ui"
                 >
-    <f:subview id="cadastroCertificacaoEmbutido" rendered="#{fluxoCadastro.exibirCadastroDetalheMovimentacao}">
+    <f:subview id="cadastroDetalheMovimentacaoEmbutido" rendered="#{fluxoCadastro.exibirCadastroDetalheMovimentacao}">
         <TABLE>
             <TD align="left" valign="top" style="width: 200px;">
             <h:panelGroup id="cadDetalheGroup">
@@ -19,10 +19,10 @@
                         </p:inputText>
                         <p:message for="detalheMovimentacao"/>
 
-                        <h:outputLabel value="#{msg.geral}:" rendered="${sessionScope['ADMIN'] != null }"/>
-                        <p:selectBooleanCheckbox value="#{detalheMovimentacao.detalheMovimentacao.geral}" id="geralMovimentacao"
-                                                 rendered="${sessionScope['ADMIN'] != null }"/>
-                        <p:message for="geralMovimentacao" rendered="${sessionScope['ADMIN'] != null }"/>
+                        <h:outputLabel value="#{msg.ativo}:" />
+                        <p:selectBooleanCheckbox value="#{detalheMovimentacao.detalheMovimentacao.ativo}" id="geralMovimentacao"
+                                                 />
+                        <p:message for="geralMovimentacao" />
 
                         <h:outputLabel value=""/>
                         <h:panelGroup>
@@ -39,7 +39,7 @@
                 </h:form>
             </h:panelGroup>
             </TD>
-            
+
             <TD align="left" valign="top" style="width: 100px;">
             <h:panelGroup id="cadDetalheTableGroup">
                 <h:form id="formDetalheMovimentacaoTable">
@@ -48,7 +48,7 @@
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks}
                                  {NextPageLink} {LastPageLink}" 
                                  emptyMessage="#{msg.semRegistrosEcontrados}">
-                       
+
                         <p:column id="col1" >
                             <f:facet name="header">
                                 <h:outputText value="#{msg.detalhe}"/>
@@ -56,13 +56,29 @@
                             <h:outputText value="#{detalhe.detalhe}"/>
                         </p:column>
 
+                        <p:column id="col3" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.status}"/>
+                            </f:facet>
+                            <p:commandLink update="conteudoCentralSuperiorGroup" actionListener="#{detalheMovimentacao.bloqDesbloqDetalhe(detalhe)}"
+                                           id="buttonBlock" styleClass="ui-button_link" title="#{msg.desblockTitle}" rendered="#{detalhe.ativo}">
+                                <h:graphicImage library="img" name="check_16.png" />
+                            </p:commandLink>
+                            
+                            <p:commandLink update="conteudoCentralSuperiorGroup" actionListener="#{detalheMovimentacao.bloqDesbloqDetalhe(detalhe)}"
+                                           id="buttonDesBlock" styleClass="ui-button_link" title="#{msg.blockTitle}" rendered="#{!detalhe.ativo}">
+                                <h:graphicImage library="img" name="uncheck_16.png" />
+                            </p:commandLink>
+
+                        </p:column>
+
                         <p:column id="col2" styleClass="center" style="width: 20px;">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.editar}"/>
                             </f:facet>
                             <p:commandLink update="conteudoCentralSuperiorGroup" 
-                                           id="buttonBlock" styleClass="ui-button_link">
-                                <h:graphicImage library="img" name="I_edit_24.png" rendered="#{!detalhe.geral || sessionScope['ADMIN'] != null}"/>
+                                           id="buttonEdit" styleClass="ui-button_link">
+                                <h:graphicImage library="img" name="I_edit_24.png"/>
                                 <f:setPropertyActionListener value="#{detalhe}" target="#{detalheMovimentacao.detalheMovimentacao}" />  
                             </p:commandLink>
                         </p:column>

@@ -24,13 +24,13 @@
             <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="1500"/> 
             <p:layout fullPage="true">
 
-                <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="false">
+                <p:layoutUnit position="north" size="70" resizable="false" closable="false" collapsible="false">
                     <ui:insert name="topPos">
                         <h:outputText value="Top unit content." />
                     </ui:insert>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="south" size="150" header="#{msg.movimentacoes}" resizable="false" closable="false" collapsible="false">
+                <p:layoutUnit position="south" size="150" header="#{msg.movimentacoes}" resizable="false" closable="false" collapsible="false" scrollable="true">
                     <ui:insert name="southPos">
                         <h:outputText value="South unit content." />
                     </ui:insert>
@@ -42,25 +42,37 @@
                     </ui:insert>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="center">
-                    <h:panelGroup id="conteudoCentralSuperiorGroup">
-                        <TABLE  width="100%">
-                            <TD align="left" valign="top" style="width: 200px;">
-                            <ui:insert name="menuCenterPos">
-                                <h:form id="formMenu">
-                                    <p:menu style="width:190px;"  type="sliding" backLabel="#{msg.voltar}">
-                                        <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
-                                    </p:menu>
-                                </h:form>
-                            </ui:insert>
-                            </TD>
-                            <TD align="left" valign="top">
-                            <ui:insert name="conteudoCenterPos">
-                                <ui:include src="../cadastro/DetalheMovimentacao.xhtml"/>
-                            </ui:insert>
-                            </TD>
-                        </TABLE>
-                    </h:panelGroup>
+                <p:layoutUnit position="center" >
+                    <p:layout style="min-width:400px;min-height:200px;" id="layout"> 
+                        
+                        <p:layoutUnit position="north" resizable="true" scrollable="true">  
+                            <h:panelGroup id="conteudoCentralSuperiorGroup">
+                                <TABLE  width="100%">
+                                    <TD align="left" valign="top" style="width: 200px;">
+                                    <ui:insert name="menuCenterPos">
+                                        <h:form id="formMenu">
+                                            <p:menu style="width:190px;"  type="sliding" backLabel="#{msg.voltar}">
+                                                <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
+                                            </p:menu>
+                                        </h:form>
+                                    </ui:insert>
+                                    </TD>
+                                    <TD align="left" valign="top">
+                                    <ui:insert name="conteudoCenterPos">
+                                        <ui:include src="../cadastro/DetalheMovimentacao.xhtml"/>
+                                    </ui:insert>
+                                    </TD>
+                                </TABLE>
+                            </h:panelGroup>
+                        </p:layoutUnit>
+                        
+                        <p:layoutUnit position="center" resizable="true" scrollable="true"> 
+                            <h:panelGroup id="conteudoCentralInferiorGroup">
+
+                            </h:panelGroup>
+                        </p:layoutUnit>
+                    
+                    </p:layout>
                 </p:layoutUnit>
 
             </p:layout>

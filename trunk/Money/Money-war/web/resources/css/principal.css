@@ -23,6 +23,10 @@ a{
     color: inactiveborder;
 }
 
+.center{
+    text-align: center;
+}
+
 .ui-growl {
 left:120px;
 top: 10px;
