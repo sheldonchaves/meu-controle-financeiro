@@ -417,7 +417,7 @@ public class UtilMetodos {
      * @param dataVencimento
      * @return
      */
-    public synchronized static String getIdentificadorUnico(int idUser, Date dataVencimento) {
+    public synchronized static String getIdentificadorUnico(long idUser, Date dataVencimento) {
         if (dataVencimento == null) {
             dataVencimento = new Date();
         }

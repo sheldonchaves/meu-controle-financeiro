@@ -11,6 +11,10 @@
             <h:panelGroup id="cadContaGroup">
                 <h:form id="formContaBancaria">
                     <h:panelGrid columns="3">
+                        <p:spacer width="50" height="0"/>
+                        <p:spacer width="50" height="0"/>
+                        <p:spacer width="30" height="0"/>
+                        
                         <h:outputLabel value="#{msg.nomeid}:" title="#{msg.titleNomeId}"/>
                         <p:inputText value="#{contaBancariaManager.contaBancaria.nomeConta}" label="#{msg.nomeid}" id="nomeConta"
                                      required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="50" 

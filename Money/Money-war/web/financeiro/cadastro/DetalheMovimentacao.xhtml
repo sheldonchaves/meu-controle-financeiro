@@ -11,6 +11,10 @@
             <h:panelGroup id="cadDetalheGroup">
                 <h:form id="formDetalheMovimentacao">
                     <h:panelGrid columns="3">
+                        <p:spacer width="50" height="0"/>
+                        <p:spacer width="50" height="0"/>
+                        <p:spacer width="30" height="0"/>
+                        
                         <h:outputLabel value="#{msg.detalhe}:"/>
                         <p:inputText value="#{detalheMovimentacao.detalheMovimentacao.detalhe}" label="#{msg.detalhe}" id="detalheMovimentacao"
                                      required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="255" binding="#{detalheMovimentacao.input}"
