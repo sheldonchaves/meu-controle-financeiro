@@ -10,57 +10,71 @@ import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ReceitaDivida;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
 import javax.ejb.Stateless;
+import java.util.*;
 /**
  *
  * @author Guilherme
  */
 @Stateless(name = "receitaDividaValidador")
-public class ReceitaDividaValidador implements ValidadorInterface<ReceitaDivida, ReceitaDividaBeanLocal>{
+public class ReceitaDividaValidador implements ValidadorInterface<ReceitaDivida, ReceitaDividaBeanLocal> {
 
     @Override
     public void validar(ReceitaDivida entidade, ReceitaDividaBeanLocal bean, Object object) throws ValidacaoException {
         if (entidade == null) {
             lancarException("receitaDividaNula", "Débito/Crédito");
         }
-        if(entidade.getValor() == null){
+        if (entidade.getValor() == null) {
             lancarException("receitaDividaValor", "Valor");
         }
-        
-        if(entidade.getJuros() == null){
+
+        if (entidade.getJuros() == null) {
             lancarException("receitaDividaJuros", "Juros");
         }
-        
-        if(entidade.getDataVencimento() == null){
+
+        if (entidade.getDataVencimento() == null) {
             lancarException("receitaDividaData", "Data Vencimento");
         }
-        
-        if(entidade.getParcelaAtual() == null){
+
+        if (entidade.getParcelaAtual() == null) {
             lancarException("receitaDividaParcelaAtual", "Parcela Atual");
         }
-        
-        if(entidade.getParcelaTotal() == null){
+
+        if (entidade.getParcelaTotal() == null) {
             lancarException("receitaDividaParcelaTotal", "Parcela Atual");
         }
-        
-        if(entidade.getStatusPagamento() == null){
+
+        if (entidade.getStatusPagamento() == null) {
             lancarException("receitaDividaStatusPagamento", "Parcela Atual");
         }
-        
-        if(entidade.getTipoMovimentacao() == null){
+
+        if (entidade.getTipoMovimentacao() == null) {
             lancarException("receitaDividaTipoPagamento", "Débito/Crédito");
         }
-        
-        if(entidade.getUsuario() == null){
+
+        if (entidade.getUsuario() == null) {
             lancarException("receitaDividaUsuario", "Débito/Crédito");
         }
-        
-        if(entidade.getIdentificador() == null){
+
+        if (entidade.getIdentificador() == null) {
             lancarException("receitaDividaIdentificador", "Identificador Único");
         }
+        if(!validaAno(entidade.getDataVencimento())){
+            lancarException("receitaDividaDataGrande", "Data Vencimento");
+        }
     }
-    
-        private void lancarException(String msg, String atributo) {
+
+    private void lancarException(String msg, String atributo) {
         ReceitaDividaException due = new ReceitaDividaException(msg, atributo);
         throw due;
+    }
+    
+    private boolean validaAno(Date date){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        if(c.get(Calendar.YEAR) > 3000){//Limite ano 3000
+            return false;
+        }else{
+            return true;
+        }
     }
 }
