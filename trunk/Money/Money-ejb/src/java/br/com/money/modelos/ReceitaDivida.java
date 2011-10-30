@@ -6,7 +6,7 @@ package br.com.money.modelos;
 
 import br.com.money.enums.StatusPagamento;
 import br.com.money.enums.TipoMovimentacao;
-import java.io.Serializable;
+import br.com.money.vaidators.interfaces.ValidadoInterface;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -16,7 +16,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="money_receita_divida")
-public class ReceitaDivida implements Serializable {
+public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivida> {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -42,10 +42,13 @@ public class ReceitaDivida implements Serializable {
 
     @Column(name = "ds_observacao", length = 255, nullable = true)
     private String observacao;
-
+    
+    @Column(name="nm_identificador", length=50, nullable=true)
+    private String identificador;
+    
     @Column(name = "en_status_pgto", nullable = false)
     @Enumerated(EnumType.STRING)
-    private StatusPagamento statusPagamento;
+    private StatusPagamento statusPagamento = StatusPagamento.NAO_PAGA;
 
     @Column(name="en_tipo_movimentacao", nullable=false)
     @Enumerated(EnumType.STRING)
@@ -136,6 +139,14 @@ public class ReceitaDivida implements Serializable {
         this.usuario = usuario;
     }
 
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -159,6 +170,16 @@ public class ReceitaDivida implements Serializable {
     @Override
     public String toString() {
         return "br.com.money.modelos.ReceitaDivida[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(ReceitaDivida o) {
+        int i = 0;
+        if(i == 0) i = this.dataVencimento.compareTo(o.dataVencimento);
+        if(i == 0) i = (this.valor.compareTo(o.valor) * -1);
+        if(i == 0) i = (this.parcelaAtual.compareTo(o.parcelaAtual) * -1);
+        if(i == 0) i = this.id.compareTo(o.id);
+        return i;
     }
     
 }
