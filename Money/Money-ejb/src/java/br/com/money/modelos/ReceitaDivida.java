@@ -54,6 +54,10 @@ public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivid
     @Enumerated(EnumType.STRING)
     private TipoMovimentacao tipoMovimentacao;
 
+    @ManyToOne(targetEntity=br.com.money.modelos.ContaBancaria.class)
+    @JoinColumn(name="fk_detalhe_movimentacao_id", referencedColumnName="id",nullable=false)
+    private DetalheMovimentacao detalheMovimentacao;
+    
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="fk_usuario_id", referencedColumnName="id")
     private Usuario usuario;
@@ -147,6 +151,14 @@ public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivid
         this.identificador = identificador;
     }
 
+    public DetalheMovimentacao getDetalheMovimentacao() {
+        return detalheMovimentacao;
+    }
+
+    public void setDetalheMovimentacao(DetalheMovimentacao detalheMovimentacao) {
+        this.detalheMovimentacao = detalheMovimentacao;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
