@@ -62,9 +62,8 @@
             <h:panelGroup id="cadContaTableGroup">
                 <h:form id="formContaBancariaTable">
                     <p:dataTable value="#{contaBancariaManager.contasBancarias}" var="conta" 
-                                 id="tableCertificacao" rows="3" paginator="true" 
-                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks}
-                                 {NextPageLink} {LastPageLink}" 
+                                 id="tableCertificacao" rows="5" paginator="true" 
+                                 paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink}" 
                                  emptyMessage="#{msg.semRegistrosEcontrados}">
                         
                         <p:column id="col1" style="width: 100px;">
