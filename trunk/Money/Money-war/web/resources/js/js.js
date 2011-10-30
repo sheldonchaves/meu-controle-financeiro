@@ -85,6 +85,27 @@ function Contar(Campo, idmsg, limite){
         document.getElementById(idmsg).style.color = "blue";
     }
 }
+function formatar(src, mask, e){
+  var whichCode = (window.Event) ? e.which : e.keyCode;
+  if(whichCode == 13 || whichCode == 8 || whichCode == 0) return true;
+  var i = src.value.length;
+  var saida = mask.substring(0,1);
+  var texto = mask.substring(i)
+if (texto.substring(0,1) != saida)
+  {
+    src.value += texto.substring(0,1);
+  }
+}
+
+//onkeypress='return SomenteNumero(event)'
+function SomenteNumero(e){
+    var tecla=(window.event)?event.keyCode:e.which;   
+    if((tecla>47 && tecla<58)) return true;
+    else{
+    	if (tecla==8 || tecla==0) return true;
+	else  return false;
+    }
+}
 /**
 function getInternetExplorerVersion()
 // Returns the version of Windows Internet Explorer or a -1

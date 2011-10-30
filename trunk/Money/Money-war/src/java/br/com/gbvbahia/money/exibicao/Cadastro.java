@@ -19,10 +19,11 @@ public class Cadastro extends FluxoExibicaoMaster {
 
     private boolean exibirCadastroDetalheMovimentacao;
     private boolean exibirCadastroContaBancaria;
+    private boolean exibirCadastroContaPagar;
 
     private enum PaginaFluxo {
 
-        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA;
+        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR;
     }
 
     /** Creates a new instance of Cadastro */
@@ -38,9 +39,14 @@ public class Cadastro extends FluxoExibicaoMaster {
         alterarTela(PaginaFluxo.CADASTRO_CONTA_BANCARIA);
     }
 
+    public void fluxoExibirCadastroContaPagar() {
+        alterarTela(PaginaFluxo.CADASTRO_CONTA_PAGAR);
+    }
+
     private void alterarTela(PaginaFluxo paginaLogin) {
         exibirCadastroDetalheMovimentacao = (PaginaFluxo.CADASTRO_DETALHE_MOVIMENTACAO.equals(paginaLogin));
         exibirCadastroContaBancaria = (PaginaFluxo.CADASTRO_CONTA_BANCARIA.equals(paginaLogin));
+        exibirCadastroContaPagar = (PaginaFluxo.CADASTRO_CONTA_PAGAR.equals(paginaLogin));
         definirAtributos(paginaLogin);
     }
 
@@ -52,6 +58,9 @@ public class Cadastro extends FluxoExibicaoMaster {
                 break;
             case CADASTRO_CONTA_BANCARIA:
                 this.tituloPanel = UtilMetodos.getResourceBundle("titlePanelCadastroContaBancaria", fc);
+                break;
+            case CADASTRO_CONTA_PAGAR:
+                this.tituloPanel = UtilMetodos.getResourceBundle("titlePanelCadastroContaPagar", fc);
                 break;
             default:
                 throw new AssertionError("Não foi definido case para a enum: " + paginaLogin.toString());
@@ -72,5 +81,13 @@ public class Cadastro extends FluxoExibicaoMaster {
 
     public void setExibirCadastroContaBancaria(boolean exibirCadastroContaBancaria) {
         this.exibirCadastroContaBancaria = exibirCadastroContaBancaria;
+    }
+
+    public boolean isExibirCadastroContaPagar() {
+        return exibirCadastroContaPagar;
+    }
+
+    public void setExibirCadastroContaPagar(boolean exibirCadastroContaPagar) {
+        this.exibirCadastroContaPagar = exibirCadastroContaPagar;
     }
 }

@@ -111,6 +111,6 @@ public class ControleObserver {
 
         public static final int CAD_DETALHE_MOVIMENTACAO = 1000;
         public static final int CAD_CONTA_BANCARIA = 2000;
-        
+        public static final int CAD_CONTA_PAGAR_RECEBER = 3000;
     }
 }
