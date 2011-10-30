@@ -49,7 +49,7 @@
 
                         <h:outputLabel value="#{msg.observacao}:"/>
                         <p:inputText value="#{contaPagarManager.receitaDivida.observacao}" label="#{msg.observacao}"
-                                     id="obs" required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                     id="obs" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="30"
                                      size="30" binding="#{contaPagarManager.obsInut}"/>
                         <p:message for="obs"/>     
 
@@ -77,14 +77,14 @@
 
                         <p:column id="col1" styleClass="center">
                             <f:facet name="header">
-                                <h:outputText value="#{msg.dataVencimento}"/>
+                                <h:outputText value="#{msg.vencimento}"/>
                             </f:facet>
                             <h:outputText value="#{divida.dataVencimento}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
                             </h:outputText>
                         </p:column>
 
-                        <p:column id="col2" styleClass="center" style="width: 70px;">
+                        <p:column id="col2" styleClass="right" style="width: 50px;">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.valor}"/>
                             </f:facet>
@@ -95,7 +95,7 @@
 
                         <p:column id="col3" styleClass="center">
                             <f:facet name="header">
-                                <h:outputText value="#{msg.parcelaAtual}"/>
+                                <h:outputText value="#{msg.atual}"/>
                             </f:facet>
                             <h:outputText value="#{divida.parcelaAtual}">
                             </h:outputText>
@@ -103,20 +103,20 @@
 
                         <p:column id="col4" styleClass="center">
                             <f:facet name="header">
-                                <h:outputText value="#{msg.parcelaTotal}"/>
+                                <h:outputText value="#{msg.total}"/>
                             </f:facet>
                             <h:outputText value="#{divida.parcelaTotal}">
                             </h:outputText>
                         </p:column>
 
-                        <p:column id="col5" styleClass="center" style="width: 90px;">
+                        <p:column id="col5" styleClass="center" style="width: 50px;">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.status}"/>
                             </f:facet>
                             <h:outputText value="#{divida.statusPagamento.statusString}">
                             </h:outputText>
                         </p:column>
-                        
+
                         <p:column id="col6" style="width: 150px;">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.observacao}"/>
@@ -124,7 +124,48 @@
                             <h:outputText value="#{divida.observacao}">
                             </h:outputText>
                         </p:column>
+
+                        <p:column id="col7" styleClass="center" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.remover}"/>
+                            </f:facet>
+                            <p:commandLink update="conteudoCentralSuperiorGroup" id="buttonDelte" styleClass="ui-button_link" oncomplete="dlg1.show();">
+                                <h:graphicImage library="img" name="erase_16.png"/>
+                                <f:setPropertyActionListener value="#{divida}" target="#{contaPagarManager.receitaDividaToDelete}"/>
+                            </p:commandLink>
+                        </p:column>
                     </p:dataTable>
+                    
+                    <p:dialog header="#{msg.titleConfirme}" widgetVar="dlg1" resizable="false" position="top" modal="false">  
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="#{msg.dataVencimento}"/>
+                            <h:outputText value="#{contaPagarManager.receitaDividaToDelete.dataVencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
+                            </h:outputText>
+                            
+                            <h:outputLabel value="#{msg.valor}"/>
+                            <h:outputText value="#{contaPagarManager.receitaDividaToDelete.valor}">
+                                <f:converter converterId="moneyConverter"/>
+                            </h:outputText>
+                            
+                            <h:outputLabel value="#{msg.observacao}"/>
+                            <h:outputText value="#{contaPagarManager.receitaDividaToDelete.observacao}"/>
+                            
+                            <h:outputLabel value="#{msg.incluirParcelas}"/>
+                            <h:selectBooleanCheckbox value="#{contaPagarManager.apagarPrestacoes}"/>
+                            
+                            <h:outputLabel value=""/>
+                        <h:panelGroup>
+                            <p:commandButton value="#{msg.confirmar}" image="ui-icon ui-icon-check" actionListener="#{contaPagarManager.deletarConta()}"
+                                             oncomplete="dlg1.hide();" update="messages,conteudoCentralSuperiorGroup">
+                            </p:commandButton>
+                            <p:spacer height="3" width="10"/>
+                            <p:commandButton value="#{msg.cancelar}" image="ui-icon ui-icon-cancel" actionListener="#{contaPagarManager.clean()}" 
+                                             oncomplete="dlg1.hide();" immediate="true" update="messages,conteudoCentralSuperiorGroup">
+                            </p:commandButton>
+                        </h:panelGroup>
+                        </h:panelGrid>
+                    </p:dialog> 
                 </h:form>
             </h:panelGroup>
             </TD>
