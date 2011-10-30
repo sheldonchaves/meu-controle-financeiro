@@ -42,11 +42,6 @@ public class MovimentacaoFinanceira implements Serializable {
 
     @Column(name="vl_saldo_posterior", nullable=false)
     private Double saldoPosterior;
-    
-    @ManyToOne(targetEntity=br.com.money.modelos.ContaBancaria.class)
-        @JoinColumn(name="fk_detalhe_movimentacao_id", referencedColumnName="id",nullable=false)
-    private DetalheMovimentacao detalheMovimentacao;
-    
     /**
      * A conta bancária que sofreu a movimentação
      */
@@ -105,14 +100,6 @@ public class MovimentacaoFinanceira implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public DetalheMovimentacao getDetalheMovimentacao() {
-        return detalheMovimentacao;
-    }
-
-    public void setDetalheMovimentacao(DetalheMovimentacao detalheMovimentacao) {
-        this.detalheMovimentacao = detalheMovimentacao;
     }
 
     @Override
