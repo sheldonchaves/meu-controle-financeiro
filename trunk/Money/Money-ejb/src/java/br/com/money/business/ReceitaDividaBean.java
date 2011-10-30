@@ -5,9 +5,13 @@
 package br.com.money.business;
 
 import br.com.money.business.interfaces.ReceitaDividaBeanLocal;
+import br.com.money.enums.StatusPagamento;
+import br.com.money.enums.TipoMovimentacao;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ReceitaDivida;
+import br.com.money.modelos.Usuario;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
+import java.util.*;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.*;
@@ -34,5 +38,28 @@ public class ReceitaDividaBean implements ReceitaDividaBeanLocal {
         }
         manager.flush();
     }
+
+    @Override
+    public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, 
+    Usuario usuario, StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao) {
+        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarReceitaDividasPorUsuarioStatusPaginada");
+        q.setMaxResults(tamanho);
+        q.setFirstResult(posicaoInicial);
+        q.setParameter("usuario", usuario);
+        q.setParameter("statusPagamento", statusPagamento);
+        q.setParameter("tipoMovimentacao", tipoMovimentacao);
+        return q.getResultList();
+    }
+    
+    @Override
+    public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(Usuario usuario, StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao){
+        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada");
+        q.setParameter("usuario", usuario);
+        q.setParameter("statusPagamento", statusPagamento);
+        q.setParameter("tipoMovimentacao", tipoMovimentacao);
+        Long toReturn = (Long) q.getSingleResult();
+        return toReturn.intValue();
+    }
+    
     
 }
