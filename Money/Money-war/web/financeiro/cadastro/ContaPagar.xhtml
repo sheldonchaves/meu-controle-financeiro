@@ -17,7 +17,8 @@
 
                         <h:outputLabel value="#{msg.dataVencimento}:"/> 
                         <p:calendar value="#{contaPagarManager.receitaDivida.dataVencimento}" required="true"
-                                    requiredMessage="#{msg.campoObrigatorio}" id="dataVencimento" onkeypress="return formatar(this, '##/##/####',event)"
+                                    requiredMessage="#{msg.campoObrigatorio}" id="dataVencimento" onkeyup="return MascaraData(this)"
+                                    maxlength="10"
                                     label="#{msg.dataVencimento}" timeZone="#{initParam['timezone']}" 
                                     pattern="dd/MM/yyyy" binding="#{contaPagarManager.calendarInput}"/>
                         <p:message for="dataVencimento"/>
