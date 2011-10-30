@@ -19,7 +19,7 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
 
     private static final long serialVersionUID = 1L;
 
-    public static final int QUANTIDADE_CARACTERES_DETALHE = 255;
+    public static final int QUANTIDADE_CARACTERES_DETALHE = 100;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
