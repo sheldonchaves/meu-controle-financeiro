@@ -5,7 +5,6 @@
 package br.com.money.vaidators;
 
 import br.com.money.business.interfaces.ContaBancariaBeanLocal;
-import br.com.money.enums.TipoConta;
 import br.com.money.exceptions.ContaBancariaException;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ContaBancaria;
