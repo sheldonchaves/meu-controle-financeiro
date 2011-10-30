@@ -47,4 +47,12 @@ public interface ReceitaDividaBeanLocal {
      * @return 
      */
     Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(Usuario usuario, StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao);
+
+    /**
+     * Apaga a ReceitaDivida passada. Se quiser apagar as parcelas passar true no segundo parâmetro.
+     * @param receitaDivida
+     * @param deleteParcelas 
+     * @throws ValidacaoException se status da conta passada  estiver como PAGA
+     */
+    void apagarReceitaDivida(ReceitaDivida receitaDivida,boolean deleteParcelas) throws ValidacaoException;
 }

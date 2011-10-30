@@ -23,4 +23,14 @@
         </query>
     </named-query>
    
+      <named-query name="ReceitaDividaBean.apagarReceitaDivida">
+        <query>
+			Delete From ReceitaDivida rd
+                        Where rd.usuario = :usuario
+                        And rd.statusPagamento = :statusPagamento
+                        And rd.identificador = :identificador
+                        And rd.parcelaAtual >= :parcelaAtual
+        </query>
+    </named-query>
+   
 </entity-mappings>
