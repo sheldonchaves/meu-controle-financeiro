@@ -14,14 +14,14 @@
                         <p:spacer width="100" height="0"/>
                         <p:spacer width="50" height="0"/>
                         <p:spacer width="30" height="0"/>
-                        
+
                         <h:outputLabel value="#{msg.dataVencimento}:"/> 
                         <p:calendar value="#{contaPagarManager.receitaDivida.dataVencimento}" required="true"
                                     requiredMessage="#{msg.campoObrigatorio}" id="dataVencimento" onkeypress="return formatar(this, '##/##/####',event)"
                                     label="#{msg.dataVencimento}" timeZone="#{initParam['timezone']}" 
                                     pattern="dd/MM/yyyy" binding="#{contaPagarManager.calendarInput}"/>
                         <p:message for="dataVencimento"/>
-                        
+
                         <h:outputLabel value="#{msg.valor}:"/>
                         <p:inputText value="#{contaPagarManager.receitaDivida.valor}" label="#{msg.valor}"
                                      id="valor" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="20"
@@ -29,30 +29,30 @@
                             <f:converter converterId="moneyConverter"/>
                         </p:inputText>
                         <p:message for="valor"/>
-                        
+
                         <h:outputLabel value="#{msg.parcelaAtual}:"/>
                         <p:inputText value="#{contaPagarManager.receitaDivida.parcelaAtual}" label="#{msg.parcelaAtual}"
                                      id="parcelaAtual" required="true" requiredMessage="#{msg.campoObrigatorio}" 
                                      onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaPagarManager.parcelAtualInput}"/>
                         <p:message for="parcelaAtual"/>             
-                        
+
                         <h:outputLabel value="#{msg.parcelaTotal}:"/>
                         <p:inputText value="#{contaPagarManager.receitaDivida.parcelaTotal}" label="#{msg.parcelaTotal}"
                                      id="parcelaTotal" required="true" requiredMessage="#{msg.campoObrigatorio}" 
                                      onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaPagarManager.parcelTotalInput}"/>
                         <p:message for="parcelaTotal"/>     
-                        
+
                         <h:outputLabel value="#{msg.salvarParcelas}:"/>
                         <p:selectBooleanCheckbox value="#{contaPagarManager.salvarParcelas}" label="#{msg.salvarParcelas}"
                                                  id="salvarParcelas" binding="#{contaPagarManager.salvarParcelasInput}"/>
                         <p:message for="salvarParcelas"/>  
-                        
+
                         <h:outputLabel value="#{msg.observacao}:"/>
                         <p:inputText value="#{contaPagarManager.receitaDivida.observacao}" label="#{msg.observacao}"
                                      id="obs" required="true" requiredMessage="#{msg.campoObrigatorio}"
                                      size="30" binding="#{contaPagarManager.obsInut}"/>
                         <p:message for="obs"/>     
-                        
+
                         <h:outputLabel value=""/>
                         <h:panelGroup>
                             <p:commandButton value="#{msg.salvar}" image="ui-icon ui-icon-disk" actionListener="#{contaPagarManager.salvarContaPagar()}"
@@ -72,7 +72,59 @@
             <TD align="left" valign="top" style="width: 100px;">
             <h:panelGroup id="cadContaPagarTableGroup">
                 <h:form id="formContaPagarTable">
-                    
+                    <p:dataTable var="divida" value="#{contaPagarManager.dividas}" paginator="true" rows="5" lazy="true" 
+                                 paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink}" emptyMessage="#{msg.semRegistrosEcontrados}">
+
+                        <p:column id="col1" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.dataVencimento}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.dataVencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col2" styleClass="center" style="width: 70px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.valor}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.valor}">
+                                <f:converter converterId="moneyConverter"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col3" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.parcelaAtual}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.parcelaAtual}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col4" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.parcelaTotal}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.parcelaTotal}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col5" styleClass="center" style="width: 90px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.status}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.statusPagamento.statusString}">
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column id="col6" style="width: 150px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.observacao}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.observacao}">
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
                 </h:form>
             </h:panelGroup>
             </TD>

@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.money.manager;
 
+import br.com.gbvbahia.money.manager.lazyTables.LazyReceitaDividaModel;
 import br.com.gbvbahia.money.observador.ControleObserver;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.ReceitaDividaBeanLocal;
@@ -25,6 +26,7 @@ import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 import javax.faces.context.FacesContext;
 import org.apache.commons.lang.StringUtils;
+import org.primefaces.model.LazyDataModel;
 
 /**
  *
@@ -42,6 +44,9 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     
     @ManagedProperty("#{selectItemManager}")
     private SelectItemManager selectItemManager;
+    
+    private LazyDataModel<ReceitaDivida> dividas;//LazyLoad (Paginação)
+    private List<ReceitaDivida> temp;
     
     private ReceitaDivida receitaDivida;
     private boolean salvarParcelas;
@@ -63,6 +68,8 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     @Override
     public void init() {
         clean();
+        this.dividas = new LazyReceitaDividaModel(receitaDividaBean, loginManager.getUsuario(), StatusPagamento.NAO_PAGA, TipoMovimentacao.RETIRADA);
+        temp = this.receitaDividaBean.buscarReceitaDividasPorUsuarioStatusPaginada(0, 10, loginManager.getUsuario(), StatusPagamento.NAO_PAGA, TipoMovimentacao.RETIRADA);
         ControleObserver.addBeanObserver(loginManager.getUsuario(), this);
         Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "ContaPagarManager.init() executado!");
     }
@@ -255,5 +262,21 @@ public class ContaPagarManager implements InterfaceManager, Observer {
 
     public void setSalvarParcelasInput(HtmlSelectBooleanCheckbox salvarParcelasInput) {
         this.salvarParcelasInput = salvarParcelasInput;
+    }
+
+    public LazyDataModel<ReceitaDivida> getDividas() {
+        return dividas;
+    }
+
+    public void setDividas(LazyDataModel<ReceitaDivida> dividas) {
+        this.dividas = dividas;
+    }
+
+    public List<ReceitaDivida> getTemp() {
+        return temp;
+    }
+
+    public void setTemp(List<ReceitaDivida> temp) {
+        this.temp = temp;
     }
 }

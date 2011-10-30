@@ -48,12 +48,11 @@
             <h:panelGroup id="cadDetalheTableGroup">
                 <h:form id="formDetalheMovimentacaoTable">
                     <p:dataTable value="#{detalheMovimentacao.detalhes}" var="detalhe" 
-                                 id="tableCertificacao" rows="3" paginator="true" 
-                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks}
-                                 {NextPageLink} {LastPageLink}" 
+                                 id="tableCertificacao" rows="5" paginator="true" 
+                                 paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink}" 
                                  emptyMessage="#{msg.semRegistrosEcontrados}">
 
-                        <p:column id="col1" >
+                        <p:column id="col1" style="width: 150px;">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.detalhe}"/>
                             </f:facet>
@@ -76,7 +75,7 @@
 
                         </p:column>
 
-                        <p:column id="col2" styleClass="center" style="width: 20px;">
+                        <p:column id="col2" styleClass="center">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.editar}"/>
                             </f:facet>
