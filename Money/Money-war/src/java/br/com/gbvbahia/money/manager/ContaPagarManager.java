@@ -51,6 +51,9 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     private ReceitaDivida receitaDivida;
     private boolean salvarParcelas;
     
+    private ReceitaDivida receitaDividaToDelete;
+    private boolean apagarPrestacoes;
+    
     private HtmlInputText valorInput;
     private HtmlInputText parcelAtualInput;
     private HtmlInputText parcelTotalInput;
@@ -102,6 +105,8 @@ public class ContaPagarManager implements InterfaceManager, Observer {
         receitaDivida.setStatusPagamento(StatusPagamento.NAO_PAGA);
         receitaDivida.setValor(0.00);
         salvarParcelas = false;
+        receitaDividaToDelete = null;
+        apagarPrestacoes = false;
         if(valorInput != null){
             valorInput.setSubmittedValue("0,00");
         }
@@ -177,6 +182,20 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     //====================
     //Table Actions
     //====================
+    public void deletarConta(){
+        try{
+        this.receitaDividaBean.apagarReceitaDivida(receitaDividaToDelete, apagarPrestacoes);
+        UtilMetodos.messageFactoringFull("contaApagadaOK", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+        clean();
+        }catch(ValidacaoException v){
+             if (!StringUtils.isBlank(v.getAtributoName())) {
+                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+            } else {
+                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+            }
+        }
+    }
+    
     //====================
     //SelectItem
     //====================
@@ -278,5 +297,21 @@ public class ContaPagarManager implements InterfaceManager, Observer {
 
     public void setTemp(List<ReceitaDivida> temp) {
         this.temp = temp;
+    }
+
+    public boolean isApagarPrestacoes() {
+        return apagarPrestacoes;
+    }
+
+    public void setApagarPrestacoes(boolean apagarPrestacoes) {
+        this.apagarPrestacoes = apagarPrestacoes;
+    }
+
+    public ReceitaDivida getReceitaDividaToDelete() {
+        return receitaDividaToDelete;
+    }
+
+    public void setReceitaDividaToDelete(ReceitaDivida receitaDividaToDelete) {
+        this.receitaDividaToDelete = receitaDividaToDelete;
     }
 }
