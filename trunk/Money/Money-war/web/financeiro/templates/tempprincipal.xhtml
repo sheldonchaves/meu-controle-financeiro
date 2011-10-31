@@ -24,7 +24,7 @@
             <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="2500"/> 
             <p:layout fullPage="true">
 
-                <p:layoutUnit position="north" size="70" resizable="false" closable="false" collapsible="false">
+                <p:layoutUnit position="north" size="50" resizable="false" closable="false" collapsible="false">
                     <ui:insert name="topPos">
                         <h:outputText value="Top unit content." />
                     </ui:insert>
@@ -36,7 +36,7 @@
                     </ui:insert>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="west" size="250" header="#{msg.contas}" resizable="true" closable="false" collapsible="true">
+                <p:layoutUnit position="west" size="220" header="#{msg.contas}" resizable="true" closable="false" collapsible="true">
                     <h:panelGroup id="conteudoEsquerdoGroup">
                         <ui:insert name="westPos">
                             <TABLE  width="100%">
@@ -73,7 +73,7 @@
                                     <TD align="left" valign="top" style="width: 200px;">
                                     <ui:insert name="menuCenterPos">
                                         <h:form id="formMenu">
-                                            <p:menu style="width:190px;"  type="sliding" backLabel="#{msg.voltar}">
+                                            <p:menu style="width:170px;"  type="sliding" backLabel="#{msg.voltar}">
                                                 <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
                                                 <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaBancaria}" action="#{fluxoCadastro.fluxoExibirCadastroContaBancaria()}" icon="conta" />
                                                 <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaPagar}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagar()}" icon="pagar" />
