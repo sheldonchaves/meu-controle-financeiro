@@ -61,6 +61,10 @@ public class ReceitaDividaValidador implements ValidadorInterface<ReceitaDivida,
         if(!validaAno(entidade.getDataVencimento())){
             lancarException("receitaDividaDataGrande", "Data Vencimento");
         }
+        
+        if(entidade.getDetalheMovimentacao() == null){
+            lancarException("receitaDividaDetalhe", "Detalhe");
+        }
     }
 
     private void lancarException(String msg, String atributo) {
