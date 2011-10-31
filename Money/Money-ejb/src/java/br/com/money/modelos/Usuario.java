@@ -174,6 +174,6 @@ public class Usuario implements ValidadoInterface {
 
     @Override
     public String toString() {
-        return "br.com.money.modelos.Usuario[ id=" + id + " ]";
+        return this.firstName + " " + lastName;
     }
 }
