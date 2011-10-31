@@ -33,7 +33,9 @@ import org.apache.commons.lang.StringUtils;
 @ManagedBean(name = "detalheMovimentacao")
 @ViewScoped
 public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
-
+    
+    public static final int CARACTERES_DETALHE_MOVIMENTACAO_LIMIT = 25;
+    
     @EJB
     private DetalheUsuarioBeanLocal detalheUsuarioBean;
     
@@ -159,4 +161,8 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
     public void setLoginManager(LoginManager loginManager) {
         this.loginManager = loginManager;
     }
+
+    public int getCaracteresLimit() {
+        return CARACTERES_DETALHE_MOVIMENTACAO_LIMIT;
+    }    
 }

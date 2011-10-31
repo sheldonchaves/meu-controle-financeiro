@@ -17,9 +17,9 @@
                         
                         <h:outputLabel value="#{msg.detalhe}:"/>
                         <p:inputText value="#{detalheMovimentacao.detalheMovimentacao.detalhe}" label="#{msg.detalhe}" id="detalheMovimentacao"
-                                     required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="255" binding="#{detalheMovimentacao.input}"
+                                     required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="#{detalheMovimentacao.caracteresLimit}" binding="#{detalheMovimentacao.input}"
                                      size="40">
-                            <f:validateLength maximum="255"/>
+                            <f:validateLength maximum="#{detalheMovimentacao.caracteresLimit}"/>
                         </p:inputText>
                         <p:message for="detalheMovimentacao"/>
 
