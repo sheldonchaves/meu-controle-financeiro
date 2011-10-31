@@ -33,7 +33,8 @@
                         <p:message for="saldo"/>
 
                         <h:outputLabel value="#{msg.tipo}:" />
-                        <p:selectOneMenu value="#{contaBancariaManager.contaBancaria.tipoConta}" label="#{msg.tipo}"
+                        <p:selectOneMenu value="#{contaBancariaManager.contaBancaria.tipoConta}" label="#{msg.tipo}" 
+                                         binding="#{contaBancariaManager.selctTipoConta}"
                                          id="tipoConta" required="true" requiredMessage="#{msg.campoObrigatorio}">
                             <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
                             <f:selectItems value="#{contaBancariaManager.selectTipoConta}"/>

@@ -17,7 +17,7 @@
 
                         <h:outputLabel value="#{msg.dataVencimento}:"/> 
                         <p:calendar value="#{contaPagarManager.receitaDivida.dataVencimento}" required="true"
-                                    requiredMessage="#{msg.campoObrigatorio}" id="dataVencimento" onkeyup="return MascaraData(this)"
+                                    requiredMessage="#{msg.campoObrigatorio}" id="dataVencimento" onkeyup="formatar(this, '##/##/####', event)"
                                     maxlength="10"
                                     label="#{msg.dataVencimento}" timeZone="#{initParam['timezone']}" 
                                     pattern="dd/MM/yyyy" binding="#{contaPagarManager.calendarInput}"/>
@@ -47,6 +47,16 @@
                         <p:selectBooleanCheckbox value="#{contaPagarManager.salvarParcelas}" label="#{msg.salvarParcelas}"
                                                  id="salvarParcelas" binding="#{contaPagarManager.salvarParcelasInput}"/>
                         <p:message for="salvarParcelas"/>  
+
+                        <h:outputLabel value="#{msg.detalhe}:" />
+                        <p:selectOneMenu value="#{contaPagarManager.receitaDivida.detalheMovimentacao}" label="#{msg.detalhe}"
+                                         binding="#{contaPagarManager.selctDetalhePagamento}"
+                                         id="tipoConta" required="true" requiredMessage="#{msg.campoObrigatorio}">
+                            <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
+                            <f:selectItems value="#{contaPagarManager.detalhes}"/>
+                            <f:converter converterId="detalheMovimentacaoConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="tipoConta"/>
 
                         <h:outputLabel value="#{msg.observacao}:"/>
                         <p:inputText value="#{contaPagarManager.receitaDivida.observacao}" label="#{msg.observacao}"
@@ -136,35 +146,35 @@
                             </p:commandLink>
                         </p:column>
                     </p:dataTable>
-                    
+
                     <p:dialog header="#{msg.titleConfirme}" widgetVar="dlg1" resizable="false" position="top" modal="false">  
                         <h:panelGrid columns="2">
                             <h:outputLabel value="#{msg.dataVencimento}"/>
                             <h:outputText value="#{contaPagarManager.receitaDividaToDelete.dataVencimento}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
                             </h:outputText>
-                            
+
                             <h:outputLabel value="#{msg.valor}"/>
                             <h:outputText value="#{contaPagarManager.receitaDividaToDelete.valor}">
                                 <f:converter converterId="moneyConverter"/>
                             </h:outputText>
-                            
+
                             <h:outputLabel value="#{msg.observacao}"/>
                             <h:outputText value="#{contaPagarManager.receitaDividaToDelete.observacao}"/>
-                            
+
                             <h:outputLabel value="#{msg.incluirParcelas}"/>
                             <h:selectBooleanCheckbox value="#{contaPagarManager.apagarPrestacoes}"/>
-                            
+
                             <h:outputLabel value=""/>
-                        <h:panelGroup>
-                            <p:commandButton value="#{msg.confirmar}" image="ui-icon ui-icon-check" actionListener="#{contaPagarManager.deletarConta()}"
-                                             oncomplete="dlg1.hide();" update="messages,conteudoCentralSuperiorGroup">
-                            </p:commandButton>
-                            <p:spacer height="3" width="10"/>
-                            <p:commandButton value="#{msg.cancelar}" image="ui-icon ui-icon-cancel" actionListener="#{contaPagarManager.clean()}" 
-                                             oncomplete="dlg1.hide();" immediate="true" update="messages,conteudoCentralSuperiorGroup">
-                            </p:commandButton>
-                        </h:panelGroup>
+                            <h:panelGroup>
+                                <p:commandButton value="#{msg.confirmar}" image="ui-icon ui-icon-check" actionListener="#{contaPagarManager.deletarConta()}"
+                                                 oncomplete="dlg1.hide();" update="messages,conteudoCentralSuperiorGroup">
+                                </p:commandButton>
+                                <p:spacer height="3" width="10"/>
+                                <p:commandButton value="#{msg.cancelar}" image="ui-icon ui-icon-cancel" actionListener="#{contaPagarManager.clean()}" 
+                                                 oncomplete="dlg1.hide();" immediate="true" update="messages,conteudoCentralSuperiorGroup">
+                                </p:commandButton>
+                            </h:panelGroup>
                         </h:panelGrid>
                     </p:dialog> 
                 </h:form>

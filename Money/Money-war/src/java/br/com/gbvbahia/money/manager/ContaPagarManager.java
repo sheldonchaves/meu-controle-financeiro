@@ -24,7 +24,9 @@ import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import org.apache.commons.lang.StringUtils;
 import org.primefaces.model.LazyDataModel;
 
@@ -59,6 +61,7 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     private HtmlInputText parcelTotalInput;
     private HtmlInputText obsInut;
     private HtmlSelectBooleanCheckbox salvarParcelasInput;
+     private HtmlSelectOneMenu selctDetalhePagamento;
     private org.primefaces.component.calendar.Calendar calendarInput;
     
     public ContaPagarManager() {
@@ -126,6 +129,10 @@ public class ContaPagarManager implements InterfaceManager, Observer {
         if(salvarParcelasInput != null){
             salvarParcelasInput.setSelected(false);
         }
+        if(selctDetalhePagamento != null){
+            selctDetalhePagamento.setSubmittedValue(UtilMetodos.getResourceBundle("selecione", FacesContext.getCurrentInstance()));
+            selctDetalhePagamento.setValue(null);
+        }
     }
 
     public void salvarContaPagar() {
@@ -170,6 +177,7 @@ public class ContaPagarManager implements InterfaceManager, Observer {
             toReturn.setIdentificador(contaPagar.getIdentificador());
             toReturn.setStatusPagamento(contaPagar.getStatusPagamento());
             toReturn.setTipoMovimentacao(contaPagar.getTipoMovimentacao());
+            toReturn.setDetalheMovimentacao(contaPagar.getDetalheMovimentacao());
             return toReturn;
         } else {
             return null;
@@ -199,6 +207,9 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     //====================
     //SelectItem
     //====================
+    public List<SelectItem> getDetalhes(){
+        return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(), true);
+    }
     //=========================
     //Getters AND Setters
     //=========================
@@ -313,5 +324,13 @@ public class ContaPagarManager implements InterfaceManager, Observer {
 
     public void setReceitaDividaToDelete(ReceitaDivida receitaDividaToDelete) {
         this.receitaDividaToDelete = receitaDividaToDelete;
+    }
+
+    public HtmlSelectOneMenu getSelctDetalhePagamento() {
+        return selctDetalhePagamento;
+    }
+
+    public void setSelctDetalhePagamento(HtmlSelectOneMenu selctDetalhePagamento) {
+        this.selctDetalhePagamento = selctDetalhePagamento;
     }
 }
