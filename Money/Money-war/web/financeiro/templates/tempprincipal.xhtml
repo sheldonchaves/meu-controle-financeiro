@@ -24,13 +24,26 @@
             <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="2500"/> 
             <p:layout fullPage="true">
 
-                <p:layoutUnit position="north" size="50" resizable="false" closable="false" collapsible="false">
-                    <ui:insert name="topPos">
-                        <h:outputText value="Top unit content." />
+                <p:layoutUnit position="north" size="58" resizable="false" closable="false" collapsible="false" id="topLogo">
+                    <ui:insert name="topPos" >
+                        <TABLE  width="90%" >
+                            <TR>
+                                <TD align="left" valign="center">
+                            <h:panelGrid columns="2">
+                                <h:graphicImage library="img" name="logo_40.png"/>
+                                <h:outputText value="#{user_logado}"/>
+                            </h:panelGrid>
+                            </TD>
+
+                            <TD align="right" valign="center">
+                                SAIR
+                            </TD>
+                            </TR>
+                        </TABLE>
                     </ui:insert>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="south" size="150" header="#{msg.movimentacoes}" resizable="false" closable="false" collapsible="false" scrollable="true">
+                <p:layoutUnit position="south" size="150" header="#{msg.movimentacoes}" resizable="false" closable="false" collapsible="false" >
                     <ui:insert name="southPos">
                         <h:outputText value="South unit content." />
                     </ui:insert>
@@ -67,7 +80,7 @@
                 <p:layoutUnit position="center" >
                     <p:layout style="min-width:400px;min-height:200px;" id="layout"> 
 
-                        <p:layoutUnit position="north" resizable="true" scrollable="true">  
+                        <p:layoutUnit position="north" resizable="true" >  
                             <h:panelGroup id="conteudoCentralSuperiorGroup">
                                 <TABLE  width="100%">
                                     <TD align="left" valign="top" style="width: 200px;">
@@ -92,7 +105,7 @@
                             </h:panelGroup>
                         </p:layoutUnit>
 
-                        <p:layoutUnit position="center" resizable="true" scrollable="true"> 
+                        <p:layoutUnit position="center" resizable="true" > 
                             <h:panelGroup id="conteudoCentralInferiorGroup">
 
                             </h:panelGroup>
