@@ -5,8 +5,33 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.prime.com.tr/ui">
-    
-   
 
- 
+
+    <ui:define name="westPos">
+        <TABLE  width="100%">
+            <ui:repeat value="#{contaBancariaManager.contasBancarias}" var="conta">
+                <TR>
+                    <TD align="left" valign="top">
+                <h:outputText value="#{conta.tipoConta.abreviacao}"/>
+                </TD>
+                <TD align="left" valign="top">
+                <h:outputText value="#{conta.nomeConta}"/>
+                </TD>
+                <TD align="right" valign="top">
+                <h:outputText value="#{conta.saldo}" rendered="#{conta.saldo ge 0}" styleClass="green">
+                    <f:converter converterId="moneyConverter"/>
+                </h:outputText>
+                <h:outputText value="#{conta.saldo}" rendered="#{conta.saldo lt 0}" styleClass="red">
+                    <f:converter converterId="moneyConverter"/>
+                </h:outputText>
+                </TD>
+                </TR>
+            </ui:repeat>
+        </TABLE>
+    </ui:define>
+
+
+    <ui:define name="southPos">
+        <ui:include src="movimentacao/Movimentacao.xhtml"/>
+    </ui:define>
 </ui:composition>

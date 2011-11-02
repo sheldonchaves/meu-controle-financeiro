@@ -48,7 +48,7 @@
                         <h:outputLabel value=""/>
                         <h:panelGroup>
                             <p:commandButton value="#{msg.salvar}" image="ui-icon ui-icon-disk" actionListener="#{contaBancariaManager.salvarContaBancaria()}"
-                                             update="messages,conteudoCentralSuperiorGroup,conteudoEsquerdoGroup">
+                                             update="messages,conteudoCentralSuperiorGroup,conteudoEsquerdoGroup,conteudoBaixoGroup">
                             </p:commandButton>
                             <p:spacer height="3" width="10"/>
                             <p:commandButton value="#{msg.novo}" image="ui-icon ui-icon-refresh" actionListener="#{contaBancariaManager.clean()}" 
@@ -97,7 +97,7 @@
                             <f:facet name="header">
                                 <h:outputText value="#{msg.remover}"/>
                             </f:facet>
-                             <p:commandLink update="conteudoCentralSuperiorGroup,conteudoEsquerdoGroup" actionListener="#{contaBancariaManager.apagarConta(conta)}"
+                             <p:commandLink update="conteudoCentralSuperiorGroup,conteudoEsquerdoGroup,conteudoBaixoGroup" actionListener="#{contaBancariaManager.apagarConta(conta)}"
                                            id="buttonEdit" styleClass="ui-button_link">
                                 <h:graphicImage library="img" name="erase_16.png"/>
                             </p:commandLink>

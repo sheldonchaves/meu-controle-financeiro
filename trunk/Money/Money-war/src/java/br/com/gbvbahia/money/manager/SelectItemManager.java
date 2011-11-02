@@ -4,9 +4,11 @@
  */
 package br.com.gbvbahia.money.manager;
 
+import br.com.money.business.interfaces.ContaBancariaBeanLocal;
 import br.com.money.business.interfaces.DetalheUsuarioBeanLocal;
 import br.com.money.enums.TipoConta;
 import br.com.money.enums.TipoMovimentacao;
+import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.DetalheMovimentacao;
 import br.com.money.modelos.Usuario;
 import javax.ejb.EJB;
@@ -22,6 +24,8 @@ import org.apache.commons.lang.StringUtils;
 @ManagedBean(name = "selectItemManager", eager = true)
 @NoneScoped
 public class SelectItemManager {
+    @EJB
+    private ContaBancariaBeanLocal contaBancariaBean;
     @EJB
     private DetalheUsuarioBeanLocal detalheUsuarioBean;
 
@@ -65,6 +69,16 @@ public class SelectItemManager {
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
         for(DetalheMovimentacao dm : detalhes){
             toReturn.add(new SelectItem(dm, StringUtils.substring(dm.getDetalhe(), 0, DetalheMovimentacaoManager.CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
+        }
+        return toReturn;
+    }
+    
+    public List<SelectItem> getContaBancaria(Usuario usuario){
+        List<ContaBancaria> contas = this.contaBancariaBean.buscarContaBancariasPorUsuario(usuario);
+        Collections.sort(contas);
+        List<SelectItem> toReturn = new ArrayList<SelectItem>();
+        for(ContaBancaria cb : contas){
+            toReturn.add(new SelectItem(cb, StringUtils.substring(cb.getNomeConta(), 0, DetalheMovimentacaoManager.CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
         }
         return toReturn;
     }

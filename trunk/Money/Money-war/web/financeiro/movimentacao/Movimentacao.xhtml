@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                >
+    <f:subview id="movimentacaoEmbutido">
+        <TABLE>
+            <TD align="left" valign="top" style="width: 100px;">
+            <h:panelGroup id="movimentacaoTableGroup">
+                <h:form id="formMovimentacaoTable">
+                    <p:dataTable var="divida" value="#{movimentacaoFinanceiraManager.receitasDividas}" paginator="true" rows="5" lazy="true" 
+                                 paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink}" emptyMessage="#{msg.semRegistrosEcontrados}">
+
+                        <p:column id="col1" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.vencimento}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.dataVencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col2" styleClass="right" style="width: 50px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.valor}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.valor}">
+                                <f:converter converterId="moneyConverter"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col3" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.atual}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.parcelaAtual}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col4" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.total}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.parcelaTotal}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col5" styleClass="center" style="width: 75px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.detalhe}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.detalheMovimentacao.detalhe}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col6" style="width: 150px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.observacao}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.observacao}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col7" style="width: 150px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.status}"/>
+                            </f:facet>
+                            <h:outputText value="#{divida.statusPagamento.statusString}">
+                            </h:outputText>
+                        </p:column>
+
+
+                    </p:dataTable>
+
+                    <p:dialog header="#{msg.titleConfirme}" widgetVar="dlg2" resizable="false" position="top" modal="false">  
+                        <h:panelGrid columns="3">
+                            <h:outputLabel value="#{msg.dataVencimento}"/>
+                            <h:outputText value="#{movimentacaoFinanceiraManager.receitaDivitaSelecionada.dataVencimento}" id="dataV">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
+                            </h:outputText>
+                            <p:message for="dataV"/>
+
+                            <h:outputLabel value="#{msg.valor}"/>
+                            <h:outputText value="#{movimentacaoFinanceiraManager.receitaDivitaSelecionada.valor}" id="val">
+                                <f:converter converterId="moneyConverter"/>
+                            </h:outputText>
+                            <p:message for="val"/>
+
+                            <h:outputLabel value="#{msg.observacao}"/>
+                            <h:outputText value="#{movimentacaoFinanceiraManager.receitaDivitaSelecionada.observacao}" id="obs"/>
+                            <p:message for="obs"/>
+
+                            <h:outputLabel value="#{msg.debitarDe}:" />
+                            <p:selectOneMenu value="#{movimentacaoFinanceiraManager.contaBancariaSelecionada}" label="#{msg.debitarDe}"
+                                             binding="#{movimentacaoFinanceiraManager.selctContaPagamento}" 
+                                             id="contaSele" required="true" requiredMessage="#{msg.campoObrigatorio}">
+                                <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
+                                <f:selectItems value="#{movimentacaoFinanceiraManager.contasBancarias}"/>
+                                <f:converter converterId="contaBancariaConverter"/>
+                            </p:selectOneMenu>
+                            <p:message for="contaSele"/>
+
+                            <h:outputLabel value=""/>
+                            <h:panelGroup>
+                                <p:commandButton value="#{msg.confirmar}" image="ui-icon ui-icon-check" actionListener="#{movimentacaoFinanceiraManager.quitarReceitaDivida()}"
+                                                 oncomplete="dlg2.hide();" update="messages,conteudoCentralSuperiorGroup">
+                                </p:commandButton>
+                                <p:spacer height="3" width="10"/>
+                                <p:commandButton value="#{msg.cancelar}" image="ui-icon ui-icon-cancel" actionListener="#{movimentacaoFinanceiraManager.clean()}" 
+                                                 oncomplete="dlg2.hide();" immediate="true" update="messages,conteudoCentralSuperiorGroup">
+                                </p:commandButton>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                    </p:dialog> 
+                </h:form>
+            </h:panelGroup>
+            </TD>
+        </TABLE>
+    </f:subview>
+</ui:composition>
+

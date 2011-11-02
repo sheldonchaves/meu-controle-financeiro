@@ -50,35 +50,17 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit position="south" size="150" header="#{msg.movimentacoes}" resizable="false" closable="false" collapsible="false" >
-                    <ui:insert name="southPos">
-                        <h:outputText value="South unit content." />
-                    </ui:insert>
+                    <h:panelGroup id="conteudoBaixoGroup">
+                        <ui:insert name="southPos">
+                            <h:outputText value="South unit content." />
+                        </ui:insert>
+                    </h:panelGroup>
                 </p:layoutUnit>
 
                 <p:layoutUnit position="west" size="220" header="#{msg.contas}" resizable="true" closable="false" collapsible="true">
                     <h:panelGroup id="conteudoEsquerdoGroup">
                         <ui:insert name="westPos">
-                            <TABLE  width="100%">
-                                <ui:repeat value="#{contaBancariaManager.contasBancarias}" var="conta">
-                                    <TR>
-                                        <TD align="left" valign="top">
-                                    <h:outputText value="#{conta.tipoConta.abreviacao}"/>
 
-                                    </TD>
-                                    <TD align="left" valign="top">
-                                    <h:outputText value="#{conta.nomeConta}"/>
-                                    </TD>
-                                    <TD align="right" valign="top">
-                                    <h:outputText value="#{conta.saldo}" rendered="#{conta.saldo ge 0}" styleClass="green">
-                                        <f:converter converterId="moneyConverter"/>
-                                    </h:outputText>
-                                    <h:outputText value="#{conta.saldo}" rendered="#{conta.saldo lt 0}" styleClass="red">
-                                        <f:converter converterId="moneyConverter"/>
-                                    </h:outputText>
-                                    </TD>
-                                    </TR>
-                                </ui:repeat>
-                            </TABLE>
                         </ui:insert>
                     </h:panelGroup>
                 </p:layoutUnit>
