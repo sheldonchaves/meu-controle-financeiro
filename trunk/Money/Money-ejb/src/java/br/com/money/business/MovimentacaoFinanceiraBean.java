@@ -23,19 +23,20 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLocal {
+    
     @EJB
     private ReceitaDividaBeanLocal receitaDividaBean;
     
     @EJB
     private ContaBancariaBeanLocal contaBancariaBean;
 
-    
     @EJB(beanName = "movimentacaoFinanceiraValidador")
     private ValidadorInterface movimentacaoFinanceiraValidador;
     
     @PersistenceContext(name = "jdbc/money")
     private EntityManager manager;
     
+    @Override
     public void salvarMovimentacaoFinanceira(ContaBancaria contaBancaria, ReceitaDivida receitaDivida){
         ContaBancaria cb = manager.find(ContaBancaria.class, contaBancaria.getId());
         ReceitaDivida rd = manager.find(ReceitaDivida.class, receitaDivida.getId());
@@ -44,7 +45,8 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLoc
         cb.setSaldo(cb.getSaldo() + rd.getValorParaCalculoDireto());
         rd.setStatusPagamento(StatusPagamento.PAGA);
         this.movimentacaoFinanceiraValidador.validar(mf, this, null);
-        
+        this.contaBancariaBean.salvarContaBancaria(cb);
+        this.receitaDividaBean.salvarReceitaDivida(rd);
         if(mf.getId() == null){
             manager.persist(mf);
         }else{

@@ -42,6 +42,11 @@ public class ContaBancariaBean implements ContaBancariaBeanLocal {
     }
 
     @Override
+    public ContaBancaria buscarContaBancariaPorId(long id) {
+        return manager.find(ContaBancaria.class, id);
+    }
+    
+    @Override
     public ContaBancaria buscarContaBancariaPorNomeTipo(String nomeConta, TipoConta tipo) {
         Query q = manager.createNamedQuery("ContaBancariaBean.buscarContaBancariaPorNomeTipo");
         q.setParameter("nomeConta", nomeConta);

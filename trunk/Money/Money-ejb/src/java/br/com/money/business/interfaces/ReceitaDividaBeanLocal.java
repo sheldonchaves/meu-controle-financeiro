@@ -55,4 +55,20 @@ public interface ReceitaDividaBeanLocal {
      * @throws ValidacaoException se status da conta passada  estiver como PAGA
      */
     void apagarReceitaDivida(ReceitaDivida receitaDivida,boolean deleteParcelas) throws ValidacaoException;
+    
+    /**
+     * Realiza busca de Receita Divida pelos filtros passados como parâmetro
+     * Ordenação de data crescente realizada.
+     * @param posicaoInicial Onde inicia a consulta
+     * @param tamanho Quantidade máxima de resultados
+     * @param usuario O usuário proprietário das receitas ou dividas
+     * @param statusPagamento Se pago ou não.
+     * @return  Uma lista com os elementos ReceitaDivida dentro do perfil
+     */
+    public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho,
+            Usuario usuario, StatusPagamento statusPagamento);
+   /**
+     * Retorna a quantidade de itens dentro do perfil dos parâmetros paUm iteiro que representa a quantidade de itens no perfil
+     */
+    public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(Usuario usuario, StatusPagamento statusPagamento);
 }
