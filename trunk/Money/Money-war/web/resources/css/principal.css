@@ -47,7 +47,9 @@ top: 10px;
 }
 
 .wijmo-wijmenu, .wijmo-wijmenu-list, .wijmo-wijmenu-item, .wijmo-wijmenu-text{
-
+    background-color: transparent !important; 
+    background-repeat: no-repeat !important;
+    border: none !important;
 }
 
 .red {
