@@ -20,15 +20,17 @@ public class Cadastro extends FluxoExibicaoMaster {
     private boolean exibirCadastroDetalheMovimentacao;
     private boolean exibirCadastroContaBancaria;
     private boolean exibirCadastroContaPagar;
+    private boolean exibirCadastroContaReceber;
 
     private enum PaginaFluxo {
 
-        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR;
+        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR, CADASTRO_CONTA_RECEBER;
     }
 
     /** Creates a new instance of Cadastro */
     public Cadastro() {
         super("Cadastro");
+        fluxoExibirCadastroContaPagar();
     }
 
     public void fluxoExibirCadastroDetalheMovimentacao() {
@@ -43,10 +45,15 @@ public class Cadastro extends FluxoExibicaoMaster {
         alterarTela(PaginaFluxo.CADASTRO_CONTA_PAGAR);
     }
 
+        public void fluxoExibirCadastroContaReceita() {
+        alterarTela(PaginaFluxo.CADASTRO_CONTA_RECEBER);
+    }
+    
     private void alterarTela(PaginaFluxo paginaLogin) {
         exibirCadastroDetalheMovimentacao = (PaginaFluxo.CADASTRO_DETALHE_MOVIMENTACAO.equals(paginaLogin));
         exibirCadastroContaBancaria = (PaginaFluxo.CADASTRO_CONTA_BANCARIA.equals(paginaLogin));
         exibirCadastroContaPagar = (PaginaFluxo.CADASTRO_CONTA_PAGAR.equals(paginaLogin));
+        exibirCadastroContaReceber = (PaginaFluxo.CADASTRO_CONTA_RECEBER.equals(paginaLogin));
         definirAtributos(paginaLogin);
     }
 
@@ -61,6 +68,9 @@ public class Cadastro extends FluxoExibicaoMaster {
                 break;
             case CADASTRO_CONTA_PAGAR:
                 this.tituloPanel = UtilMetodos.getResourceBundle("titlePanelCadastroContaPagar", fc);
+                break;
+            case CADASTRO_CONTA_RECEBER:
+                this.tituloPanel = UtilMetodos.getResourceBundle("titlePanelCadastroContaReceber", fc);
                 break;
             default:
                 throw new AssertionError("Não foi definido case para a enum: " + paginaLogin.toString());
@@ -89,5 +99,13 @@ public class Cadastro extends FluxoExibicaoMaster {
 
     public void setExibirCadastroContaPagar(boolean exibirCadastroContaPagar) {
         this.exibirCadastroContaPagar = exibirCadastroContaPagar;
+    }
+
+    public boolean isExibirCadastroContaReceber() {
+        return exibirCadastroContaReceber;
+    }
+
+    public void setExibirCadastroContaReceber(boolean exibirCadastroContaReceber) {
+        this.exibirCadastroContaReceber = exibirCadastroContaReceber;
     }
 }
