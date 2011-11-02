@@ -16,6 +16,7 @@
         <query>
 			Select distinct c From ContaBancaria c
                         Where c.user = :user
+                        OR c.user.conjuge = :user
         </query>
     </named-query>
    
