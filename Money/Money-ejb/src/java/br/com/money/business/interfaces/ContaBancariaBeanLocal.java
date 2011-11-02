@@ -23,5 +23,7 @@ public interface ContaBancariaBeanLocal {
     List<ContaBancaria> buscarContaBancariasPorUsuario(Usuario usuario);
     
     public void apagarContaBancaria(Long id);
+
+    ContaBancaria buscarContaBancariaPorId(long id);
     
 }

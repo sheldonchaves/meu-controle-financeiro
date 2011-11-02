@@ -40,7 +40,7 @@ public class ReceitaDividaBean implements ReceitaDividaBeanLocal {
         manager.flush();
     }
 
-    @Override
+     @Override
     public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho,
             Usuario usuario, StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao) {
         Query q = manager.createNamedQuery("ReceitaDividaBean.buscarReceitaDividasPorUsuarioStatusPaginada");
@@ -51,7 +51,27 @@ public class ReceitaDividaBean implements ReceitaDividaBeanLocal {
         q.setParameter("tipoMovimentacao", tipoMovimentacao);
         return q.getResultList();
     }
+    
+    @Override
+    public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho,
+            Usuario usuario, StatusPagamento statusPagamento) {
+        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarReceitaDividasPorUsuarioStatusPaginada2");
+        q.setMaxResults(tamanho);
+        q.setFirstResult(posicaoInicial);
+        q.setParameter("usuario", usuario);
+        q.setParameter("statusPagamento", statusPagamento);
+        return q.getResultList();
+    }
 
+    @Override
+    public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(Usuario usuario, StatusPagamento statusPagamento) {
+        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada2");
+        q.setParameter("usuario", usuario);
+        q.setParameter("statusPagamento", statusPagamento);
+        Long toReturn = (Long) q.getSingleResult();
+        return toReturn.intValue();
+    }
+    
     @Override
     public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(Usuario usuario, StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao) {
         Query q = manager.createNamedQuery("ReceitaDividaBean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada");
