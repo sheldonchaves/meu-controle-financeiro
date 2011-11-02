@@ -34,4 +34,25 @@
     <ui:define name="southPos">
         <ui:include src="movimentacao/Movimentacao.xhtml"/>
     </ui:define>
+
+    <ui:define name="menuCenterPos">
+        <TABLE  width="100%">
+            <TD align="left" valign="top" style="width: 150px;">
+            <h:form id="formMenu">
+                <p:menu style="width:150px;"  type="sliding" backLabel="#{msg.voltar}">
+                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
+                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaBancaria}" action="#{fluxoCadastro.fluxoExibirCadastroContaBancaria()}" icon="conta" />
+                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaPagar}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagar()}" icon="pagar" />
+                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaReceita}" action="#{fluxoCadastro.fluxoExibirCadastroContaReceita()}" icon="receita" />
+                </p:menu>
+            </h:form>
+            </TD>
+            <TD align="left" valign="top">
+            <ui:include src="cadastro/DetalheMovimentacao.xhtml"/>
+            <ui:include src="cadastro/ContaBancaria.xhtml"/>
+            <ui:include src="cadastro/ContaPagar.xhtml"/>
+            <ui:include src="cadastro/ContaReceber.xhtml"/>
+            </TD>
+        </TABLE>
+    </ui:define>
 </ui:composition>
