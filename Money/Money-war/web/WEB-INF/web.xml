@@ -49,4 +49,10 @@
         <local>br.com.money.business.interfaces.DetalheUsuarioBeanLocal</local>
         <ejb-link>Money-ejb.jar#DetalheUsuarioBean</ejb-link>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>ContaBancariaBean</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>br.com.money.business.interfaces.ContaBancariaBeanLocal</local>
+        <ejb-link>Money-ejb.jar#ContaBancariaBean</ejb-link>
+    </ejb-local-ref>
 </web-app>

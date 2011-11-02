@@ -70,7 +70,7 @@
                         <h:outputLabel value=""/>
                         <h:panelGroup>
                             <p:commandButton value="#{msg.salvar}" image="ui-icon ui-icon-disk" actionListener="#{contaPagarManager.salvarContaPagar()}"
-                                             update="messages,conteudoCentralSuperiorGroup">
+                                             update="messages,conteudoCentralSuperiorGroup,conteudoBaixoGroup">
                             </p:commandButton>
                             <p:spacer height="3" width="10"/>
                             <p:commandButton value="#{msg.novo}" image="ui-icon ui-icon-refresh" actionListener="#{contaPagarManager.clean()}" 
@@ -171,7 +171,7 @@
                             <h:outputLabel value=""/>
                             <h:panelGroup>
                                 <p:commandButton value="#{msg.confirmar}" image="ui-icon ui-icon-check" actionListener="#{contaPagarManager.deletarConta()}"
-                                                 oncomplete="dlg1.hide();" update="messages,conteudoCentralSuperiorGroup">
+                                                 oncomplete="dlg1.hide();" update="messages,conteudoCentralSuperiorGroup,conteudoBaixoGroup">
                                 </p:commandButton>
                                 <p:spacer height="3" width="10"/>
                                 <p:commandButton value="#{msg.cancelar}" image="ui-icon ui-icon-cancel" actionListener="#{contaPagarManager.clean()}" 
