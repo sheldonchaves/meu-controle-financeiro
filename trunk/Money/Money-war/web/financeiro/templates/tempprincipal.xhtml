@@ -31,7 +31,7 @@
                                 <TD align="left" valign="center">
                             <h:panelGrid columns="2">
                                 <h:graphicImage library="img" name="logo_40.png"/>
-                                <h:outputText value="#{user_logado}"/>
+                                <h:outputText value="#{user_logado}" styleClass="nomeLogado"/>
                             </h:panelGrid>
                             </TD>
 
@@ -80,13 +80,13 @@
                 <p:layoutUnit position="center" >
                     <p:layout style="min-width:400px;min-height:200px;" id="layout"> 
 
-                        <p:layoutUnit position="north" resizable="true" >  
+                        <p:layoutUnit position="north" resizable="true" size="235">  
                             <h:panelGroup id="conteudoCentralSuperiorGroup">
                                 <TABLE  width="100%">
-                                    <TD align="left" valign="top" style="width: 200px;">
+                                    <TD align="left" valign="top" style="width: 150px;">
                                     <ui:insert name="menuCenterPos">
                                         <h:form id="formMenu">
-                                            <p:menu style="width:170px;"  type="sliding" backLabel="#{msg.voltar}">
+                                            <p:menu style="width:150px;"  type="sliding" backLabel="#{msg.voltar}">
                                                 <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
                                                 <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaBancaria}" action="#{fluxoCadastro.fluxoExibirCadastroContaBancaria()}" icon="conta" />
                                                 <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaPagar}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagar()}" icon="pagar" />
