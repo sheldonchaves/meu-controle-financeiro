@@ -61,7 +61,7 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     private HtmlInputText parcelTotalInput;
     private HtmlInputText obsInut;
     private HtmlSelectBooleanCheckbox salvarParcelasInput;
-     private HtmlSelectOneMenu selctDetalhePagamento;
+    private HtmlSelectOneMenu selctDetalhePagamento;
     private org.primefaces.component.calendar.Calendar calendarInput;
     
     public ContaPagarManager() {
@@ -208,7 +208,7 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     //SelectItem
     //====================
     public List<SelectItem> getDetalhes(){
-        return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(), true);
+        return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(), true, TipoMovimentacao.RETIRADA);
     }
     //=========================
     //Getters AND Setters

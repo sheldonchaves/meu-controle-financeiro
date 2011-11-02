@@ -22,7 +22,17 @@
                             <f:validateLength maximum="#{detalheMovimentacao.caracteresLimit}"/>
                         </p:inputText>
                         <p:message for="detalheMovimentacao"/>
-
+                         
+                        <h:outputLabel value="#{msg.tipo}:" />
+                        <p:selectOneMenu value="#{detalheMovimentacao.detalheMovimentacao.tipoMovimentacao}" label="#{msg.tipo}"
+                                         binding="#{detalheMovimentacao.selctTipoPagamento}" 
+                                         id="tipoConta" required="true" requiredMessage="#{msg.campoObrigatorio}">
+                            <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
+                            <f:selectItems value="#{detalheMovimentacao.tipoPagamento}"/>
+                            <f:converter converterId="tipoMovimentacaoConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="tipoConta"/>
+                        
                         <h:outputLabel value="#{msg.ativo}:" />
                         <p:selectBooleanCheckbox value="#{detalheMovimentacao.detalheMovimentacao.ativo}" id="geralMovimentacao"
                                                  />
@@ -63,14 +73,30 @@
                             <f:facet name="header">
                                 <h:outputText value="#{msg.status}"/>
                             </f:facet>
-                            <p:commandLink update="conteudoCentralSuperiorGroup" actionListener="#{detalheMovimentacao.bloqDesbloqDetalhe(detalhe)}"
+                            <p:commandLink update="messages, conteudoCentralSuperiorGroup" actionListener="#{detalheMovimentacao.bloqDesbloqDetalhe(detalhe)}"
                                            id="buttonBlock" styleClass="ui-button_link" title="#{msg.desblockTitle}" rendered="#{detalhe.ativo}">
                                 <h:graphicImage library="img" name="check_16.png" />
                             </p:commandLink>
                             
-                            <p:commandLink update="conteudoCentralSuperiorGroup" actionListener="#{detalheMovimentacao.bloqDesbloqDetalhe(detalhe)}"
+                            <p:commandLink update="messages, conteudoCentralSuperiorGroup" actionListener="#{detalheMovimentacao.bloqDesbloqDetalhe(detalhe)}"
                                            id="buttonDesBlock" styleClass="ui-button_link" title="#{msg.blockTitle}" rendered="#{!detalhe.ativo}">
                                 <h:graphicImage library="img" name="uncheck_16.png" />
+                            </p:commandLink>
+
+                        </p:column>
+                        
+                         <p:column id="col4" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.tipo}"/>
+                            </f:facet>
+                            <p:commandLink update="messages, conteudoCentralSuperiorGroup" actionListener="#{detalheMovimentacao.alteraDetalheMovimentacaoTipo(detalhe)}"
+                                           id="buttonRetirada" styleClass="ui-button_link" title="#{msg.titletipoPagamento}" rendered="#{detalhe.tipoMovimentacao.tipoMovimentacaoString eq 'Pagamento'}">
+                                <h:graphicImage library="img" name="c_saida_16.png" />
+                            </p:commandLink>
+                            
+                            <p:commandLink update="messages, conteudoCentralSuperiorGroup" actionListener="#{detalheMovimentacao.alteraDetalheMovimentacaoTipo(detalhe)}"
+                                           id="buttonReceita" styleClass="ui-button_link" title="#{msg.titletipoReceita}" rendered="#{detalhe.tipoMovimentacao.tipoMovimentacaoString eq 'Receita'}">
+                                <h:graphicImage library="img" name="c_entrada_16.png" />
                             </p:commandLink>
 
                         </p:column>

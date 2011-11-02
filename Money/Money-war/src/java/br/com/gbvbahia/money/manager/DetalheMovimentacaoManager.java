@@ -7,6 +7,7 @@ package br.com.gbvbahia.money.manager;
 import br.com.gbvbahia.money.observador.ControleObserver;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.DetalheUsuarioBeanLocal;
+import br.com.money.enums.TipoMovimentacao;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.DetalheMovimentacao;
 import java.util.Collections;
@@ -23,7 +24,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.html.HtmlInputText;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -33,7 +36,7 @@ import org.apache.commons.lang.StringUtils;
 @ManagedBean(name = "detalheMovimentacao")
 @ViewScoped
 public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
-    
+
     public static final int CARACTERES_DETALHE_MOVIMENTACAO_LIMIT = 25;
     
     @EJB
@@ -41,11 +44,14 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
     
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
-
-    private HtmlInputText input;
-
-    private DetalheMovimentacao detalheMovimentacao;
     
+    @ManagedProperty("#{selectItemManager}")
+    private SelectItemManager selectItemManager;
+    
+    private HtmlInputText input;
+    private HtmlSelectOneMenu selctTipoPagamento;
+    
+    private DetalheMovimentacao detalheMovimentacao;
     private List<DetalheMovimentacao> detalhes;
 
     /** Creates a new instance of DetalheMovimentacaoManager */
@@ -86,8 +92,12 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
     public void clean() {
         this.detalheMovimentacao = new DetalheMovimentacao();
         this.detalheMovimentacao.setUsuarioProprietario(loginManager.getUsuario());
-        if(input != null){
-        this.input.setSubmittedValue("");
+        if (input != null) {
+            this.input.setSubmittedValue("");
+        }
+        if(selctTipoPagamento != null){
+            selctTipoPagamento.setSubmittedValue(UtilMetodos.getResourceBundle("selecione", FacesContext.getCurrentInstance()));
+            selctTipoPagamento.setValue(null);
         }
     }
 
@@ -114,16 +124,28 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
     //====================
     //Table Actions
     //====================
-    
-    public void bloqDesbloqDetalhe(DetalheMovimentacao det){
+    public void bloqDesbloqDetalhe(DetalheMovimentacao det) {
         det.setAtivo(!det.isAtivo());
         this.detalheMovimentacao = det;
         salvarDetalheMovimentacao();
     }
     
+    public void alteraDetalheMovimentacaoTipo(DetalheMovimentacao det){
+        if(det.getTipoMovimentacao().equals( TipoMovimentacao.DEPOSITO)){
+            det.setTipoMovimentacao(TipoMovimentacao.RETIRADA);
+        }else{
+            det.setTipoMovimentacao(TipoMovimentacao.DEPOSITO);
+        }
+        this.detalheMovimentacao = det;
+        salvarDetalheMovimentacao();
+    }
+
     //====================
     //SelectItem
     //====================
+    public List<SelectItem> getTipoPagamento(){
+        return selectItemManager.getTipoMovimentacao();
+    }
     //=========================
     //Getters AND Setters
     //=========================
@@ -164,5 +186,21 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
 
     public int getCaracteresLimit() {
         return CARACTERES_DETALHE_MOVIMENTACAO_LIMIT;
-    }    
+    }
+
+    public SelectItemManager getSelectItemManager() {
+        return selectItemManager;
+    }
+
+    public void setSelectItemManager(SelectItemManager selectItemManager) {
+        this.selectItemManager = selectItemManager;
+    }
+
+    public HtmlSelectOneMenu getSelctTipoPagamento() {
+        return selctTipoPagamento;
+    }
+
+    public void setSelctTipoPagamento(HtmlSelectOneMenu selctTipoPagamento) {
+        this.selctTipoPagamento = selctTipoPagamento;
+    }
 }

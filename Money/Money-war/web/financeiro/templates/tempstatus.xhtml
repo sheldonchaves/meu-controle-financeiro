@@ -7,13 +7,10 @@
     <f:subview id="statusInput">
         <p:ajaxStatus style="width:48px;height:48px;">
             <f:facet name="start">
-                <h:graphicImage  library="img" name="status.gif" />
+                <h:graphicImage  library="img" name="ajax-loader.gif" />
             </f:facet>
             <f:facet name="complete">
-                <h:graphicImage  library="img" name="money.png" />
-            </f:facet>
-            <f:facet name="default">
-                <h:graphicImage  library="img" name="money.png" />
+                <h:outputText value="" /> 
             </f:facet>
         </p:ajaxStatus>
     </f:subview>
