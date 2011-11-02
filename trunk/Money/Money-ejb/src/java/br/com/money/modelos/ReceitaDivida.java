@@ -194,4 +194,12 @@ public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivid
         return i;
     }
     
+    public Double getValorParaCalculoDireto(){
+        //Se for uma recceita
+        if(this.tipoMovimentacao.equals(TipoMovimentacao.DEPOSITO)){
+            return this.valor;
+        }else{//Se for uma dívida
+            return this.valor * (-1);
+        }
+    }
 }

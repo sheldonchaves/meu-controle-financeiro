@@ -4,7 +4,7 @@
  */
 package br.com.money.modelos;
 
-import java.io.Serializable;
+import br.com.money.vaidators.interfaces.ValidadoInterface;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="money_movimentacao_financeira")
-public class MovimentacaoFinanceira implements Serializable {
+public class MovimentacaoFinanceira implements ValidadoInterface, Comparable<MovimentacaoFinanceira> {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -125,6 +125,26 @@ public class MovimentacaoFinanceira implements Serializable {
     @Override
     public String toString() {
         return "br.com.money.modelos.MovimentacaoFinanceira[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(MovimentacaoFinanceira o) {
+        int i = 0;
+        if(i == 0) i = this.contaBancaria.compareTo(o.contaBancaria);
+        if(i == 0) i = this.dataMovimentacao.compareTo(o.dataMovimentacao);
+        if(i == 0) i = this.saldoPosterior.compareTo(o.saldoPosterior) *(-1);
+        if(i == 0) i = this.id.compareTo(o.id);
+        return i;
+    }
+
+    public MovimentacaoFinanceira() {
+    }
+
+    public MovimentacaoFinanceira(ContaBancaria contaBancaria, ReceitaDivida receitaDivida) {
+        this.contaBancaria = contaBancaria;
+        this.receitaDivida = receitaDivida;
+        this.saldoAnterior = contaBancaria.getSaldo();
+        this.saldoPosterior = contaBancaria.getSaldo() + receitaDivida.getValorParaCalculoDireto();
     }
     
 }
