@@ -6,6 +6,7 @@ package br.com.gbvbahia.money.manager;
 
 import br.com.money.business.interfaces.DetalheUsuarioBeanLocal;
 import br.com.money.enums.TipoConta;
+import br.com.money.enums.TipoMovimentacao;
 import br.com.money.modelos.DetalheMovimentacao;
 import br.com.money.modelos.Usuario;
 import javax.ejb.EJB;
@@ -29,7 +30,7 @@ public class SelectItemManager {
     }
     
         /**
-     * Converte a enum Linguagem em uma lista de SelectItems
+     * Converte a enum TipoConta em uma lista de SelectItems
      * @return List de SelectItem
      */
     public List<SelectItem> getLinguagens() {
@@ -40,14 +41,26 @@ public class SelectItemManager {
         return toReturn;
     }
     
+            /**
+     * Converte a enum Linguagem em uma lista de SelectItems
+     * @return List de SelectItem
+     */
+    public List<SelectItem> getTipoMovimentacao() {
+        List<SelectItem> toReturn = new ArrayList<SelectItem>();
+        for (TipoMovimentacao lin : TipoMovimentacao.values()) {
+            toReturn.add(new SelectItem(lin, lin.getTipoMovimentacaoString()));
+        }
+        return toReturn;
+    }
+    
     /**
      * Retorna todos os detalhes do usuário com status passado para seleção em um selectitem
      * @param usuario
      * @param ativa 
      * @return 
      */
-    public List<SelectItem> getDetalhesUsuario(Usuario usuario, boolean ativa){
-        List<DetalheMovimentacao> detalhes = detalheUsuarioBean.buscarDetalheMovimentacaoPorUsuarioFlag(usuario, ativa);
+    public List<SelectItem> getDetalhesUsuario(Usuario usuario, boolean ativa, TipoMovimentacao tipoMovimentacao){
+        List<DetalheMovimentacao> detalhes = detalheUsuarioBean.buscarDetalheMovimentacaoPorUsuarioFlagTipoMovimentacao(usuario, ativa, tipoMovimentacao);
         Collections.sort(detalhes);
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
         for(DetalheMovimentacao dm : detalhes){

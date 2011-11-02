@@ -24,19 +24,25 @@
             <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="2500"/> 
             <p:layout fullPage="true">
 
-                <p:layoutUnit position="north" size="58" resizable="false" closable="false" collapsible="false" id="topLogo">
+                <p:layoutUnit position="north" size="70" resizable="false" closable="false" collapsible="false" id="topLogo">
                     <ui:insert name="topPos" >
-                        <TABLE  width="90%" >
+                        <TABLE  width="98%" >
                             <TR>
-                                <TD align="left" valign="center">
-                            <h:panelGrid columns="2">
+                                <TD align="left" valign="center" id="colunaSupTop">
+                            <h:panelGrid columns="3">
                                 <h:graphicImage library="img" name="logo_40.png"/>
                                 <h:outputText value="#{user_logado}" styleClass="nomeLogado"/>
+                                <h:panelGroup>
+                                    <ui:include src="tempstatus.xhtml"/>
+                                </h:panelGroup>
                             </h:panelGrid>
                             </TD>
-
-                            <TD align="right" valign="center">
-                                SAIR
+                            <TD align="right" valign="bottom">
+                            <h:form id="outForm">
+                                <p:commandLink ajax="false" id="buttonSair" styleClass="ui-button_link" action="#{loginManager.deslogar()}">
+                                    <h:graphicImage library="img" name="sair.png" title="#{msg.sair}"/>
+                                </p:commandLink>
+                            </h:form>
                             </TD>
                             </TR>
                         </TABLE>
