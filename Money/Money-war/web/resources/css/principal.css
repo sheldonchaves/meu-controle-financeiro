@@ -11,12 +11,18 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-body{
-    font-size: xx-small;
+*{
+    font-size: x-small;
 }
 
 root {
     display: block;
+}
+
+.nomeLogado{
+    font-family: Geoogia, 'Times New Roman', times, serif;
+    color:#e78f08;
+    font-size: medium;
 }
 
 a{
@@ -36,17 +42,8 @@ right:20px;
 top: 10px;
 }
 
-form{
-    font-size: xx-small;
-}
-table{
-    font-size: xx-small;
-}
-
 .wijmo-wijmenu, .wijmo-wijmenu-list, .wijmo-wijmenu-item, .wijmo-wijmenu-text{
-    background-color: transparent !important; 
-    background-repeat: no-repeat !important;
-    border: none !important;
+
 }
 
 .red {
