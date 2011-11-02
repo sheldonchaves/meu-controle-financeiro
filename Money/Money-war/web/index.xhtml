@@ -31,7 +31,7 @@
                 <p:password value="#{loginManager.usuario.password}" id="inpsenha" size="20" feedback="false" minLength="0" maxlength="20"/>
 
                 <h:outputText value="" id="outnullo"/>
-                <p:commandButton action="#{loginManager.logar}" update="messages" 
+                <p:commandButton action="#{loginManager.logar()}" update="messages" 
                                  id="botaologar" image="ui-icon ui-icon-key" value="#{msg.entrar}">
                    
                 </p:commandButton>
