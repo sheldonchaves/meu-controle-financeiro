@@ -25,11 +25,32 @@
         </query>
     </named-query>
     
-       <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuario">
+        <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuarioFlagTipoMovimentacao">
+        <query>
+			Select distinct dm From DetalheMovimentacao dm
+                        Where dm.ativo = :ativo
+                        And (dm.usuarioProprietario = :usuario
+                        OR dm.usuarioProprietario.conjuge = :usuario)
+                        And dm.tipoMovimentacao = :tipoMovimentacao
+                        
+        </query>
+    </named-query>
+    
+    <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuario">
         <query>
 			Select distinct dm From DetalheMovimentacao dm
                         Where (dm.usuarioProprietario = :usuario
                         OR dm.usuarioProprietario.conjuge = :usuario)
+                        
+        </query>
+    </named-query>
+    
+    <named-query name="buscarDetalheMovimentacaoPorUsuarioTipoMovimentacao">
+        <query>
+			Select distinct dm From DetalheMovimentacao dm
+                        Where (dm.usuarioProprietario = :usuario
+                        OR dm.usuarioProprietario.conjuge = :usuario)
+                        And dm.tipoMovimentacao = :tipoMovimentacao
                         
         </query>
     </named-query>

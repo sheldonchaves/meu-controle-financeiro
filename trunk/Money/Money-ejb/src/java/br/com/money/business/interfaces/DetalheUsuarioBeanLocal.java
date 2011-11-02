@@ -4,6 +4,7 @@
  */
 package br.com.money.business.interfaces;
 
+import br.com.money.enums.TipoMovimentacao;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.DetalheMovimentacao;
 import br.com.money.modelos.Usuario;
@@ -23,7 +24,15 @@ public interface DetalheUsuarioBeanLocal {
      * @return 
      */
     public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuarioFlag(Usuario usuario, boolean flag);
-    
+   
+     /**
+     * Devolve uma lista com todos os Detalhes Movimentação de um usuário com filtro pela flag geral e o tipo
+     * @param usuario
+     * @param flag
+     * @param tipoMovimentacao
+     * @return 
+     */
+    public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuarioFlagTipoMovimentacao(Usuario usuario, boolean flag, TipoMovimentacao tipoMovimentacao);
     /**
      * Devolve uma lista com todos os Detalhes Movimentação de um usuário
      * @param usuario
@@ -40,6 +49,13 @@ public interface DetalheUsuarioBeanLocal {
      */
     public DetalheMovimentacao buscarDetalheMovimentacaoPorDetalheUsuario(String detalhe, Usuario usuario);
     
+    /**
+     * Devolve uma lista com todos os Detalhes Movimentação de um usuário e pelo tipo
+     * @param usuario
+     * @param tipoMovimentacao
+     * @return 
+     */
+    public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuarioTipoMovimentacao(Usuario usuario, TipoMovimentacao tipoMovimentacao);
     /**
      * Salva ou Atualiza o Detalhe Movimentação Passado
      * @param detalheMovimentacao

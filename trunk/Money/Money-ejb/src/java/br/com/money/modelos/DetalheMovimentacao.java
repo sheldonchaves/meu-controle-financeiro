@@ -4,6 +4,7 @@
  */
 package br.com.money.modelos;
 
+import br.com.money.enums.TipoMovimentacao;
 import br.com.money.vaidators.interfaces.ValidadoInterface;
 import javax.persistence.*;
 
@@ -29,7 +30,11 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
     @Column(name = "ds_detalhe", length = QUANTIDADE_CARACTERES_DETALHE, unique = false, nullable = false)
     private String detalhe;
 
-    @ManyToOne
+    @Column(name="en_tipo_movimentacao", nullable=false)
+    @Enumerated(EnumType.STRING)
+    private TipoMovimentacao tipoMovimentacao;
+    
+    @ManyToOne(optional=false)
     @JoinColumn(name="fk_usuario", referencedColumnName="id")
     private Usuario usuarioProprietario;
     
@@ -78,6 +83,14 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
 
     public void setUsuarioProprietario(Usuario usuarioProprietario) {
         this.usuarioProprietario = usuarioProprietario;
+    }
+
+    public TipoMovimentacao getTipoMovimentacao() {
+        return tipoMovimentacao;
+    }
+
+    public void setTipoMovimentacao(TipoMovimentacao tipoMovimentacao) {
+        this.tipoMovimentacao = tipoMovimentacao;
     }
 
     @Override

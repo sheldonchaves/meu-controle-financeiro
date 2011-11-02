@@ -5,6 +5,7 @@
 package br.com.money.business;
 
 import br.com.money.business.interfaces.DetalheUsuarioBeanLocal;
+import br.com.money.enums.TipoMovimentacao;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.DetalheMovimentacao;
 import br.com.money.modelos.Usuario;
@@ -44,6 +45,22 @@ public class DetalheUsuarioBean implements DetalheUsuarioBeanLocal {
         return q.getResultList();
     }
 
+        /**
+     * Devolve uma lista com todos os Detalhes Movimentação de um usuário
+     * @param usuario
+     * @param ativo Se o detalhe está ativado pelo usuario
+     * @return 
+     * @NamedQuary true
+     */
+    @Override
+    public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuarioFlagTipoMovimentacao(Usuario usuario, boolean flag, TipoMovimentacao tipoMovimentacao) {
+        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuarioFlagTipoMovimentacao");
+        q.setParameter("usuario", usuario);
+        q.setParameter("ativo", flag);
+         q.setParameter("tipoMovimentacao", tipoMovimentacao);
+        return q.getResultList();
+    }
+    
     /**
      * Devolve uma lista com todos os Detalhes Movimentação de um usuário
      * @param usuario
@@ -57,6 +74,20 @@ public class DetalheUsuarioBean implements DetalheUsuarioBeanLocal {
         return q.getResultList();
     }
 
+        /**
+     * Devolve uma lista com todos os Detalhes Movimentação de um usuário
+     * @param usuario
+     * @return 
+     * @NamedQuary true
+     */
+    @Override
+    public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuarioTipoMovimentacao(Usuario usuario, TipoMovimentacao tipoMovimentacao) {
+        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuarioTipoMovimentacao");
+        q.setParameter("usuario", usuario);
+        q.setParameter("tipoMovimentacao", tipoMovimentacao);
+        return q.getResultList();
+    }
+    
     /**
      * Busca DetalheMovimentacao pelo atributo detalhe passado como parâmetro.
      * Utilizado na VALIDAÇÃO NÃO INSERIR FILTROS
