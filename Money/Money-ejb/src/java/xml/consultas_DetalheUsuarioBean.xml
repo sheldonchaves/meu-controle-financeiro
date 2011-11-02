@@ -9,7 +9,8 @@
         <query>
 			Select distinct dm From DetalheMovimentacao dm
                         Where dm.detalhe = :detalhe
-                        And dm.usuarioProprietario = :usuario
+                        And (dm.usuarioProprietario = :usuario
+                        OR dm.usuarioProprietario.conjuge = :usuario)
                         
         </query>
     </named-query>
@@ -18,7 +19,8 @@
         <query>
 			Select distinct dm From DetalheMovimentacao dm
                         Where dm.ativo = :ativo
-                        And dm.usuarioProprietario = :usuario
+                        And (dm.usuarioProprietario = :usuario
+                        OR dm.usuarioProprietario.conjuge = :usuario)
                         
         </query>
     </named-query>
@@ -26,7 +28,8 @@
        <named-query name="DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuario">
         <query>
 			Select distinct dm From DetalheMovimentacao dm
-                        Where dm.usuarioProprietario = :usuario
+                        Where (dm.usuarioProprietario = :usuario
+                        OR dm.usuarioProprietario.conjuge = :usuario)
                         
         </query>
     </named-query>

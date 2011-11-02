@@ -7,7 +7,8 @@
     <named-query name="ReceitaDividaBean.buscarReceitaDividasPorUsuarioStatusPaginada">
         <query>
 			Select rd From ReceitaDivida rd
-                        Where rd.usuario = :usuario
+                        Where (rd.usuario = :usuario 
+                        OR rd.usuario.conjuge = :usuario)
                         And rd.statusPagamento = :statusPagamento
                         And rd.tipoMovimentacao = :tipoMovimentacao
                         Order by rd.dataVencimento ASC, rd.valor DESC
@@ -17,7 +18,8 @@
    <named-query name="ReceitaDividaBean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada">
         <query>
 			Select count(rd) From ReceitaDivida rd
-                        Where rd.usuario = :usuario
+                        Where (rd.usuario = :usuario 
+                        OR rd.usuario.conjuge = :usuario)
                         And rd.statusPagamento = :statusPagamento
                         And rd.tipoMovimentacao = :tipoMovimentacao
         </query>
@@ -26,7 +28,8 @@
       <named-query name="ReceitaDividaBean.apagarReceitaDivida">
         <query>
 			Delete From ReceitaDivida rd
-                        Where rd.usuario = :usuario
+                        Where (rd.usuario = :usuario 
+                        OR rd.usuario.conjuge = :usuario)
                         And rd.statusPagamento = :statusPagamento
                         And rd.identificador = :identificador
                         And rd.parcelaAtual >= :parcelaAtual
