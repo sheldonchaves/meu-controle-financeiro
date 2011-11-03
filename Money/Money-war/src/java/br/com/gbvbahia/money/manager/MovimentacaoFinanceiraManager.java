@@ -25,10 +25,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.apache.commons.lang.StringUtils;
+import org.primefaces.component.selectonelistbox.SelectOneListbox;
 import org.primefaces.model.LazyDataModel;
 
 /**
@@ -49,8 +49,7 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
     private SelectItemManager selectItemManager;
     private LazyDataModel<ReceitaDivida> receitasDividas;
     private ReceitaDivida receitaDivitaSelecionada;
-    private ContaBancaria contaBancariaSelecionada;
-    private HtmlSelectOneMenu selctContaPagamento;
+    private SelectOneListbox selctContaPagamento;
     
     public MovimentacaoFinanceiraManager() {
     }
@@ -88,23 +87,24 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
     }
 
     public void clean() {
-        this.contaBancariaSelecionada = new ContaBancaria();
         this.receitaDivitaSelecionada = new ReceitaDivida();
-        if(selctContaPagamento != null){
-            selctContaPagamento.setSubmittedValue("");
-            selctContaPagamento.setValue(null);
-        }
     }
 
     //====================
     //Table Actions
     //====================
     public void quitarReceitaDivida() {
+        if(     this.receitaDivitaSelecionada == null 
+                || this.receitaDivitaSelecionada.getContaBancariaTransiente() == null 
+                || this.receitaDivitaSelecionada.getContaBancariaTransiente().getId() == null){
+            UtilMetodos.messageFactoringFull("movimentacaoRealizadaContaNOk", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+            return;
+        }
         try {
-            this.movimentacaoFinanceiraBean.salvarMovimentacaoFinanceira(contaBancariaSelecionada, receitaDivitaSelecionada);
+            this.movimentacaoFinanceiraBean.salvarMovimentacaoFinanceira(receitaDivitaSelecionada.getContaBancariaTransiente(), receitaDivitaSelecionada);
             clean();
             UtilMetodos.messageFactoringFull("movimentacaoRealizadaOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER);
+            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER,ControleObserver.Eventos.CAD_CONTA_BANCARIA,ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
                 UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
@@ -148,14 +148,6 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
         this.receitasDividas = receitasDividas;
     }
 
-    public ContaBancaria getContaBancariaSelecionada() {
-        return contaBancariaSelecionada;
-    }
-
-    public void setContaBancariaSelecionada(ContaBancaria contaBancariaSelecionada) {
-        this.contaBancariaSelecionada = contaBancariaSelecionada;
-    }
-
     public ReceitaDivida getReceitaDivitaSelecionada() {
         return receitaDivitaSelecionada;
     }
@@ -164,11 +156,11 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
         this.receitaDivitaSelecionada = receitaDivitaSelecionada;
     }
 
-    public HtmlSelectOneMenu getSelctContaPagamento() {
+    public SelectOneListbox getSelctContaPagamento() {
         return selctContaPagamento;
     }
 
-    public void setSelctContaPagamento(HtmlSelectOneMenu selctContaPagamento) {
+    public void setSelctContaPagamento(SelectOneListbox selctContaPagamento) {
         this.selctContaPagamento = selctContaPagamento;
     }
 }
