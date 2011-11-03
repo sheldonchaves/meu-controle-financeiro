@@ -11,7 +11,6 @@ import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.business.interfaces.ReceitaDividaBeanLocal;
 import br.com.money.enums.StatusPagamento;
 import br.com.money.exceptions.ValidacaoException;
-import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.ReceitaDivida;
 import java.util.List;
 import java.util.Observable;
