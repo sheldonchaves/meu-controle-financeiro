@@ -45,11 +45,11 @@ public class MovimentacaoFinanceira implements ValidadoInterface, Comparable<Mov
     /**
      * A conta bancária que sofreu a movimentação
      */
-    @ManyToOne(targetEntity=br.com.money.modelos.ContaBancaria.class)
+    @ManyToOne
         @JoinColumn(name="fk_conta_bancaria_id", referencedColumnName="id",nullable=false)
     private ContaBancaria contaBancaria;
     
-    @OneToOne(targetEntity = br.com.money.modelos.MovimentacaoFinanceira.class, cascade = {CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "fk_receita_divida_id", referencedColumnName = "id")
     private ReceitaDivida receitaDivida;
 
