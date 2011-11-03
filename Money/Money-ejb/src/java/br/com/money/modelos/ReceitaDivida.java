@@ -202,4 +202,18 @@ public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivid
             return this.valor * (-1);
         }
     }
+    
+    //===============
+    //TRANSIENTES
+    //===============
+    @Transient
+    private ContaBancaria contaBancariaTransiente;
+
+    public ContaBancaria getContaBancariaTransiente() {
+        return contaBancariaTransiente;
+    }
+
+    public void setContaBancariaTransiente(ContaBancaria contaBancariaTransiente) {
+        this.contaBancariaTransiente = contaBancariaTransiente;
+    }
 }
