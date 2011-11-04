@@ -84,7 +84,7 @@
                                 <h:outputText value="#{msg.debitarDe}:"/>
                             </f:facet>
                             <p:selectOneMenu value="#{divida.contaBancariaTransiente}" label="#{msg.debitarDe}"
-                                             id="contaSele" style="width: 150px;" height="60"   >
+                                             id="contaSele" style="width: 150px;" height="100"   >
                                 <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
                                 <f:selectItems value="#{movimentacaoFinanceiraManager.contasBancarias}"/>
                                 <f:converter converterId="contaBancariaConverter"/>
