@@ -3,7 +3,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:p="http://primefaces.org/ui"
                 >
     <f:subview id="movimentacaoReceitaDividaEmbutido" rendered="#{fluxoMovimentacao.exibirReceitasDivias}">
         <TABLE>
@@ -47,7 +47,7 @@
                             </h:outputText>
                         </p:column>
 
-                        <p:column id="col5" styleClass="center" style="width: 75px;">
+                        <p:column id="col5" styleClass="center" style="width: 150px;">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.detalhe}"/>
                             </f:facet>
@@ -107,7 +107,7 @@
                     </p:dataTable>
 
                     <h:panelGroup id="dialogGroup">
-                        <p:dialog header="#{msg.titleConfirme}" widgetVar="dlg2" resizable="false" position="bottom" modal="false" appendToBody="true">  
+                        <p:dialog header="#{msg.titleConfirme}" widgetVar="dlg2" resizable="false" position="bottom" modal="false">  
                             <h:panelGrid columns="2">
                                 <h:outputLabel value="#{msg.dataVencimento}"/>
                                 <h:outputText value="#{movimentacaoFinanceiraManager.receitaDivitaSelecionada.dataVencimento}" id="dataV">

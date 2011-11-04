@@ -4,7 +4,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.prime.com.tr/ui">
+                xmlns:p="http://primefaces.org/ui">
 
 
     <ui:define name="westPos">
@@ -35,7 +35,7 @@
         <TABLE  width="100%">
             <TD align="left" valign="top" style="width: 150px;">
             <h:form id="formMenuSul">
-                <p:menu style="width:150px;"  type="sliding" backLabel="#{msg.voltar}">
+                <p:menu>
                     <p:menuitem update="conteudoBaixoGroup" value="#{msg.movReceitaDivida}" action="#{fluxoMovimentacao.fluxoExibirReceitaDivida()}" icon="receitaDividaIco" />
                     <p:menuitem update="conteudoBaixoGroup" value="#{msg.movMovimentacao}" action="#{fluxoMovimentacao.fluxoExibirMovimentacao()}" icon="movimentacaoIco" />
                 </p:menu>
@@ -51,7 +51,7 @@
         <TABLE  width="100%">
             <TD align="left" valign="top" style="width: 150px;">
             <h:form id="formMenu">
-                <p:menu style="width:150px;"  type="sliding" backLabel="#{msg.voltar}">
+                <p:menu>
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaBancaria}" action="#{fluxoCadastro.fluxoExibirCadastroContaBancaria()}" icon="conta" />
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaPagar}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagar()}" icon="pagar" />
