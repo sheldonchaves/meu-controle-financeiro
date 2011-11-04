@@ -32,7 +32,19 @@
 
 
     <ui:define name="southPos">
-        <ui:include src="movimentacao/Movimentacao.xhtml"/>
+        <TABLE  width="100%">
+            <TD align="left" valign="top" style="width: 150px;">
+            <h:form id="formMenuSul">
+                <p:menu style="width:150px;"  type="sliding" backLabel="#{msg.voltar}">
+                    <p:menuitem update="conteudoBaixoGroup" value="#{msg.movReceitaDivida}" action="#{fluxoMovimentacao.fluxoExibirReceitaDivida()}" icon="receitaDividaIco" />
+                    <p:menuitem update="conteudoBaixoGroup" value="#{msg.movMovimentacao}" action="#{fluxoMovimentacao.fluxoExibirMovimentacao()}" icon="movimentacaoIco" />
+                </p:menu>
+            </h:form>
+            </TD>
+            <TD align="center" valign="top">
+            <ui:include src="movimentacao/Movimentacao.xhtml"/>
+            </TD>
+        </TABLE>
     </ui:define>
 
     <ui:define name="menuCenterPos">

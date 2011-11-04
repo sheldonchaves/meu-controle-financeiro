@@ -20,6 +20,21 @@
     margin-left: 3px !important;
 }
 
+.receitaDividaIco {
+    background: url('/money/resources/img/confirm_24.png') no-repeat;
+    height:20px !important;
+    width:24px !important;
+    margin-left: 3px !important;
+    margin-top: -5px !important;
+}
+
+.movimentacaoIco {
+    background: url('/money/resources/img/confirm_v_24.png') no-repeat;
+    height:24px !important;
+    width:24px !important;
+    margin-left: 3px !important;
+}
+
 .receita {
     background: url('/money/resources/img/c_entrada_16.png') no-repeat;
     height:24px !important;
