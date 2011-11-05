@@ -16,7 +16,7 @@ import javax.annotation.PreDestroy;
  */
 public abstract class FluxoExibicaoMaster implements Serializable {
 
-    protected String tituloPanel;
+    protected String tituloPanel = "**** NÃO DEFINIDO!!!!! ****";
 
     private String className;
 
