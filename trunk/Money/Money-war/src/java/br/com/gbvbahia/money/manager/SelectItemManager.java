@@ -78,7 +78,7 @@ public class SelectItemManager {
         Collections.sort(contas);
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
         for(ContaBancaria cb : contas){
-            toReturn.add(new SelectItem(cb, StringUtils.substring(cb.getNomeConta(), 0, DetalheMovimentacaoManager.CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
+            toReturn.add(new SelectItem(cb, StringUtils.substring(cb.getLabel(), 0, DetalheMovimentacaoManager.CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
         }
         return toReturn;
     }
