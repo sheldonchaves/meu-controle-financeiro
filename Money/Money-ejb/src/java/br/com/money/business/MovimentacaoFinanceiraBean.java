@@ -8,6 +8,7 @@ import br.com.money.business.interfaces.ContaBancariaBeanLocal;
 import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.business.interfaces.ReceitaDividaBeanLocal;
 import br.com.money.enums.StatusPagamento;
+import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.MovimentacaoFinanceira;
 import br.com.money.modelos.ReceitaDivida;
@@ -37,7 +38,7 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLoc
     private EntityManager manager;
 
     @Override
-    public void salvarMovimentacaoFinanceira(ContaBancaria contaBancaria, ReceitaDivida receitaDivida) {
+    public void salvarMovimentacaoFinanceira(ContaBancaria contaBancaria, ReceitaDivida receitaDivida) throws ValidacaoException{
         ContaBancaria cb = manager.find(ContaBancaria.class, contaBancaria.getId());
         ReceitaDivida rd = manager.find(ReceitaDivida.class, receitaDivida.getId());
         rd.setValor(receitaDivida.getValor());
@@ -57,7 +58,7 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLoc
 
     @Override
     public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, Usuario usuario) {
-        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarReceitaDividasPorUsuarioStatusPaginada");
+        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarMovimentacaoPorUsuarioStatusPaginada");
         q.setMaxResults(tamanho);
         q.setFirstResult(posicaoInicial);
         q.setParameter("usuario", usuario);
@@ -66,9 +67,22 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLoc
 
     @Override
     public Integer buscarQtdadeMovimentacaoPorUsuarioStatusPaginada(Usuario usuario) {
-        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarQtdadeMovimentacaoPorUsuarioStatusPaginada");
+        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarQtdadeMovimentacaoPorUsuarioStatusPaginada");
         q.setParameter("usuario", usuario);
         Long toReturn = (Long) q.getSingleResult();
         return toReturn.intValue();
+    }
+    
+    @Override
+    public void desfazerMovimentacaoFinanceira(MovimentacaoFinanceira movimentacaoFinanceira) throws ValidacaoException{
+        MovimentacaoFinanceira mv = manager.find(MovimentacaoFinanceira.class, movimentacaoFinanceira.getId());
+        ContaBancaria cb = manager.find(ContaBancaria.class, mv.getContaBancaria().getId());
+        ReceitaDivida rd = manager.find(ReceitaDivida.class, mv.getReceitaDivida().getId());
+        cb.setSaldo(cb.getSaldo() - rd.getValorParaCalculoDireto());
+        rd.setStatusPagamento(StatusPagamento.NAO_PAGA);
+        contaBancariaBean.salvarContaBancaria(cb);
+        receitaDividaBean.salvarReceitaDivida(rd);
+        manager.remove(mv);
+        manager.flush();
     }
 }

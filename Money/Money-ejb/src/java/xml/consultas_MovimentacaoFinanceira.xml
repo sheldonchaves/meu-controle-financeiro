@@ -9,7 +9,8 @@
 			Select distinct m From MovimentacaoFinanceira m
                         Where m.receitaDivida.usuario = :usuario 
                         OR m.receitaDivida.usuario.conjuge = :usuario
-                        Order by m.dataMovimentacao DESC
+                        Order by m.dataMovimentacao DESC, m.receitaDivida.dataVencimento DESC,
+                        m.receitaDivida.valor DESC
         </query>
     </named-query>
     

@@ -65,6 +65,9 @@ public class ReceitaDividaValidador implements ValidadorInterface<ReceitaDivida,
         if(entidade.getDetalheMovimentacao() == null){
             lancarException("receitaDividaDetalhe", "Detalhe");
         }
+        if(entidade.getParcelaAtual() > entidade.getParcelaTotal()){
+            lancarException("receitaDividaDetalheParcelas", "Parcela Atual");
+        }
     }
 
     private void lancarException(String msg, String atributo) {

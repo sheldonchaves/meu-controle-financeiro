@@ -4,6 +4,7 @@
  */
 package br.com.money.business.interfaces;
 
+import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.MovimentacaoFinanceira;
 import br.com.money.modelos.ReceitaDivida;
@@ -22,7 +23,7 @@ public interface MovimentacaoFinanceiraBeanLocal {
      * @param contaBancaria
      * @param receitaDivida 
      */
-    public void salvarMovimentacaoFinanceira(ContaBancaria contaBancaria, ReceitaDivida receitaDivida);
+    public void salvarMovimentacaoFinanceira(ContaBancaria contaBancaria, ReceitaDivida receitaDivida) throws ValidacaoException;
     /**
      * Retornar as movimentações financeiras de um usuário ou conjuge do mesmo.
      * Páginada, por ser um grande volume de dados
@@ -40,4 +41,11 @@ public interface MovimentacaoFinanceiraBeanLocal {
      * @return 
      */
     public Integer buscarQtdadeMovimentacaoPorUsuarioStatusPaginada(Usuario usuario);
+    
+    /**
+     * Desfaz a movimentação financeira, credita o valor pago a conta, ou desconta o valor recebido, seta a conta como não paga.
+     * @param movimentacaoFinanceira
+     * @throws ValidacaoException 
+     */
+     public void desfazerMovimentacaoFinanceira(MovimentacaoFinanceira movimentacaoFinanceira) throws ValidacaoException;
 }

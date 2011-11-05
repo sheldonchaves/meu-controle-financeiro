@@ -161,4 +161,8 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
         hash = 89 * hash + (this.tipoConta != null ? this.tipoConta.hashCode() : 0);
         return hash;
     }
+    
+    public String getLabel(){
+        return this.tipoConta.getAbreviacao() + " - " + this.nomeConta;
+    }
 }
