@@ -98,7 +98,8 @@
                             </f:facet>
                             <p:commandLink id="buttonEdit" styleClass="ui-button_link" oncomplete="dlg2.show();" 
                                            actionListener="#{movimentacaoFinanceiraManager.setReceitaDivitaSelecionada(divida)}" update="conteudoBaixoGroup">
-                                <h:graphicImage library="img" name="confirm_32.png"/>
+                                <h:graphicImage library="img" name="money_red_20.png" rendered="#{divida.tipoMovimentacao.tipoMovimentacaoString eq 'Pagamento'}"/>
+                                <h:graphicImage library="img" name="money_gre_20.png" rendered="#{divida.tipoMovimentacao.tipoMovimentacaoString eq 'Receita'}"/>
 
                             </p:commandLink>
                         </p:column>
