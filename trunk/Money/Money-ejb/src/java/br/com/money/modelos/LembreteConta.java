@@ -95,6 +95,6 @@ public class LembreteConta implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.financeiro.entidades.LembreteContas[id=" + id + "]";
+        return "LembreteConta{" + "id=" + id + ", dias=" + dias + ", email=" + email + ", status=" + status + '}';
     }
 }

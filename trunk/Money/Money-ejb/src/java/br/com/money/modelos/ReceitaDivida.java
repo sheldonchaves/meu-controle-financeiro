@@ -181,7 +181,7 @@ public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivid
 
     @Override
     public String toString() {
-        return "br.com.money.modelos.ReceitaDivida[ id=" + id + " ]";
+        return "ReceitaDivida{" + "id=" + id + ", valor=" + valor + ", juros=" + juros + ", dataVencimento=" + dataVencimento + ", parcelaAtual=" + parcelaAtual + ", parcelaTotal=" + parcelaTotal + ", observacao=" + observacao + ", identificador=" + identificador + ", statusPagamento=" + statusPagamento + ", tipoMovimentacao=" + tipoMovimentacao + '}';
     }
 
     @Override
