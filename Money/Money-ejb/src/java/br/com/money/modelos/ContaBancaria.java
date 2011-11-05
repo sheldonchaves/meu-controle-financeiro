@@ -54,7 +54,7 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
     @Column(name = "fl_status", nullable = false)
     private boolean status = true;
 
-    @OneToMany(mappedBy = "contaBancaria", fetch = FetchType.LAZY, 
+    @OneToMany(mappedBy = "contaBancariaDebitada", fetch = FetchType.LAZY, 
             targetEntity = br.com.money.modelos.MovimentacaoFinanceira.class, cascade = CascadeType.ALL)
     private Set<MovimentacaoFinanceira> movimentacaoFinanceira;
 
@@ -125,7 +125,7 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
 
     @Override
     public String toString() {
-        return "br.com.money.modelos.ContaBancaria[ id=" + id + " ]";
+        return "ContaBancaria{" + "id=" + id + ", nomeConta=" + nomeConta + ", tipoConta=" + tipoConta + ", saldo=" + saldo + ", status=" + status + '}';
     }
 
     @Override

@@ -11,7 +11,7 @@ import javax.ejb.ApplicationException;
  * @author gbvbahia
  */
 @ApplicationException(rollback = true)
-public class ValidacaoException extends RuntimeException {
+public abstract class ValidacaoException extends RuntimeException {
 
     private String atributoName;
 

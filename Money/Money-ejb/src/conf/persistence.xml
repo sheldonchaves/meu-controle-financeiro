@@ -10,7 +10,7 @@
     <mapping-file>xml/consultas_ReceitaDividaBean.xml</mapping-file>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <!--property name="eclipselink.ddl-generation" value="create-tables"/-->
       <!-- OFF SEVERE WARNING INFO CONFIG FINE FINER FINEST ALL -->
       <property name="eclipselink.logging.level" value="WARNING"/>
     </properties>

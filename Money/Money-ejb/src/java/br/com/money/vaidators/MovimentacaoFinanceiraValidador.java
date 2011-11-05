@@ -33,11 +33,14 @@ public class MovimentacaoFinanceiraValidador implements ValidadorInterface<Movim
             lancarException("movimentacaoFinanceiraSaldoPosteriorNulo", "Saldo Posterior");
         }
         //REAVALIAR SE CASCATA FOR INCLUÍDO EM MOVIMENTAÇÂO
-        if(entidade.getContaBancaria() == null || entidade.getContaBancaria().getId() == null){
+        if(entidade.getContaBancariaDebitada() == null || entidade.getContaBancariaDebitada().getId() == null){
             lancarException("movimentacaoFinanceiraContaMovimentadaNula", "Conta Movimentada");
         }
         //REAVALIAR SE CASCATA FOR INCLUÍDO EM MOVIMENTAÇÂO
-        if(entidade.getReceitaDivida() == null || entidade.getReceitaDivida().getId() == null){
+        if(     (entidade.getReceitaDivida() == null 
+                || entidade.getReceitaDivida().getId() == null)
+                && (entidade.getContaBancariaTransferida() == null
+                || entidade.getContaBancariaTransferida().getId() == null)){
             lancarException("movimentacaoFinanceiraReceitaDividaNula", "Receita/Pagamento");
         }
     }

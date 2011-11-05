@@ -24,7 +24,9 @@ public interface MovimentacaoFinanceiraBeanLocal {
      * @param receitaDivida 
      */
     public void salvarMovimentacaoFinanceira(ContaBancaria contaBancaria, ReceitaDivida receitaDivida) throws ValidacaoException;
+    
     /**
+     * LIMITADO A TRAZER SOMENTE MOVIMENTAÇÕES DE PAGAMENTOS E RECEITAS, QUE TENHAM ReceitaDivida NÃO NULO<BR>
      * Retornar as movimentações financeiras de um usuário ou conjuge do mesmo.
      * Páginada, por ser um grande volume de dados
      * @param posicaoInicial
@@ -35,6 +37,7 @@ public interface MovimentacaoFinanceiraBeanLocal {
     public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, Usuario usuario);
     
     /**
+     * LIMITADO A TRAZER SOMENTE MOVIMENTAÇÕES DE PAGAMENTOS E RECEITAS, QUE TENHAM ReceitaDivida NÃO NULO<BR>
      * Retorna a quantidade de registros de movimentação financeira de um determinado usuário.
      * Necessário para controle da paginação
      * @param usuario
@@ -43,9 +46,20 @@ public interface MovimentacaoFinanceiraBeanLocal {
     public Integer buscarQtdadeMovimentacaoPorUsuarioStatusPaginada(Usuario usuario);
     
     /**
+     * UTILIAR APENAS PARA DESFAZER AS MOVIMENTAÇÕES QUE ENVOLVAM ReceitaDivida, TRANSFERENCIA ENTRE CONTAS AINDA NÃO EXISTE COMO DESFAZER<BR>
      * Desfaz a movimentação financeira, credita o valor pago a conta, ou desconta o valor recebido, seta a conta como não paga.
      * @param movimentacaoFinanceira
      * @throws ValidacaoException 
      */
      public void desfazerMovimentacaoFinanceira(MovimentacaoFinanceira movimentacaoFinanceira) throws ValidacaoException;
+     
+     /**
+     * UTILIZE PARA TRANSFERÊNCIAS ENTRE CONTAS
+     * Cria uma movimentação fianceira que referencia uma transferência entre contas bancárias
+     * @param contaDe
+     * @param contaPara
+     * @param valor
+     * @throws ValidacaoException 
+     */
+    public void realizarTransferenciaEntreContas(ContaBancaria contaDe, ContaBancaria contaPara, double valor) throws ValidacaoException;
 }

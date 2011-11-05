@@ -46,19 +46,29 @@ public class MovimentacaoFinanceira implements ValidadoInterface, Comparable<Mov
      * A conta bancária que sofreu a movimentação
      */
     @ManyToOne
-        @JoinColumn(name="fk_conta_bancaria_id", referencedColumnName="id",nullable=false)
-    private ContaBancaria contaBancaria;
+    @JoinColumn(name="fk_conta_bancaria_debitada_id", referencedColumnName="id",nullable=false)
+    private ContaBancaria contaBancariaDebitada;
+    
+    @Column(name="vl_saldo_transferida_anterior")
+    private Double saldoTransferidaAnterior;
+
+    @Column(name="vl_saldo_transferida_posterior")
+    private Double saldoTransferidaPosterior;
+    
+    @ManyToOne
+    @JoinColumn(name="fk_conta_bancaria_transferida_id")
+    private ContaBancaria contaBancariaTransferida;
     
     @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "fk_receita_divida_id", referencedColumnName = "id")
     private ReceitaDivida receitaDivida;
 
-    public ContaBancaria getContaBancaria() {
-        return contaBancaria;
+    public ContaBancaria getContaBancariaDebitada() {
+        return contaBancariaDebitada;
     }
 
-    public void setContaBancaria(ContaBancaria contaBancaria) {
-        this.contaBancaria = contaBancaria;
+    public void setContaBancariaDebitada(ContaBancaria contaBancaria) {
+        this.contaBancariaDebitada = contaBancaria;
     }
 
     public Date getDataMovimentacao() {
@@ -77,10 +87,18 @@ public class MovimentacaoFinanceira implements ValidadoInterface, Comparable<Mov
         this.saldoAnterior = saldoAnterior;
     }
 
+    /**
+     * Saldo, OBRIGATÓRIO, referente a conta que será debitada
+     * @return 
+     */
     public Double getSaldoPosterior() {
         return saldoPosterior;
     }
 
+    /**
+     * Saldo OBRIGATÓRIO, referente a conta que será debitada
+     * @param saldoPosterior 
+     */
     public void setSaldoPosterior(Double saldoPosterior) {
         this.saldoPosterior = saldoPosterior;
     }
@@ -100,6 +118,37 @@ public class MovimentacaoFinanceira implements ValidadoInterface, Comparable<Mov
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public ContaBancaria getContaBancariaTransferida() {
+        return contaBancariaTransferida;
+    }
+
+    public void setContaBancariaTransferida(ContaBancaria contaBancariaTransferida) {
+        this.contaBancariaTransferida = contaBancariaTransferida;
+    }
+
+    /**
+     * Saldo não obrigatorio, referente a conta creditada, para os casos de transferencia entre contas
+     * @return 
+     */
+    public Double getSaldoTransferidaAnterior() {
+        return saldoTransferidaAnterior;
+    }
+    /**
+     * Saldo não obrigatorio, referente a conta creditada, para os casos de transferencia entre contas
+     * @param saldoTransferidaAnterior 
+     */
+    public void setSaldoTransferidaAnterior(Double saldoTransferidaAnterior) {
+        this.saldoTransferidaAnterior = saldoTransferidaAnterior;
+    }
+
+    public Double getSaldoTransferidaPosterior() {
+        return saldoTransferidaPosterior;
+    }
+
+    public void setSaldoTransferidaPosterior(Double saldoTransferidaPosterior) {
+        this.saldoTransferidaPosterior = saldoTransferidaPosterior;
     }
 
     @Override
@@ -124,13 +173,13 @@ public class MovimentacaoFinanceira implements ValidadoInterface, Comparable<Mov
 
     @Override
     public String toString() {
-        return "br.com.money.modelos.MovimentacaoFinanceira[ id=" + id + " ]";
+        return "MovimentacaoFinanceira{" + "id=" + id + ", dataMovimentacao=" + dataMovimentacao + ", saldoAnterior=" + saldoAnterior + ", saldoPosterior=" + saldoPosterior + ", saldoTransferidaAnterior=" + saldoTransferidaAnterior + ", saldoTransferidaPosterior=" + saldoTransferidaPosterior + '}';
     }
 
     @Override
     public int compareTo(MovimentacaoFinanceira o) {
         int i = 0;
-        if(i == 0) i = this.contaBancaria.compareTo(o.contaBancaria);
+        if(i == 0) i = this.contaBancariaDebitada.compareTo(o.contaBancariaDebitada);
         if(i == 0) i = this.dataMovimentacao.compareTo(o.dataMovimentacao);
         if(i == 0) i = this.saldoPosterior.compareTo(o.saldoPosterior) *(-1);
         if(i == 0) i = this.id.compareTo(o.id);
@@ -140,11 +189,35 @@ public class MovimentacaoFinanceira implements ValidadoInterface, Comparable<Mov
     public MovimentacaoFinanceira() {
     }
 
-    public MovimentacaoFinanceira(ContaBancaria contaBancaria, ReceitaDivida receitaDivida) {
-        this.contaBancaria = contaBancaria;
+    /**
+     * Utilize para dar baixa de em pagamentos ou receitas.<br>
+     * A movimentação financeira deve ser criada antes de qualquer alteração na Conta debitada,
+     * afim de não ter os valores de saldo anterior e posterior incorretos.
+     * @param contaBancariaDebitada
+     * @param receitaDivida 
+     */
+    public MovimentacaoFinanceira(ContaBancaria contaBancariaDebitada, ReceitaDivida receitaDivida) {
+        this.contaBancariaDebitada = contaBancariaDebitada;
         this.receitaDivida = receitaDivida;
-        this.saldoAnterior = contaBancaria.getSaldo();
-        this.saldoPosterior = contaBancaria.getSaldo() + receitaDivida.getValorParaCalculoDireto();
+        this.saldoAnterior = contaBancariaDebitada.getSaldo();
+        this.saldoPosterior = contaBancariaDebitada.getSaldo() + receitaDivida.getValorParaCalculoDireto();
+    }
+
+    /**
+     * Utilize para quando for criar uma transferncia entre contas bancárias.<br>
+     * A movimentação financeira deve ser criada antes de realizar a operação nas contas, para que as informações do saldo
+     * anterior e posterior da conta Debitada fiquem corretos
+     * @param contaBancariaDebitada Conta que terá o valor descontado
+     * @param contaBancariaTransferida Conta que receberá o valor
+     * @param valor O valor propriamente dito
+     */
+    public MovimentacaoFinanceira(ContaBancaria contaBancariaDebitada, ContaBancaria contaBancariaTransferida, Double valor) {
+        this.contaBancariaDebitada = contaBancariaDebitada;
+        this.contaBancariaTransferida = contaBancariaTransferida;
+        this.saldoAnterior = contaBancariaDebitada.getSaldo();
+        this.saldoPosterior = contaBancariaDebitada.getSaldo() - valor;
+        this.saldoTransferidaAnterior = contaBancariaTransferida.getSaldo();
+        this.saldoTransferidaPosterior = contaBancariaTransferida.getSaldo() + valor;
     }
     
 }

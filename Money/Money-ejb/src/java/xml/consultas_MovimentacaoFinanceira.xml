@@ -7,6 +7,7 @@
     <named-query name="MovimentacaoFinanceiraBean.buscarMovimentacaoPorUsuarioStatusPaginada">
         <query>
 			Select distinct m From MovimentacaoFinanceira m
+                        Join m.receitaDivida as r
                         Where m.receitaDivida.usuario = :usuario 
                         OR m.receitaDivida.usuario.conjuge = :usuario
                         Order by m.dataMovimentacao DESC, m.receitaDivida.dataVencimento DESC,
@@ -17,6 +18,7 @@
         <named-query name="MovimentacaoFinanceiraBean.buscarQtdadeMovimentacaoPorUsuarioStatusPaginada">
         <query>
 			Select count(distinct m) From MovimentacaoFinanceira m
+                        Join m.receitaDivida as r
                         Where m.receitaDivida.usuario = :usuario 
                         OR m.receitaDivida.usuario.conjuge = :usuario
         </query>
