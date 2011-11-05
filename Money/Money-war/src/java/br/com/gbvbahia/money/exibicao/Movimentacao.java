@@ -4,7 +4,7 @@
  */
 package br.com.gbvbahia.money.exibicao;
 
-import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 
 /**
