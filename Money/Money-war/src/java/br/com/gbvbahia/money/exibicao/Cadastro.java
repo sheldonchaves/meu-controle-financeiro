@@ -4,10 +4,8 @@
  */
 package br.com.gbvbahia.money.exibicao;
 
-import br.com.gbvbahia.money.utils.UtilMetodos;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 /**
  *
@@ -21,10 +19,12 @@ public class Cadastro extends FluxoExibicaoMaster {
     private boolean exibirCadastroContaBancaria;
     private boolean exibirCadastroContaPagar;
     private boolean exibirCadastroContaReceber;
+    private boolean exibirTransferenciaEntreContas;
 
     private enum PaginaFluxo {
 
-        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR, CADASTRO_CONTA_RECEBER;
+        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR, CADASTRO_CONTA_RECEBER,
+        TRANSFERENCIA_ENTRE_CONTAS;
     }
 
     /** Creates a new instance of Cadastro */
@@ -45,8 +45,12 @@ public class Cadastro extends FluxoExibicaoMaster {
         alterarTela(PaginaFluxo.CADASTRO_CONTA_PAGAR);
     }
 
-        public void fluxoExibirCadastroContaReceita() {
+    public void fluxoExibirCadastroContaReceita() {
         alterarTela(PaginaFluxo.CADASTRO_CONTA_RECEBER);
+    }
+    
+    public void fluxoExibirTransferenciaEntreContas() {
+        alterarTela(PaginaFluxo.TRANSFERENCIA_ENTRE_CONTAS);
     }
     
     private void alterarTela(PaginaFluxo paginaLogin) {
@@ -54,28 +58,10 @@ public class Cadastro extends FluxoExibicaoMaster {
         exibirCadastroContaBancaria = (PaginaFluxo.CADASTRO_CONTA_BANCARIA.equals(paginaLogin));
         exibirCadastroContaPagar = (PaginaFluxo.CADASTRO_CONTA_PAGAR.equals(paginaLogin));
         exibirCadastroContaReceber = (PaginaFluxo.CADASTRO_CONTA_RECEBER.equals(paginaLogin));
-        definirAtributos(paginaLogin);
+        exibirTransferenciaEntreContas = (PaginaFluxo.TRANSFERENCIA_ENTRE_CONTAS.equals(paginaLogin));
     }
 
-    private void definirAtributos(PaginaFluxo paginaLogin) {
-        FacesContext fc = FacesContext.getCurrentInstance();
-        switch (paginaLogin) {
-            case CADASTRO_DETALHE_MOVIMENTACAO:
-                this.tituloPanel = UtilMetodos.getResourceBundle("titlePanelCadastroDetalheMovimentacao", fc);
-                break;
-            case CADASTRO_CONTA_BANCARIA:
-                this.tituloPanel = UtilMetodos.getResourceBundle("titlePanelCadastroContaBancaria", fc);
-                break;
-            case CADASTRO_CONTA_PAGAR:
-                this.tituloPanel = UtilMetodos.getResourceBundle("titlePanelCadastroContaPagar", fc);
-                break;
-            case CADASTRO_CONTA_RECEBER:
-                this.tituloPanel = UtilMetodos.getResourceBundle("titlePanelCadastroContaReceber", fc);
-                break;
-            default:
-                throw new AssertionError("Não foi definido case para a enum: " + paginaLogin.toString());
-        }
-    }
+
 
     public boolean isExibirCadastroDetalheMovimentacao() {
         return exibirCadastroDetalheMovimentacao;
@@ -107,5 +93,13 @@ public class Cadastro extends FluxoExibicaoMaster {
 
     public void setExibirCadastroContaReceber(boolean exibirCadastroContaReceber) {
         this.exibirCadastroContaReceber = exibirCadastroContaReceber;
+    }
+
+    public boolean isExibirTransferenciaEntreContas() {
+        return exibirTransferenciaEntreContas;
+    }
+
+    public void setExibirTransferenciaEntreContas(boolean exibirTransferenciaEntreContas) {
+        this.exibirTransferenciaEntreContas = exibirTransferenciaEntreContas;
     }
 }

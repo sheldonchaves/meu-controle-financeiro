@@ -53,10 +53,11 @@
             <TD align="left" valign="top" style="width: 150px;">
             <h:form id="formMenu">
                 <p:menu>
-                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
-                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaBancaria}" action="#{fluxoCadastro.fluxoExibirCadastroContaBancaria()}" icon="conta" />
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaPagar}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagar()}" icon="pagar" />
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaReceita}" action="#{fluxoCadastro.fluxoExibirCadastroContaReceita()}" icon="receita" />
+                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.transferenciaTitleContas}" action="#{fluxoCadastro.fluxoExibirTransferenciaEntreContas()}" icon="transferencia" />
+                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
+                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaBancaria}" action="#{fluxoCadastro.fluxoExibirCadastroContaBancaria()}" icon="conta" />
                 </p:menu>
             </h:form>
             </TD>
@@ -65,6 +66,7 @@
             <ui:include src="cadastro/ContaBancaria.xhtml"/>
             <ui:include src="cadastro/ContaPagar.xhtml"/>
             <ui:include src="cadastro/ContaReceber.xhtml"/>
+            <ui:include src="cadastro/TransferenciaContas.xhtml"/>
             </TD>
         </TABLE>
     </ui:define>
