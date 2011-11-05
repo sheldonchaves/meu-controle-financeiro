@@ -40,7 +40,7 @@ public class ContaBancariaValidador implements ValidadorInterface<ContaBancaria,
             lancarException("contaBancariaUsuarioNull", "Saldo");
         }
         ContaBancaria cb = bean.buscarContaBancariaPorNomeTipo(entidade.getNomeConta(), entidade.getTipoConta());
-        if (entidade == null && cb != null) {
+        if (entidade.getId() == null && cb != null) {
             lancarException("contaBancariaExiste", "Conta Bancária");
         }
         if (cb != null && entidade.getId() != null && !entidade.getId().equals(cb.getId()) && (entidade.equals(cb))) {
