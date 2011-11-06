@@ -41,7 +41,6 @@ public class LoginManager implements InterfaceManager {
     }
 
     public String logar() {
-        Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, Criptografia.encodePassword("102030", "ADMIN"));
         Usuario prop = usuarioBean.buscarUsuarioByLogin(usuario.getLogin());
         if (prop != null && prop.getPassword().equals(this.usuarioBean.criptografarSenha(usuario.getPassword(), prop.stringAMIN()))) {
             insereProprietarioSession(prop);
@@ -80,15 +79,15 @@ public class LoginManager implements InterfaceManager {
     @Override
     public void init() {
         this.usuario = new Usuario();
-        //EM DESENVOLVIMENTO
-         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
-         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
-         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
-         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
-         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
-         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
-        usuario.setLogin("gbvbahia");
-        usuario.setPassword("102030");
+//        //EM DESENVOLVIMENTO
+//         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
+//         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
+//         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
+//         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
+//         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
+//         Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "***   REMOVER LOGIN E SENHA DE TESTE   ***");
+//        usuario.setLogin("gbvbahia");
+//        usuario.setPassword("102030");
     }
 
     //=========================
