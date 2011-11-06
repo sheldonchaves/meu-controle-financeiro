@@ -48,6 +48,13 @@
     margin-left: 3px !important;
 }
 
+.scheduler{
+    background: url('/money/resources/img/time_16.png') no-repeat;
+    height:24px !important;
+    width:21px !important;
+    margin-left: 3px !important;
+}
+
 .block{
     background-image: url('/money/resources/img/uncheck_24.png') !important;
 }

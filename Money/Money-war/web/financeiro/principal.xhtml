@@ -58,6 +58,7 @@
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.transferenciaTitleContas}" action="#{fluxoCadastro.fluxoExibirTransferenciaEntreContas()}" icon="transferencia" />
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" />
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaBancaria}" action="#{fluxoCadastro.fluxoExibirCadastroContaBancaria()}" icon="conta" />
+                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadSchedulerEdit}" action="#{fluxoCadastro.fluxoExibirScheduler()}" icon="scheduler" />
                 </p:menu>
             </h:form>
             </TD>
@@ -67,6 +68,7 @@
             <ui:include src="cadastro/ContaPagar.xhtml"/>
             <ui:include src="cadastro/ContaReceber.xhtml"/>
             <ui:include src="cadastro/TransferenciaContas.xhtml"/>
+            <ui:include src="cadastro/Scheduler.xhtml"/>
             </TD>
         </TABLE>
     </ui:define>
