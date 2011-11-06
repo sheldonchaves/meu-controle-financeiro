@@ -11,4 +11,10 @@
         </query>
     </named-query>
     
+     <named-query name="SchedulerBean.buscarTodosSchelersPorStatus">
+        <query>
+			Select s From Scheduler s
+                        Where s.status = :status
+        </query>
+    </named-query>
 </entity-mappings>

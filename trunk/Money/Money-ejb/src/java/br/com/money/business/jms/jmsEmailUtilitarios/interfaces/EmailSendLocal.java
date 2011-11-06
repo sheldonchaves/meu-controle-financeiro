@@ -5,7 +5,6 @@
 
 package br.com.money.business.jms.jmsEmailUtilitarios.interfaces;
 
-import br.com.saber.certificacao.ejbs.jms.jmsEmailUtilitarios.interfaces.EmailSendInterface;
 import javax.ejb.Local;
 
 /**

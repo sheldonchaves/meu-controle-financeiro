@@ -18,7 +18,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface ReceitaDividaBeanLocal {
-    
+
     /**
      * Salva uma ReceitaDivida
      * @param conta
@@ -36,8 +36,9 @@ public interface ReceitaDividaBeanLocal {
      * @param tipoMovimentacao Receita ou Dívida
      * @return Uma List de ReceitaDivida
      */
-    List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, Usuario usuario, 
-            StatusPagamento statusPagamento,TipoMovimentacao tipoMovimentacao);
+    List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, Usuario usuario,
+            StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao);
+
     /**
      * Traz a quantidade total de itens dentro do perfil do método<br>
      * buscarReceitaDividasPorUsuarioStatusPaginada<br>
@@ -54,8 +55,8 @@ public interface ReceitaDividaBeanLocal {
      * @param deleteParcelas 
      * @throws ValidacaoException se status da conta passada  estiver como PAGA
      */
-    void apagarReceitaDivida(ReceitaDivida receitaDivida,boolean deleteParcelas) throws ValidacaoException;
-    
+    void apagarReceitaDivida(ReceitaDivida receitaDivida, boolean deleteParcelas) throws ValidacaoException;
+
     /**
      * Realiza busca de Receita Divida pelos filtros passados como parâmetro
      * Ordenação de data crescente realizada.
@@ -67,8 +68,21 @@ public interface ReceitaDividaBeanLocal {
      */
     public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho,
             Usuario usuario, StatusPagamento statusPagamento);
-   /**
+
+    /**
      * Retorna a quantidade de itens dentro do perfil dos parâmetros paUm iteiro que representa a quantidade de itens no perfil
      */
     public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(Usuario usuario, StatusPagamento statusPagamento);
+
+    /**
+     * Busca as receitas ou dividas de acordo com os parâmetros passados
+     * @param ini Data Inicial
+     * @param fim Data final
+     * @param usuario Usuario proprietário das contas
+     * @param status Paga ou Não Paga
+     * @param tipo  Receita ou Divida
+     * @return 
+     */
+    public List<ReceitaDivida> buscarReceitaDividasPorDataUsuarioStatusTipoMovimentacao(Date ini, Date fim,
+            Usuario usuario, StatusPagamento status, TipoMovimentacao tipo);
 }
