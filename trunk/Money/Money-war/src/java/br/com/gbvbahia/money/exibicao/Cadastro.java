@@ -20,11 +20,12 @@ public class Cadastro extends FluxoExibicaoMaster {
     private boolean exibirCadastroContaPagar;
     private boolean exibirCadastroContaReceber;
     private boolean exibirTransferenciaEntreContas;
+    private boolean exibirScheduler;
 
     private enum PaginaFluxo {
 
         CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR, CADASTRO_CONTA_RECEBER,
-        TRANSFERENCIA_ENTRE_CONTAS;
+        TRANSFERENCIA_ENTRE_CONTAS, SCHEDULER;
     }
 
     /** Creates a new instance of Cadastro */
@@ -53,15 +54,26 @@ public class Cadastro extends FluxoExibicaoMaster {
         alterarTela(PaginaFluxo.TRANSFERENCIA_ENTRE_CONTAS);
     }
     
+    public void fluxoExibirScheduler(){
+        alterarTela(PaginaFluxo.SCHEDULER);
+    }
+    
     private void alterarTela(PaginaFluxo paginaLogin) {
         exibirCadastroDetalheMovimentacao = (PaginaFluxo.CADASTRO_DETALHE_MOVIMENTACAO.equals(paginaLogin));
         exibirCadastroContaBancaria = (PaginaFluxo.CADASTRO_CONTA_BANCARIA.equals(paginaLogin));
         exibirCadastroContaPagar = (PaginaFluxo.CADASTRO_CONTA_PAGAR.equals(paginaLogin));
         exibirCadastroContaReceber = (PaginaFluxo.CADASTRO_CONTA_RECEBER.equals(paginaLogin));
         exibirTransferenciaEntreContas = (PaginaFluxo.TRANSFERENCIA_ENTRE_CONTAS.equals(paginaLogin));
+        exibirScheduler = (PaginaFluxo.SCHEDULER.equals(paginaLogin));
     }
 
+    public boolean isExibirScheduler() {
+        return exibirScheduler;
+    }
 
+    public void setExibirScheduler(boolean exibirScheduler) {
+        this.exibirScheduler = exibirScheduler;
+    }
 
     public boolean isExibirCadastroDetalheMovimentacao() {
         return exibirCadastroDetalheMovimentacao;
