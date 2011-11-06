@@ -49,7 +49,7 @@ public class EmailSendBean implements EmailSendLocal {
         email.setSmtpPort(465);
         email.setAuthenticator(new DefaultAuthenticator("gbvbahia01@gmail.com", senhaEmail));
         email.setTLS(true);
-        email.setHtmlMsg(messageData.getBody());
+        email.setHtmlMsg(messageData.getBody() + "</br> http://sabercertificacao.com.br/money");
         email.addTo(messageData.getEmail());
         email.setFrom("gbvbahia01@gmail.com", "Controle Financeiro");
         email.setSubject(messageData.getSubject());
