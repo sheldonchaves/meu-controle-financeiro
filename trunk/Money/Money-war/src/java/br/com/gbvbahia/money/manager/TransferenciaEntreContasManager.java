@@ -89,6 +89,7 @@ public class TransferenciaEntreContasManager implements InterfaceManager {
         this.movimentacaoFinanceiraBean.realizarTransferenciaEntreContas(contaDebitar, contaCreditar, valor);
         ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_BANCARIA);
         UtilMetodos.messageFactoringFull("TransferenciaSalva", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+        clean();
         }catch(ValidacaoException v){
             if (!StringUtils.isBlank(v.getAtributoName())) {
                 UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
