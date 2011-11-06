@@ -7,7 +7,8 @@ package br.com.gbvbahia.money.manager;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.UsuarioBeanLocal;
 import br.com.money.modelos.Usuario;
-import br.com.money.utils.Criptografia;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -17,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -35,7 +37,8 @@ public class LoginManager implements InterfaceManager {
     public static final String SESSION_ADMIN = "ADMIN";
 
     private Usuario usuario;
-
+    
+    private static Map<String, Integer> mapProtector = new HashMap<String, Integer>();
     /** Creates a new instance of LoginManager */
     public LoginManager() {
     }
@@ -44,11 +47,13 @@ public class LoginManager implements InterfaceManager {
         Usuario prop = usuarioBean.buscarUsuarioByLogin(usuario.getLogin());
         if (prop != null && prop.getPassword().equals(this.usuarioBean.criptografarSenha(usuario.getPassword(), prop.stringAMIN()))) {
             insereProprietarioSession(prop);
+            removerMapProtector();
             this.usuario = prop;
             return "principal";
         } else {
             UtilMetodos.messageFactoringFull("loginInvalido", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
             Logger.getLogger(LoginManager.class.getName()).log(Level.WARNING, "Tentativa de login, {0}, sem sucesso!", usuario.getLogin());
+            verificaTentativaInvalidaDeLogin();
             return null;
         }
     }
@@ -102,4 +107,31 @@ public class LoginManager implements InterfaceManager {
         this.usuario = usuario;
     }
 
+    
+        /**
+     * Caso alguém coloque um robô para tentar logar terá que esperar cada vez mais pelo retorno
+     * da tentativa de login
+     */
+    private void verificaTentativaInvalidaDeLogin() {
+        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String ip = req.getRemoteAddr();
+        int time = 1;
+        if (mapProtector.containsKey(ip)) {
+            time = mapProtector.get(ip) * 4;
+            mapProtector.put(ip, mapProtector.get(ip) + 1);
+        } else {
+            mapProtector.put(ip, time);
+        }
+        try {
+            Thread.sleep(time * 1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "*** Thread Login: ***", ex);
+        }
+    }
+
+    private void removerMapProtector() {
+        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String ip = req.getRemoteAddr();
+        mapProtector.remove(ip);
+    }
 }
