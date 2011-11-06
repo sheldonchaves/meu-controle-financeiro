@@ -25,10 +25,10 @@
 
         <h:form id="logarForm">
             <h:panelGrid columns="2" styleClass="fonteLogin">
-                <h:outputText value="#{msg.login}:" id="outlogin"/>
+                <h:outputText value="#{msg.login}:" id="outlogin" styleClass="fonteLogin"/>
                 <p:inputText value="#{loginManager.usuario.login}" id="inplogin" size="20" maxlength="50"/>
 
-                <h:outputText value="#{msg.senha}:" id="outsenha"/>
+                <h:outputText value="#{msg.senha}:" id="outsenha" styleClass="fonteLogin"/>
                 <p:password value="#{loginManager.usuario.password}" id="inpsenha" size="20" feedback="false" minLength="0" maxlength="20"/>
 
                 <h:outputText value="" id="outnullo"/>

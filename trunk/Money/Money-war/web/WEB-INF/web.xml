@@ -15,7 +15,7 @@
     <context-param>
         <description>Development, Production, SystemTest, UnitTest</description>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Development</param-value>
+        <param-value>Production</param-value>
     </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -35,9 +35,9 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
     <context-param>
-        <description>south-street le-frog</description>
+        <description>ui-lightness glass-x flick sunny dot-luv blitzer south-street mint-choc midnight le-frog aristo black-tie cupertino hot-sneaks pepper-grinder redmond trontastic rocket</description>
         <param-name>primefaces.THEME</param-name>
-        <param-value>ui-lightness</param-value>
+        <param-value>mint-choc</param-value>
     </context-param>
     <context-param>
         <param-name>timezone</param-name>
