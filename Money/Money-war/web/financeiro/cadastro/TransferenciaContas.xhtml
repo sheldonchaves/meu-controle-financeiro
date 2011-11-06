@@ -15,8 +15,8 @@
                             <h:outputText value="#{msg.transferenciaTitleContas}" styleClass="titleCentralLocal"/>
                         </f:facet>
                         <p:spacer width="80" height="0"/>
-                        <p:spacer width="50" height="0"/>
-                        <p:spacer width="30" height="0"/>
+                        <p:spacer width="150" height="1"/>
+                        <p:spacer width="100" height="0"/>
 
                         <h:outputLabel value="#{msg.valor}:"/>
                         <p:inputText value="#{transferenciaEntreContasManager.valor}" label="#{msg.valor}"
@@ -28,7 +28,7 @@
 
                         <h:outputLabel value="#{msg.debitarDe}:"/>
                         <p:selectOneMenu value="#{transferenciaEntreContasManager.contaDebitar}" label="#{msg.debitarDe}"
-                                         id="contaDebSele" style="width: 150px;" height="100" required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         id="contaDebSele" style="width: 200px;" height="100" required="true" requiredMessage="#{msg.campoObrigatorio}"
                                          binding="#{transferenciaEntreContasManager.selctDebitarDe}" >
                             <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
                             <f:selectItems value="#{movimentacaoFinanceiraManager.contasBancarias}"/>
@@ -38,7 +38,7 @@
 
                         <h:outputLabel value="#{msg.creditarEm}:"/>
                         <p:selectOneMenu value="#{transferenciaEntreContasManager.contaCreditar}" label="#{msg.creditarEm}"
-                                         id="contaCredSele" style="width: 150px;" height="100" required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         id="contaCredSele" style="width: 200px;" height="100" required="true" requiredMessage="#{msg.campoObrigatorio}"
                                          binding="#{transferenciaEntreContasManager.selctTransferirPara}" >
                             <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
                             <f:selectItems value="#{movimentacaoFinanceiraManager.contasBancarias}"/>
