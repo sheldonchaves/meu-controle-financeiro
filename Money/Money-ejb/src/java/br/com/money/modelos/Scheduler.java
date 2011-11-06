@@ -4,7 +4,7 @@
  */
 package br.com.money.modelos;
 
-import java.io.Serializable;
+import br.com.money.vaidators.interfaces.ValidadoInterface;
 import javax.persistence.*;
 
 /**
@@ -13,8 +13,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "money_lembrete_contas")
-public class LembreteConta implements Serializable {
-
+public class Scheduler implements ValidadoInterface {
+    
+    public static final int QUANTIDADE_CARACTERES_EMAIL = 255;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
@@ -23,13 +25,13 @@ public class LembreteConta implements Serializable {
     @Column(name = "nm_dias_vencimento", nullable = false)
     private int dias = 0;
 
-    @Column(name = "ds_email_contato", nullable = false,length=255)
+    @Column(name = "ds_email_contato", nullable = false,length=QUANTIDADE_CARACTERES_EMAIL)
     private String email;
 
     @Column(name = "fl_status_aviso", nullable = false)
     private boolean status = true;
 
-    @OneToOne(targetEntity = br.com.money.modelos.Usuario.class)
+    @OneToOne
     @JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
     private Usuario user;
 
@@ -83,10 +85,10 @@ public class LembreteConta implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof LembreteConta)) {
+        if (!(object instanceof Scheduler)) {
             return false;
         }
-        LembreteConta other = (LembreteConta) object;
+        Scheduler other = (Scheduler) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
