@@ -35,15 +35,19 @@
                         <p:message for="valor"/>
 
                         <h:outputLabel value="#{msg.parcelaAtual}:"/>
-                        <p:inputText value="#{contaPagarManager.receitaDivida.parcelaAtual}" label="#{msg.parcelaAtual}"
-                                     id="parcelaAtual" required="true" requiredMessage="#{msg.campoObrigatorio}" 
-                                     onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaPagarManager.parcelAtualInput}"/>
+                        <p:spinner value="#{contaPagarManager.receitaDivida.parcelaAtual}" label="#{msg.parcelaAtual}"
+                                     id="parcelaAtual" required="true" requiredMessage="#{msg.campoObrigatorio}" min="0" max="120"
+                                     onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaPagarManager.parcelAtualInput}">
+                            <f:validateLongRange maximum="120" minimum="0"/>
+                        </p:spinner>
                         <p:message for="parcelaAtual"/>             
 
                         <h:outputLabel value="#{msg.parcelaTotal}:"/>
-                        <p:inputText value="#{contaPagarManager.receitaDivida.parcelaTotal}" label="#{msg.parcelaTotal}"
-                                     id="parcelaTotal" required="true" requiredMessage="#{msg.campoObrigatorio}" 
-                                     onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaPagarManager.parcelTotalInput}"/>
+                        <p:spinner value="#{contaPagarManager.receitaDivida.parcelaTotal}" label="#{msg.parcelaTotal}"
+                                     id="parcelaTotal" required="true" requiredMessage="#{msg.campoObrigatorio}" min="0" max="120"
+                                     onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaPagarManager.parcelTotalInput}">
+                            <f:validateLongRange maximum="120" minimum="0"/>
+                        </p:spinner>
                         <p:message for="parcelaTotal"/>     
 
                         <h:outputLabel value="#{msg.salvarParcelas}:"/>
