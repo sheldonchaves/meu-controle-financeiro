@@ -55,4 +55,15 @@
         </query>
     </named-query>
    
+       <named-query name="ReceitaDividaBean.buscarReceitaDividasPorDataUsuarioStatusTipoMovimentacao">
+        <query>
+			Select rd From ReceitaDivida rd
+                        Where (rd.usuario = :usuario 
+                        OR rd.usuario.conjuge = :usuario)
+                        And rd.dataVencimento Between :dataI And :dataF
+                        And rd.statusPagamento = :statusPagamento
+                        And rd.tipoMovimentacao = :tipoMovimentacao
+        </query>
+    </named-query>
+   
 </entity-mappings>

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package br.com.saber.certificacao.ejbs.jms.jmsEmailUtilitarios.interfaces;
+package br.com.money.business.jms.jmsEmailUtilitarios.interfaces;
 
 import java.io.Serializable;
 

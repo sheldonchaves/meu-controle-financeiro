@@ -40,7 +40,7 @@ public class ReceitaDividaBean implements ReceitaDividaBeanLocal {
         manager.flush();
     }
 
-     @Override
+    @Override
     public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho,
             Usuario usuario, StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao) {
         Query q = manager.createNamedQuery("ReceitaDividaBean.buscarReceitaDividasPorUsuarioStatusPaginada");
@@ -51,7 +51,7 @@ public class ReceitaDividaBean implements ReceitaDividaBeanLocal {
         q.setParameter("tipoMovimentacao", tipoMovimentacao);
         return q.getResultList();
     }
-    
+
     @Override
     public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho,
             Usuario usuario, StatusPagamento statusPagamento) {
@@ -71,7 +71,7 @@ public class ReceitaDividaBean implements ReceitaDividaBeanLocal {
         Long toReturn = (Long) q.getSingleResult();
         return toReturn.intValue();
     }
-    
+
     @Override
     public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(Usuario usuario, StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao) {
         Query q = manager.createNamedQuery("ReceitaDividaBean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada");
@@ -98,5 +98,17 @@ public class ReceitaDividaBean implements ReceitaDividaBeanLocal {
             q.executeUpdate();
         }
         manager.flush();
+    }
+
+    @Override
+    public List<ReceitaDivida> buscarReceitaDividasPorDataUsuarioStatusTipoMovimentacao(Date ini, Date fim,
+            Usuario usuario, StatusPagamento status, TipoMovimentacao tipo) {
+        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarReceitaDividasPorDataUsuarioStatusTipoMovimentacao");
+        q.setParameter("usuario", usuario);
+        q.setParameter("dataI", ini);
+        q.setParameter("dataF", fim);
+        q.setParameter("statusPagamento", status);
+        q.setParameter("tipoMovimentacao", tipo);
+        return q.getResultList();
     }
 }

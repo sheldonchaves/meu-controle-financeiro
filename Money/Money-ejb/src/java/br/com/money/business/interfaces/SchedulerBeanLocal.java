@@ -7,6 +7,7 @@ package br.com.money.business.interfaces;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.Scheduler;
 import br.com.money.modelos.Usuario;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -29,4 +30,11 @@ public interface SchedulerBeanLocal {
      * @return 
      */
     public Scheduler buscarSchedulerPorUsuario(Usuario usuario);
+    
+    /**
+     * Busca todos os Scheduler que possuam o Status passado.
+     * @param status
+     * @return 
+     */
+    public List<Scheduler> buscarTodosSchelersPorStatus(boolean status);
 }
