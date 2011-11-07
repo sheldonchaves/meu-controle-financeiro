@@ -14,7 +14,6 @@ import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ReceitaDivida;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +21,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
@@ -35,7 +35,7 @@ import org.primefaces.model.LazyDataModel;
  * @author Guilherme
  */
 @ManagedBean(name = "contaPagarManager")
-@ViewScoped
+@SessionScoped
 public class ContaPagarManager implements InterfaceManager, Observer {
 
     @EJB

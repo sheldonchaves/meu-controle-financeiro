@@ -3,25 +3,28 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <f:view>
+    <f:view contentType="text/html">
         <h:head>
-            <meta http-equiv="Content-Type" content="text/html" />
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <title>
+                    <ui:insert name="pageTitle">
+                        <h:outputText value="#{msg.loginTitleTemplate}"/>
+                    </ui:insert>
+                </title>
+                <p:resources />
             <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/img/favicon.ico" type="image/x-icon" />
             <link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/resources/css/principal.css" />
             <link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/resources/css/iconmenu.css" />
             <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/js.js" />
             <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/shBrushJava.js" />
             <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/shCore.js" />
-            <title>
-                <ui:insert name="pageTitle">
-                    <h:outputText value="#{msg.loginTitleTemplate}"/>
-                </ui:insert>
-            </title>
+
         </h:head>
 
         <h:body>
-
-            <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="6000"/> 
+            <ui:insert name="msgGrow" >
+                <p:growl id="messagestemp" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="6000"/> 
+            </ui:insert>
             <p:layout fullPage="true" id="fullPageLayout">
 
                 <p:layoutUnit position="north" size="70" resizable="false" closable="false" collapsible="false" id="topLogo">
@@ -49,10 +52,10 @@
                     </ui:insert>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="south" size="250" header="#{msg.movimentacoes}" resizable="true" closable="false" collapsible="false" >
+                <p:layoutUnit position="south" size="250" header="#{msg.movimentacoes}" resizable="true" closable="false" collapsible="true" >
                     <h:panelGroup id="conteudoBaixoGroup">
                         <ui:insert name="southPos">
-                           
+
                         </ui:insert>
                     </h:panelGroup>
                 </p:layoutUnit>
@@ -68,7 +71,7 @@
                 <p:layoutUnit position="center" id="layoutSuperiorCentral">
                     <h:panelGroup id="conteudoCentralSuperiorGroup">
                         <ui:insert name="menuCenterPos">
-                           
+
                         </ui:insert>
                     </h:panelGroup>
 

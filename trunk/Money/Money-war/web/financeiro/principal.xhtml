@@ -7,6 +7,10 @@
                 xmlns:p="http://primefaces.org/ui">
 
 
+    <ui:define name="msgGrow">
+        <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="6000" /> 
+    </ui:define>
+    
     <ui:define name="westPos">
         <TABLE  width="100%">
             <ui:repeat value="#{contaBancariaManager.contasBancarias}" var="conta">
