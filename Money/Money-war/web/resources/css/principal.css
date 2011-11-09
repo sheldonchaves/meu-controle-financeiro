@@ -12,8 +12,8 @@
 */
 
 *{
-    font-size: small;
-    color: white;
+    font-size: x-small;
+    color: black;
 }
 .ui-paginator-rpp-options{
     color: black;
@@ -23,7 +23,7 @@ root {
 }
 
 .titleCentralLocal{
-    color: #6ce26c;
+    color: cadetblue;
 }
 
 .nomeLogado{
@@ -45,7 +45,7 @@ a{
 }
 
 .ui-growl {
-right:20px;
+left: 50%;
 top: 10px;
 }
 
@@ -61,7 +61,7 @@ top: 10px;
 }
 
 .green{
-    color: #6ce26c;
+    color: #008200;
 }
 
 .fonteLogin{

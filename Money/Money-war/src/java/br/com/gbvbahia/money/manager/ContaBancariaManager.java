@@ -132,6 +132,9 @@ public class ContaBancariaManager implements InterfaceManager, Observer {
             } else {
                 UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
             }
+        }catch (Exception e){
+            UtilMetodos.messageFactoringFull(e.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+            e.printStackTrace();
         }
     }
     

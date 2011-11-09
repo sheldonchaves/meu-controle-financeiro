@@ -60,7 +60,7 @@
 
                         <h:outputLabel value="#{msg.detalhe}:" />
                         <p:selectOneMenu value="#{contaPagarManager.receitaDivida.detalheMovimentacao}" label="#{msg.detalhe}"
-                                         binding="#{contaPagarManager.selctDetalhePagamento}" 
+                                         binding="#{contaPagarManager.selctDetalhePagamento}" style="width: 130px;"
                                          id="tipoConta" required="true" requiredMessage="#{msg.campoObrigatorio}">
                             <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
                             <f:selectItems value="#{contaPagarManager.detalhes}"/>
@@ -71,7 +71,7 @@
                         <h:outputLabel value="#{msg.observacao}:"/>
                         <p:inputText value="#{contaPagarManager.receitaDivida.observacao}" label="#{msg.observacao}"
                                      id="obs" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="30"
-                                     size="20" binding="#{contaPagarManager.obsInut}"/>
+                                     size="25" binding="#{contaPagarManager.obsInut}"/>
                         <p:message for="obs"/>     
 
                         <h:outputLabel value=""/>
@@ -94,7 +94,8 @@
             <h:panelGroup id="cadContaPagarTableGroup">
                 <h:form id="formContaPagarTable">
                     <p:dataTable var="divida" value="#{contaPagarManager.dividas}" paginator="true" rows="5" lazy="true" 
-                                 paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink}" emptyMessage="#{msg.semRegistrosEcontrados}">
+                                 paginatorTemplate="{RowsPerPageDropdown} {PreviousPageLink} {CurrentPageReport} {NextPageLink}" 
+                                 emptyMessage="#{msg.semRegistrosEcontrados}" rowsPerPageTemplate="5,8,12">
 
                         <p:column id="col1" styleClass="center">
                             <f:facet name="header">
