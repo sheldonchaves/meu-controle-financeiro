@@ -40,21 +40,15 @@ public class ContaReceberManager implements InterfaceManager, Observer {
 
     @EJB
     private ReceitaDividaBeanLocal receitaDividaBean;
-    
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
-    
     @ManagedProperty("#{selectItemManager}")
     private SelectItemManager selectItemManager;
-    
     private LazyDataModel<ReceitaDivida> receitas;//LazyLoad (Paginação)
-    
     private ReceitaDivida receitaDivida;
     private boolean salvarParcelas;
-    
     private ReceitaDivida receitaDividaToDelete;
     private boolean apagarPrestacoes;
-    
     private HtmlInputText valorInput;
     private HtmlInputText parcelAtualInput;
     private HtmlInputText parcelTotalInput;
@@ -62,7 +56,7 @@ public class ContaReceberManager implements InterfaceManager, Observer {
     private HtmlSelectBooleanCheckbox salvarParcelasInput;
     private HtmlSelectOneMenu selctDetalhePagamento;
     private org.primefaces.component.calendar.Calendar calendarInput;
-    
+
     public ContaReceberManager() {
     }
     //====================
@@ -108,26 +102,26 @@ public class ContaReceberManager implements InterfaceManager, Observer {
         salvarParcelas = false;
         receitaDividaToDelete = null;
         apagarPrestacoes = false;
-        if(valorInput != null){
+        if (valorInput != null) {
             valorInput.setSubmittedValue("0,00");
         }
-        if(calendarInput != null){
+        if (calendarInput != null) {
             calendarInput.setSubmittedValue(UtilMetodos.getDataString(new Date()));
             calendarInput.setValue(new Date());
         }
-        if(parcelAtualInput != null){
+        if (parcelAtualInput != null) {
             parcelAtualInput.setSubmittedValue("");
         }
-        if(parcelTotalInput != null){
+        if (parcelTotalInput != null) {
             parcelTotalInput.setSubmittedValue("");
         }
-        if(obsInut != null){
+        if (obsInut != null) {
             obsInut.setSubmittedValue("");
         }
-        if(salvarParcelasInput != null){
+        if (salvarParcelasInput != null) {
             salvarParcelasInput.setSelected(false);
         }
-        if(selctDetalhePagamento != null){
+        if (selctDetalhePagamento != null) {
             selctDetalhePagamento.setSubmittedValue(UtilMetodos.getResourceBundle("selecione", FacesContext.getCurrentInstance()));
             selctDetalhePagamento.setValue(null);
         }
@@ -188,24 +182,25 @@ public class ContaReceberManager implements InterfaceManager, Observer {
     //====================
     //Table Actions
     //====================
-    public void deletarConta(){
-        try{
-        this.receitaDividaBean.apagarReceitaDivida(receitaDividaToDelete, apagarPrestacoes);
-        UtilMetodos.messageFactoringFull("receitaApagadaOK", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-        clean();
-        }catch(ValidacaoException v){
-             if (!StringUtils.isBlank(v.getAtributoName())) {
+
+    public void deletarConta() {
+        try {
+            this.receitaDividaBean.apagarReceitaDivida(receitaDividaToDelete, apagarPrestacoes);
+            UtilMetodos.messageFactoringFull("receitaApagadaOK", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            clean();
+        } catch (ValidacaoException v) {
+            if (!StringUtils.isBlank(v.getAtributoName())) {
                 UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
             } else {
                 UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
             }
         }
     }
-    
+
     //====================
     //SelectItem
     //====================
-    public List<SelectItem> getDetalhes(){
+    public List<SelectItem> getDetalhes() {
         return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(), true, TipoMovimentacao.DEPOSITO);
     }
     //=========================
@@ -234,6 +229,14 @@ public class ContaReceberManager implements InterfaceManager, Observer {
 
     public void setReceitaDivida(ReceitaDivida receitaDivida) {
         this.receitaDivida = receitaDivida;
+        this.obsInut.setSubmittedValue(receitaDivida.getObservacao());
+        this.salvarParcelasInput.setSelected(false);
+        this.salvarParcelas = false;
+        this.parcelTotalInput.setSubmittedValue(receitaDivida.getParcelaTotal());
+        this.parcelAtualInput.setSubmittedValue(receitaDivida.getParcelaAtual());
+        this.valorInput.setSubmittedValue(UtilMetodos.getNumberFormater().format(receitaDivida.getValor()));
+        this.calendarInput.setPattern(this.getPattern());
+        this.calendarInput.setSubmittedValue(UtilMetodos.getDataString(receitaDivida.getDataVencimento()));
     }
 
     public boolean isSalvarParcelas() {
@@ -322,5 +325,15 @@ public class ContaReceberManager implements InterfaceManager, Observer {
 
     public void setSelctDetalhePagamento(HtmlSelectOneMenu selctDetalhePagamento) {
         this.selctDetalhePagamento = selctDetalhePagamento;
+    }
+
+    @Override
+    public Locale getLocale() {
+        return SelectItemManager.BRASIL;
+    }
+
+    @Override
+    public String getPattern() {
+        return SelectItemManager.PATTERN;
     }
 }

@@ -21,9 +21,9 @@
                         <h:outputLabel value="#{msg.dataVencimento}:"/> 
                         <p:calendar value="#{contaPagarManager.receitaDivida.dataVencimento}" required="true"
                                     requiredMessage="#{msg.campoObrigatorio}" id="dataVencimento" onkeyup="formatar(this, '##/##/####', event)"
-                                    maxlength="10"
+                                    maxlength="10" locale="#{contaPagarManager.locale}"
                                     label="#{msg.dataVencimento}" timeZone="#{initParam['timezone']}" 
-                                    pattern="dd/MM/yyyy" binding="#{contaPagarManager.calendarInput}"/>
+                                    pattern="#{contaPagarManager.pattern}" binding="#{contaPagarManager.calendarInput}"/>
                         <p:message for="dataVencimento"/>
 
                         <h:outputLabel value="#{msg.valor}:"/>
@@ -52,7 +52,10 @@
 
                         <h:outputLabel value="#{msg.salvarParcelas}:"/>
                         <p:selectBooleanCheckbox value="#{contaPagarManager.salvarParcelas}" label="#{msg.salvarParcelas}"
-                                                 id="salvarParcelas" binding="#{contaPagarManager.salvarParcelasInput}"/>
+                                                 id="salvarParcelas" binding="#{contaPagarManager.salvarParcelasInput}"
+                                                 disabled="#{contaPagarManager.receitaDivida.id != null}">
+                            
+                        </p:selectBooleanCheckbox>
                         <p:message for="salvarParcelas"/>  
 
                         <h:outputLabel value="#{msg.detalhe}:" />
@@ -142,8 +145,19 @@
                             <h:outputText value="#{divida.observacao}">
                             </h:outputText>
                         </p:column>
-
-                        <p:column id="col7" styleClass="center" >
+                        
+                        <p:column id="col7" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.editar}"/>
+                            </f:facet>
+                            <p:commandLink update="conteudoCentralSuperiorGroup" 
+                                           id="buttonEdit" styleClass="ui-button_link">
+                                <h:graphicImage library="img" name="c_saida_edit_16.png"/>
+                                <f:setPropertyActionListener value="#{divida}" target="#{contaPagarManager.receitaDivida}" />  
+                            </p:commandLink>
+                        </p:column>
+                        
+                        <p:column id="col8" styleClass="center" >
                             <f:facet name="header">
                                 <h:outputText value="#{msg.remover}"/>
                             </f:facet>

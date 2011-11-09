@@ -10,6 +10,7 @@ import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ContaBancaria;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -177,4 +178,14 @@ public class TransferenciaEntreContasManager implements InterfaceManager {
     public void setSelctTransferirPara(HtmlSelectOneMenu selctTransferirPara) {
         this.selctTransferirPara = selctTransferirPara;
     }
+    
+    @Override
+    public Locale getLocale() {
+        return SelectItemManager.BRASIL;
+    }
+
+    @Override
+    public String getPattern() {
+        return SelectItemManager.PATTERN;
+    }   
 }

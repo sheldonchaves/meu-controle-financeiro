@@ -8,6 +8,7 @@ import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.UsuarioBeanLocal;
 import br.com.money.modelos.Usuario;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -134,4 +135,14 @@ public class LoginManager implements InterfaceManager {
         String ip = req.getRemoteAddr();
         mapProtector.remove(ip);
     }
+    
+    @Override
+    public Locale getLocale() {
+        return SelectItemManager.BRASIL;
+    }
+
+    @Override
+    public String getPattern() {
+        return SelectItemManager.PATTERN;
+    }   
 }

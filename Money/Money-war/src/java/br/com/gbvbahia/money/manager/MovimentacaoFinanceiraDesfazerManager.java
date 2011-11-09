@@ -10,6 +10,7 @@ import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.MovimentacaoFinanceira;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -35,15 +36,13 @@ public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, 
 
     @EJB
     private MovimentacaoFinanceiraBeanLocal movimentacaoFinanceiraBean;
-    
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
     @ManagedProperty("#{selectItemManager}")
     private SelectItemManager selectItemManager;
-    
     private LazyDataModel<MovimentacaoFinanceira> movimentacoes;
     private MovimentacaoFinanceira movimentacaoFinanceiraSelecionada;
-    
+
     public MovimentacaoFinanceiraDesfazerManager() {
     }
 
@@ -91,7 +90,7 @@ public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, 
             movimentacaoFinanceiraBean.desfazerMovimentacaoFinanceira(movimentacaoFinanceiraSelecionada);
             clean();
             UtilMetodos.messageFactoringFull("movimentacaoDesRealizadaOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER,ControleObserver.Eventos.CAD_CONTA_BANCARIA,ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
+            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER, ControleObserver.Eventos.CAD_CONTA_BANCARIA, ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
                 UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
@@ -104,7 +103,6 @@ public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, 
     //====================
     //SelectItem
     //====================
-
     //=========================
     //Getters AND Setters
     //=========================
@@ -140,4 +138,13 @@ public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, 
         this.movimentacaoFinanceiraSelecionada = movimentacaoFinanceiraSelecionada;
     }
 
+    @Override
+    public Locale getLocale() {
+        return SelectItemManager.BRASIL;
+    }
+
+    @Override
+    public String getPattern() {
+        return SelectItemManager.PATTERN;
+    }
 }

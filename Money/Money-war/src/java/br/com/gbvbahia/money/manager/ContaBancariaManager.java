@@ -202,4 +202,14 @@ public class ContaBancariaManager implements InterfaceManager, Observer {
     public void setContasBancarias(List<ContaBancaria> contasBancarias) {
         this.contasBancarias = contasBancarias;
     }
+    
+    @Override
+    public Locale getLocale() {
+        return SelectItemManager.BRASIL;
+    }
+
+    @Override
+    public String getPattern() {
+        return SelectItemManager.PATTERN;
+    }   
 }

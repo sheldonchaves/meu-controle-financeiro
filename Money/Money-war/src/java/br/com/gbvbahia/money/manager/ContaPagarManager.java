@@ -96,6 +96,7 @@ public class ContaPagarManager implements InterfaceManager, Observer {
         for (int i = 0; i < args.length; i++) {
             if (args[i] == ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER) {
                 //atualizarModel();
+                //Nada é feito ja que a tabela é carrega sob demanada Lazy...
             }
         }
     }
@@ -236,6 +237,15 @@ public class ContaPagarManager implements InterfaceManager, Observer {
 
     public void setReceitaDivida(ReceitaDivida receitaDivida) {
         this.receitaDivida = receitaDivida;
+        this.obsInut.setSubmittedValue(receitaDivida.getObservacao());
+        this.salvarParcelasInput.setSelected(false);
+        this.salvarParcelas = false;
+        this.parcelTotalInput.setSubmittedValue(receitaDivida.getParcelaTotal());
+        this.parcelAtualInput.setSubmittedValue(receitaDivida.getParcelaAtual());
+        this.valorInput.setSubmittedValue(UtilMetodos.getNumberFormater().format(receitaDivida.getValor()));
+        this.calendarInput.setPattern(this.getPattern());
+        this.calendarInput.setSubmittedValue(UtilMetodos.getDataString(receitaDivida.getDataVencimento()));
+        
     }
 
     public boolean isSalvarParcelas() {
@@ -333,4 +343,14 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     public void setSelctDetalhePagamento(HtmlSelectOneMenu selctDetalhePagamento) {
         this.selctDetalhePagamento = selctDetalhePagamento;
     }
+
+    @Override
+    public Locale getLocale() {
+        return SelectItemManager.BRASIL;
+    }
+
+    @Override
+    public String getPattern() {
+        return SelectItemManager.PATTERN;
+    }   
 }
