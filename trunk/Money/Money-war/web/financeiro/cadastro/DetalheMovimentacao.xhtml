@@ -60,8 +60,8 @@
             <h:panelGroup id="cadDetalheTableGroup">
                 <h:form id="formDetalheMovimentacaoTable">
                     <p:dataTable value="#{detalheMovimentacao.detalhes}" var="detalhe" 
-                                 id="tableCertificacao" rows="4" paginator="true" 
-                                 paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink}" 
+                                 id="tableCertificacao" rows="4" paginator="true" rowsPerPageTemplate="4,8,12"
+                                 paginatorTemplate="{RowsPerPageDropdown} {PreviousPageLink} {CurrentPageReport} {NextPageLink}" 
                                  emptyMessage="#{msg.semRegistrosEcontrados}">
 
                         <p:column id="col1" style="width: 150px;">

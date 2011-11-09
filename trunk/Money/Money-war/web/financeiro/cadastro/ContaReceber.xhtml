@@ -59,7 +59,7 @@
 
                         <h:outputLabel value="#{msg.detalhe}:" />
                         <p:selectOneMenu value="#{contaReceberManager.receitaDivida.detalheMovimentacao}" label="#{msg.detalhe}"
-                                         binding="#{contaReceberManager.selctDetalhePagamento}" 
+                                         binding="#{contaReceberManager.selctDetalhePagamento}" style="width: 130px;"
                                          id="tipoConta" required="true" requiredMessage="#{msg.campoObrigatorio}">
                             <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
                             <f:selectItems value="#{contaReceberManager.detalhes}"/>
@@ -70,7 +70,7 @@
                         <h:outputLabel value="#{msg.observacao}:"/>
                         <p:inputText value="#{contaReceberManager.receitaDivida.observacao}" label="#{msg.observacao}"
                                      id="obs" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="30"
-                                     size="20" binding="#{contaReceberManager.obsInut}"/>
+                                     size="25" binding="#{contaReceberManager.obsInut}"/>
                         <p:message for="obs"/>     
 
                         <h:outputLabel value=""/>
@@ -93,8 +93,9 @@
             <h:panelGroup id="cadContaPagarTableGroup">
                 <h:form id="formContaPagarTable">
                     <p:dataTable var="receita" value="#{contaReceberManager.receitas}" paginator="true" rows="5" lazy="true" 
-                                 paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink}" emptyMessage="#{msg.semRegistrosEcontrados}">
-
+                                 paginatorTemplate="{RowsPerPageDropdown} {PreviousPageLink} {CurrentPageReport} {NextPageLink}" 
+                                 emptyMessage="#{msg.semRegistrosEcontrados}" rowsPerPageTemplate="5,8,12">
+                        
                         <p:column id="col1" styleClass="center">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.vencimento}"/>
