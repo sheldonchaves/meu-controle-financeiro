@@ -12,6 +12,7 @@ import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.DetalheMovimentacao;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -203,4 +204,14 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
     public void setSelctTipoPagamento(HtmlSelectOneMenu selctTipoPagamento) {
         this.selctTipoPagamento = selctTipoPagamento;
     }
+    
+    @Override
+    public Locale getLocale() {
+        return SelectItemManager.BRASIL;
+    }
+
+    @Override
+    public String getPattern() {
+        return SelectItemManager.PATTERN;
+    }   
 }

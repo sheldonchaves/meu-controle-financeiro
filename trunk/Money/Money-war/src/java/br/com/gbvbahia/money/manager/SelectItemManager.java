@@ -29,6 +29,9 @@ public class SelectItemManager {
     @EJB
     private DetalheUsuarioBeanLocal detalheUsuarioBean;
 
+    public static final String PATTERN = "dd/MM/yyyy";
+    public static final Locale BRASIL = new Locale("pt", "BR");
+    
     /** Creates a new instance of SelectItemManager */
     public SelectItemManager() {
     }

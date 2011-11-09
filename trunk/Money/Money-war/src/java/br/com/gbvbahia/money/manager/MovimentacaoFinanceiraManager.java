@@ -13,6 +13,7 @@ import br.com.money.enums.StatusPagamento;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ReceitaDivida;
 import java.util.List;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -49,7 +50,7 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
     private LazyDataModel<ReceitaDivida> receitasDividas;
     private ReceitaDivida receitaDivitaSelecionada;
     private SelectOneListbox selctContaPagamento;
-    
+
     public MovimentacaoFinanceiraManager() {
     }
 
@@ -93,9 +94,9 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
     //Table Actions
     //====================
     public void quitarReceitaDivida() {
-        if(     this.receitaDivitaSelecionada == null 
-                || this.receitaDivitaSelecionada.getContaBancariaTransiente() == null 
-                || this.receitaDivitaSelecionada.getContaBancariaTransiente().getId() == null){
+        if (this.receitaDivitaSelecionada == null
+                || this.receitaDivitaSelecionada.getContaBancariaTransiente() == null
+                || this.receitaDivitaSelecionada.getContaBancariaTransiente().getId() == null) {
             UtilMetodos.messageFactoringFull("movimentacaoRealizadaContaNOk", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
             return;
         }
@@ -103,7 +104,7 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
             this.movimentacaoFinanceiraBean.salvarMovimentacaoFinanceira(receitaDivitaSelecionada.getContaBancariaTransiente(), receitaDivitaSelecionada);
             clean();
             UtilMetodos.messageFactoringFull("movimentacaoRealizadaOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER,ControleObserver.Eventos.CAD_CONTA_BANCARIA,ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
+            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER, ControleObserver.Eventos.CAD_CONTA_BANCARIA, ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
                 UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
@@ -161,5 +162,15 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
 
     public void setSelctContaPagamento(SelectOneListbox selctContaPagamento) {
         this.selctContaPagamento = selctContaPagamento;
+    }
+
+    @Override
+    public Locale getLocale() {
+        return SelectItemManager.BRASIL;
+    }
+
+    @Override
+    public String getPattern() {
+        return SelectItemManager.PATTERN;
     }
 }

@@ -21,9 +21,9 @@
                         <h:outputLabel value="#{msg.dataVencimento}:"/> 
                         <p:calendar value="#{contaReceberManager.receitaDivida.dataVencimento}" required="true"
                                     requiredMessage="#{msg.campoObrigatorio}" id="dataVencimento" onkeyup="formatar(this, '##/##/####', event)"
-                                    maxlength="10"
+                                    maxlength="10" locale="#{contaReceberManager.locale}" pattern="#{contaReceberManager.pattern}"
                                     label="#{msg.dataVencimento}" timeZone="#{initParam['timezone']}" 
-                                    pattern="dd/MM/yyyy" binding="#{contaReceberManager.calendarInput}"/>
+                                    binding="#{contaReceberManager.calendarInput}"/>
                         <p:message for="dataVencimento"/>
 
                         <h:outputLabel value="#{msg.valor}:"/>
@@ -36,23 +36,25 @@
 
                         <h:outputLabel value="#{msg.parcelaAtual}:"/>
                         <p:spinner value="#{contaReceberManager.receitaDivida.parcelaAtual}" label="#{msg.parcelaAtual}"
-                                     id="parcelaAtual" required="true" requiredMessage="#{msg.campoObrigatorio}" min="0" max="120"
-                                     onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaReceberManager.parcelAtualInput}">
+                                   id="parcelaAtual" required="true" requiredMessage="#{msg.campoObrigatorio}" min="0" max="120"
+                                   onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaReceberManager.parcelAtualInput}">
                             <f:validateLongRange maximum="120" minimum="0"/>
                         </p:spinner>
                         <p:message for="parcelaAtual"/>             
 
                         <h:outputLabel value="#{msg.parcelaTotal}:"/>
                         <p:spinner value="#{contaReceberManager.receitaDivida.parcelaTotal}" label="#{msg.parcelaTotal}"
-                                     id="parcelaTotal" required="true" requiredMessage="#{msg.campoObrigatorio}" min="0" max="120"
-                                     onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaReceberManager.parcelTotalInput}">
+                                   id="parcelaTotal" required="true" requiredMessage="#{msg.campoObrigatorio}" min="0" max="120"
+                                   onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaReceberManager.parcelTotalInput}">
                             <f:validateLongRange maximum="120" minimum="0"/>
                         </p:spinner>
                         <p:message for="parcelaTotal"/>     
 
                         <h:outputLabel value="#{msg.salvarParcelas}:"/>
                         <p:selectBooleanCheckbox value="#{contaReceberManager.salvarParcelas}" label="#{msg.salvarParcelas}"
-                                                 id="salvarParcelas" binding="#{contaReceberManager.salvarParcelasInput}"/>
+                                                 id="salvarParcelas" binding="#{contaReceberManager.salvarParcelasInput}"
+                                                 disabled="#{contaReceberManager.receitaDivida.id != null}">
+                        </p:selectBooleanCheckbox>
                         <p:message for="salvarParcelas"/>  
 
                         <h:outputLabel value="#{msg.detalhe}:" />
@@ -143,7 +145,18 @@
                             </h:outputText>
                         </p:column>
 
-                        <p:column id="col7" styleClass="center" >
+                        <p:column id="col7" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.editar}"/>
+                            </f:facet>
+                            <p:commandLink update="conteudoCentralSuperiorGroup" 
+                                           id="buttonEdit" styleClass="ui-button_link">
+                                <h:graphicImage library="img" name="c_entrada_edit_16.png"/>
+                                <f:setPropertyActionListener value="#{receita}" target="#{contaReceberManager.receitaDivida}" />  
+                            </p:commandLink>
+                        </p:column>
+
+                        <p:column id="col8" styleClass="center" >
                             <f:facet name="header">
                                 <h:outputText value="#{msg.remover}"/>
                             </f:facet>

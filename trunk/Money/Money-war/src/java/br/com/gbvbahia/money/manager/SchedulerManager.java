@@ -8,6 +8,7 @@ import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.SchedulerBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.Scheduler;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -106,4 +107,14 @@ public class SchedulerManager implements InterfaceManager {
     public void setShScheduler(Scheduler shScheduler) {
         this.shScheduler = shScheduler;
     }
+    
+    @Override
+    public Locale getLocale() {
+        return SelectItemManager.BRASIL;
+    }
+
+    @Override
+    public String getPattern() {
+        return SelectItemManager.PATTERN;
+    }   
 }

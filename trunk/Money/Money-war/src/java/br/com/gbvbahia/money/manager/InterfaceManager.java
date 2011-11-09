@@ -4,12 +4,16 @@
  */
 package br.com.gbvbahia.money.manager;
 
+import java.util.Locale;
+
 /**
  *
  * @author gbvbahia
  */
-public interface InterfaceManager extends java.io.Serializable{
-    
+public interface InterfaceManager extends java.io.Serializable {
+
     public void init();
     public void end();
+    public Locale getLocale();
+    public String getPattern();
 }
