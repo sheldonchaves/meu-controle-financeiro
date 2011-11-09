@@ -35,34 +35,28 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
 
     private static final long serialVersionUID = 1L;
     public static final int CARACTERES_NOME_CONTA = 100;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id",nullable=false,unique=true)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
-
     @Column(name = "ds_conta", nullable = false, length = CARACTERES_NOME_CONTA)
     private String nomeConta;
-
     @Column(name = "en_tipo", nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoConta tipoConta;
-
     @Column(name = "vl_saldo", nullable = false)
     private Double saldo = 0.00;
-
     @Column(name = "fl_status", nullable = false)
     private boolean status = true;
-
-    @OneToMany(mappedBy = "contaBancariaDebitada", fetch = FetchType.LAZY, 
-            targetEntity = br.com.money.modelos.MovimentacaoFinanceira.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "contaBancariaDebitada", fetch = FetchType.LAZY,
+    targetEntity = br.com.money.modelos.MovimentacaoFinanceira.class, cascade = CascadeType.ALL)
     private Set<MovimentacaoFinanceira> movimentacaoFinanceira;
-
+    @OneToMany(mappedBy = "contaBancariaTransferida", fetch = FetchType.LAZY,
+    targetEntity = br.com.money.modelos.MovimentacaoFinanceira.class, cascade = CascadeType.ALL)
+    private Set<MovimentacaoFinanceira> movimentacaoFinanceiraTransferida;
     @ManyToOne(targetEntity = br.com.money.modelos.Usuario.class)
     @JoinColumn(name = "fk_user_id", referencedColumnName = "id", nullable = false)
     private Usuario user;
-
-
 
     public Set<MovimentacaoFinanceira> getMovimentacaoFinanceira() {
         if (this.movimentacaoFinanceira == null) {
@@ -123,6 +117,17 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
         this.status = status;
     }
 
+    public Set<MovimentacaoFinanceira> getMovimentacaoFinanceiraTransferida() {
+        if (this.movimentacaoFinanceiraTransferida == null) {
+            this.movimentacaoFinanceiraTransferida = new HashSet<MovimentacaoFinanceira>();
+        }
+        return movimentacaoFinanceiraTransferida;
+    }
+
+    public void setMovimentacaoFinanceiraTransferida(Set<MovimentacaoFinanceira> movimentacaoFinanceiraTransferida) {
+        this.movimentacaoFinanceiraTransferida = movimentacaoFinanceiraTransferida;
+    }
+
     @Override
     public String toString() {
         return "ContaBancaria{" + "id=" + id + ", nomeConta=" + nomeConta + ", tipoConta=" + tipoConta + ", saldo=" + saldo + ", status=" + status + '}';
@@ -131,9 +136,15 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
     @Override
     public int compareTo(ContaBancaria o) {
         int i = 0;
-        if(i == 0)i = this.nomeConta.compareTo(o.nomeConta);
-        if(i == 0)i = this.tipoConta.getOrdem().compareTo(o.tipoConta.getOrdem());
-        if(i == 0)i = this.id.compareTo(o.id);
+        if (i == 0) {
+            i = this.nomeConta.compareTo(o.nomeConta);
+        }
+        if (i == 0) {
+            i = this.tipoConta.getOrdem().compareTo(o.tipoConta.getOrdem());
+        }
+        if (i == 0) {
+            i = this.id.compareTo(o.id);
+        }
         return i;
     }
 
@@ -161,8 +172,8 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
         hash = 89 * hash + (this.tipoConta != null ? this.tipoConta.hashCode() : 0);
         return hash;
     }
-    
-    public String getLabel(){
+
+    public String getLabel() {
         return this.tipoConta.getAbreviacao() + " - " + this.nomeConta;
     }
 }

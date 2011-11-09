@@ -71,7 +71,7 @@ public class ContaBancariaBean implements ContaBancariaBeanLocal {
     public void apagarContaBancaria(Long id) {
         ContaBancaria toDelete = manager.find(ContaBancaria.class, id);
         if (toDelete != null) {
-            if (toDelete.getMovimentacaoFinanceira().isEmpty()) {
+            if (toDelete.getMovimentacaoFinanceira().isEmpty() && toDelete.getMovimentacaoFinanceiraTransferida().isEmpty()) {
                 manager.remove(toDelete);
                 manager.flush();
             } else {
