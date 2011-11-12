@@ -11,6 +11,7 @@ import br.com.money.enums.TipoMovimentacao;
 import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.DetalheMovimentacao;
 import br.com.money.modelos.Usuario;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.NoneScoped;
@@ -23,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
  */
 @ManagedBean(name = "selectItemManager", eager = true)
 @NoneScoped
-public class SelectItemManager {
+public class SelectItemManager implements Serializable{
     @EJB
     private ContaBancariaBeanLocal contaBancariaBean;
     @EJB
