@@ -18,27 +18,61 @@
                     <h:outputText value="#{msg.loginTitleTemplate}"/>
                 </ui:insert>
             </title>
+            <style type="text/css">
+                label:after{
+                    content: ": ";
+                }
+                label{
+                    color: #fff;
+                    font-weight: bold;
+                    padding: 4px;
+                    -moz-border-radius-topleft: 5px;
+                    -webkit-border-top-left-radius: 5px;
+                    -moz-border-radius-topright: 5px;
+                    -webkit-border-top-right-radius: 5px;
+                    text-transform: uppercase;
+                    font-family: Verdana, Arial, Helvetica, sans-serif;
+                    font-size: xx-small;
+                }
+                input{
+                    display: block;
+                    margin-bottom: 1.25em;
+                    width: 150px;
+                    border: solid black;
+                    border-width: 1px 2px 2px 1px;
+                    margin-left: 20px;
+                }
+
+                .loginform{          
+                    margin-top: 20%;
+                    margin-left: 40%;
+                    background-color: lavender;
+                    padding: 20px;
+                    width: 165px;
+                    border-style: groove;
+                }
+            </style>
         </h:head>
-             <h:body>
+        <h:body>
 
             <p:growl id="messages" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="1500"/> 
+            <div class="ieprob">
+                <h:form id="logarForm" styleClass="loginform">
+                    <h:panelGrid columns="1">
+                        <h:outputLabel value="#{msg.login}" id="outlogin" styleClass="fonteLogin"/>
+                        <p:inputText value="#{loginManager.usuario.login}" id="inplogin" size="20" maxlength="50"/>
 
-        <h:form id="logarForm">
-            <h:panelGrid columns="2" styleClass="fonteLogin">
-                <h:outputText value="#{msg.login}:" id="outlogin" styleClass="fonteLogin"/>
-                <p:inputText value="#{loginManager.usuario.login}" id="inplogin" size="20" maxlength="50"/>
+                        <h:outputLabel value="#{msg.senha}" id="outsenha" styleClass="fonteLogin"/>
+                        <p:password value="#{loginManager.usuario.password}" id="inpsenha" size="20" feedback="false" minLength="0" maxlength="20"/>
 
-                <h:outputText value="#{msg.senha}:" id="outsenha" styleClass="fonteLogin"/>
-                <p:password value="#{loginManager.usuario.password}" id="inpsenha" size="20" feedback="false" minLength="0" maxlength="20"/>
+                        <h:outputText value="" id="outnullo"/>
+                        <p:commandButton action="#{loginManager.logar()}" update="messages" styleClass="buttonSubmit"
+                                         id="botaologar" image="ui-icon ui-icon-key" value="#{msg.entrar}">
 
-                <h:outputText value="" id="outnullo"/>
-                <p:commandButton action="#{loginManager.logar()}" update="messages" 
-                                 id="botaologar" image="ui-icon ui-icon-key" value="#{msg.entrar}">
-                   
-                </p:commandButton>
-            </h:panelGrid>
-        </h:form>
-        
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </div>
 
         </h:body>
     </f:view>
