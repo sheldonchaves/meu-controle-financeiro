@@ -8,6 +8,7 @@ import br.com.money.business.interfaces.ContaBancariaBeanLocal;
 import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.business.interfaces.ReceitaDividaBeanLocal;
 import br.com.money.enums.StatusPagamento;
+import br.com.money.enums.TipoConta;
 import br.com.money.exceptions.MovimentacaoFinanceiraException;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ContaBancaria;
@@ -91,6 +92,25 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLoc
         Long toReturn = (Long) q.getSingleResult();
         return toReturn.intValue();
     }
+    
+    @Override
+    public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioContaPaginada(int posicaoInicial, int tamanho, Usuario usuario, TipoConta tipoConta){
+        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarMovimentacaoPorUsuarioContaPaginada");
+        q.setMaxResults(tamanho);
+        q.setFirstResult(posicaoInicial);
+        q.setParameter("usuario", usuario);
+        q.setParameter("tipoConta", tipoConta);
+        return q.getResultList();
+    }
+    
+    @Override
+     public Integer buscarQtdadeMovimentacaoPorUsuarioContaPaginada(Usuario usuario, TipoConta tipoConta) {
+        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarQtdadeMovimentacaoPorUsuarioContaPaginada");
+        q.setParameter("usuario", usuario);
+        q.setParameter("tipoConta", tipoConta);
+        Long toReturn = (Long) q.getSingleResult();
+        return toReturn.intValue(); 
+     }
     
     /**
      * UTILIAR APENAS PARA DESFAZER AS MOVIMENTAÇÕES QUE ENVOLVAM ReceitaDivida, TRANSFERENCIA ENTRE CONTAS AINDA NÃO EXISTE COMO DESFAZER<BR>

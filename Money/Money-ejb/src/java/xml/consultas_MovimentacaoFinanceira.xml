@@ -24,4 +24,26 @@
         </query>
     </named-query>
    
+       <named-query name="MovimentacaoFinanceiraBean.buscarMovimentacaoPorUsuarioContaPaginada">
+        <query>
+			Select distinct m From MovimentacaoFinanceira m
+                        Join m.receitaDivida as r
+                        Where (m.receitaDivida.usuario = :usuario 
+                        OR m.receitaDivida.usuario.conjuge = :usuario)
+                        AND m.contaBancariaDebitada.tipoConta = :tipoConta
+                        Order by m.dataMovimentacao DESC, m.receitaDivida.dataVencimento DESC,
+                        m.receitaDivida.valor DESC
+        </query>
+    </named-query>
+    
+            <named-query name="MovimentacaoFinanceiraBean.buscarQtdadeMovimentacaoPorUsuarioContaPaginada">
+        <query>
+			Select count(distinct m) From MovimentacaoFinanceira m
+                        Join m.receitaDivida as r
+                        Where (m.receitaDivida.usuario = :usuario 
+                        OR m.receitaDivida.usuario.conjuge = :usuario)
+                        AND m.contaBancariaDebitada.tipoConta = :tipoConta
+        </query>
+    </named-query>
+   
 </entity-mappings>

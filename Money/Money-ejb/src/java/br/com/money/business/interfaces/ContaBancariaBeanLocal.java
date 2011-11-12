@@ -26,4 +26,6 @@ public interface ContaBancariaBeanLocal {
 
     ContaBancaria buscarContaBancariaPorId(long id);
     
+    public List<ContaBancaria> buscarContaBancariasPorUsuarioTipo(Usuario ususario, TipoConta tipo);
+    
 }
