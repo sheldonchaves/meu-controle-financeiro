@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -174,6 +175,10 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
     }
 
     public String getLabel() {
-        return this.tipoConta.getAbreviacao() + " - " + this.nomeConta;
+        return this.tipoConta.getAbreviacao() + " - " + StringUtils.substring(this.nomeConta, 0, 20);
+    }
+    
+    public String getNomeLimitado(){
+        return StringUtils.substring(this.nomeConta, 0, 20);
     }
 }
