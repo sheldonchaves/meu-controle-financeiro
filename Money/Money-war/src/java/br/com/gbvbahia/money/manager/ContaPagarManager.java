@@ -108,6 +108,8 @@ public class ContaPagarManager implements InterfaceManager, Observer {
         receitaDivida.setTipoMovimentacao(TipoMovimentacao.RETIRADA);
         receitaDivida.setStatusPagamento(StatusPagamento.NAO_PAGA);
         receitaDivida.setValor(0.00);
+        receitaDivida.setParcelaAtual(1);
+        receitaDivida.setParcelaTotal(1);
         salvarParcelas = false;
         receitaDividaToDelete = null;
         apagarPrestacoes = false;
@@ -119,10 +121,10 @@ public class ContaPagarManager implements InterfaceManager, Observer {
             calendarInput.setValue(new Date());
         }
         if(parcelAtualInput != null){
-            parcelAtualInput.setSubmittedValue("");
+            parcelAtualInput.setSubmittedValue("1");
         }
         if(parcelTotalInput != null){
-            parcelTotalInput.setSubmittedValue("");
+            parcelTotalInput.setSubmittedValue("1");
         }
         if(obsInut != null){
             obsInut.setSubmittedValue("");
