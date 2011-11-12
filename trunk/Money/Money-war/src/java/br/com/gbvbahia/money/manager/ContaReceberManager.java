@@ -98,6 +98,8 @@ public class ContaReceberManager implements InterfaceManager, Observer {
         receitaDivida.setDataVencimento(new Date());
         receitaDivida.setTipoMovimentacao(TipoMovimentacao.DEPOSITO);
         receitaDivida.setStatusPagamento(StatusPagamento.NAO_PAGA);
+        receitaDivida.setParcelaAtual(1);
+        receitaDivida.setParcelaTotal(1);
         receitaDivida.setValor(0.00);
         salvarParcelas = false;
         receitaDividaToDelete = null;
@@ -110,10 +112,10 @@ public class ContaReceberManager implements InterfaceManager, Observer {
             calendarInput.setValue(new Date());
         }
         if (parcelAtualInput != null) {
-            parcelAtualInput.setSubmittedValue("");
+            parcelAtualInput.setSubmittedValue("1");
         }
         if (parcelTotalInput != null) {
-            parcelTotalInput.setSubmittedValue("");
+            parcelTotalInput.setSubmittedValue("1");
         }
         if (obsInut != null) {
             obsInut.setSubmittedValue("");
