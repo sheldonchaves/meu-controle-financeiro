@@ -1,9 +1,9 @@
 
 .info {
-    background: url('/money/resources/img/I_24.png') no-repeat;
+    background: url('/money/resources/img/I_16.png') no-repeat;
     height:24px !important;
-    width:24px !important;
-    margin-top: -4px !important;
+    width:21px !important;
+    margin-left: 3px !important;
 }
 
 .conta {
@@ -14,13 +14,13 @@
 }
 
 .pagar {
-    background: url('/money/resources/img/c_saida_16.png') no-repeat;
+    background: url('/money/resources/img/money_red_16.png') no-repeat;
     height:24px !important;
     width:21px !important;
     margin-left: 3px !important;
 }
 .pagarCartao {
-    background: url('/money/resources/img/c_saida_cartao_16.png') no-repeat;
+    background: url('/money/resources/img/money_big_red_16.png') no-repeat;
     height:24px !important;
     width:21px !important;
     margin-left: 3px !important;
@@ -40,14 +40,14 @@
 }
 
 .receita {
-    background: url('/money/resources/img/c_entrada_16.png') no-repeat;
+    background: url('/money/resources/img/money_gre_16.png') no-repeat;
     height:24px !important;
     width:21px !important;
     margin-left: 3px !important;
 }
 
 .transferencia {
-    background: url('/money/resources/img/trans_16.png') no-repeat;
+    background: url('/money/resources/img/money_blu_dark_16.png') no-repeat;
     height:24px !important;
     width:21px !important;
     margin-left: 3px !important;
