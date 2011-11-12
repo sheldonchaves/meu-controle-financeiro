@@ -4,13 +4,17 @@
  */
 package br.com.gbvbahia.money.manager;
 
-import br.com.gbvbahia.money.manager.lazyTables.LazyReceitaDividaModel;
+import br.com.gbvbahia.money.manager.lazyTables.LazyMovimentacaoTipoContaModel;
 import br.com.gbvbahia.money.observador.ControleObserver;
 import br.com.gbvbahia.money.utils.UtilMetodos;
+import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.business.interfaces.ReceitaDividaBeanLocal;
 import br.com.money.enums.StatusPagamento;
+import br.com.money.enums.TipoConta;
 import br.com.money.enums.TipoMovimentacao;
 import br.com.money.exceptions.ValidacaoException;
+import br.com.money.modelos.ContaBancaria;
+import br.com.money.modelos.MovimentacaoFinanceira;
 import br.com.money.modelos.ReceitaDivida;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -34,30 +38,35 @@ import org.primefaces.model.LazyDataModel;
  *
  * @author Guilherme
  */
-@ManagedBean(name = "contaReceberManager")
+@ManagedBean(name = "contaPagarCartaoManager")
 @SessionScoped
-public class ContaReceberManager implements InterfaceManager, Observer {
+public class ContaPagarCartaoManager implements InterfaceManager, Observer {
 
+    @EJB
+    private MovimentacaoFinanceiraBeanLocal movimentacaoFinanceiraBean;
     @EJB
     private ReceitaDividaBeanLocal receitaDividaBean;
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
     @ManagedProperty("#{selectItemManager}")
     private SelectItemManager selectItemManager;
-    private LazyDataModel<ReceitaDivida> receitas;//LazyLoad (Paginação)
+    private LazyDataModel<MovimentacaoFinanceira> dividas;//LazyLoad (Paginação)
+    private List<ReceitaDivida> temp;
     private ReceitaDivida receitaDivida;
     private boolean salvarParcelas;
     private ReceitaDivida receitaDividaToDelete;
     private boolean apagarPrestacoes;
+    private ContaBancaria contaCartaoSelecionada;
     private HtmlInputText valorInput;
     private HtmlInputText parcelAtualInput;
     private HtmlInputText parcelTotalInput;
     private HtmlInputText obsInut;
     private HtmlSelectBooleanCheckbox salvarParcelasInput;
     private HtmlSelectOneMenu selctDetalhePagamento;
+    private HtmlSelectOneMenu selctContaCartaoSelecionada;
     private org.primefaces.component.calendar.Calendar calendarInput;
 
-    public ContaReceberManager() {
+    public ContaPagarCartaoManager() {
     }
     //====================
     // Iniciadores
@@ -67,7 +76,7 @@ public class ContaReceberManager implements InterfaceManager, Observer {
     @Override
     public void init() {
         clean();
-        this.receitas = new LazyReceitaDividaModel(receitaDividaBean, loginManager.getUsuario(), StatusPagamento.NAO_PAGA, TipoMovimentacao.DEPOSITO);
+        this.dividas = new LazyMovimentacaoTipoContaModel(this.movimentacaoFinanceiraBean, loginManager.getUsuario(), TipoConta.CARTAO_DE_CREDITO);
         ControleObserver.addBeanObserver(loginManager.getUsuario(), this);
         Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "ContaPagarManager.init() executado!");
     }
@@ -88,19 +97,21 @@ public class ContaReceberManager implements InterfaceManager, Observer {
         for (int i = 0; i < args.length; i++) {
             if (args[i] == ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER) {
                 //atualizarModel();
+                //Nada é feito ja que a tabela é carrega sob demanada Lazy...
             }
         }
     }
 
     public void clean() {
         receitaDivida = new ReceitaDivida();
+        contaCartaoSelecionada = null;
         receitaDivida.setUsuario(loginManager.getUsuario());
         receitaDivida.setDataVencimento(new Date());
-        receitaDivida.setTipoMovimentacao(TipoMovimentacao.DEPOSITO);
-        receitaDivida.setStatusPagamento(StatusPagamento.NAO_PAGA);
+        receitaDivida.setTipoMovimentacao(TipoMovimentacao.RETIRADA);
+        receitaDivida.setStatusPagamento(StatusPagamento.PAGA);
+        receitaDivida.setValor(0.00);
         receitaDivida.setParcelaAtual(1);
         receitaDivida.setParcelaTotal(1);
-        receitaDivida.setValor(0.00);
         salvarParcelas = false;
         receitaDividaToDelete = null;
         apagarPrestacoes = false;
@@ -127,17 +138,17 @@ public class ContaReceberManager implements InterfaceManager, Observer {
             selctDetalhePagamento.setSubmittedValue(UtilMetodos.getResourceBundle("selecione", FacesContext.getCurrentInstance()));
             selctDetalhePagamento.setValue(null);
         }
+        if (selctContaCartaoSelecionada != null) {
+            selctContaCartaoSelecionada.setSubmittedValue(UtilMetodos.getResourceBundle("selecione", FacesContext.getCurrentInstance()));
+            selctContaCartaoSelecionada.setValue(null);
+        }
     }
 
     public void salvarContaPagar() {
         try {
-            if (!salvarParcelas) {
-                this.receitaDividaBean.salvarReceitaDivida(receitaDivida);
-            } else {
-                this.receitaDividaBean.salvarReceitaDivida(receitaDivida, receitaDivida.getParcelaTotal(),salvarParcelas, null, StatusPagamento.NAO_PAGA);
-            }
-            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER);
-            UtilMetodos.messageFactoringFull("receitaPagarSalva", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            this.receitaDividaBean.salvarReceitaDivida(receitaDivida, receitaDivida.getParcelaTotal(), salvarParcelas, contaCartaoSelecionada, StatusPagamento.PAGA);
+            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER, ControleObserver.Eventos.CAD_CONTA_BANCARIA);
+            UtilMetodos.messageFactoringFull("contaPagarSalva2", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
             clean();
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
@@ -147,34 +158,25 @@ public class ContaReceberManager implements InterfaceManager, Observer {
             }
         }
     }
+
     //====================
     //Table Actions
     //====================
-
-    public void deletarConta() {
-        try {
-            this.receitaDividaBean.apagarReceitaDivida(receitaDividaToDelete, apagarPrestacoes);
-            UtilMetodos.messageFactoringFull("receitaApagadaOK", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-            clean();
-        } catch (ValidacaoException v) {
-            if (!StringUtils.isBlank(v.getAtributoName())) {
-                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-            } else {
-                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-            }
-        }
-    }
 
     //====================
     //SelectItem
     //====================
     public List<SelectItem> getDetalhes() {
-        return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(), true, TipoMovimentacao.DEPOSITO);
+        return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(), true, TipoMovimentacao.RETIRADA);
     }
+
+    public List<SelectItem> getContasCartao() {
+        return selectItemManager.getContaBancaria(loginManager.getUsuario(), TipoConta.CARTAO_DE_CREDITO);
+    }
+
     //=========================
     //Getters AND Setters
     //=========================
-
     public LoginManager getLoginManager() {
         return loginManager;
     }
@@ -205,6 +207,7 @@ public class ContaReceberManager implements InterfaceManager, Observer {
         this.valorInput.setSubmittedValue(UtilMetodos.getNumberFormater().format(receitaDivida.getValor()));
         this.calendarInput.setPattern(this.getPattern());
         this.calendarInput.setSubmittedValue(UtilMetodos.getDataString(receitaDivida.getDataVencimento()));
+
     }
 
     public boolean isSalvarParcelas() {
@@ -263,12 +266,20 @@ public class ContaReceberManager implements InterfaceManager, Observer {
         this.salvarParcelasInput = salvarParcelasInput;
     }
 
-    public LazyDataModel<ReceitaDivida> getReceitas() {
-        return receitas;
+    public LazyDataModel<MovimentacaoFinanceira> getDividas() {
+        return dividas;
     }
 
-    public void setReceitas(LazyDataModel<ReceitaDivida> receitas) {
-        this.receitas = receitas;
+    public void setDividas(LazyDataModel<MovimentacaoFinanceira> dividas) {
+        this.dividas = dividas;
+    }
+
+    public List<ReceitaDivida> getTemp() {
+        return temp;
+    }
+
+    public void setTemp(List<ReceitaDivida> temp) {
+        this.temp = temp;
     }
 
     public boolean isApagarPrestacoes() {
@@ -303,5 +314,21 @@ public class ContaReceberManager implements InterfaceManager, Observer {
     @Override
     public String getPattern() {
         return SelectItemManager.PATTERN;
+    }
+
+    public ContaBancaria getContaCartaoSelecionada() {
+        return contaCartaoSelecionada;
+    }
+
+    public void setContaCartaoSelecionada(ContaBancaria contaCartaoSelecionada) {
+        this.contaCartaoSelecionada = contaCartaoSelecionada;
+    }
+
+    public HtmlSelectOneMenu getSelctContaCartaoSelecionada() {
+        return selctContaCartaoSelecionada;
+    }
+
+    public void setSelctContaCartaoSelecionada(HtmlSelectOneMenu selctContaCartaoSelecionada) {
+        this.selctContaCartaoSelecionada = selctContaCartaoSelecionada;
     }
 }

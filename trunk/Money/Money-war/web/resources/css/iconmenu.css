@@ -19,7 +19,12 @@
     width:21px !important;
     margin-left: 3px !important;
 }
-
+.pagarCartao {
+    background: url('/money/resources/img/c_saida_cartao_16.png') no-repeat;
+    height:24px !important;
+    width:21px !important;
+    margin-left: 3px !important;
+}
 .receitaDividaIco {
     background: url('/money/resources/img/money_rg_16.png') no-repeat;
     height:24px !important;

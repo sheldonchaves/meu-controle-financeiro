@@ -40,22 +40,16 @@ public class ContaPagarManager implements InterfaceManager, Observer {
 
     @EJB
     private ReceitaDividaBeanLocal receitaDividaBean;
-    
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
-    
     @ManagedProperty("#{selectItemManager}")
     private SelectItemManager selectItemManager;
-    
     private LazyDataModel<ReceitaDivida> dividas;//LazyLoad (Paginação)
     private List<ReceitaDivida> temp;
-    
     private ReceitaDivida receitaDivida;
     private boolean salvarParcelas;
-    
     private ReceitaDivida receitaDividaToDelete;
     private boolean apagarPrestacoes;
-    
     private HtmlInputText valorInput;
     private HtmlInputText parcelAtualInput;
     private HtmlInputText parcelTotalInput;
@@ -63,7 +57,7 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     private HtmlSelectBooleanCheckbox salvarParcelasInput;
     private HtmlSelectOneMenu selctDetalhePagamento;
     private org.primefaces.component.calendar.Calendar calendarInput;
-    
+
     public ContaPagarManager() {
     }
     //====================
@@ -113,26 +107,26 @@ public class ContaPagarManager implements InterfaceManager, Observer {
         salvarParcelas = false;
         receitaDividaToDelete = null;
         apagarPrestacoes = false;
-        if(valorInput != null){
+        if (valorInput != null) {
             valorInput.setSubmittedValue("0,00");
         }
-        if(calendarInput != null){
+        if (calendarInput != null) {
             calendarInput.setSubmittedValue(UtilMetodos.getDataString(new Date()));
             calendarInput.setValue(new Date());
         }
-        if(parcelAtualInput != null){
+        if (parcelAtualInput != null) {
             parcelAtualInput.setSubmittedValue("1");
         }
-        if(parcelTotalInput != null){
+        if (parcelTotalInput != null) {
             parcelTotalInput.setSubmittedValue("1");
         }
-        if(obsInut != null){
+        if (obsInut != null) {
             obsInut.setSubmittedValue("");
         }
-        if(salvarParcelasInput != null){
+        if (salvarParcelasInput != null) {
             salvarParcelasInput.setSelected(false);
         }
-        if(selctDetalhePagamento != null){
+        if (selctDetalhePagamento != null) {
             selctDetalhePagamento.setSubmittedValue(UtilMetodos.getResourceBundle("selecione", FacesContext.getCurrentInstance()));
             selctDetalhePagamento.setValue(null);
         }
@@ -140,14 +134,10 @@ public class ContaPagarManager implements InterfaceManager, Observer {
 
     public void salvarContaPagar() {
         try {
-            String identificador = UtilMetodos.getIdentificadorUnico(this.loginManager.getUsuario().getId(), this.receitaDivida.getDataVencimento());
-            this.receitaDivida.setIdentificador(identificador);
-            this.receitaDividaBean.salvarReceitaDivida(receitaDivida);
-            if (salvarParcelas) {
-                ReceitaDivida rd = null;
-                for (rd = receitaDivida; (rd = aumentaParcela(rd)) != null;) {
-                    this.receitaDividaBean.salvarReceitaDivida(rd);
-                }
+            if (!salvarParcelas) {
+                this.receitaDividaBean.salvarReceitaDivida(receitaDivida);
+            } else {
+                this.receitaDividaBean.salvarReceitaDivida(receitaDivida, receitaDivida.getParcelaTotal(),salvarParcelas, null, StatusPagamento.NAO_PAGA);
             }
             ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER);
             UtilMetodos.messageFactoringFull("contaPagarSalva", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
@@ -161,56 +151,27 @@ public class ContaPagarManager implements InterfaceManager, Observer {
         }
     }
 
-    /**
-     *Default, somente mesmo pacote.
-     * @param contaPagar
-     * @return
-     */
-    static ReceitaDivida aumentaParcela(ReceitaDivida contaPagar) {
-        if (contaPagar.getParcelaTotal() > contaPagar.getParcelaAtual()) {
-            ReceitaDivida toReturn = new ReceitaDivida();
-            toReturn.setDataVencimento(aumentaDate(contaPagar.getDataVencimento()));
-            toReturn.setJuros(contaPagar.getJuros());
-            toReturn.setObservacao(contaPagar.getObservacao());
-            toReturn.setParcelaAtual(contaPagar.getParcelaAtual() + 1);
-            toReturn.setParcelaTotal(contaPagar.getParcelaTotal());
-            toReturn.setStatusPagamento(StatusPagamento.NAO_PAGA);
-            toReturn.setUsuario(contaPagar.getUsuario());
-            toReturn.setValor(contaPagar.getValor());
-            toReturn.setIdentificador(contaPagar.getIdentificador());
-            toReturn.setStatusPagamento(contaPagar.getStatusPagamento());
-            toReturn.setTipoMovimentacao(contaPagar.getTipoMovimentacao());
-            toReturn.setDetalheMovimentacao(contaPagar.getDetalheMovimentacao());
-            return toReturn;
-        } else {
-            return null;
-        }
-    }
-
-    private static Date aumentaDate(Date dataVencimento) {
-        return UtilMetodos.aumentaMesDate(dataVencimento, 1);//Um mês
-    }
     //====================
     //Table Actions
     //====================
-    public void deletarConta(){
-        try{
-        this.receitaDividaBean.apagarReceitaDivida(receitaDividaToDelete, apagarPrestacoes);
-        UtilMetodos.messageFactoringFull("contaApagadaOK", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-        clean();
-        }catch(ValidacaoException v){
-             if (!StringUtils.isBlank(v.getAtributoName())) {
+    public void deletarConta() {
+        try {
+            this.receitaDividaBean.apagarReceitaDivida(receitaDividaToDelete, apagarPrestacoes);
+            UtilMetodos.messageFactoringFull("contaApagadaOK", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            clean();
+        } catch (ValidacaoException v) {
+            if (!StringUtils.isBlank(v.getAtributoName())) {
                 UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
             } else {
                 UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
             }
         }
     }
-    
+
     //====================
     //SelectItem
     //====================
-    public List<SelectItem> getDetalhes(){
+    public List<SelectItem> getDetalhes() {
         return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(), true, TipoMovimentacao.RETIRADA);
     }
     //=========================
@@ -247,7 +208,7 @@ public class ContaPagarManager implements InterfaceManager, Observer {
         this.valorInput.setSubmittedValue(UtilMetodos.getNumberFormater().format(receitaDivida.getValor()));
         this.calendarInput.setPattern(this.getPattern());
         this.calendarInput.setSubmittedValue(UtilMetodos.getDataString(receitaDivida.getDataVencimento()));
-        
+
     }
 
     public boolean isSalvarParcelas() {
@@ -354,5 +315,5 @@ public class ContaPagarManager implements InterfaceManager, Observer {
     @Override
     public String getPattern() {
         return SelectItemManager.PATTERN;
-    }   
+    }
 }
