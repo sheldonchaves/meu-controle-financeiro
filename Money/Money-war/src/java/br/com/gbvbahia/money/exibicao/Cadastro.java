@@ -21,10 +21,11 @@ public class Cadastro extends FluxoExibicaoMaster {
     private boolean exibirCadastroContaReceber;
     private boolean exibirTransferenciaEntreContas;
     private boolean exibirScheduler;
-
+    private boolean exibirCadastroContaPagarCartao;
+    
     private enum PaginaFluxo {
 
-        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR, CADASTRO_CONTA_RECEBER,
+        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR,CADASTRO_CONTA_PAGAR_CARTAO, CADASTRO_CONTA_RECEBER,
         TRANSFERENCIA_ENTRE_CONTAS, SCHEDULER;
     }
 
@@ -46,6 +47,10 @@ public class Cadastro extends FluxoExibicaoMaster {
         alterarTela(PaginaFluxo.CADASTRO_CONTA_PAGAR);
     }
 
+    public void fluxoExibirCadastroContaPagarCartao() {
+        alterarTela(PaginaFluxo.CADASTRO_CONTA_PAGAR_CARTAO);
+    }
+    
     public void fluxoExibirCadastroContaReceita() {
         alterarTela(PaginaFluxo.CADASTRO_CONTA_RECEBER);
     }
@@ -62,6 +67,7 @@ public class Cadastro extends FluxoExibicaoMaster {
         exibirCadastroDetalheMovimentacao = (PaginaFluxo.CADASTRO_DETALHE_MOVIMENTACAO.equals(paginaLogin));
         exibirCadastroContaBancaria = (PaginaFluxo.CADASTRO_CONTA_BANCARIA.equals(paginaLogin));
         exibirCadastroContaPagar = (PaginaFluxo.CADASTRO_CONTA_PAGAR.equals(paginaLogin));
+        exibirCadastroContaPagarCartao = (PaginaFluxo.CADASTRO_CONTA_PAGAR_CARTAO.equals(paginaLogin));
         exibirCadastroContaReceber = (PaginaFluxo.CADASTRO_CONTA_RECEBER.equals(paginaLogin));
         exibirTransferenciaEntreContas = (PaginaFluxo.TRANSFERENCIA_ENTRE_CONTAS.equals(paginaLogin));
         exibirScheduler = (PaginaFluxo.SCHEDULER.equals(paginaLogin));
@@ -113,5 +119,13 @@ public class Cadastro extends FluxoExibicaoMaster {
 
     public void setExibirTransferenciaEntreContas(boolean exibirTransferenciaEntreContas) {
         this.exibirTransferenciaEntreContas = exibirTransferenciaEntreContas;
+    }
+
+    public boolean isExibirCadastroContaPagarCartao() {
+        return exibirCadastroContaPagarCartao;
+    }
+
+    public void setExibirCadastroContaPagarCartao(boolean exibirCadastroContaPagarCartao) {
+        this.exibirCadastroContaPagarCartao = exibirCadastroContaPagarCartao;
     }
 }

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                >
+    <f:subview id="cadastroContaPagarCartaoEmbutido" rendered="#{fluxoCadastro.exibirCadastroContaPagarCartao}">
+        <TABLE>
+            <TD align="left" valign="top" style="width: 200px;">
+            <h:panelGroup id="cadContaCartaoGroup">
+                <h:form id="formContaCartaoPagar">
+                    <h:panelGrid columns="3">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.cadTitleContaCartao}" styleClass="titleCentralLocal"/>
+                        </f:facet>
+                        <p:spacer width="100" height="0"/>
+                        <p:spacer width="50" height="0"/>
+                        <p:spacer width="30" height="0"/>
+
+                        <h:outputLabel value="#{msg.dataVencimento}:"/> 
+                        <p:calendar value="#{contaPagarCartaoManager.receitaDivida.dataVencimento}" required="true"
+                                    requiredMessage="#{msg.campoObrigatorio}" id="dataVencimento" onkeyup="formatar(this, '##/##/####', event)"
+                                    maxlength="10" locale="#{contaPagarCartaoManager.locale}"
+                                    label="#{msg.dataVencimento}" timeZone="#{initParam['timezone']}" 
+                                    pattern="#{contaPagarCartaoManager.pattern}" binding="#{contaPagarCartaoManager.calendarInput}"/>
+                        <p:message for="dataVencimento"/>
+
+                        <h:outputLabel value="#{msg.valor}:"/>
+                        <p:inputText value="#{contaPagarCartaoManager.receitaDivida.valor}" label="#{msg.valor}"
+                                     id="valor" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="20"
+                                     size="15" binding="#{contaPagarCartaoManager.valorInput}" onkeypress="return(MascaraMoeda(this,'.',',',event))">
+                            <f:converter converterId="moneyConverter"/>
+                        </p:inputText>
+                        <p:message for="valor"/>
+
+                        <h:outputLabel value="#{msg.parcelaAtual}:"/>
+                        <p:spinner value="#{contaPagarCartaoManager.receitaDivida.parcelaAtual}" label="#{msg.parcelaAtual}"
+                                   id="parcelaAtual" required="true" requiredMessage="#{msg.campoObrigatorio}" min="0" max="120"
+                                   onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaPagarCartaoManager.parcelAtualInput}">
+                            <f:validateLongRange maximum="120" minimum="0"/>
+                        </p:spinner>
+                        <p:message for="parcelaAtual"/>             
+
+                        <h:outputLabel value="#{msg.parcelaTotal}:"/>
+                        <p:spinner value="#{contaPagarCartaoManager.receitaDivida.parcelaTotal}" label="#{msg.parcelaTotal}"
+                                   id="parcelaTotal" required="true" requiredMessage="#{msg.campoObrigatorio}" min="0" max="120"
+                                   onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaPagarCartaoManager.parcelTotalInput}">
+                            <f:validateLongRange maximum="120" minimum="0"/>
+                        </p:spinner>
+                        <p:message for="parcelaTotal"/>     
+
+                        <h:outputLabel value="#{msg.salvarParcelas}:"/>
+                        <p:selectBooleanCheckbox value="#{contaPagarCartaoManager.salvarParcelas}" label="#{msg.salvarParcelas}"
+                                                 id="salvarParcelas" binding="#{contaPagarCartaoManager.salvarParcelasInput}"
+                                                 disabled="#{contaPagarCartaoManager.receitaDivida.id != null}">
+
+                        </p:selectBooleanCheckbox>
+                        <p:message for="salvarParcelas"/>  
+
+                        <h:outputLabel value="#{msg.detalhe}:" />
+                        <p:selectOneMenu value="#{contaPagarCartaoManager.receitaDivida.detalheMovimentacao}" label="#{msg.detalhe}"
+                                         binding="#{contaPagarCartaoManager.selctDetalhePagamento}" style="width: 180px;"
+                                         id="tipoConta" required="true" requiredMessage="#{msg.campoObrigatorio}">
+                            <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
+                            <f:selectItems value="#{contaPagarCartaoManager.detalhes}"/>
+                            <f:converter converterId="detalheMovimentacaoConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="tipoConta"/>
+
+                        <h:outputLabel value="#{msg.debitarDe}:" />
+                        <p:selectOneMenu value="#{contaPagarCartaoManager.contaCartaoSelecionada}" label="#{msg.debitarDe}"
+                                         id="contaSele" style="width: 180px;" height="100" required="true" 
+                                         requiredMessage="#{msg.campoObrigatorio}"  binding="#{contaPagarCartaoManager.selctContaCartaoSelecionada}">
+                            <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
+                            <f:selectItems value="#{contaPagarCartaoManager.contasCartao}"/>
+                            <f:converter converterId="contaBancariaConverter"/>
+                        </p:selectOneMenu>
+                         <p:message for="contaSele"/>
+                         
+                        <h:outputLabel value="#{msg.observacao}:"/>
+                        <p:inputText value="#{contaPagarCartaoManager.receitaDivida.observacao}" label="#{msg.observacao}"
+                                     id="obs" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="30"
+                                     size="25" binding="#{contaPagarCartaoManager.obsInut}"/>
+                        <p:message for="obs"/>     
+
+                        <h:outputLabel value=""/>
+                        <h:panelGroup>
+                            <p:commandButton value="#{msg.salvar}" image="ui-icon ui-icon-disk" actionListener="#{contaPagarCartaoManager.salvarContaPagar()}"
+                                             update="messages,conteudoCentralSuperiorGroup,conteudoBaixoGroup, conteudoEsquerdoGroup">
+                            </p:commandButton>
+                            <p:spacer height="3" width="10"/>
+                            <p:commandButton value="#{msg.novo}" image="ui-icon ui-icon-refresh" actionListener="#{contaPagarCartaoManager.clean()}" 
+                                             immediate="true" update="messages,conteudoCentralSuperiorGroup">
+                            </p:commandButton>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                </h:form>
+            </h:panelGroup>
+            </TD>
+
+            <TD align="left" valign="top" style="width: 100px;">
+            <h:panelGroup id="cadContaPagarTableGroup">
+                <h:form id="formContaPagarTable">
+                    <p:dataTable var="movimentacao" value="#{contaPagarCartaoManager.dividas}" paginator="true" rows="5" lazy="true" 
+                                 paginatorTemplate="{RowsPerPageDropdown} {PreviousPageLink} {CurrentPageReport} {NextPageLink}" 
+                                 emptyMessage="#{msg.semRegistrosEcontrados}" rowsPerPageTemplate="5,8,12">
+
+                        <p:column id="col0" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.dataMovimentacao}"/>
+                            </f:facet>
+                            <h:outputText value="#{movimentacao.dataMovimentacao}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column id="col1" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.vencimento}"/>
+                            </f:facet>
+                            <h:outputText value="#{movimentacao.receitaDivida.dataVencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col2" styleClass="right" style="width: 50px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.valor}"/>
+                            </f:facet>
+                            <h:outputText value="#{movimentacao.receitaDivida.valor}">
+                                <f:converter converterId="moneyConverter"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column id="col3" styleClass="center" style="width: 100px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.cartaoCredito}"/>
+                            </f:facet>
+                            <h:outputText value="#{movimentacao.contaBancariaDebitada.nomeLimitado}">
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column id="col4" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.atual}"/>
+                            </f:facet>
+                            <h:outputText value="#{movimentacao.receitaDivida.parcelaAtual}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col5" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.total}"/>
+                            </f:facet>
+                            <h:outputText value="#{movimentacao.receitaDivida.parcelaTotal}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col6" styleClass="center" style="width: 130px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.detalhe}"/>
+                            </f:facet>
+                            <h:outputText value="#{movimentacao.receitaDivida.detalheMovimentacao.detalhe}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col7" style="width: 130px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.observacao}"/>
+                            </f:facet>
+                            <h:outputText value="#{movimentacao.receitaDivida.observacao}">
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+
+                </h:form>
+            </h:panelGroup>
+            </TD>
+        </TABLE>
+    </f:subview>
+</ui:composition>
+
