@@ -7,6 +7,7 @@ package br.com.money.business.interfaces;
 import br.com.money.enums.StatusPagamento;
 import br.com.money.enums.TipoMovimentacao;
 import br.com.money.exceptions.ValidacaoException;
+import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.ReceitaDivida;
 import br.com.money.modelos.Usuario;
 import java.util.*;
@@ -25,6 +26,17 @@ public interface ReceitaDividaBeanLocal {
      * @throws ValidacaoException 
      */
     public void salvarReceitaDivida(ReceitaDivida conta) throws ValidacaoException;
+
+    /**
+     * Salva a conta e suas as parcelas
+     * @param ReceitaDivida conta Uma receitaDivida válida
+     * @param parcelas Um valor maior ou igual a 1.
+     * @param salvarParcelas
+     * @param contaBancaria
+     * @param statusParcelas
+     * @throws ValidacaoException 
+     */
+    public void salvarReceitaDivida(ReceitaDivida conta, int parcelas,boolean salvarParcelas, ContaBancaria contaBancaria, StatusPagamento statusParcelas) throws ValidacaoException;
 
     /**
      * Consulta utilizada para paginação de contas, devido umentar cada vez mais será necessário

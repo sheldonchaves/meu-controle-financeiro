@@ -8,6 +8,8 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *Classe utilizada para conter métodos de utilidade publica.
@@ -249,4 +251,27 @@ public class UtilBeans {
         return toReturn;
     }
 
+        /**
+     * Retorna uma String que pode ser utilizada como único identificador
+     * @param idUser
+     * @param dataVencimento
+     * @return
+     */
+    public synchronized static String getIdentificadorUnico(long idUser, Date dataVencimento) {
+        if (dataVencimento == null) {
+            dataVencimento = new Date();
+        }
+        UUID uuid = new UUID(dataVencimento.getTime(), new Date().getTime());
+        String toReturn = idUser + "-" + uuid.toString();
+        toReturn = StringUtils.substring(toReturn, 0, 50);
+        return toReturn;
+    }
+    
+    
+    public static Date aumentaMesDate(Date dataVencimento, int qtdade) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(dataVencimento);
+        c.add(Calendar.MONTH, qtdade);
+        return c.getTime();
+    }
 }

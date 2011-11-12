@@ -79,4 +79,21 @@ public class ContaBancariaBean implements ContaBancariaBeanLocal {
             }
         }
     }
+    
+    /**
+     * Retorna as contas de um usuário com base no tipo solicitado.
+     * @param ususario
+     * @param tipo
+     * @return 
+     */
+    @Override
+    public List<ContaBancaria> buscarContaBancariasPorUsuarioTipo(Usuario ususario, TipoConta tipo){
+        List<ContaBancaria> toReturn = this.buscarContaBancariasPorUsuario(ususario);
+        for(int i = toReturn.size()-1; i >= 0; i--){
+            if(!toReturn.get(i).getTipoConta().equals(tipo)){
+                toReturn.remove(i);
+            }
+        }
+        return toReturn;
+    }
 }

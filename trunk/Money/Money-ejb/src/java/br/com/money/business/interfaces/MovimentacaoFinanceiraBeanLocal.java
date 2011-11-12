@@ -4,6 +4,7 @@
  */
 package br.com.money.business.interfaces;
 
+import br.com.money.enums.TipoConta;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.MovimentacaoFinanceira;
@@ -62,4 +63,26 @@ public interface MovimentacaoFinanceiraBeanLocal {
      * @throws ValidacaoException 
      */
     public void realizarTransferenciaEntreContas(ContaBancaria contaDe, ContaBancaria contaPara, double valor) throws ValidacaoException;
+    
+    /**
+     * LIMITADO A TRAZER SOMENTE MOVIMENTAÇÕES DE PAGAMENTOS E RECEITAS, QUE TENHAM ReceitaDivida NÃO NULO COM O TIPO DE CONTA SELECIONADO<BR>
+     * Retornar as movimentações financeiras de um usuário ou conjuge do mesmo.
+     * Páginada, por ser um grande volume de dados
+     * @param posicaoInicial
+     * @param tamanho
+     * @param usuario
+     * @param tipoConta
+     * @return 
+     */
+    public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioContaPaginada(int posicaoInicial, int tamanho, Usuario usuario, TipoConta tipoConta);
+    
+    /**
+     * LIMITADO A TRAZER SOMENTE QUANTIDADES DE PAGAMENTOS E RECEITAS, QUE TENHAM ReceitaDivida NÃO NULO COM O TIPO DE CONTA SELECIONADO<BR>
+     * Retornar as movimentações financeiras de um usuário ou conjuge do mesmo.
+     * Páginada, por ser um grande volume de dados
+     * @param usuario
+     * @param tipoConta
+     * @return 
+     */
+    public Integer buscarQtdadeMovimentacaoPorUsuarioContaPaginada(Usuario usuario, TipoConta tipoConta);
 }
