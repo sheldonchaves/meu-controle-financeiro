@@ -70,6 +70,7 @@
                 </p:submenu>
                 <p:submenu label="#{msg.reportMenu}" icon="reportMenu" >
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.reportGastoMensal}" action="#{fluxoCadastro.fluxoExibirAcumuladoMensal()}" icon="mensalMenu" styleClass="menuComprimento"/>
+                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.reportCartaoMensal}" action="#{fluxoCadastro.fluxoExibirCartaoMensal()}" icon="cartaoMensalMenu" styleClass="menuComprimento"/>
                 </p:submenu>
             </p:menubar>
             <!--p:themeSwitcher style="width:150px" >
@@ -90,6 +91,7 @@
             <ui:include src="cadastro/TransferenciaContas.xhtml"/>
             <ui:include src="cadastro/Scheduler.xhtml"/>
             <ui:include src="relatorios/AcumuladoMensal.xhtml"/>
+            <ui:include src="relatorios/CartaoMensal.xhtml"/>
             </TD>
         </TABLE>
     </ui:define>

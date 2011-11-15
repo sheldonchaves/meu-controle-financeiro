@@ -69,14 +69,14 @@ public class ContaReceberManager implements InterfaceManager, Observer {
         clean();
         this.receitas = new LazyReceitaDividaModel(receitaDividaBean, loginManager.getUsuario(), StatusPagamento.NAO_PAGA, TipoMovimentacao.DEPOSITO);
         ControleObserver.addBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "ContaPagarManager.init() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "ContaReceberManager.init() executado!");
     }
 
     @PreDestroy
     @Override
     public void end() {
         ControleObserver.removeBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "ContaPagarManager.end() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "ContaReceberManager.end() executado!");
     }
 
     //====================
