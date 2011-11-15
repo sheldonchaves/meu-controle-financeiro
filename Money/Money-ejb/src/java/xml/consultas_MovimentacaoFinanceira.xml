@@ -8,8 +8,9 @@
         <query>
 			Select distinct m From MovimentacaoFinanceira m
                         Join m.receitaDivida as r
-                        Where m.receitaDivida.usuario = :usuario 
-                        OR m.receitaDivida.usuario.conjuge = :usuario
+                        Where (m.receitaDivida.usuario = :usuario 
+                        OR m.receitaDivida.usuario.conjuge = :usuario)
+                        AND (m.contaBancariaDebitada.id = :id OR :id is NULL)
                         Order by m.dataMovimentacao DESC, m.receitaDivida.dataVencimento DESC,
                         m.receitaDivida.valor DESC
         </query>
@@ -19,8 +20,9 @@
         <query>
 			Select count(distinct m) From MovimentacaoFinanceira m
                         Join m.receitaDivida as r
-                        Where m.receitaDivida.usuario = :usuario 
-                        OR m.receitaDivida.usuario.conjuge = :usuario
+                        Where (m.receitaDivida.usuario = :usuario 
+                        OR m.receitaDivida.usuario.conjuge = :usuario)
+                        AND (m.contaBancariaDebitada.id = :id OR :id is NULL)
         </query>
     </named-query>
    

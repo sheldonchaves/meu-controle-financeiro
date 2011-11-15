@@ -35,7 +35,7 @@ public interface MovimentacaoFinanceiraBeanLocal {
      * @param usuario
      * @return 
      */
-    public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, Usuario usuario);
+    public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, Usuario usuario, Long idContaBancaria);
     
     /**
      * LIMITADO A TRAZER SOMENTE MOVIMENTAÇÕES DE PAGAMENTOS E RECEITAS, QUE TENHAM ReceitaDivida NÃO NULO<BR>
@@ -44,7 +44,7 @@ public interface MovimentacaoFinanceiraBeanLocal {
      * @param usuario
      * @return 
      */
-    public Integer buscarQtdadeMovimentacaoPorUsuarioStatusPaginada(Usuario usuario);
+    public Integer buscarQtdadeMovimentacaoPorUsuarioStatusPaginada(Usuario usuario, Long idContaBancaria);
     
     /**
      * UTILIAR APENAS PARA DESFAZER AS MOVIMENTAÇÕES QUE ENVOLVAM ReceitaDivida, TRANSFERENCIA ENTRE CONTAS AINDA NÃO EXISTE COMO DESFAZER<BR>
