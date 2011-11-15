@@ -27,11 +27,10 @@
             </ui:insert>
             <p:layout fullPage="true" id="fullPageLayout">
 
-                <p:layoutUnit position="north" size="70" resizable="false" closable="false" collapsible="false" id="topLogo">
-                    <ui:insert name="topPos" >
+                <p:layoutUnit position="north" size="70" resizable="false" closable="false" collapsible="false" id="topLogo" style="z-index: 5;">
                         <TABLE  width="98%" >
                             <TR>
-                                <TD align="left" valign="center" id="colunaSupTop">
+                                <TD align="left" valign="bottom" id="colunaSupTop" width="20%">
                             <h:panelGrid columns="3">
                                 <h:graphicImage library="img" name="logo_40.png"/>
                                 <h:outputText value="#{user_logado}" styleClass="nomeLogado"/>
@@ -40,7 +39,12 @@
                                 </h:panelGroup>
                             </h:panelGrid>
                             </TD>
-                            <TD align="right" valign="bottom">
+                            <TD align="left" valign="bottom">
+                                <ui:insert name="topPos" >
+                                Menu Bar
+                                </ui:insert>
+                            </TD>
+                            <TD align="right" valign="bottom" width="10%">
                             <h:form id="outForm">
                                 <p:commandLink ajax="false" id="buttonSair" styleClass="ui-button_link" action="#{loginManager.deslogar()}">
                                     <h:graphicImage library="img" name="sair.png" title="#{msg.sair}"/>
@@ -49,10 +53,9 @@
                             </TD>
                             </TR>
                         </TABLE>
-                    </ui:insert>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="south" size="250" header="#{msg.movimentacoes}" resizable="true" closable="false" collapsible="true" >
+                <p:layoutUnit position="south" size="250" header="#{msg.movimentacoes}" resizable="true" closable="false" collapsible="true" style="z-index: 1;" >
                     <h:panelGroup id="conteudoBaixoGroup">
                         <ui:insert name="southPos">
 
@@ -60,7 +63,7 @@
                     </h:panelGroup>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="west" size="220" header="#{msg.contas}" resizable="true" closable="false" collapsible="true">
+                <p:layoutUnit position="west" size="220" header="#{msg.contas}" resizable="true" closable="false" collapsible="true" style="z-index: 2;">
                     <h:panelGroup id="conteudoEsquerdoGroup">
                         <ui:insert name="westPos">
 
@@ -68,7 +71,7 @@
                     </h:panelGroup>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="center" id="layoutSuperiorCentral">
+                <p:layoutUnit position="center" id="layoutSuperiorCentral" style="z-index: 3;">
                     <h:panelGroup id="conteudoCentralSuperiorGroup">
                         <ui:insert name="menuCenterPos">
 
