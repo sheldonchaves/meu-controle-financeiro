@@ -14,4 +14,16 @@
         </query>
     </named-query>
    
+    <named-query name="ReportBean.acumuladoTipoContaPeriodo">
+        <query>
+			Select m.contaBancariaDebitada, sum(m.receitaDivida.valor) From MovimentacaoFinanceira m
+                        Where (m.contaBancariaDebitada.user = :usuario 
+                        OR m.contaBancariaDebitada.user.conjuge = :usuario)
+                        And m.receitaDivida.dataVencimento Between :dataI And :dataF
+                        And m.contaBancariaDebitada.tipoConta = :tipoConta
+                        And m.receitaDivida.tipoMovimentacao = :tipoMovimentacao
+                        GROUP by m.contaBancariaDebitada
+        </query>
+    </named-query>
+   
 </entity-mappings>
