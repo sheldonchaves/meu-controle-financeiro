@@ -55,20 +55,24 @@
     <ui:define name="topPos">
         <h:form id="formMenu">
             <p:menubar id="mymenu">
-                <p:submenu label="Movimentação" icon="ui-icon ui-icon-document" >
+                <p:submenu label="Movimentação" icon="movimentacaoMenu" >
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaPagar}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagar()}" icon="pagar" styleClass="menuComprimento"/>
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaCartao}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagarCartao()}" icon="pagarCartao" styleClass="menuComprimento"/>
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaReceita}" action="#{fluxoCadastro.fluxoExibirCadastroContaReceita()}" icon="receita" styleClass="menuComprimento"/>
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.transferenciaTitleContas}" action="#{fluxoCadastro.fluxoExibirTransferenciaEntreContas()}" icon="transferencia" styleClass="menuComprimento"/>
                 </p:submenu>
-                <p:submenu label="Cadastro" icon="ui-icon ui-icon-document" >
+                <p:submenu label="Cadastro" icon="cadastroMenu" >
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" styleClass="menuComprimento"/>
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaBancaria}" action="#{fluxoCadastro.fluxoExibirCadastroContaBancaria()}" icon="conta" styleClass="menuComprimento"/>
                 </p:submenu>
-                <p:submenu label="Configuração" icon="ui-icon ui-icon-document" >
+                <p:submenu label="Configuração" icon="configuracaoMenu" >
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadSchedulerEdit}" action="#{fluxoCadastro.fluxoExibirScheduler()}" icon="scheduler" styleClass="menuComprimento"/>
                 </p:submenu>
             </p:menubar>
+            <!--p:themeSwitcher style="width:150px" >
+            <f:selectItem itemLabel="Choose Theme" itemValue="" />  
+            <f:selectItems value="#{selectItemManager.themes}" /> 
+            </p:themeSwitcher-->
             </h:form>
     </ui:define>
 
