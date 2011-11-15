@@ -49,13 +49,27 @@ left: 50%;
 top: 10px;
 }
 
-.ui-menu{
-    background-color: transparent !important; 
+.ui-menu {
+    /*background-color: transparent !important; 
     background-repeat: no-repeat !important;
-    border: none !important;
-    width: 180px !important;
+    border: none !important;*/
+    width: 340px;
+    
 }
 
+.menuComprimento{
+     width: 100% !important;
+     position: relative !important;
+}
+
+.ui-layout-north {  
+    z-index:20 !important;  
+    overflow:visible;  
+}  
+  
+.ui-layout-north .ui-layout-unit-content {  
+    overflow:visible;  
+}  
 .red {
     color: red;
 }
