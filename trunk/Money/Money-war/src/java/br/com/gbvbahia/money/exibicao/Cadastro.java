@@ -23,13 +23,14 @@ public class Cadastro extends FluxoExibicaoMaster {
     private boolean exibirScheduler;
     private boolean exibirCadastroContaPagarCartao;
     private boolean exibirRelatorioAcumuladoMensal;
+    private boolean exibirRelatorioCartaoMensal;
 
     private enum PaginaFluxo {
 
         CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR, CADASTRO_CONTA_PAGAR_CARTAO, CADASTRO_CONTA_RECEBER,
         TRANSFERENCIA_ENTRE_CONTAS,
         SCHEDULER,
-        ACUMULADO_MENSAL;
+        ACUMULADO_MENSAL, CARTAO_MENSAL;
     }
 
     /** Creates a new instance of Cadastro */
@@ -70,6 +71,10 @@ public class Cadastro extends FluxoExibicaoMaster {
         alterarTela(PaginaFluxo.ACUMULADO_MENSAL);
     }
 
+    public void fluxoExibirCartaoMensal() {
+        alterarTela(PaginaFluxo.CARTAO_MENSAL);
+    }
+
     private void alterarTela(PaginaFluxo paginaLogin) {
         exibirCadastroDetalheMovimentacao = (PaginaFluxo.CADASTRO_DETALHE_MOVIMENTACAO.equals(paginaLogin));
         exibirCadastroContaBancaria = (PaginaFluxo.CADASTRO_CONTA_BANCARIA.equals(paginaLogin));
@@ -79,9 +84,10 @@ public class Cadastro extends FluxoExibicaoMaster {
         exibirTransferenciaEntreContas = (PaginaFluxo.TRANSFERENCIA_ENTRE_CONTAS.equals(paginaLogin));
         exibirScheduler = (PaginaFluxo.SCHEDULER.equals(paginaLogin));
         exibirRelatorioAcumuladoMensal = (PaginaFluxo.ACUMULADO_MENSAL.equals(paginaLogin));
+        exibirRelatorioCartaoMensal = (PaginaFluxo.CARTAO_MENSAL.equals(paginaLogin));
         defineAlinhamneto(paginaLogin);
     }
-    
+
     /**
      *  VALIGN= MIDDLE TOP BOTTOM (horizontal)
      *  ALIGN=  LEFT - CENTER - RIGHT (alinhamento)
@@ -90,6 +96,10 @@ public class Cadastro extends FluxoExibicaoMaster {
     private void defineAlinhamneto(PaginaFluxo paginaFluxo) {
         switch (paginaFluxo) {
             case ACUMULADO_MENSAL:
+                setAlinhamento("center");
+                setHorizontal("top");
+                break;
+            case CARTAO_MENSAL:
                 setAlinhamento("center");
                 setHorizontal("top");
                 break;
@@ -161,5 +171,13 @@ public class Cadastro extends FluxoExibicaoMaster {
 
     public void setExibirRelatorioAcumuladoMensal(boolean exibirRelatorioAcumuladoMensal) {
         this.exibirRelatorioAcumuladoMensal = exibirRelatorioAcumuladoMensal;
+    }
+
+    public boolean isExibirRelatorioCartaoMensal() {
+        return exibirRelatorioCartaoMensal;
+    }
+
+    public void setExibirRelatorioCartaoMensal(boolean exibirRelatorioCartaoMensal) {
+        this.exibirRelatorioCartaoMensal = exibirRelatorioCartaoMensal;
     }
 }

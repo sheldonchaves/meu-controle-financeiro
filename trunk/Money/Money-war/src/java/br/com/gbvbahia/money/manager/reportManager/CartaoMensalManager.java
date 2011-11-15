@@ -8,10 +8,15 @@ import br.com.gbvbahia.money.manager.InterfaceManager;
 import br.com.gbvbahia.money.manager.LoginManager;
 import br.com.gbvbahia.money.manager.SelectItemManager;
 import br.com.gbvbahia.money.utils.UtilMetodos;
+import br.com.money.business.interfaces.ContaBancariaBeanLocal;
 import br.com.money.business.interfaces.ReportBeanLocal;
+import br.com.money.enums.TipoConta;
 import br.com.money.enums.TipoMovimentacao;
+import br.com.money.modelos.ContaBancaria;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
@@ -22,7 +27,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
@@ -30,9 +34,11 @@ import org.primefaces.model.chart.ChartSeries;
  *
  * @author Guilherme
  */
-@ManagedBean(name = "acumuladoMensalManager")
+@ManagedBean(name = "cartaoMensalManager")
 @RequestScoped
-public class AcumuladoMensalManager implements InterfaceManager {
+public class CartaoMensalManager implements InterfaceManager {
+    @EJB
+    private ContaBancariaBeanLocal contaBancariaBean;
 
     private static final Integer PERIODO = 13;
     @EJB
@@ -40,10 +46,9 @@ public class AcumuladoMensalManager implements InterfaceManager {
     
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
-        
     private CartesianChartModel categoryModel;
 
-    public AcumuladoMensalManager() {
+    public CartaoMensalManager() {
     }
 
     //====================
@@ -52,14 +57,14 @@ public class AcumuladoMensalManager implements InterfaceManager {
     @Override
     @PostConstruct
     public void init() {
-        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "AcumuladoMensalManager.end() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "CartaoMensalManager.end() executado!");
         atualizarBarrChart();
     }
 
     @Override
     @PreDestroy
     public void end() {
-        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "AcumuladoMensalManager.init() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "CartaoMensalManager.init() executado!");
     }
     //====================
     //Métodos de Negócio  
@@ -68,15 +73,24 @@ public class AcumuladoMensalManager implements InterfaceManager {
     private void atualizarBarrChart() {
         Date[] datas = periodoInformacao();
         categoryModel = new CartesianChartModel();
-        ChartSeries receitas = new ChartSeries(UtilMetodos.getResourceBundle("receitas", FacesContext.getCurrentInstance()));
-        ChartSeries dividas = new ChartSeries(UtilMetodos.getResourceBundle("dividas", FacesContext.getCurrentInstance()));
-        for (Date date : datas) {
-            Map<TipoMovimentacao, Double> infoMap = this.reportBean.acumuladoMes(date, this.loginManager.getUsuario());
-            receitas.set(UtilMetodos.getDataStringMesAno(date), infoMap.get(TipoMovimentacao.DEPOSITO));
-            dividas.set(UtilMetodos.getDataStringMesAno(date), infoMap.get(TipoMovimentacao.RETIRADA));
+        //Busca todas as contas cartão de credito
+        List<ContaBancaria> contas = contaBancariaBean.buscarContaBancariasPorUsuarioTipo(loginManager.getUsuario(), TipoConta.CARTAO_DE_CREDITO);
+        List<Map<ContaBancaria, Double>> list = new ArrayList<Map<ContaBancaria, Double>>();
+        for (Date date : datas) {//Busca todos os pagamentos de cartão por data do periodo
+            list.add(this.reportBean.acumuladoTipoContaPeriodo(date, loginManager.getUsuario(), TipoConta.CARTAO_DE_CREDITO, TipoMovimentacao.RETIRADA));
         }
-        categoryModel.addSeries(receitas);
-        categoryModel.addSeries(dividas);
+        for(ContaBancaria cc : contas){//Percorre todas as contas cartão de credito
+            ChartSeries serie = new ChartSeries(cc.getNomeLimitado());//Cria uma serie(linha) para inserir no gráfico por cartao ou conta
+            int dataPos = 0;//Contador para a data
+            for(Map<ContaBancaria, Double> map : list){
+                Double temp = map.get(cc);//Procura a conta bancaria no map
+                if(temp == null){
+                    temp = 0d;//Se não encontrar define valor 0;
+                }
+                serie.set(UtilMetodos.getDataStringMesAno(datas[dataPos++]), temp);//Adiciona o periodo com o valor na linha
+            }
+            categoryModel.addSeries(serie);//Adiciona a linha no gráfico
+        }
     }
 
     private Date[] periodoInformacao() {
