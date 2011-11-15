@@ -300,6 +300,11 @@ public class UtilMetodos {
         return sdf.format(date);
     }
 
+    /**
+     * Retona a data passada em um string com mm/aaaa
+     * @param date
+     * @return String MM/aaaa
+     */
     public static String getDataStringMesAno(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
         return sdf.format(date);
