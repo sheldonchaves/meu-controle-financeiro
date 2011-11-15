@@ -70,11 +70,12 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLoc
      * @return 
      */
     @Override
-    public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, Usuario usuario) {
+    public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, Usuario usuario, Long idContaBancaria) {
         Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarMovimentacaoPorUsuarioStatusPaginada");
         q.setMaxResults(tamanho);
         q.setFirstResult(posicaoInicial);
         q.setParameter("usuario", usuario);
+        q.setParameter("id", idContaBancaria);
         return q.getResultList();
     }
 
@@ -86,9 +87,10 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLoc
      * @return 
      */
     @Override
-    public Integer buscarQtdadeMovimentacaoPorUsuarioStatusPaginada(Usuario usuario) {
+    public Integer buscarQtdadeMovimentacaoPorUsuarioStatusPaginada(Usuario usuario, Long idContaBancaria) {
         Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarQtdadeMovimentacaoPorUsuarioStatusPaginada");
         q.setParameter("usuario", usuario);
+        q.setParameter("id", idContaBancaria);
         Long toReturn = (Long) q.getSingleResult();
         return toReturn.intValue();
     }
