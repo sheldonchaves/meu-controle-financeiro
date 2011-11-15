@@ -85,3 +85,14 @@
      height:16px;
     width:16px;
 }
+.reportMenu{
+    background: url('/money/resources/img/graf_16.png') no-repeat;
+     height:16px;
+    width:16px;
+}
+
+.mensalMenu{
+    background: url('/money/resources/img/Calender_16.png') no-repeat;
+     height:16px;
+    width:16px;
+}

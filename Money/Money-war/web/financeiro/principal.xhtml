@@ -55,18 +55,21 @@
     <ui:define name="topPos">
         <h:form id="formMenu">
             <p:menubar id="mymenu">
-                <p:submenu label="Movimentação" icon="movimentacaoMenu" >
+                <p:submenu label="#{msg.movimentacaoMenu}" icon="movimentacaoMenu" >
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaPagar}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagar()}" icon="pagar" styleClass="menuComprimento"/>
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaCartao}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagarCartao()}" icon="pagarCartao" styleClass="menuComprimento"/>
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaReceita}" action="#{fluxoCadastro.fluxoExibirCadastroContaReceita()}" icon="receita" styleClass="menuComprimento"/>
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.transferenciaTitleContas}" action="#{fluxoCadastro.fluxoExibirTransferenciaEntreContas()}" icon="transferencia" styleClass="menuComprimento"/>
                 </p:submenu>
-                <p:submenu label="Cadastro" icon="cadastroMenu" >
+                <p:submenu label="#{msg.cadastroMenu}" icon="cadastroMenu" >
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleDetalheMovimentacao}" action="#{fluxoCadastro.fluxoExibirCadastroDetalheMovimentacao()}" icon="info" styleClass="menuComprimento"/>
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaBancaria}" action="#{fluxoCadastro.fluxoExibirCadastroContaBancaria()}" icon="conta" styleClass="menuComprimento"/>
                 </p:submenu>
-                <p:submenu label="Configuração" icon="configuracaoMenu" >
+                <p:submenu label="#{msg.configuracaoMenu}" icon="configuracaoMenu" >
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadSchedulerEdit}" action="#{fluxoCadastro.fluxoExibirScheduler()}" icon="scheduler" styleClass="menuComprimento"/>
+                </p:submenu>
+                <p:submenu label="#{msg.reportMenu}" icon="reportMenu" >
+                    <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.reportGastoMensal}" action="#{fluxoCadastro.fluxoExibirAcumuladoMensal()}" icon="mensalMenu" styleClass="menuComprimento"/>
                 </p:submenu>
             </p:menubar>
             <!--p:themeSwitcher style="width:150px" >
@@ -78,7 +81,7 @@
 
     <ui:define name="menuCenterPos">
         <TABLE  width="100%">
-            <TD align="left" valign="top">
+            <TD align="#{fluxoCadastro.alinhamento}" valign="#{fluxoCadastro.horizontal}">
             <ui:include src="cadastro/DetalheMovimentacao.xhtml"/>
             <ui:include src="cadastro/ContaBancaria.xhtml"/>
             <ui:include src="cadastro/ContaPagarCartao.xhtml"/>
@@ -86,6 +89,7 @@
             <ui:include src="cadastro/ContaReceber.xhtml"/>
             <ui:include src="cadastro/TransferenciaContas.xhtml"/>
             <ui:include src="cadastro/Scheduler.xhtml"/>
+            <ui:include src="relatorios/AcumuladoMensal.xhtml"/>
             </TD>
         </TABLE>
     </ui:define>

@@ -11,15 +11,17 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 /**
- *
+ *  VALIGN= MIDDLE TOP BOTTOM (horizontal)
+ *  ALIGN=  LEFT - CENTER - RIGHT (alinhamento)
  * @author gbvbahia
  */
 public abstract class FluxoExibicaoMaster implements Serializable {
 
     protected String tituloPanel = "**** NÃO DEFINIDO!!!!! ****";
-
     private String className;
-
+    private String alinhamento = "left";
+    private String horizontal = "top";
+    
     public FluxoExibicaoMaster(String className) {
         this.className = className;
     }
@@ -45,5 +47,21 @@ public abstract class FluxoExibicaoMaster implements Serializable {
 
     public void setTituloPanel(String tituloPanel) {
         this.tituloPanel = tituloPanel;
+    }
+
+    public String getAlinhamento() {
+        return alinhamento;
+    }
+
+    public void setAlinhamento(String alinhamento) {
+        this.alinhamento = alinhamento;
+    }
+
+    public String getHorizontal() {
+        return horizontal;
+    }
+
+    public void setHorizontal(String horizontal) {
+        this.horizontal = horizontal;
     }
 }

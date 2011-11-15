@@ -22,11 +22,14 @@ public class Cadastro extends FluxoExibicaoMaster {
     private boolean exibirTransferenciaEntreContas;
     private boolean exibirScheduler;
     private boolean exibirCadastroContaPagarCartao;
-    
+    private boolean exibirRelatorioAcumuladoMensal;
+
     private enum PaginaFluxo {
 
-        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR,CADASTRO_CONTA_PAGAR_CARTAO, CADASTRO_CONTA_RECEBER,
-        TRANSFERENCIA_ENTRE_CONTAS, SCHEDULER;
+        CADASTRO_DETALHE_MOVIMENTACAO, CADASTRO_CONTA_BANCARIA, CADASTRO_CONTA_PAGAR, CADASTRO_CONTA_PAGAR_CARTAO, CADASTRO_CONTA_RECEBER,
+        TRANSFERENCIA_ENTRE_CONTAS,
+        SCHEDULER,
+        ACUMULADO_MENSAL;
     }
 
     /** Creates a new instance of Cadastro */
@@ -50,19 +53,23 @@ public class Cadastro extends FluxoExibicaoMaster {
     public void fluxoExibirCadastroContaPagarCartao() {
         alterarTela(PaginaFluxo.CADASTRO_CONTA_PAGAR_CARTAO);
     }
-    
+
     public void fluxoExibirCadastroContaReceita() {
         alterarTela(PaginaFluxo.CADASTRO_CONTA_RECEBER);
     }
-    
+
     public void fluxoExibirTransferenciaEntreContas() {
         alterarTela(PaginaFluxo.TRANSFERENCIA_ENTRE_CONTAS);
     }
-    
-    public void fluxoExibirScheduler(){
+
+    public void fluxoExibirScheduler() {
         alterarTela(PaginaFluxo.SCHEDULER);
     }
-    
+
+    public void fluxoExibirAcumuladoMensal() {
+        alterarTela(PaginaFluxo.ACUMULADO_MENSAL);
+    }
+
     private void alterarTela(PaginaFluxo paginaLogin) {
         exibirCadastroDetalheMovimentacao = (PaginaFluxo.CADASTRO_DETALHE_MOVIMENTACAO.equals(paginaLogin));
         exibirCadastroContaBancaria = (PaginaFluxo.CADASTRO_CONTA_BANCARIA.equals(paginaLogin));
@@ -71,6 +78,25 @@ public class Cadastro extends FluxoExibicaoMaster {
         exibirCadastroContaReceber = (PaginaFluxo.CADASTRO_CONTA_RECEBER.equals(paginaLogin));
         exibirTransferenciaEntreContas = (PaginaFluxo.TRANSFERENCIA_ENTRE_CONTAS.equals(paginaLogin));
         exibirScheduler = (PaginaFluxo.SCHEDULER.equals(paginaLogin));
+        exibirRelatorioAcumuladoMensal = (PaginaFluxo.ACUMULADO_MENSAL.equals(paginaLogin));
+        defineAlinhamneto(paginaLogin);
+    }
+    
+    /**
+     *  VALIGN= MIDDLE TOP BOTTOM (horizontal)
+     *  ALIGN=  LEFT - CENTER - RIGHT (alinhamento)
+     * @param paginaFluxo 
+     */
+    private void defineAlinhamneto(PaginaFluxo paginaFluxo) {
+        switch (paginaFluxo) {
+            case ACUMULADO_MENSAL:
+                setAlinhamento("center");
+                setHorizontal("top");
+                break;
+            default:
+                setAlinhamento("left");
+                setHorizontal("middle");
+        }
     }
 
     public boolean isExibirScheduler() {
@@ -127,5 +153,13 @@ public class Cadastro extends FluxoExibicaoMaster {
 
     public void setExibirCadastroContaPagarCartao(boolean exibirCadastroContaPagarCartao) {
         this.exibirCadastroContaPagarCartao = exibirCadastroContaPagarCartao;
+    }
+
+    public boolean isExibirRelatorioAcumuladoMensal() {
+        return exibirRelatorioAcumuladoMensal;
+    }
+
+    public void setExibirRelatorioAcumuladoMensal(boolean exibirRelatorioAcumuladoMensal) {
+        this.exibirRelatorioAcumuladoMensal = exibirRelatorioAcumuladoMensal;
     }
 }
