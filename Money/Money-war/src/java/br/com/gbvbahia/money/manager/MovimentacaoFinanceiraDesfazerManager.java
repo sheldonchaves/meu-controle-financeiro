@@ -10,6 +10,7 @@ import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.MovimentacaoFinanceira;
+import java.util.List;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
@@ -23,6 +24,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import org.apache.commons.lang.StringUtils;
 import org.primefaces.model.LazyDataModel;
 
@@ -103,6 +105,9 @@ public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, 
     //====================
     //SelectItem
     //====================
+    public List<SelectItem> getContasTableLabel(){
+        return this.selectItemManager.getContaBancariaToTable(loginManager.getUsuario(), FacesContext.getCurrentInstance());
+    }
     //=========================
     //Getters AND Setters
     //=========================

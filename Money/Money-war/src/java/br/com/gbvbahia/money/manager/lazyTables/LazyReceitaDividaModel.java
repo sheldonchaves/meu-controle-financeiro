@@ -36,7 +36,7 @@ public class LazyReceitaDividaModel extends LazyDataModel<ReceitaDivida> {
 
     @Override
     public List<ReceitaDivida> load(int first, int tamanho, String ordernarPorCampo, SortOrder so, Map<String, String> filtros) {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Lazy Load LazyReceitaDividaModel INICIO");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "Lazy Load LazyReceitaDividaModel INICIO");
         List<ReceitaDivida> toReturn = null;
         if (tipoMovimentacao == null) {
             toReturn = bean.buscarReceitaDividasPorUsuarioStatusPaginada(first, tamanho, usuario, statusPagamento);
@@ -45,7 +45,7 @@ public class LazyReceitaDividaModel extends LazyDataModel<ReceitaDivida> {
             toReturn = bean.buscarReceitaDividasPorUsuarioStatusPaginada(first, tamanho, usuario, statusPagamento, tipoMovimentacao);
             this.setRowCount(bean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(usuario, statusPagamento, tipoMovimentacao));
         }
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Lazy Load LazyReceitaDividaModel FIM");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "Lazy Load LazyReceitaDividaModel FIM");
         return toReturn;
     }
 

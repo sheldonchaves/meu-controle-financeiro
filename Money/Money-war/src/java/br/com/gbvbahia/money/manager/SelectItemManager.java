@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.money.manager;
 
+import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.ContaBancariaBeanLocal;
 import br.com.money.business.interfaces.DetalheUsuarioBeanLocal;
 import br.com.money.enums.TipoConta;
@@ -17,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.NoneScoped;
 import javax.faces.model.SelectItem;
 import java.util.*;
+import javax.faces.context.FacesContext;
 import org.apache.commons.lang.StringUtils;
 /**
  *
@@ -83,6 +85,23 @@ public class SelectItemManager implements Serializable{
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
         for(ContaBancaria cb : contas){
             toReturn.add(new SelectItem(cb, StringUtils.substring(cb.getLabel(), 0, DetalheMovimentacaoManager.CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
+        }
+        return toReturn;
+    }
+    
+    /**
+     * Deve ser utilizado somente em filtros de tabela, pos 
+     * a conta bancaria não é inserida, somente sua label.
+     * @param usuario
+     * @return 
+     */
+    public List<SelectItem> getContaBancariaToTable(Usuario usuario, FacesContext fc){
+        List<ContaBancaria> contas = this.contaBancariaBean.buscarContaBancariasPorUsuario(usuario);
+        Collections.sort(contas);
+        List<SelectItem> toReturn = new ArrayList<SelectItem>();
+        toReturn.add(new SelectItem(null, UtilMetodos.getResourceBundle("selecione", fc)));
+        for(ContaBancaria cb : contas){
+            toReturn.add(new SelectItem(cb.getId(), StringUtils.substring(cb.getLabel(), 0, DetalheMovimentacaoManager.CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
         }
         return toReturn;
     }
