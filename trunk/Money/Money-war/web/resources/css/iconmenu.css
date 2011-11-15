@@ -67,3 +67,21 @@
 .desblock{
     background-image: url('/money/resources/img/check_24.png') !important;
 }
+
+.movimentacaoMenu{
+    background: url('/money/resources/img/movimentacao_16.png') no-repeat;
+     height:16px;
+    width:16px;
+}
+
+.cadastroMenu{
+    background: url('/money/resources/img/cadastro_16.png') no-repeat;
+     height:16px;
+    width:16px;
+}
+
+.configuracaoMenu{
+    background: url('/money/resources/img/configuracao_16.png') no-repeat;
+     height:16px;
+    width:16px;
+}
