@@ -41,7 +41,11 @@
                             </h:outputText>
                         </p:column>
                         
-                        <p:column id="col4" styleClass="center" style="width: 150px;">
+                        <p:column id="col4" styleClass="center" style="width: 150px;"
+                                    filterBy="#{divida.contaBancariaDebitada.label}"   
+                                    headerText="Manufacturer" footerText="exact"  
+                                    filterOptions="#{movimentacaoFinanceiraDesfazerManager.contasTableLabel}"  
+                                    filterMatchMode="exact">
                             <f:facet name="header">
                                 <h:outputText value="#{msg.conta}"/>
                             </f:facet>

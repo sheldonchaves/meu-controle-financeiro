@@ -34,11 +34,11 @@ public class LazyMovimentacaoTipoContaModel extends LazyDataModel<MovimentacaoFi
     
     @Override
     public List<MovimentacaoFinanceira> load(int first, int tamanho, String string, SortOrder so, Map<String, String> map) {
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Lazy Load LazyMovimentacaoTipoContaModel INICIO");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "Lazy Load LazyMovimentacaoTipoContaModel INICIO");
         List<MovimentacaoFinanceira> toReturn = null;
         toReturn = bean.buscarMovimentacaoPorUsuarioContaPaginada(first, tamanho, usuario, tipoConta);
         setRowCount(bean.buscarQtdadeMovimentacaoPorUsuarioContaPaginada(usuario, tipoConta));
-        Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Lazy Load LazyMovimentacaoTipoContaModel FIM");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINE, "Lazy Load LazyMovimentacaoTipoContaModel FIM");
         return toReturn;
     }
 }
