@@ -4,15 +4,19 @@
  */
 package br.com.gbvbahia.money.manager;
 
+import br.com.gbvbahia.money.manager.lazyTables.LazyTransferenciaEntreContas;
 import br.com.gbvbahia.money.observador.ControleObserver;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ContaBancaria;
+import br.com.money.modelos.MovimentacaoFinanceira;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -23,6 +27,7 @@ import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.apache.commons.lang.StringUtils;
+import org.primefaces.model.LazyDataModel;
 /**
  *
  * @author Guilherme
@@ -41,6 +46,7 @@ public class TransferenciaEntreContasManager implements InterfaceManager {
     private ContaBancaria contaDebitar;
     private ContaBancaria contaCreditar;
     private Double valor;
+    private LazyDataModel<MovimentacaoFinanceira> transferencias;
     
     private HtmlInputText valorInput;
     private HtmlSelectOneMenu selctDebitarDe;
@@ -54,14 +60,17 @@ public class TransferenciaEntreContasManager implements InterfaceManager {
     //====================
 
     @Override
+    @PreDestroy
     public void end() {
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "TransferenciaEntreContasManager.end() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
     }
 
     @Override
+    @PostConstruct
     public void init() {
+        this.transferencias = new LazyTransferenciaEntreContas(movimentacaoFinanceiraBean, this.loginManager.getUsuario());
         clean();
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "TransferenciaEntreContasManager.init() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".init() executado!");
     }
     //====================
     //Métodos de Negócio
@@ -177,6 +186,14 @@ public class TransferenciaEntreContasManager implements InterfaceManager {
 
     public void setSelctTransferirPara(HtmlSelectOneMenu selctTransferirPara) {
         this.selctTransferirPara = selctTransferirPara;
+    }
+
+    public LazyDataModel<MovimentacaoFinanceira> getTransferencias() {
+        return transferencias;
+    }
+
+    public void setTransferencias(LazyDataModel<MovimentacaoFinanceira> transferencias) {
+        this.transferencias = transferencias;
     }
     
     @Override
