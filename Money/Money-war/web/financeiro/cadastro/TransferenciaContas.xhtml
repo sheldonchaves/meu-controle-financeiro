@@ -31,7 +31,7 @@
                                          id="contaDebSele" style="width: 200px;" height="100" required="true" requiredMessage="#{msg.campoObrigatorio}"
                                          binding="#{transferenciaEntreContasManager.selctDebitarDe}" >
                             <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
-                            <f:selectItems value="#{movimentacaoFinanceiraManager.contasBancarias}"/>
+                            <f:selectItems value="#{transferenciaEntreContasManager.contasToSelect}"/>
                             <f:converter converterId="contaBancariaConverter"/>
                         </p:selectOneMenu>
                         <p:message for="contaDebSele"/>
@@ -41,7 +41,7 @@
                                          id="contaCredSele" style="width: 200px;" height="100" required="true" requiredMessage="#{msg.campoObrigatorio}"
                                          binding="#{transferenciaEntreContasManager.selctTransferirPara}" >
                             <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
-                            <f:selectItems value="#{movimentacaoFinanceiraManager.contasBancarias}"/>
+                            <f:selectItems value="#{transferenciaEntreContasManager.contasToSelect}"/>
                             <f:converter converterId="contaBancariaConverter"/>
                         </p:selectOneMenu>
                         <p:message for="contaCredSele"/>
@@ -60,6 +60,52 @@
 
                 </h:form>
             </h:panelGroup>
+            </TD>
+            <TD align="left" valign="top" style="width: 550px;">
+            <h:panelGroup id="transferenciaTableGroup">
+                <h:form id="formTransferenciaTable">
+                    <p:dataTable var="trans" value="#{transferenciaEntreContasManager.transferencias}" paginator="true" rows="5" lazy="true" 
+                                 paginatorTemplate="{RowsPerPageDropdown} {PreviousPageLink} {CurrentPageReport} {NextPageLink}" 
+                                 emptyMessage="#{msg.semRegistrosEcontrados}" rowsPerPageTemplate="5,8,12" >
+                    
+                        <p:column id="col1" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.dataTransferencia}"/>
+                            </f:facet>
+                            <h:outputText value="#{trans.dataMovimentacao}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}" locale="#{transferenciaEntreContasManager.locale}"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column id="col2" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.debitadoDe}"/>
+                            </f:facet>
+                            <h:outputText value="#{trans.contaBancariaDebitada.nomeLimitado}">
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column id="col3" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.creditadoEm}"/>
+                            </f:facet>
+                            <h:outputText value="#{trans.contaBancariaTransferida.nomeLimitado}">
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column id="col4" styleClass="right">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.valor}"/>
+                            </f:facet>
+                            <h:outputText value="#{trans.valorMovimentacao}">
+                                <f:convertNumber type="currency" locale="#{transferenciaEntreContasManager.locale}"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                    </p:dataTable>
+                </h:form>
+            </h:panelGroup>
+                
             </TD>
         </TABLE>
     </f:subview>
