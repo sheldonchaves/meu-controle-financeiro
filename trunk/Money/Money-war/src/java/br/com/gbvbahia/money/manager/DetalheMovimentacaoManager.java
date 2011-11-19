@@ -67,14 +67,14 @@ public class DetalheMovimentacaoManager implements InterfaceManager, Observer {
     public void init() {
         clean();
         ControleObserver.addBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "DetalheMovimentacaoManager.init() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".init() executado!");
     }
 
     @PreDestroy
     @Override
     public void end() {
         ControleObserver.removeBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "DetalheMovimentacaoManager.end() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
     }
 
     //====================

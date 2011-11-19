@@ -71,14 +71,14 @@ public class ContaPagarManager implements InterfaceManager, Observer {
         this.dividas = new LazyReceitaDividaModel(receitaDividaBean, loginManager.getUsuario(), StatusPagamento.NAO_PAGA, TipoMovimentacao.RETIRADA);
         temp = this.receitaDividaBean.buscarReceitaDividasPorUsuarioStatusPaginada(0, 10, loginManager.getUsuario(), StatusPagamento.NAO_PAGA, TipoMovimentacao.RETIRADA);
         ControleObserver.addBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "ContaPagarManager.init() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".init() executado!");
     }
 
     @PreDestroy
     @Override
     public void end() {
         ControleObserver.removeBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "ContaPagarManager.end() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
     }
 
     //====================

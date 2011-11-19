@@ -55,7 +55,7 @@ public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, 
     @Override
     public void end() {
         ControleObserver.removeBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "MovimentacaoFinanceiraDesfazerManager.end() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
     }
 
     @PostConstruct
@@ -64,7 +64,7 @@ public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, 
         clean();
         this.movimentacoes = new LazyMovimentacaoFinanceiraModel(movimentacaoFinanceiraBean, loginManager.getUsuario());
         ControleObserver.addBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "MovimentacaoFinanceiraDesfazerManager.init() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".init() executado!");
     }
 
     //====================
