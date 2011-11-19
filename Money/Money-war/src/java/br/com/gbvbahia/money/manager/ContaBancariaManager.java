@@ -58,7 +58,7 @@ public class ContaBancariaManager implements InterfaceManager, Observer {
     @Override
     public void end() {
         ControleObserver.removeBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "ContaBancariaManager.end() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
     }
 
     @PostConstruct
@@ -66,7 +66,7 @@ public class ContaBancariaManager implements InterfaceManager, Observer {
     public void init() {
         clean();
         ControleObserver.addBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "ContaBancariaManager.init() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".init() executado!");
     }
 
     //====================
