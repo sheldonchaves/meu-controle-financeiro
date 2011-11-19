@@ -85,4 +85,21 @@ public interface MovimentacaoFinanceiraBeanLocal {
      * @return 
      */
     public Integer buscarQtdadeMovimentacaoPorUsuarioContaPaginada(Usuario usuario, TipoConta tipoConta);
+
+    /**
+     * Busca a quantidade de transferências entres contas de um usuário e seu conjuge.
+     * @param usuario Requerido
+     * @return 
+     */
+    public Integer buscarQtdadeTodasTransferenciasEntreContasPaginada(Usuario usuario);
+
+    /**
+     * Recupera as transferências realizadas por um usuário ou seu conjuge.
+     * 
+     * @param posicaoInicial Requerido
+     * @param tamanho Requerido
+     * @param usuario Requerido
+     * @return 
+     */
+    public List<MovimentacaoFinanceira> buscarTodasTransferenciasEntreContasPaginada(int posicaoInicial, int tamanho, Usuario usuario);
 }

@@ -48,4 +48,22 @@
         </query>
     </named-query>
    
+    <named-query name="MovimentacaoFinanceiraBean.buscarTodasTransferenciasEntreContasPaginada">
+        <query>
+			Select distinct m From MovimentacaoFinanceira m
+                        Join m.contaBancariaTransferida c
+                        Where (m.contaBancariaTransferida.user = :usuario 
+                        OR m.contaBancariaTransferida.user.conjuge = :usuario)
+                        Order by m.dataMovimentacao DESC
+        </query>
+    </named-query>
+    
+     <named-query name="MovimentacaoFinanceiraBean.buscarQtdadeTodasTransferenciasEntreContasPaginada">
+        <query>
+			Select count(distinct m) From MovimentacaoFinanceira m
+                        Join m.contaBancariaTransferida c
+                        Where (m.contaBancariaTransferida.user = :usuario 
+                        OR m.contaBancariaTransferida.user.conjuge = :usuario)
+        </query>
+    </named-query>
 </entity-mappings>

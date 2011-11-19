@@ -96,6 +96,23 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLoc
     }
     
     @Override
+    public List<MovimentacaoFinanceira> buscarTodasTransferenciasEntreContasPaginada(int posicaoInicial, int tamanho, Usuario usuario){
+        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarTodasTransferenciasEntreContasPaginada");
+        q.setMaxResults(tamanho);
+        q.setFirstResult(posicaoInicial);
+        q.setParameter("usuario", usuario);
+        return q.getResultList();
+    }
+    
+    @Override
+    public Integer buscarQtdadeTodasTransferenciasEntreContasPaginada(Usuario usuario){
+        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarQtdadeTodasTransferenciasEntreContasPaginada");
+        q.setParameter("usuario", usuario);
+        Long toReturn = (Long) q.getSingleResult();
+        return toReturn.intValue();
+    }
+    
+    @Override
     public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioContaPaginada(int posicaoInicial, int tamanho, Usuario usuario, TipoConta tipoConta){
         Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarMovimentacaoPorUsuarioContaPaginada");
         q.setMaxResults(tamanho);
