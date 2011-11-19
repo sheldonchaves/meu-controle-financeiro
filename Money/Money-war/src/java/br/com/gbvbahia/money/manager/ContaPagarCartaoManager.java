@@ -78,14 +78,14 @@ public class ContaPagarCartaoManager implements InterfaceManager, Observer {
         clean();
         this.dividas = new LazyMovimentacaoTipoContaModel(this.movimentacaoFinanceiraBean, loginManager.getUsuario(), TipoConta.CARTAO_DE_CREDITO);
         ControleObserver.addBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "ContaPagarCartaoManager.init() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".init() executado!");
     }
 
     @PreDestroy
     @Override
     public void end() {
         ControleObserver.removeBeanObserver(loginManager.getUsuario(), this);
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "ContaPagarCartaoManager.end() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
     }
 
     //====================

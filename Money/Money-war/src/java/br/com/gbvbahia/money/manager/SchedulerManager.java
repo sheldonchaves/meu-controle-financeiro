@@ -46,14 +46,14 @@ public class SchedulerManager implements InterfaceManager {
     @Override
     @PreDestroy
     public void end() {
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "SchedulerManager.end() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
     }
 
     @Override
     @PostConstruct
     public void init() {
         clean();
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, "SchedulerManager.init() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".init() executado!");
     }
     
     //====================
