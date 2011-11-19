@@ -220,4 +220,15 @@ public class MovimentacaoFinanceira implements ValidadoInterface, Comparable<Mov
         this.saldoTransferidaPosterior = contaBancariaTransferida.getSaldo() + valor;
     }
     
+    /**
+     * Retorna o valor <strong>absoluto</strong> da movimentação.
+     * saldoPosterior - saldoAnterior
+     * @return 
+     */
+    public double getValorMovimentacao(){
+        double toReturn = this.saldoPosterior - saldoAnterior;
+        if(toReturn < 0)
+            toReturn = toReturn * (-1);
+        return toReturn;
+    }
 }
