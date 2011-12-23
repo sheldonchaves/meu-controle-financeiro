@@ -54,7 +54,7 @@
     
     <ui:define name="topPos">
         <h:form id="formMenu">
-            <p:menubar id="mymenu">
+            <p:menubar id="mymenu" style="border: none; background-color: transparent; background: transparent;">
                 <p:submenu label="#{msg.movimentacaoMenu}" icon="movimentacaoMenu" >
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaPagar}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagar()}" icon="pagar" styleClass="menuComprimento"/>
                     <p:menuitem update="conteudoCentralSuperiorGroup" value="#{msg.cadTitleContaCartao}" action="#{fluxoCadastro.fluxoExibirCadastroContaPagarCartao()}" icon="pagarCartao" styleClass="menuComprimento"/>
