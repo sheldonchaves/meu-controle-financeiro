@@ -11,7 +11,7 @@
                         Where (m.receitaDivida.usuario = :usuario 
                         OR m.receitaDivida.usuario.conjuge = :usuario)
                         AND (m.contaBancariaDebitada.id = :id OR :id is NULL)
-                        Order by m.dataMovimentacao DESC, m.receitaDivida.dataVencimento DESC,
+                        Order by m.receitaDivida.dataVencimento DESC, m.dataMovimentacao DESC,
                         m.receitaDivida.valor DESC
         </query>
     </named-query>
@@ -33,7 +33,7 @@
                         Where (m.receitaDivida.usuario = :usuario 
                         OR m.receitaDivida.usuario.conjuge = :usuario)
                         AND m.contaBancariaDebitada.tipoConta = :tipoConta
-                        Order by m.dataMovimentacao DESC, m.receitaDivida.dataVencimento DESC,
+                        Order by m.receitaDivida.dataVencimento DESC, m.dataMovimentacao DESC,
                         m.receitaDivida.valor DESC
         </query>
     </named-query>
