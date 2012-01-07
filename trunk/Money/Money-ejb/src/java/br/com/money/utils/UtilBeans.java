@@ -5,6 +5,7 @@
 package br.com.money.utils;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -273,5 +274,16 @@ public class UtilBeans {
         c.setTime(dataVencimento);
         c.add(Calendar.MONTH, qtdade);
         return c.getTime();
+    }
+    
+    public static String mesAnoData(Date date){
+        SimpleDateFormat sd = new SimpleDateFormat("MM/yyyy");
+        return sd.format(date);
+    }
+    
+    public static Calendar dateToCalendar(Date date){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        return c;
     }
 }

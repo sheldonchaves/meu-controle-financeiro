@@ -16,6 +16,7 @@ import br.com.money.modelos.MovimentacaoFinanceira;
 import br.com.money.modelos.ReceitaDivida;
 import br.com.money.modelos.Usuario;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -176,5 +177,15 @@ public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLoc
         this.contaBancariaBean.salvarContaBancaria(cbPara);
         manager.persist(mf);
         manager.flush();
+    }
+    
+    @Override
+    public List<MovimentacaoFinanceira> buscarMovimentacaoFinanceiraPorUsuarioPeriodo(Usuario usuario, TipoConta tipoConta, Date ini, Date fim){
+         Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo");
+        q.setParameter("tipoConta", tipoConta);
+        q.setParameter("user", usuario);
+        q.setParameter("dataI", ini);
+        q.setParameter("dataF", fim);
+        return q.getResultList();
     }
 }

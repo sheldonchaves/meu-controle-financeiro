@@ -102,4 +102,6 @@ public interface MovimentacaoFinanceiraBeanLocal {
      * @return 
      */
     public List<MovimentacaoFinanceira> buscarTodasTransferenciasEntreContasPaginada(int posicaoInicial, int tamanho, Usuario usuario);
+
+    public java.util.List<br.com.money.modelos.MovimentacaoFinanceira> buscarMovimentacaoFinanceiraPorUsuarioPeriodo(br.com.money.modelos.Usuario usuario, TipoConta tipoConta,java.util.Date ini, java.util.Date fim);
 }
