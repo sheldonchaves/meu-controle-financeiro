@@ -23,12 +23,14 @@ import br.com.money.vaidators.interfaces.ValidadorInterface;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
+import javax.ejb.Schedules;
 import javax.ejb.Stateless;
 import javax.ejb.Timer;
 import javax.persistence.EntityManager;
@@ -84,7 +86,7 @@ public class SchedulerBean implements SchedulerBeanLocal {
         return q.getResultList();
     }
 
-    @Schedule(hour = "3", minute = "23", dayOfWeek = "*")
+    @Schedule(hour = "3", minute = "23", dayOfWeek = "*", timezone = "GMT-3")
     public void iniciarAvisoVencimento(Timer timer) {
         List<Scheduler> schedules = buscarTodosSchelersPorStatus(true);
         Calendar[] intervalo = getIntervalo();
@@ -103,32 +105,40 @@ public class SchedulerBean implements SchedulerBeanLocal {
         }
     }
 
-    @Schedule(dayOfWeek = "Fri", hour = "0", minute = "10")
+    /**
+     * Juro que tentei:
+     * @Schedule(hour = "0", minute = "23", dayOfWeek = "Mon-Fri")
+     * Mas não deu certo, meu GlassFish de desenvolvimento dispara a executar este método.
+     * Tive que verificar o dia na mão mesmo.<br>
+     * @param timer 
+     */
+    @Schedule(hour = "0", minute = "14", dayOfWeek = "Mon-Fri")//loop infinito
     public void avisarCartaoCredito(Timer timer) {
-        List<Scheduler> schedules = buscarTodosSchelersPorStatus(true);
-        Calendar[] intervalo = primeiroUltimoDiasMes();
-        for (Scheduler sc : schedules) {
-            List<MovimentacaoFinanceira> movimentacoes = this.movimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo(sc.getUser(), TipoConta.CARTAO_DE_CREDITO, intervalo[0].getTime(), intervalo[1].getTime());
-            movimentacoes.addAll(this.movimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo(sc.getUser(), TipoConta.CARTAO_DE_CREDITO, intervalo[2].getTime(), intervalo[3].getTime()));
-            Map<CartaoMesDTO, Double> contaValorMap = new TreeMap<CartaoMesDTO, Double>();
-            for (MovimentacaoFinanceira mf : movimentacoes) {
-                CartaoMesDTO dto = new CartaoMesDTO(mf.getContaBancariaDebitada(), UtilBeans.mesAnoData(mf.getReceitaDivida().getDataVencimento()));
-                if (contaValorMap.containsKey(dto)) {
-                    contaValorMap.put(dto, contaValorMap.get(dto) + mf.getReceitaDivida().getValorParaCalculoDireto());
-                } else {
-                    contaValorMap.put(dto, mf.getReceitaDivida().getValorParaCalculoDireto());
+            List<Scheduler> schedules = buscarTodosSchelersPorStatus(true);
+            Calendar[] intervalo = primeiroUltimoDiasMes();
+            for (Scheduler sc : schedules) {
+                List<MovimentacaoFinanceira> movimentacoes = this.movimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo(sc.getUser(), TipoConta.CARTAO_DE_CREDITO, intervalo[0].getTime(), intervalo[1].getTime());
+                movimentacoes.addAll(this.movimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo(sc.getUser(), TipoConta.CARTAO_DE_CREDITO, intervalo[2].getTime(), intervalo[3].getTime()));
+                Map<CartaoMesDTO, Double> contaValorMap = new TreeMap<CartaoMesDTO, Double>();
+                for (MovimentacaoFinanceira mf : movimentacoes) {
+                    CartaoMesDTO dto = new CartaoMesDTO(mf.getContaBancariaDebitada(), UtilBeans.mesAnoData(mf.getReceitaDivida().getDataVencimento()));
+                    if (contaValorMap.containsKey(dto)) {
+                        contaValorMap.put(dto, contaValorMap.get(dto) + mf.getReceitaDivida().getValorParaCalculoDireto());
+                    } else {
+                        contaValorMap.put(dto, mf.getReceitaDivida().getValorParaCalculoDireto());
+                    }
+                }
+                if (!contaValorMap.isEmpty()) {
+                    String body = defineCartaoValor(contaValorMap);
+                    body = StringUtils.replace(body, "null", "");
+                    if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
+                        String bodyFim = "<h3>Aviso semanal de cartão de crédito:</h3>" + body;
+                        enviaEmail(bodyFim, "Financeiro :: Cartão de Crédito", sc);
+                    }
                 }
             }
-            if (!contaValorMap.isEmpty()) {
-                String body = defineCartaoValor(contaValorMap);
-                body = StringUtils.replace(body, "null", "");
-                if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
-                    String bodyFim = "<h3>Aviso semanal de cartão de crédito:</h3>" + body;
-                    enviaEmail(bodyFim, "Financeiro :: Cartão de Crédito", sc);
-                }
-            }
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Scheduler Cartão de Crédito: Executado.");
         }
-    }
 
     private String buscarTablePadrao(String body) {
         body += " <style type=\"text/css\">";
@@ -159,7 +169,7 @@ public class SchedulerBean implements SchedulerBeanLocal {
         dates[2] = UtilBeans.primeiroUltimoDia(UtilBeans.aumentaMesDate(d, 1))[0];
         dates[3] = UtilBeans.primeiroUltimoDia(UtilBeans.aumentaMesDate(d, 1))[1];
         Calendar[] toReturn = new Calendar[4];
-        for(int i = 0; i < toReturn.length; i++){
+        for (int i = 0; i < toReturn.length; i++) {
             toReturn[i] = UtilBeans.dateToCalendar(dates[i]);
         }
         return toReturn;
@@ -221,7 +231,7 @@ public class SchedulerBean implements SchedulerBeanLocal {
         return false;
     }
 
-    private String corpoTableEmail(List<ReceitaDivida> listCPOK,List<ReceitaDivida> listCPAtrasada) {
+    private String corpoTableEmail(List<ReceitaDivida> listCPOK, List<ReceitaDivida> listCPAtrasada) {
         String toReturn = "";
         toReturn += buscarTablePadrao(toReturn);
         toReturn += "<thead><tr>"
@@ -234,7 +244,7 @@ public class SchedulerBean implements SchedulerBeanLocal {
                 + "<th>Responsável</th>"
                 + "</tr></thead>"
                 + "<tbody>";
-         for (ReceitaDivida cp : listCPAtrasada) {
+        for (ReceitaDivida cp : listCPAtrasada) {
             toReturn += "<tr>";
             toReturn += "<td align='left' class=\"red\">" + cp.getObservacao() + "</td>";
             toReturn += "<td align='center' class=\"red\">" + UtilBeans.getDataString(cp.getDataVencimento()) + "</td>";
@@ -290,8 +300,9 @@ public class SchedulerBean implements SchedulerBeanLocal {
         body += " </table> ";
         return body;
     }
-    
-    private class CartaoMesDTO implements Comparable<CartaoMesDTO>{
+
+    private class CartaoMesDTO implements Comparable<CartaoMesDTO> {
+
         private ContaBancaria cartao;
         private String mesAno;
 
@@ -299,7 +310,7 @@ public class SchedulerBean implements SchedulerBeanLocal {
             this.cartao = cartao;
             this.mesAno = mesAno;
         }
-        
+
         public ContaBancaria getCartao() {
             return cartao;
         }
@@ -341,8 +352,6 @@ public class SchedulerBean implements SchedulerBeanLocal {
             return hash;
         }
 
-     
-
         @Override
         public String toString() {
             return "CartaoMesDTO{" + "cartao=" + cartao + ", mesAno=" + mesAno + '}';
@@ -351,12 +360,14 @@ public class SchedulerBean implements SchedulerBeanLocal {
         @Override
         public int compareTo(CartaoMesDTO o) {
             int i = 0;
-            if(i == 0) i = (this.mesAno).compareTo(o.mesAno);
-            if(i == 0) i = this.cartao.compareTo(o.cartao);
-            
+            if (i == 0) {
+                i = (this.mesAno).compareTo(o.mesAno);
+            }
+            if (i == 0) {
+                i = this.cartao.compareTo(o.cartao);
+            }
+
             return i;
         }
-        
-        
     }
 }

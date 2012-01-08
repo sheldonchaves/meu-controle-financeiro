@@ -286,4 +286,9 @@ public class UtilBeans {
         c.setTime(date);
         return c;
     }
+    
+    public static boolean verificaDiaDaSemana(Date data, int dia){
+        Calendar c = dateToCalendar(data);
+        return c.get(Calendar.DAY_OF_WEEK) == dia;
+    }
 }
