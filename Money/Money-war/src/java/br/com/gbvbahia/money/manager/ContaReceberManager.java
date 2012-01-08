@@ -205,6 +205,7 @@ public class ContaReceberManager implements InterfaceManager, Observer {
         this.valorInput.setSubmittedValue(UtilMetodos.getNumberFormater().format(receitaDivida.getValor()));
         this.calendarInput.setPattern(this.getPattern());
         this.calendarInput.setSubmittedValue(UtilMetodos.getDataString(receitaDivida.getDataVencimento()));
+        this.selctDetalhePagamento.setSubmittedValue(receitaDivida.getDetalheMovimentacao());
     }
 
     public boolean isSalvarParcelas() {
