@@ -145,11 +145,11 @@
 
                                 <h:outputLabel value=""/>
                                 <h:panelGroup>
-                                    <p:commandButton value="#{msg.confirmar}" image="ui-icon ui-icon-check" actionListener="#{movimentacaoFinanceiraDesfazerManager.desfazerReceitaDivida()}"
+                                    <p:commandButton value="#{msg.confirmar}" icon="ui-icon ui-icon-check" actionListener="#{movimentacaoFinanceiraDesfazerManager.desfazerReceitaDivida()}"
                                                      oncomplete="dlg2.hide();" update="conteudoBaixoGroup, conteudoEsquerdoGroup, conteudoCentralSuperiorGroup" >
                                     </p:commandButton>
                                     <p:spacer height="3" width="10"/>
-                                    <p:commandButton value="#{msg.cancelar}" image="ui-icon ui-icon-cancel" actionListener="#{movimentacaoFinanceiraDesfazerManager.clean()}" 
+                                    <p:commandButton value="#{msg.cancelar}" icon="ui-icon ui-icon-cancel" actionListener="#{movimentacaoFinanceiraDesfazerManager.clean()}" 
                                                      oncomplete="dlg2.hide();" immediate="true" update="messages,conteudoBaixoGroup">
                                     </p:commandButton>
                                 </h:panelGroup>

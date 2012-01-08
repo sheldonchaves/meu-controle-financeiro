@@ -47,11 +47,11 @@
 
                         <h:outputLabel value=""/>
                         <h:panelGroup>
-                            <p:commandButton value="#{msg.salvar}" image="ui-icon ui-icon-disk" actionListener="#{contaBancariaManager.salvarContaBancaria()}"
+                            <p:commandButton value="#{msg.salvar}" icon="ui-icon ui-icon-disk" actionListener="#{contaBancariaManager.salvarContaBancaria()}"
                                              update="messages,conteudoCentralSuperiorGroup,conteudoEsquerdoGroup,conteudoBaixoGroup">
                             </p:commandButton>
                             <p:spacer height="3" width="10"/>
-                            <p:commandButton value="#{msg.novo}" image="ui-icon ui-icon-refresh" actionListener="#{contaBancariaManager.clean()}" 
+                            <p:commandButton value="#{msg.novo}" icon="ui-icon ui-icon-refresh" actionListener="#{contaBancariaManager.clean()}" 
                                              immediate="true" update="messages,conteudoCentralSuperiorGroup">
                             </p:commandButton>
                         </h:panelGroup>
