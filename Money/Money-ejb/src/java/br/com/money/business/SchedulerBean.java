@@ -86,7 +86,7 @@ public class SchedulerBean implements SchedulerBeanLocal {
         return q.getResultList();
     }
 
-    @Schedule(hour = "3", minute = "23", dayOfWeek = "*", timezone = "GMT-3")
+    @Schedule(hour = "3", minute = "23", dayOfWeek = "*")
     public void iniciarAvisoVencimento(Timer timer) {
         List<Scheduler> schedules = buscarTodosSchelersPorStatus(true);
         Calendar[] intervalo = getIntervalo();
@@ -106,13 +106,9 @@ public class SchedulerBean implements SchedulerBeanLocal {
     }
 
     /**
-     * Juro que tentei:
-     * @Schedule(hour = "0", minute = "23", dayOfWeek = "Mon-Fri")
-     * Mas não deu certo, meu GlassFish de desenvolvimento dispara a executar este método.
-     * Tive que verificar o dia na mão mesmo.<br>
      * @param timer 
      */
-    @Schedule(hour = "0", minute = "14", dayOfWeek = "Mon-Fri")//loop infinito
+    @Schedule(hour = "10", minute = "45", dayOfWeek = "Mon,Fri")//loop infinito
     public void avisarCartaoCredito(Timer timer) {
             List<Scheduler> schedules = buscarTodosSchelersPorStatus(true);
             Calendar[] intervalo = primeiroUltimoDiasMes();
