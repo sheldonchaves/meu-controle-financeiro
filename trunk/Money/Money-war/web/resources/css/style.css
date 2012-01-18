@@ -159,16 +159,18 @@ textarea.size1 { height:180px; }
 .add-button { font-weight: bold; font-size:12px; color:#747474; text-decoration: none; line-height:26px; }
 .add-button:hover { color:#333;}
 
-#footer1 { text-align: left;
+#footer1 { 
+    text-align: left;
 }
 #footer { height:44px; 
           background:url(/money/resources/img/footer.gif); 
           line-height:44px; 
           color:#fff;
-          position:absolute;
           bottom:0;
           width:100%;
           text-align: center;
+           clear: both;
+           
 }
 #footer a{ color:#fff; }
 
