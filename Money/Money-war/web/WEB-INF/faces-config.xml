@@ -28,7 +28,7 @@
         <navigation-case>
             <description>Vai para página principal de qualquer local</description>
             <from-outcome>principal</from-outcome>
-            <to-view-id>/financeiro/principal.xhtml</to-view-id>
+            <to-view-id>/manager/principal.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

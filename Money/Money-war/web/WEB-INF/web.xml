@@ -15,7 +15,7 @@
     <context-param>
         <description>Development, Production, SystemTest, UnitTest</description>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Production</param-value>
+        <param-value>Development</param-value>
     </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -37,7 +37,7 @@
     <context-param>
         <description>ui-lightness glass-x flick sunny dot-luv blitzer south-street mint-choc midnight le-frog aristo black-tie cupertino hot-sneaks pepper-grinder redmond trontastic rocket</description>
         <param-name>primefaces.THEME</param-name>
-        <param-value>hot-sneaks</param-value>
+        <param-value>none</param-value>
     </context-param>
     <context-param>
         <param-name>timezone</param-name>
@@ -50,6 +50,10 @@
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/financeiro/*</url-pattern>
+    </filter-mapping>
+        <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/manager/*</url-pattern>
     </filter-mapping>
     <ejb-local-ref>
         <ejb-ref-name>DetalheUsuarioBean</ejb-ref-name>
