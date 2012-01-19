@@ -11,13 +11,10 @@
     <ui:define name="contsup">
          <p:barChart value="#{acumuladoMensalManager.categoryModel}" style="width:98%;height:255px; margin-top: 5px; margin-left: 10px;"
                     legendPosition="ne"   shadow="true" barMargin="5" 
-                    seriesColors="09d03c,e0150b" xaxisLabel="#{msg.xLabelGraficoAcumuladoMensal}"
-                    yaxisLabel="#{msg.yLabelGraficoAcumuladoMensal}"
+                    seriesColors="09d03c,e0150b" 
                     min="0" title="#{msg.tituloGraficoAcumuladoMensal}"/>         
          <p:spacer width="50%" height="30"/>
          <p:lineChart value="#{cartaoMensalManager.categoryModel}" legendPosition="ne" shadow="true"
-                    yaxisLabel="#{msg.yLabelGraficoAcumuladoMensal}"
-                    xaxisLabel="#{msg.xLabelGraficoAcumuladoMensal}"
                     title="#{msg.tituloGraficoCartaoMensal}" 
                     minY="0" 
                     showMarkers="true"
