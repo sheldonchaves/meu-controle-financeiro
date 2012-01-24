@@ -3,9 +3,9 @@
 <!-- =========== FULL CONFIGURATION FILE ================================== -->
 
 <faces-config version="2.0"
-    xmlns="http://java.sun.com/xml/ns/javaee" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+              xmlns="http://java.sun.com/xml/ns/javaee" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
 
     <application>
         <resource-bundle>
@@ -24,11 +24,28 @@
         </navigation-case>
     </navigation-rule>
     
-        <navigation-rule>
+    <navigation-rule>
         <navigation-case>
             <description>Vai para página principal de qualquer local</description>
             <from-outcome>principal</from-outcome>
             <to-view-id>/manager/principal.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <navigation-case>
+            <description>Vai para página contas de qualquer local</description>
+            <from-outcome>contas</from-outcome>
+            <to-view-id>/manager/contaspagar.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+        <navigation-rule>
+        <navigation-case>
+            <description>Vai para página contas de qualquer local</description>
+            <from-outcome>contasbancarias</from-outcome>
+            <to-view-id>/manager/contabancaria/listar.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
