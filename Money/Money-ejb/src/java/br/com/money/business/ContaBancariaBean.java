@@ -23,7 +23,16 @@ import java.util.*;
  * @author Guilherme
  */
 @Stateless
-public class ContaBancariaBean implements ContaBancariaBeanLocal {
+public class ContaBancariaBean extends AbstractFacade<ContaBancaria> implements ContaBancariaBeanLocal {
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return this.manager;
+    }
+
+    public ContaBancariaBean() {
+        super(ContaBancaria.class);
+    }
 
     @EJB(beanName = "contaBancariaValidador")
     private ValidadorInterface contaBancariaValidador;

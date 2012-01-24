@@ -18,7 +18,7 @@ import javax.ejb.Local;
  * @author Guilherme
  */
 @Local
-public interface ReceitaDividaBeanLocal {
+public interface ReceitaDividaBeanLocal extends AbstractFacadeLocal<ReceitaDivida> {
 
     /**
      * Salva uma ReceitaDivida

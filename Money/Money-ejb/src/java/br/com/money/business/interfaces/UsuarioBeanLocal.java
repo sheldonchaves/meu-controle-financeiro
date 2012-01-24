@@ -14,7 +14,7 @@ import javax.ejb.Local;
  * @author gbvbahia
  */
 @Local
-public interface UsuarioBeanLocal {
+public interface UsuarioBeanLocal extends AbstractFacadeLocal<Usuario> {
 
     Usuario buscarUsuarioByLogin(String login);
 

@@ -23,7 +23,16 @@ import javax.persistence.Query;
  * @author gbvbahia
  */
 @Stateless
-public class DetalheUsuarioBean implements DetalheUsuarioBeanLocal {
+public class DetalheUsuarioBean extends AbstractFacade<DetalheMovimentacao> implements DetalheUsuarioBeanLocal {
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return this.manager;
+    }
+
+    public DetalheUsuarioBean() {
+        super(DetalheMovimentacao.class);
+    }
 
     @EJB(beanName = "detalheMobvimentacaoValidador")
     private ValidadorInterface detalheMobvimentacaoValidador;

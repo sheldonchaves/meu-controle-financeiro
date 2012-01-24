@@ -14,7 +14,7 @@ import java.util.List;
  * @author Guilherme
  */
 @Local
-public interface ContaBancariaBeanLocal {
+public interface ContaBancariaBeanLocal extends AbstractFacadeLocal<ContaBancaria> {
 
     void salvarContaBancaria(ContaBancaria contaBancaria);
 
