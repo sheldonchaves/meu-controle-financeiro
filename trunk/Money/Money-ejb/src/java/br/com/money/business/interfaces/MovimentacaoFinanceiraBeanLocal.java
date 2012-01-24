@@ -18,7 +18,7 @@ import javax.ejb.Local;
  * @author Guilherme
  */
 @Local
-public interface MovimentacaoFinanceiraBeanLocal {
+public interface MovimentacaoFinanceiraBeanLocal extends AbstractFacadeLocal<MovimentacaoFinanceira> {
     /**
      * Cria a movimentação financeira para a conta e a receita passada.
      * @param contaBancaria

@@ -30,7 +30,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
-import javax.ejb.Schedules;
 import javax.ejb.Stateless;
 import javax.ejb.Timer;
 import javax.persistence.EntityManager;
@@ -44,7 +43,16 @@ import org.apache.commons.lang.StringUtils;
  * @author Guilherme
  */
 @Stateless
-public class SchedulerBean implements SchedulerBeanLocal {
+public class SchedulerBean extends AbstractFacade<Scheduler> implements SchedulerBeanLocal {
+
+    public SchedulerBean() {
+        super(Scheduler.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return this.manager;
+    }
 
     @EJB
     private MovimentacaoFinanceiraBeanLocal movimentacaoFinanceiraBean;
@@ -145,7 +153,8 @@ public class SchedulerBean implements SchedulerBeanLocal {
         body += " border-collapse:collapse;";
         body += " width:95%;}";
         body += " table.reference th { ";
-        body += " background-color:#e5eecc;";
+        body += " background-color:#ba4c32;";
+        body += " color:#ffffff;";
         body += " border:1px solid #c3c3c3;";
         body += " padding:3px;";
         body += " vertical-align:top; }";
