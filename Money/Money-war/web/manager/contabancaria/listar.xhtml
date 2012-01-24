@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../templates/index.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="busca"></ui:define>
+    <ui:param name="titSupParan" value="#{msg.titlePanelContasBancarias}"/>
+    <ui:define name="contsup">
+        <h:form styleClass="jsfcrud_list_form" id="tableForm">
+            <h:outputText escape="false" value="#{msg.ListContaBancariaEmpty}" rendered="#{contaBancariaController.items.rowCount == 0}"/>
+            <h:panelGroup rendered="#{contaBancariaController.items.rowCount > 0}">
+                <table class="reference" width="100%">
+                   <thead><tr>
+                        <th><h:outputText value="#{msg.contas}"/></th>
+                        <th><h:outputText value="#{msg.saldo}"/></th>
+                        <th><h:outputText value="#{msg.tipo}"/></th>
+                        <th width="150" class="ac">Content Control</th>
+                    </tr></thead>
+                    <tbody>
+                    <ui:repeat value="#{contaBancariaController.items}" var="item" varStatus="x">
+                        <tr>
+                            <td align='left'><h:outputText value="#{item.nomeConta}"/></td>
+                            <td align='right' class="#{0 > item.saldo ? 'red' : 'green'}"><h:outputText value="#{item.saldo}"><f:converter converterId="moneyConverter"/></h:outputText></td>
+                            <td align='center'><h:outputText value="#{item.tipoConta.tipoContaString}"/></td>
+                            <td><h:commandLink action="#{contaBancariaController.destroy}" styleClass="ico del" value="#{msg.remover}"/>
+                                <h:outputText value=" "/>
+                                <h:commandLink styleClass="ico edit" action="#{contaBancariaController.prepareEdit}" value="#{msg.editar}"/>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </tbody></table>
+            </h:panelGroup>
+            <p:spacer width="100%" height="10"/>
+            <h:commandLink action="#{contaBancariaController.prepareCreate}" value="#{msg.novo}"/>
+            <p:spacer width="100%" height="20"/>
+        </h:form>
+    </ui:define>
+    <ui:define name="fotsup">
+        <h:form id="footertop" prependId="false">
+            <h:outputText value="#{contaBancariaController.pagination.pageFirstItem + 1}..#{contaBancariaController.pagination.pageLastItem + 1}/#{contaBancariaController.pagination.itemsCount}"/>&nbsp;
+            <p:commandLink actionListener="#{contaBancariaController.previous}" value="#{msg.Previous} #{contaBancariaController.pagination.pageSize}" 
+                           rendered="#{contaBancariaController.pagination.hasPreviousPage}" update="tableForm, footertop" />&nbsp;
+            <p:commandLink actionListener="#{contaBancariaController.next}" value="#{msg.Next} #{contaBancariaController.pagination.pageSize}" 
+                           rendered="#{contaBancariaController.pagination.hasNextPage}" update="tableForm, footertop"/>&nbsp;
+
+        </h:form>
+    </ui:define>
+    <ui:define name="sideinf"></ui:define>
+    <ui:define name="form"></ui:define>
+
+</ui:composition>

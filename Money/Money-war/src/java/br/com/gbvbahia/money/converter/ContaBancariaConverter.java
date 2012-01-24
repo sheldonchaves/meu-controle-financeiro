@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author Guilherme
  */
-@FacesConverter(value = "contaBancariaConverter")
+@FacesConverter(value = "contaBancariaConverter", forClass = ContaBancaria.class)
 public class ContaBancariaConverter implements Converter{
     ContaBancariaBeanLocal contaBancariaBean = lookupContaBancariaBeanLocal();
 
