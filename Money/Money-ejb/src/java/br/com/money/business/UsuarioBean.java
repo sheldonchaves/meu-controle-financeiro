@@ -12,6 +12,7 @@ import br.com.money.modelos.Role;
 import br.com.money.modelos.Usuario;
 import br.com.money.utils.Criptografia;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -173,4 +174,11 @@ public class UsuarioBean extends AbstractFacade<Usuario> implements UsuarioBeanL
         toReturn += url;
         return toReturn;
     }
+
+    @Override
+    public List<Usuario> findRange(int[] range, Usuario usuarioProprietario) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    
 }

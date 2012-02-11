@@ -105,4 +105,17 @@ public class ContaBancariaBean extends AbstractFacade<ContaBancaria> implements 
         }
         return toReturn;
     }
+
+    @Override
+    public List<ContaBancaria> findRange(int[] range, Usuario usuarioProprietario) {
+        Query q = manager.createNamedQuery("ContaBancariaBean.buscarContaBancariasPorUsuario");
+        q.setParameter("user", usuarioProprietario);
+        q.setMaxResults(range[1] - range[0]);
+        q.setFirstResult(range[0]);
+        final List<ContaBancaria> resultList = q.getResultList();
+        return resultList;
+    }
+    
+        
+
 }

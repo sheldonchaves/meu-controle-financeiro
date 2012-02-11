@@ -4,6 +4,7 @@
  */
 package br.com.money.business.interfaces;
 
+import br.com.money.modelos.Usuario;
 import java.util.List;
 
 /**
@@ -23,6 +24,7 @@ public interface AbstractFacadeLocal<T> {
     List<T> findAll();
 
     List<T> findRange(int[] range);
+    List<T> findRange(int[] range, Usuario usuarioProprietario);
     @Deprecated//Até ser refatorado para vaidar
     void remove(T entity);
     

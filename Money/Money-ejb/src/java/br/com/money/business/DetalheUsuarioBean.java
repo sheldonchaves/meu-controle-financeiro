@@ -143,4 +143,15 @@ public class DetalheUsuarioBean extends AbstractFacade<DetalheMovimentacao> impl
         }
         manager.flush();
     }
+
+    @Override
+    public List<DetalheMovimentacao> findRange(int[] range, Usuario usuarioProprietario) {
+         Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuario");
+        q.setParameter("usuario", usuarioProprietario);
+        q.setMaxResults(range[1] - range[0]);
+        q.setFirstResult(range[0]);
+        return q.getResultList();
+    }
+    
+    
 }

@@ -189,4 +189,11 @@ public class ReceitaDividaBean extends AbstractFacade<ReceitaDivida> implements 
         q.setParameter("tipoMovimentacao", tipo);
         return q.getResultList();
     }
+
+    @Override
+    public List<ReceitaDivida> findRange(int[] range, Usuario usuarioProprietario) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    
 }

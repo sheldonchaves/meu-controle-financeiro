@@ -67,7 +67,7 @@
         </query>
     </named-query>
     
-         <named-query name="MovimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo">
+    <named-query name="MovimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo">
         <query>
 			Select  distinct m From MovimentacaoFinanceira m
                         Where   m.contaBancariaDebitada.tipoConta = :tipoConta
@@ -76,4 +76,13 @@
                         And     m.receitaDivida.dataVencimento Between :dataI And :dataF
         </query>
     </named-query>
+    
+    <named-query name="MovimentacaoFinanceiraBean.findRangeByUser">
+        <query>
+			Select  distinct m From MovimentacaoFinanceira m
+                        Where   (m.contaBancariaDebitada.user = :user 
+                        OR      m.contaBancariaDebitada.user.conjuge = :user)
+        </query>
+    </named-query>
+    
 </entity-mappings>
