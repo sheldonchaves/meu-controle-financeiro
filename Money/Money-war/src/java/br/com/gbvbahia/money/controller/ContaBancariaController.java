@@ -2,12 +2,14 @@ package br.com.gbvbahia.money.controller;
 
 import br.com.gbvbahia.money.controller.util.PaginationHelper;
 import br.com.gbvbahia.money.manager.LoginManager;
+import br.com.gbvbahia.money.manager.SelectItemManager;
 import br.com.gbvbahia.money.observador.ControleObserver;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.ContaBancariaBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ContaBancaria;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -16,22 +18,37 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
+import javax.faces.model.SelectItem;
 import org.apache.commons.lang.StringUtils;
 
 @ManagedBean(name = "contaBancariaController")
 @ViewScoped
 public class ContaBancariaController implements Serializable {
 
+    public static final String CONTA_BANCARIA_RETURN = "mantem";
+    public static final String CONTA_BANCARIA_CHANGE = "contasbancarias";
+    
     @EJB
     private ContaBancariaBeanLocal contaBancariaBean;
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
+    @ManagedProperty("#{selectItemManager}")
+    private SelectItemManager selectItemManager;
+    
     private ContaBancaria current;
     private DataModel<ContaBancaria> items = null;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
     public ContaBancariaController() {
+    }
+    
+    public void clean(){
+        this.current = null;
+    }
+
+    public List<SelectItem> getSelectTipoConta() {
+        return this.selectItemManager.getLinguagens();
     }
 
     public ContaBancaria getSelected() {
@@ -66,19 +83,21 @@ public class ContaBancariaController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        current = null;
+        return CONTA_BANCARIA_RETURN;
     }
 
     public String prepareView() {
         current = (ContaBancaria) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
+        return CONTA_BANCARIA_RETURN;
     }
 
     public String prepareCreate() {
         current = new ContaBancaria();
+        current.setUser(this.loginManager.getUsuario());
         selectedItemIndex = -1;
-        return "Create";
+        return CONTA_BANCARIA_RETURN;
     }
 
     public String create() {
@@ -86,7 +105,7 @@ public class ContaBancariaController implements Serializable {
             getFacade().salvarContaBancaria(current);
             UtilMetodos.messageFactoringFull("contaBancariaCadastradoOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
             ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_BANCARIA);
-            return prepareCreate();
+            return prepareList();
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
                 UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
@@ -100,7 +119,7 @@ public class ContaBancariaController implements Serializable {
     public String prepareEdit() {
         current = (ContaBancaria) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
+        return CONTA_BANCARIA_RETURN;
     }
 
     public String update() {
@@ -108,7 +127,7 @@ public class ContaBancariaController implements Serializable {
             getFacade().salvarContaBancaria(current);
             UtilMetodos.messageFactoringFull("contaBancariaCadastradoOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
             ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_BANCARIA);
-            return "View";
+            return CONTA_BANCARIA_RETURN;
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
                 UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
@@ -125,7 +144,7 @@ public class ContaBancariaController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "List";
+        return prepareList();
     }
 
     public String destroyAndView() {
@@ -133,11 +152,11 @@ public class ContaBancariaController implements Serializable {
         recreateModel();
         updateCurrentItem();
         if (selectedItemIndex >= 0) {
-            return "View";
+            return CONTA_BANCARIA_RETURN;
         } else {
             // all items were removed - go back to list
             recreateModel();
-            return "List";
+            return CONTA_BANCARIA_RETURN;
         }
     }
 
@@ -204,5 +223,21 @@ public class ContaBancariaController implements Serializable {
 
     public void setLoginManager(LoginManager loginManager) {
         this.loginManager = loginManager;
+    }
+
+    public ContaBancaria getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(ContaBancaria current) {
+        this.current = current;
+    }
+
+    public SelectItemManager getSelectItemManager() {
+        return selectItemManager;
+    }
+
+    public void setSelectItemManager(SelectItemManager selectItemManager) {
+        this.selectItemManager = selectItemManager;
     }
 }

@@ -134,7 +134,7 @@ h3 a{ text-decoration: none; }
 
 a.ico { color:#9d9c9a; font-size:10px; text-decoration: none; padding:0 0 0 14px; background-repeat:no-repeat; background-position:0 0; }
 a.ico:hover { color:#333;}
-a.del { background-image:url(/money/resources/img/del.gif)}
+a.del { background-image:url(/money/resources/img/del.png)}
 a.edit { background-image:url(/money/resources/img/edit.gif); margin-left:14px;}
 
 
