@@ -28,18 +28,7 @@ import org.apache.commons.lang.StringUtils;
  * @author gbvbahia
  */
 @Stateless
-public class UsuarioBean extends AbstractFacade<Usuario> implements UsuarioBeanLocal {
-
-    public UsuarioBean() {
-        super(Usuario.class);
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return this.manager;
-    }
-    
-    
+public class UsuarioBean implements UsuarioBeanLocal {
     @EJB(beanName="usuarioValidador")
     private ValidadorInterface usuarioValidador;
 

@@ -26,16 +26,7 @@ import javax.persistence.*;
  * @author Guilherme
  */
 @Stateless
-public class ReceitaDividaBean extends AbstractFacade<ReceitaDivida> implements ReceitaDividaBeanLocal {
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return this.manager;
-    }
-
-    public ReceitaDividaBean() {
-        super(ReceitaDivida.class);
-    }
+public class ReceitaDividaBean implements ReceitaDividaBeanLocal {
 
     @EJB
     private MovimentacaoFinanceiraBeanLocal movimentacaoFinanceiraBean;

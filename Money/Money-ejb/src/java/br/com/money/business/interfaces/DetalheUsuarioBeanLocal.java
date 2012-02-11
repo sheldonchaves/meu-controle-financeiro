@@ -16,7 +16,7 @@ import javax.ejb.Local;
  * @author gbvbahia
  */
 @Local
-public interface DetalheUsuarioBeanLocal extends AbstractFacadeLocal<DetalheMovimentacao> {
+public interface DetalheUsuarioBeanLocal {
 
     /**
      * Devolve uma lista com todos os Detalhes Movimentação de um usuário com filtro pela flag geral

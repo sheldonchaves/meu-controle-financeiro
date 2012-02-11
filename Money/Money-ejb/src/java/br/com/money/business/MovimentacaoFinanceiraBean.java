@@ -29,16 +29,7 @@ import javax.persistence.Query;
  * @author Guilherme
  */
 @Stateless
-public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinanceira> implements MovimentacaoFinanceiraBeanLocal {
-
-    public MovimentacaoFinanceiraBean() {
-        super(MovimentacaoFinanceira.class);
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return this.manager;
-    }
+public class MovimentacaoFinanceiraBean implements MovimentacaoFinanceiraBeanLocal {
 
     @EJB
     private ReceitaDividaBeanLocal receitaDividaBean;
