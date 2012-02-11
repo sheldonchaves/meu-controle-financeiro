@@ -13,6 +13,7 @@
                 </ui:insert>
             </title>
             <h:outputStylesheet name="style.css" library="css" />
+            <h:outputScript name="js.js" library="js"/>
         </h:head>
         <h:body>
             <div id="fullPage">
@@ -95,12 +96,19 @@
 
 
                                 <!-- End Box Head -->
-                                <ui:insert name="form">
-                                    <ui:include src="form.xhtml"/>
-                                </ui:insert>
-
+                                <h:panelGroup rendered="#{formRender}">
+                                    <div class="box">
+                                        <div class="box-head">
+                                            <h2 class="left"><h:outputText value="#{titFormParan}"/></h2>
+                                        </div>
+                                        <ui:insert name="form">
+                                            <ui:include src="form.xhtml"/>
+                                        </ui:insert>
+                                    </div>
+                                </h:panelGroup>
                                 <!-- End Box -->
                             </div>
+
                             <!-- End Content -->
 
                             <!-- Sidebar -->
