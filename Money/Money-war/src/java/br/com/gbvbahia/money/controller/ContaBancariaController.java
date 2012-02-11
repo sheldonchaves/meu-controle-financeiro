@@ -88,21 +88,6 @@ public class ContaBancariaController implements Serializable {
         }
     }
 
-    public String update() {
-        try {
-            getFacade().salvarContaBancaria(current);
-            UtilMetodos.messageFactoringFull("contaBancariaCadastradoOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_BANCARIA);
-            return CONTA_BANCARIA_RETURN;
-        } catch (ValidacaoException v) {
-            if (!StringUtils.isBlank(v.getAtributoName())) {
-                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-            } else {
-                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-            }
-            return null;
-        }
-    }
     //====================
     //Métodos Privados
     //====================
