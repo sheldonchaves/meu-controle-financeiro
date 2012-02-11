@@ -6,31 +6,38 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
     
-                                        <!-- CONTA BANCARIA-->
-                
+                                                <!-- CONTAS A PAGAR-->
+    
     <ui:define name="busca"></ui:define>
-    <ui:param name="titSupParan" value="#{msg.titlePanelContasBancarias}"/>
+    <ui:param name="titSupParan" value="#{msg.titlePanelContaPagar}"/>
     <ui:define name="contsup">
         <h:form styleClass="jsfcrud_list_form" id="tableForm">
-            <h:outputText escape="false" value="#{msg.ListContaBancariaEmpty}" rendered="#{contaBancariaController.items.rowCount == 0}"/>
-            <h:panelGroup rendered="#{contaBancariaController.items.rowCount > 0}">
+            <h:outputText escape="false" value="#{msg.ListContaPagarEmpty}" rendered="#{contaPagarController.items.rowCount == 0}"/>
+            <h:panelGroup rendered="#{contaPagarController.items.rowCount > 0}">
                 <table class="reference" width="100%">
                     <thead><tr>
-                            <th><h:outputText value="#{msg.contas}"/></th>
-                            <th><h:outputText value="#{msg.saldo}"/></th>
-                            <th><h:outputText value="#{msg.tipo}"/></th>
+                            <th><h:outputText value="#{msg.vencimento}"/></th>
+                            <th><h:outputText value="#{msg.valor}"/></th>
+                            <th><h:outputText value="#{msg.atual}"/></th>
+                            <th><h:outputText value="#{msg.total}"/></th>
+                            <th><h:outputText value="#{msg.detalhe}"/></th>
+                            <th><h:outputText value="#{msg.observacao}"/></th>
                             <th width="150" class="ac"></th>
                         </tr></thead>
                     <tbody>
-                        <ui:repeat value="#{contaBancariaController.items}" var="item" varStatus="x">
+                        <ui:repeat value="#{contaPagarController.items}" var="item" varStatus="x">
                             <tr>
-                                <td align='left'><h:outputText value="#{item.nomeConta}"/></td>
-                                <td align='right' class="#{0 > item.saldo ? 'red' : 'green'}"><h:outputText value="#{item.saldo}"><f:converter converterId="moneyConverter"/></h:outputText></td>
-                                <td align='center'><h:outputText value="#{item.tipoConta.tipoContaString}"/></td>
-                                <td><h:commandLink action="#{contaBancariaController.destroy}" styleClass="ico del" value="#{msg.remover}"
-                                                   onclick="return confirm('#{msg.desejaRemoverConta} - #{item.nomeConta}?');"/>
+                                <td align='center'><h:outputText value="#{item.dataVencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
+                                </h:outputText></td>
+                                <td align='right'><h:outputText value="#{item.valor}"><f:converter converterId="moneyConverter"/></h:outputText></td>
+                                <td align='center'><h:outputText value="#{item.parcelaAtual}"/></td>
+                                <td align='center'><h:outputText value="#{item.parcelaTotal}"/></td>
+                                <td align='center'><h:outputText value="#{item.detalheMovimentacao.detalhe}"/></td>
+                                <td align='center'><h:outputText value="#{item.observacao}"/></td>
+                                <td><h:commandLink action="#{contaPagarController.prepareDestroy}" styleClass="ico del" value="#{msg.remover}"/>
                                     <h:outputText value=" "/>
-                                    <h:commandLink styleClass="ico edit" action="#{contaBancariaController.prepareEdit}" value="#{msg.editar}"/>
+                                    <h:commandLink styleClass="ico edit" action="#{contaPagarController.prepareEdit}" value="#{msg.editar}"/>
                                 </td>
                             </tr>
                         </ui:repeat>
@@ -45,12 +52,12 @@
                 <tr>
                     <td width="300px">
                         <h:panelGrid columns="4" style="font-size: 1em;">
-                            <h:outputText value="#{contaBancariaController.pagination.pageFirstItem + 1}..#{contaBancariaController.pagination.pageLastItem + 1}/#{contaBancariaController.pagination.itemsCount}"/>
-                            <p:commandLink actionListener="#{contaBancariaController.previous}" value="#{msg.Previous} #{contaBancariaController.pagination.pageSize}" 
-                                           disabled="#{!contaBancariaController.pagination.hasPreviousPage}" update="tableForm, footertop" />
-                            <p:commandLink actionListener="#{contaBancariaController.next}" value="#{msg.Next} #{contaBancariaController.pagination.pageSize}" 
-                                           disabled="#{!contaBancariaController.pagination.hasNextPage}" update="tableForm, footertop"/>
-                            <h:commandLink action="#{contaBancariaController.prepareCreate}" value="#{msg.nova}"/>
+                            <h:outputText value="#{contaPagarController.pagination.pageFirstItem + 1}..#{contaPagarController.pagination.pageLastItem + 1}/#{contaPagarController.pagination.itemsCount}"/>
+                            <p:commandLink actionListener="#{contaPagarController.previous}" value="#{msg.Previous} #{contaPagarController.pagination.pageSize}" 
+                                           disabled="#{!contaPagarController.pagination.hasPreviousPage}" update="tableForm, footertop" />
+                            <p:commandLink actionListener="#{contaPagarController.next}" value="#{msg.Next} #{contaPagarController.pagination.pageSize}" 
+                                           disabled="#{!contaPagarController.pagination.hasNextPage}" update="tableForm, footertop"/>
+                            <h:commandLink action="#{contaPagarController.prepareCreate}" value="#{msg.nova}"/>
                         </h:panelGrid>
                     </td>
                 </tr>
@@ -58,11 +65,11 @@
         </h:form>
     </ui:define>
     <ui:define name="sideinf"></ui:define>
-    <ui:param name="formRender" value="#{!(contaBancariaController.current == null)}"/>
-    <ui:param name="titFormParan" value="#{(contaBancariaController.current.id == null) ? msg.cadTitleContaBancariaNew : msg.cadTitleContaBancariaEdit}"/>
+    <ui:param name="formRender" value="#{!(contaPagarController.current == null)}"/>
+    <ui:param name="titFormParan" value="#{(contaPagarController.current.id == null) ? msg.cadTitleContaBancariaNew : msg.cadTitleContaBancariaEdit}"/>
     <ui:define name="form">
         <div class="pagging">
-            <h:form id="formContaBancaria" prependId="false" styleClass="jsfcrud_list_form" style="font-size: 0.9em;">
+            <!--h:form id="formContaBancaria" prependId="false" styleClass="jsfcrud_list_form" style="font-size: 0.9em;">
                 <h:panelGrid columns="3" style="font-size: 1.2em;">
 
                     <p:spacer width="50" height="0"/>
@@ -70,7 +77,7 @@
                     <p:spacer width="30" height="0"/>
 
                     <h:outputLabel value="#{msg.nome}:" title="#{msg.titleNomeId}"/>
-                    <p:inputText value="#{contaBancariaController.current.nomeConta}" label="#{msg.nomeid}" id="nomeConta"
+                    <p:inputText value="#{contaPagarController.current.nomeConta}" label="#{msg.nomeid}" id="nomeConta"
                                  required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="50" 
                                  size="40">
                         <f:validateLength maximum="50"/>
@@ -82,7 +89,7 @@
                     <p:spacer width="50" height="6"/>
                     
                     <h:outputLabel value="#{msg.saldo}:" />
-                    <p:inputText value="#{contaBancariaController.current.saldo}" label="#{msg.saldo}"
+                    <p:inputText value="#{contaPagarController.current.saldo}" label="#{msg.saldo}"
                                  id="saldo" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="20"
                                  size="15" binding="#{contaBancariaManager.saldoInput}" onkeypress="return(MascaraMoeda(this,'.',',',event))">
                         <f:converter converterId="moneyConverter"/>
@@ -94,10 +101,10 @@
                     <p:spacer width="50" height="6"/>
                     
                     <h:outputLabel value="#{msg.tipo}:" />
-                    <h:selectOneMenu value="#{contaBancariaController.current.tipoConta}" label="#{msg.tipo}" 
+                    <h:selectOneMenu value="#{contaPagarController.current.tipoConta}" label="#{msg.tipo}" 
                                      id="tipoConta" required="true" requiredMessage="#{msg.campoObrigatorio}">
                         <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
-                        <f:selectItems value="#{contaBancariaController.selectTipoConta}"/>
+                        <f:selectItems value="#{contaPagarController.selectTipoConta}"/>
                         <f:converter converterId="tipoContaConverter"/>
                     </h:selectOneMenu>
                     <p:message for="tipoConta"/>
@@ -108,18 +115,18 @@
                     
                     <h:outputLabel value=""/>
                     <h:panelGroup style="font-size: 0.9em; text-align: left;">
-                        <p:commandLink value="#{msg.salvar}" action="#{contaBancariaController.create()}"
+                        <p:commandLink value="#{msg.salvar}" action="#{contaPagarController.create()}"
                                        update="messages, formContaBancaria" ajax="false">
                         </p:commandLink>
                         <p:spacer height="100%" width="10"/>
-                        <p:commandLink value="#{msg.cancelar}" action="#{contaBancariaController.clean()}" 
+                        <p:commandLink value="#{msg.cancelar}" action="#{contaPagarController.clean()}" 
                                        immediate="true" update="messages, formContaBancaria" ajax="false">
                         </p:commandLink>
                     </h:panelGroup>
 
                 </h:panelGrid>
 
-            </h:form>
+            </h:form-->
         </div>
     </ui:define> 
 
