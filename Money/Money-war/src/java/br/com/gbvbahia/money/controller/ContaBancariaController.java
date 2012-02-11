@@ -27,58 +27,37 @@ public class ContaBancariaController implements Serializable {
 
     public static final String CONTA_BANCARIA_RETURN = "mantem";
     public static final String CONTA_BANCARIA_CHANGE = "contasbancarias";
-    
     @EJB
     private ContaBancariaBeanLocal contaBancariaBean;
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
     @ManagedProperty("#{selectItemManager}")
     private SelectItemManager selectItemManager;
-    
     private ContaBancaria current;
     private DataModel<ContaBancaria> items = null;
     private PaginationHelper pagination;
-    private int selectedItemIndex;
 
     public ContaBancariaController() {
     }
-    
-    public void clean(){
+    //====================
+    //Iniciadores
+    //====================
+
+    //====================
+    //Métodos de Negócio
+    //====================
+    public void clean() {
         this.current = null;
     }
 
-    public List<SelectItem> getSelectTipoConta() {
-        return this.selectItemManager.getLinguagens();
+    public void next() {
+        getPagination().nextPage();
+        recreateModel();
     }
 
-    public ContaBancaria getSelected() {
-        if (current == null) {
-            current = new ContaBancaria();
-            selectedItemIndex = -1;
-        }
-        return current;
-    }
-
-    private ContaBancariaBeanLocal getFacade() {
-        return contaBancariaBean;
-    }
-
-    public PaginationHelper getPagination() {
-        if (pagination == null) {
-            pagination = new PaginationHelper(5) {
-
-                @Override
-                public int getItemsCount() {
-                    return getFacade().count();
-                }
-
-                @Override
-                public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
-                }
-            };
-        }
-        return pagination;
+    public void previous() {
+        getPagination().previousPage();
+        recreateModel();
     }
 
     public String prepareList() {
@@ -87,16 +66,9 @@ public class ContaBancariaController implements Serializable {
         return CONTA_BANCARIA_RETURN;
     }
 
-    public String prepareView() {
-        current = (ContaBancaria) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return CONTA_BANCARIA_RETURN;
-    }
-
     public String prepareCreate() {
         current = new ContaBancaria();
         current.setUser(this.loginManager.getUsuario());
-        selectedItemIndex = -1;
         return CONTA_BANCARIA_RETURN;
     }
 
@@ -116,12 +88,6 @@ public class ContaBancariaController implements Serializable {
         }
     }
 
-    public String prepareEdit() {
-        current = (ContaBancaria) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return CONTA_BANCARIA_RETURN;
-    }
-
     public String update() {
         try {
             getFacade().salvarContaBancaria(current);
@@ -137,27 +103,12 @@ public class ContaBancariaController implements Serializable {
             return null;
         }
     }
+    //====================
+    //Métodos Privados
+    //====================
 
-    public String destroy() {
-        current = (ContaBancaria) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
-        return prepareList();
-    }
-
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return CONTA_BANCARIA_RETURN;
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return CONTA_BANCARIA_RETURN;
-        }
+    private ContaBancariaBeanLocal getFacade() {
+        return contaBancariaBean;
     }
 
     private void performDestroy() {
@@ -177,28 +128,6 @@ public class ContaBancariaController implements Serializable {
         }
     }
 
-    private void updateCurrentItem() {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-        }
-    }
-
-    public DataModel<ContaBancaria> getItems() {
-        if (items == null) {
-            items = getPagination().createPageDataModel();
-        }
-        return items;
-    }
-
     private void recreateModel() {
         items = null;
     }
@@ -206,15 +135,57 @@ public class ContaBancariaController implements Serializable {
     private void recreatePagination() {
         pagination = null;
     }
+    
+    //====================
+    //Métodos em Tabelas
+    //====================
 
-    public void next() {
-        getPagination().nextPage();
-        recreateModel();
+    public String prepareEdit() {
+        current = (ContaBancaria) getItems().getRowData();
+        return CONTA_BANCARIA_RETURN;
     }
 
-    public void previous() {
-        getPagination().previousPage();
+    public String destroy() {
+        current = (ContaBancaria) getItems().getRowData();
+        performDestroy();
+        recreatePagination();
         recreateModel();
+        return prepareList();
+    }
+
+    //====================
+    //Select Itens
+    //====================
+    public List<SelectItem> getSelectTipoConta() {
+        return this.selectItemManager.getLinguagens();
+    }
+    //====================
+    //Getters AND Setters
+    //====================
+
+    public PaginationHelper getPagination() {
+        if (pagination == null) {
+            pagination = new PaginationHelper(5) {
+
+                @Override
+                public int getItemsCount() {
+                    return getFacade().count();
+                }
+
+                @Override
+                public DataModel createPageDataModel() {
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, loginManager.getUsuario()));
+                }
+            };
+        }
+        return pagination;
+    }
+
+    public DataModel<ContaBancaria> getItems() {
+        if (items == null) {
+            items = getPagination().createPageDataModel();
+        }
+        return items;
     }
 
     public LoginManager getLoginManager() {
