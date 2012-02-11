@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                >
+    <f:subview id="schedulerEmbutido" rendered="#{fluxoCadastro.exibirScheduler}">
+        <TABLE>
+            <TD align="left" valign="top" style="width: 200px;">
+            <h:panelGroup id="schedulerGroup">
+                <h:form id="formScheduler">
+                    <h:panelGrid columns="3">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.cadSchedulerEdit}" styleClass="titleCentralLocal"/>
+                        </f:facet>
+                        <p:spacer width="30" height="0"/>
+                        <p:spacer width="50" height="0"/>
+                        <p:spacer width="150" height="0"/>
+
+                        <h:outputLabel value="#{msg.email}:" title="#{msg.emailSchedulerTitle}"/>
+                        <p:inputText value="#{schedulerManager.shScheduler.email}" label="#{msg.email}"
+                                     id="email" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="100"
+                                     size="50" onkeypress="return(MascaraMoeda(this,'.',',',event))">
+                            <f:validator validatorId="emailValidador"/>
+                        </p:inputText>
+                        <p:message for="email"/>
+                        
+                        <h:outputLabel value="#{msg.status}:" title="#{msg.statusSchedulerTitle}"/>
+                        <p:selectBooleanCheckbox value="#{schedulerManager.shScheduler.status}" id="status"/>
+                        <p:message for="status"/>
+                        
+                        <h:outputLabel value="#{msg.dias}:" title="#{msg.diasSchedulerTitle}"/>
+                        <p:spinner id="spinnerBasic" value="#{schedulerManager.shScheduler.dias}" min="0" max="5"
+                                   required="true" requiredMessage="#{msg.campoObrigatorio}" label="#{msg.dias}">
+                            <f:validateLongRange maximum="5" minimum="0"/>
+                        </p:spinner>  
+                        <p:message for="spinnerBasic"/>
+                        
+                        <h:outputLabel value=""/>
+                        <h:panelGroup>
+                            <p:commandButton value="#{msg.salvar}" icon="ui-icon ui-icon-disk" actionListener="#{schedulerManager.salvarScheduler()}"
+                                             update="messages, conteudoCentralSuperiorGroup">
+                            </p:commandButton>
+                            <p:spacer height="3" width="10"/>
+
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                </h:form>
+            </h:panelGroup>
+            </TD>
+        </TABLE>
+    </f:subview>
+</ui:composition>
+

@@ -1,0 +1,103 @@
+
+.info {
+    background: url('/money/resources/img/I_16.png') no-repeat !important;
+    height:24px !important;
+    width:21px !important;
+    margin-left: 3px !important;
+}
+
+.conta {
+    background: url('/money/resources/img/conta_16.png') no-repeat !important;
+    height:24px !important;
+    width:21px !important;
+    margin-left: 3px !important;
+}
+
+.pagar {
+    background: url('/money/resources/img/money_red_16.png') no-repeat !important;
+    height:24px !important;
+    width:21px !important;
+    margin-left: 3px !important;
+}
+.pagarCartao {
+    background: url('/money/resources/img/money_big_red_16.png') no-repeat !important;
+    height:24px !important;
+    width:21px !important;
+    margin-left: 3px !important;
+}
+.receitaDividaIco {
+    background: url('/money/resources/img/money_rg_16.png') no-repeat !important;
+    height:24px !important;
+    width:24px !important;
+    margin-left: 3px !important;
+}
+
+.movimentacaoIco {
+    background: url('/money/resources/img/money_blu_16.png') no-repeat !important;
+    height:24px !important;
+    width:24px !important;
+    margin-left: 3px !important;
+}
+
+.receita {
+    background: url('/money/resources/img/money_gre_16.png') no-repeat !important;
+    height:24px !important;
+    width:21px !important;
+    margin-left: 3px !important;
+}
+
+.transferencia {
+    background: url('/money/resources/img/money_blu_dark_16.png') no-repeat !important;
+    height:24px !important;
+    width:21px !important;
+    margin-left: 3px !important;
+}
+
+.scheduler{
+    background: url('/money/resources/img/times_16.png') no-repeat !important;
+    height:24px !important;
+    width:21px !important;
+    margin-left: 3px !important;
+}
+
+.block{
+    background-image: url('/money/resources/img/uncheck_24.png') !important;
+}
+
+.desblock{
+    background-image: url('/money/resources/img/check_24.png') !important;
+}
+
+.movimentacaoMenu{
+    background: url('/money/resources/img/movimentacao_16.png') no-repeat !important;
+     height:16px;
+    width:16px;
+}
+
+.cadastroMenu{
+    background: url('/money/resources/img/cadastro_16.png') no-repeat !important;
+     height:16px;
+    width:16px;
+}
+
+.configuracaoMenu{
+    background: url('/money/resources/img/configuracao_16.png') no-repeat !important;
+     height:16px;
+    width:16px;
+}
+.reportMenu{
+    background: url('/money/resources/img/graf_16.png') no-repeat !important;
+     height:16px;
+    width:16px;
+}
+
+.mensalMenu{
+    background: url('/money/resources/img/Calender_16.png') no-repeat !important;
+     height:16px;
+    width:16px;
+}
+.cartaoMensalMenu{
+    background: url('/money/resources/img/line_char_16.png') no-repeat !important;
+     height:16px;
+    width:16px;
+}

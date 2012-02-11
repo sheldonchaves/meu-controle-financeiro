@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                >
+    <f:subview id="cadastroContaReceberEmbutido" rendered="#{fluxoCadastro.exibirCadastroContaReceber}">
+        <TABLE>
+            <TD align="left" valign="top" style="width: 200px;">
+            <h:panelGroup id="cadContaReceberGroup">
+                <h:form id="formContaReceber">
+                    <h:panelGrid columns="3">
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.cadTitleContaReceita}" styleClass="titleCentralLocal"/>
+                        </f:facet>
+                        <p:spacer width="100" height="0"/>
+                        <p:spacer width="50" height="0"/>
+                        <p:spacer width="30" height="0"/>
+
+                        <h:outputLabel value="#{msg.dataVencimento}:"/> 
+                        <p:calendar value="#{contaReceberManager.receitaDivida.dataVencimento}" required="true"
+                                    requiredMessage="#{msg.campoObrigatorio}" id="dataVencimento" onkeyup="formatar(this, '##/##/####', event)"
+                                    maxlength="10" locale="#{contaReceberManager.locale}" pattern="#{contaReceberManager.pattern}"
+                                    label="#{msg.dataVencimento}" timeZone="#{initParam['timezone']}" 
+                                    binding="#{contaReceberManager.calendarInput}"/>
+                        <p:message for="dataVencimento"/>
+
+                        <h:outputLabel value="#{msg.valor}:"/>
+                        <p:inputText value="#{contaReceberManager.receitaDivida.valor}" label="#{msg.valor}"
+                                     id="valor" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="20"
+                                     size="15" binding="#{contaReceberManager.valorInput}" onkeypress="return(MascaraMoeda(this,'.',',',event))">
+                            <f:converter converterId="moneyConverter"/>
+                        </p:inputText>
+                        <p:message for="valor"/>
+
+                        <h:outputLabel value="#{msg.parcelaAtual}:"/>
+                        <p:spinner value="#{contaReceberManager.receitaDivida.parcelaAtual}" label="#{msg.parcelaAtual}"
+                                   id="parcelaAtual" required="true" requiredMessage="#{msg.campoObrigatorio}" min="0" max="120"
+                                   onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaReceberManager.parcelAtualInput}">
+                            <f:validateLongRange maximum="120" minimum="0"/>
+                        </p:spinner>
+                        <p:message for="parcelaAtual"/>             
+
+                        <h:outputLabel value="#{msg.parcelaTotal}:"/>
+                        <p:spinner value="#{contaReceberManager.receitaDivida.parcelaTotal}" label="#{msg.parcelaTotal}"
+                                   id="parcelaTotal" required="true" requiredMessage="#{msg.campoObrigatorio}" min="0" max="120"
+                                   onkeypress="return(SomenteNumero(event))" size="15" binding="#{contaReceberManager.parcelTotalInput}">
+                            <f:validateLongRange maximum="120" minimum="0"/>
+                        </p:spinner>
+                        <p:message for="parcelaTotal"/>     
+
+                        <h:outputLabel value="#{msg.salvarParcelas}:"/>
+                        <p:selectBooleanCheckbox value="#{contaReceberManager.salvarParcelas}" label="#{msg.salvarParcelas}"
+                                                 id="salvarParcelas" binding="#{contaReceberManager.salvarParcelasInput}"
+                                                 disabled="#{contaReceberManager.receitaDivida.id != null}">
+                        </p:selectBooleanCheckbox>
+                        <p:message for="salvarParcelas"/>  
+
+                        <h:outputLabel value="#{msg.detalhe}:" />
+                        <p:selectOneMenu value="#{contaReceberManager.receitaDivida.detalheMovimentacao}" label="#{msg.detalhe}"
+                                         binding="#{contaReceberManager.selctDetalhePagamento}" style="width: 150px;"
+                                         id="tipoConta" required="true" requiredMessage="#{msg.campoObrigatorio}">
+                            <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
+                            <f:selectItems value="#{contaReceberManager.detalhes}"/>
+                            <f:converter converterId="detalheMovimentacaoConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="tipoConta"/>
+
+                        <h:outputLabel value="#{msg.observacao}:"/>
+                        <p:inputText value="#{contaReceberManager.receitaDivida.observacao}" label="#{msg.observacao}"
+                                     id="obs" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="30"
+                                     size="25" binding="#{contaReceberManager.obsInut}"/>
+                        <p:message for="obs"/>     
+
+                        <h:outputLabel value=""/>
+                        <h:panelGroup>
+                            <p:commandButton value="#{msg.salvar}" icon="ui-icon ui-icon-disk" actionListener="#{contaReceberManager.salvarContaPagar()}"
+                                             update="messages,conteudoCentralSuperiorGroup,conteudoBaixoGroup">
+                            </p:commandButton>
+                            <p:spacer height="3" width="10"/>
+                            <p:commandButton value="#{msg.novo}" icon="ui-icon ui-icon-refresh" actionListener="#{contaReceberManager.clean()}" 
+                                             immediate="true" update="messages,conteudoCentralSuperiorGroup">
+                            </p:commandButton>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                </h:form>
+            </h:panelGroup>
+            </TD>
+
+            <TD align="left" valign="top" style="width: 100px;">
+            <h:panelGroup id="cadContaPagarTableGroup">
+                <h:form id="formContaPagarTable">
+                    <p:dataTable var="receita" value="#{contaReceberManager.receitas}" paginator="true" rows="5" lazy="true" 
+                                 paginatorTemplate="{RowsPerPageDropdown} {PreviousPageLink} {CurrentPageReport} {NextPageLink}" 
+                                 emptyMessage="#{msg.semRegistrosEcontrados}" rowsPerPageTemplate="5,8,12">
+                        
+                        <p:column id="col1" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.vencimento}"/>
+                            </f:facet>
+                            <h:outputText value="#{receita.dataVencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col2" styleClass="right" style="width: 50px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.valor}"/>
+                            </f:facet>
+                            <h:outputText value="#{receita.valor}">
+                                <f:converter converterId="moneyConverter"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col3" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.atual}"/>
+                            </f:facet>
+                            <h:outputText value="#{receita.parcelaAtual}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col4" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.total}"/>
+                            </f:facet>
+                            <h:outputText value="#{receita.parcelaTotal}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col5" styleClass="center" style="width: 130px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.detalhe}"/>
+                            </f:facet>
+                            <h:outputText value="#{receita.detalheMovimentacao.detalhe}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col6" style="width: 130px;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.observacao}"/>
+                            </f:facet>
+                            <h:outputText value="#{receita.observacao}">
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column id="col7" styleClass="center">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.editar}"/>
+                            </f:facet>
+                            <p:commandLink update="conteudoCentralSuperiorGroup" 
+                                           id="buttonEdit" styleClass="ui-button_link">
+                                <h:graphicImage library="img" name="money_gre_16_edit.png"/>
+                                <f:setPropertyActionListener value="#{receita}" target="#{contaReceberManager.receitaDivida}" />  
+                            </p:commandLink>
+                        </p:column>
+
+                        <p:column id="col8" styleClass="center" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.remover}"/>
+                            </f:facet>
+                            <p:commandLink update="conteudoCentralSuperiorGroup" id="buttonDelte" styleClass="ui-button_link" oncomplete="dlg1.show();">
+                                <h:graphicImage library="img" name="erase_16.png"/>
+                                <f:setPropertyActionListener value="#{receita}" target="#{contaReceberManager.receitaDividaToDelete}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:dialog header="#{msg.titleConfirme}" widgetVar="dlg1" resizable="false" position="top" modal="false" style="margin-top: 100px;">  
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="#{msg.dataVencimento}"/>
+                            <h:outputText value="#{contaReceberManager.receitaDividaToDelete.dataVencimento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
+                            </h:outputText>
+
+                            <h:outputLabel value="#{msg.valor}"/>
+                            <h:outputText value="#{contaReceberManager.receitaDividaToDelete.valor}">
+                                <f:converter converterId="moneyConverter"/>
+                            </h:outputText>
+
+                            <h:outputLabel value="#{msg.observacao}"/>
+                            <h:outputText value="#{contaReceberManager.receitaDividaToDelete.observacao}"/>
+
+                            <h:outputLabel value="#{msg.incluirParcelas}"/>
+                            <h:selectBooleanCheckbox value="#{contaReceberManager.apagarPrestacoes}"/>
+
+                            <h:outputLabel value=""/>
+                            <h:panelGroup>
+                                <p:commandButton value="#{msg.confirmar}" icon="ui-icon ui-icon-check" actionListener="#{contaReceberManager.deletarConta()}"
+                                                 oncomplete="dlg1.hide();" update="messages,conteudoCentralSuperiorGroup,conteudoBaixoGroup">
+                                </p:commandButton>
+                                <p:spacer height="3" width="10"/>
+                                <p:commandButton value="#{msg.cancelar}" icon="ui-icon ui-icon-cancel" actionListener="#{contaReceberManager.clean()}" 
+                                                 oncomplete="dlg1.hide();" immediate="true" update="messages,conteudoCentralSuperiorGroup">
+                                </p:commandButton>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                    </p:dialog> 
+                </h:form>
+            </h:panelGroup>
+            </TD>
+        </TABLE>
+    </f:subview>
+</ui:composition>
+
