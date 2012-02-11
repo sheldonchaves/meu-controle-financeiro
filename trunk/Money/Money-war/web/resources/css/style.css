@@ -196,9 +196,15 @@ textarea.size1 { height:180px; }
 .button { -moz-box-shadow: 0 0 2px #978f6c; -webkit-box-shadow: 0 0 2px #978f6c;}
 
 .topstatus{
-  position: fixed;
+  position: absolute;
   top: 80px;
   left: 10px;
+}
+
+#topstatus_start{
+  position: absolute;
+  top: 80px;
+  left: 10px;  
 }
 
 .center{
