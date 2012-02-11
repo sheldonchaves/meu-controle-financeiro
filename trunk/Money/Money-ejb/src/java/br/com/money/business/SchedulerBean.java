@@ -66,6 +66,11 @@ public class SchedulerBean extends AbstractFacade<Scheduler> implements Schedule
     private EntityManager manager;
 
     @Override
+    public List<Scheduler> findRange(int[] range, Usuario usuarioProprietario) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }    
+    
+    @Override
     public void salvarScheduler(Scheduler scheduler) throws ValidacaoException {
         schedulerValidador.validar(scheduler, this, null);
         if (scheduler.getId() == null) {

@@ -190,11 +190,22 @@ public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinan
     
     @Override
     public List<MovimentacaoFinanceira> buscarMovimentacaoFinanceiraPorUsuarioPeriodo(Usuario usuario, TipoConta tipoConta, Date ini, Date fim){
-         Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo");
+        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo");
         q.setParameter("tipoConta", tipoConta);
         q.setParameter("user", usuario);
         q.setParameter("dataI", ini);
         q.setParameter("dataF", fim);
         return q.getResultList();
     }
+
+    @Override
+    public List<MovimentacaoFinanceira> findRange(int[] range, Usuario usuarioProprietario) {
+        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.findRangeByUser");
+        q.setParameter("user", usuarioProprietario);
+        q.setMaxResults(range[1] - range[0]);
+        q.setFirstResult(range[0]);
+        return q.getResultList();
+    }
+    
+    
 }

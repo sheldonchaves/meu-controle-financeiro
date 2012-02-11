@@ -5,6 +5,7 @@
 package br.com.money.business;
 
 import br.com.money.business.interfaces.AbstractFacadeLocal;
+import br.com.money.modelos.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
 
