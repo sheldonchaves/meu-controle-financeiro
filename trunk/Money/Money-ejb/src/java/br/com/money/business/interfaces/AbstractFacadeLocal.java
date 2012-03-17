@@ -17,7 +17,7 @@ public interface AbstractFacadeLocal<T> {
     @Deprecated//Até ser refatorado para vaidar
     void create(T entity);
     @Deprecated//Até ser refatorado para vaidar
-    void edit(T entity);
+    void update(T entity);
 
     T find(Object id);
 

@@ -30,7 +30,7 @@ public abstract class AbstractFacade<T> implements AbstractFacadeLocal<T> {
 
     @Override
     @Deprecated//Até ser refatorado para validar
-    public void edit(T entity) {
+    public void update(T entity) {
         getEntityManager().merge(entity);
     }
 
