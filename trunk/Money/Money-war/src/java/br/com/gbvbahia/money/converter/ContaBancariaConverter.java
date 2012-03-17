@@ -34,7 +34,7 @@ public class ContaBancariaConverter implements Converter{
         if (StringUtils.isBlank(string)) {
             return string;
         }
-        ContaBancaria cb = contaBancariaBean.buscarContaBancariaPorId(new Long(string));
+        ContaBancaria cb = contaBancariaBean.find(new Long(string));
         if (cb == null) {
             exception(fc);
         }

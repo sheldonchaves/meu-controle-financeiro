@@ -34,7 +34,7 @@ public class DetalheMovimentacaoConverter implements Converter {
         if (StringUtils.isBlank(string)) {
             return string;
         }
-        DetalheMovimentacao dm = detalheUsuarioBean.buscarDetalheMovimentacaoPorId(new Long(string));
+        DetalheMovimentacao dm = detalheUsuarioBean.find(new Long(string));
         if (dm == null) {
             exception(fc);
         }

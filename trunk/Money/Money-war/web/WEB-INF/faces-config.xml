@@ -45,7 +45,7 @@
         <navigation-case>
             <description>Vai para página contas de qualquer local</description>
             <from-outcome>contasbancarias</from-outcome>
-            <to-view-id>/manager/contabancaria/listar.xhtml</to-view-id>
+            <to-view-id>/manager/contabancaria/contabancaria.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
