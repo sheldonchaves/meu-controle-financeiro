@@ -99,7 +99,9 @@ public class ContaBancariaController extends EntityController<ContaBancaria>
 
     @Override
     protected ContaBancaria getNewEntity() {
-        return new ContaBancaria();
+        ContaBancaria cb = new ContaBancaria();
+        cb.setUser(loginManager.getUsuario());
+        return cb;
     }
 
     @Override

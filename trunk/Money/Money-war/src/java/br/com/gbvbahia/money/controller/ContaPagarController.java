@@ -4,20 +4,21 @@
  */
 package br.com.gbvbahia.money.controller;
 
+import br.com.gbvbahia.money.controller.util.JsfUtil;
 import br.com.gbvbahia.money.controller.util.PaginationHelper;
 import br.com.gbvbahia.money.manager.LoginManager;
 import br.com.gbvbahia.money.manager.SelectItemManager;
 import br.com.gbvbahia.money.observador.ControleObserver;
 import br.com.gbvbahia.money.utils.MensagemUtils;
-import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.ReceitaDividaBeanLocal;
 import br.com.money.enums.StatusPagamento;
 import br.com.money.enums.TipoMovimentacao;
 import br.com.money.exceptions.ValidacaoException;
-import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.ReceitaDivida;
-import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -35,9 +36,8 @@ import org.apache.commons.lang.StringUtils;
  */
 @ManagedBean(name = "contaPagarController")
 @ViewScoped
-public class ContaPagarController {
+public class ContaPagarController extends EntityController<ReceitaDivida> {
 
-    public static final String CONTA_PAGAR_RETURN = "mantem";
     public static final String CONTA_PAGAR_CHANGE = "contas";
     
     @EJB
@@ -50,8 +50,6 @@ public class ContaPagarController {
     private SelectItemManager selectItemManager;
     
     private ReceitaDivida current;
-    private DataModel<ReceitaDivida> items = null;
-    private PaginationHelper pagination;
     private boolean salvarParcelas = false;
     private boolean apagarPrestacoes = false;
     
@@ -64,46 +62,47 @@ public class ContaPagarController {
     //====================
     //Iniciadores
     //====================
+      /**
+     * Executado quando o bean JSF é instânciado.
+     */
+    @PostConstruct
+    public void init() {
+        Logger.getLogger(this.getClass().getName()).log(
+                JsfUtil.LEVEL_LOG,
+                "{0}.init()...", this.getClass().getName());
+    }
+
+    /**
+     * Executado quando o bean JSF é destruído.
+     */
+    @PreDestroy
+    public void end() {
+        Logger.getLogger(this.getClass().getName()).log(
+                JsfUtil.LEVEL_LOG,
+                "{0}.end()...", this.getClass().getName());
+    }
     //====================
     //Métodos de Negócio
     //====================
-    public void clean() {
-        this.current = null;
-        apagarPrestacoes = false;
-        salvarParcelas = false;
-    }
-
-    public String prepareList() {
-        recreateModel();
-        clean();
-        return CONTA_PAGAR_RETURN;
-    }
-    
-   public String prepareCreate() {
-        current = new ReceitaDivida();
-        current.setUsuario(this.loginManager.getUsuario());
-        current.setDataVencimento(new Date());
-        current.setTipoMovimentacao(TipoMovimentacao.RETIRADA);
-        current.setStatusPagamento(StatusPagamento.NAO_PAGA);
-        current.setValor(0.00);
-        current.setParcelaAtual(1);
-        current.setParcelaTotal(1);
-        salvarParcelas = false;
-        return CONTA_PAGAR_RETURN;
-    }
-     
+    @Override
     public String create() {
         try {
             if (!salvarParcelas) {
                 this.receitaDividaBean.salvarReceitaDivida(current);
             } else {
-                this.receitaDividaBean.salvarReceitaDivida(current, current.getParcelaTotal(),salvarParcelas, null, StatusPagamento.NAO_PAGA);
+                this.receitaDividaBean.salvarReceitaDivida(current,
+                        current.getParcelaTotal(),
+                        salvarParcelas, null,
+                        StatusPagamento.NAO_PAGA);
             }
-            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER);
-            MensagemUtils.messageFactoringFull("contaPagarSalva", null,
+            ControleObserver.notificaObservers(loginManager.getUsuario(),
+                    ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER);
+            MensagemUtils.messageFactoringFull("contaPagarSalva",
+                    new Object[]{current.toString()},
                     FacesMessage.SEVERITY_INFO,
                     FacesContext.getCurrentInstance());
-            return prepareList();
+            recreateTable();
+            return clean();
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
                 MensagemUtils.messageFactoringFull(
@@ -111,46 +110,26 @@ public class ContaPagarController {
                         FacesContext.getCurrentInstance()), null,
                         FacesMessage.SEVERITY_ERROR,
                         FacesContext.getCurrentInstance());
+                return MANTEM;
             } else {
                 MensagemUtils.messageFactoringFull(v.getMessage(), null,
                         FacesMessage.SEVERITY_ERROR,
                         FacesContext.getCurrentInstance());
+                return MANTEM;
             }
-            return null;
         }
     }
     
-    public String prepareEdit() {
-        current = (ReceitaDivida) getItems().getRowData();
-        return CONTA_PAGAR_RETURN;
-    }
-    
-    public String destroy() {
-        current = (ReceitaDivida) getItems().getRowData();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
-        return prepareList();
-    }
-    
-    public void next() {
-        getPagination().nextPage();
-        recreateModel();
-    }
-
-    public void previous() {
-        getPagination().previousPage();
-        recreateModel();
-    }
-     
-    //====================
-    //Métodos Privados
-    //====================
-    private void performDestroy() {
+    @Override
+    protected void performDestroy() {
         try {
-            this.receitaDividaBean.apagarReceitaDivida(current, apagarPrestacoes);
-            MensagemUtils.messageFactoringFull("contaApagadaOK", null,
-                    FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            this.receitaDividaBean.apagarReceitaDivida(current,
+                    apagarPrestacoes);
+            MensagemUtils.messageFactoringFull("contaApagadaOK",
+                    new Object[]{current.toString()},
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            recreateTable();
             clean();
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
@@ -166,59 +145,83 @@ public class ContaPagarController {
             }
         }
     }
-         
-    private void recreateModel() {
-        items = null;
+    @Override
+    protected ReceitaDivida getNewEntity() {
+        ReceitaDivida rd = new ReceitaDivida();
+        rd.setTipoMovimentacao(TipoMovimentacao.RETIRADA);
+        return rd;
     }
 
-    private void recreatePagination() {
-        pagination = null;
+    @Override
+    protected void setEntity(ReceitaDivida t) {
+        this.current = t;
+    }
+
+    @Override
+    protected String update() {
+         try {
+            getFacade().salvarReceitaDivida(current);
+            MensagemUtils.messageFactoringFull("contaPagarUpdated",
+                    new Object[]{current.toString()},
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            recreateTable();
+            return clean();
+        } catch (ValidacaoException e) {
+            MensagemUtils.messageFactoringFull(e.getMessage(),
+                    e.getVariacoes(),
+                    FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            return MANTEM;
+        } catch (Exception e) {
+            MensagemUtils.messageFactoringFull(e.getMessage(), null,
+                    FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            return MANTEM;
+        }
     }
 
     //====================
     //Métodos em Tabelas
     //====================
-    
-     public String prepareDestroy(){
-         current = (ReceitaDivida) getItems().getRowData();
-         apagarPrestacoes = false;
-        return CONTA_PAGAR_RETURN;
-     }
      
     //====================
     //Select Itens
     //====================
     public List<SelectItem> getDetalhes() {
-        return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(), true, TipoMovimentacao.RETIRADA);
+        return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(),
+                true, TipoMovimentacao.RETIRADA);
     }
      
     //====================
     //Getters AND Setters
     //====================
    
-    public DataModel<ReceitaDivida> getItems() {
-        if (items == null) {
-            items = getPagination().createPageDataModel();
-        }
-        return items;
-    }
-        
     public ReceitaDividaBeanLocal getFacade() {
         return receitaDividaBean;
     }
 
+    @Override
     public PaginationHelper getPagination() {
         if (pagination == null) {
             pagination = new PaginationHelper(5) {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(loginManager.getUsuario(), StatusPagamento.NAO_PAGA, TipoMovimentacao.RETIRADA);
+                    return getFacade()
+                    .buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(
+                     loginManager.getUsuario(),
+                     StatusPagamento.NAO_PAGA, TipoMovimentacao.RETIRADA);
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().buscarReceitaDividasPorUsuarioStatusPaginada(getPageFirstItem(), getPageSize(), loginManager.getUsuario(), StatusPagamento.NAO_PAGA, TipoMovimentacao.RETIRADA));
+                    return new ListDataModel(getFacade()
+                      .buscarReceitaDividasPorUsuarioStatusPaginada(
+                            getPageFirstItem(), getPageSize(),
+                            loginManager.getUsuario(),
+                            StatusPagamento.NAO_PAGA,
+                            TipoMovimentacao.RETIRADA));
                 }
             };
         }
@@ -243,9 +246,5 @@ public class ContaPagarController {
 
     public ReceitaDivida getCurrent() {
         return current;
-    }
-
-    public void setCurrent(ReceitaDivida current) {
-        this.current = current;
     }
 }
