@@ -5,6 +5,7 @@
 
 package br.com.money.modelos;
 
+import br.com.money.modelos.commons.EntityInterface;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -19,18 +22,23 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="money_role")
-public class Role implements Serializable {
+public class Role implements EntityInterface<Role> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", nullable=false, unique=true)
     private Integer id;
 
+    @NotNull
+    @Size(max= 15)
     @Column(name="ds_name", length=15, unique=true,nullable=false)
     private String groupName;
 
+    @NotNull
+    @Size(max= 255)
     @Column(name="ds_desc", length=255,nullable=false)
     private String groupDesc;
 
+    @Override
     public Integer getId() {
         return id;
     }
@@ -78,6 +86,22 @@ public class Role implements Serializable {
     @Override
     public String toString() {
         return "br.com.financeiro.entidades.Grups[id=" + id + "]";
+    }
+
+    @Override
+    public String getLabel() {
+        return this.groupName + " "
+                + this.groupDesc;
+    }
+
+    @Override
+    public boolean verificarId() {
+        return false;
+    }
+
+    @Override
+    public int compareTo(Role o) {
+        return this.groupName.compareTo(o.getGroupName());
     }
 
 }

@@ -11,13 +11,18 @@ import javax.ejb.ApplicationException;
  * @author gbvbahia
  */
 @ApplicationException(rollback = true)
-public abstract class ValidacaoException extends RuntimeException {
+public class ValidacaoException extends RuntimeException {
 
     private String atributoName;
     private Object[] variacoes;
     public ValidacaoException(String message, String atributoName) {
         super(message);
         this.atributoName = atributoName;
+    }
+
+    public ValidacaoException(String atributoName, Object[] variacoes) {
+        this.atributoName = atributoName;
+        this.variacoes = variacoes;
     }
 
     public ValidacaoException(String msg) {

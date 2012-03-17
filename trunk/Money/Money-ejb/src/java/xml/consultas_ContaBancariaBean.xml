@@ -20,5 +20,28 @@
                         Order by c.tipoConta, c.nomeConta
         </query>
     </named-query>
+    
+    <named-query name="ContaBancariaBean.buscarContaBancariasPorUsuarioTipoPaginado">
+        <query>
+			Select distinct c From ContaBancaria c
+                        Where (c.user = :user
+                        OR c.user.conjuge = :user)
+                        AND (:tipoConta is null OR c.tipoConta = :tipoConta2)
+                        AND (:nomeConta is null OR upper(c.nomeConta)
+                        LIKE upper(:nomeConta))
+                        Order by c.tipoConta, c.nomeConta
+        </query>
+    </named-query>
+    
+    <named-query name="ContaBancariaBean.contarContaBancariasPorUsuarioTipo">
+        <query>
+			Select count(distinct c) From ContaBancaria c
+                        Where (c.user = :user
+                        OR c.user.conjuge = :user)
+                        AND (:tipoConta is null OR c.tipoConta = :tipoConta2)
+                        AND (:nomeConta is null OR upper(c.nomeConta) 
+                        LIKE upper(:nomeConta))
+        </query>
+    </named-query>
    
 </entity-mappings>

@@ -11,23 +11,29 @@ import br.com.money.modelos.DetalheMovimentacao;
 import br.com.money.modelos.Usuario;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
  * @author gbvbahia
  */
 @Stateless
-public class DetalheUsuarioBean extends AbstractFacade<DetalheMovimentacao> implements DetalheUsuarioBeanLocal {
+public class DetalheUsuarioBean extends 
+        AbstractFacade<DetalheMovimentacao, Long>
+implements DetalheUsuarioBeanLocal {
 
     @Override
     protected EntityManager getEntityManager() {
         return this.manager;
+    }
+
+    @Override
+    protected ValidadorInterface getValidador() {
+        return this.detalheMobvimentacaoValidador;
     }
 
     public DetalheUsuarioBean() {
@@ -47,11 +53,14 @@ public class DetalheUsuarioBean extends AbstractFacade<DetalheMovimentacao> impl
      * @NamedQuary true
      */
     @Override
-    public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuarioFlag(Usuario usuario, boolean flag) {
-        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuarioFlag");
-        q.setParameter("usuario", usuario);
-        q.setParameter("ativo", flag);
-        return q.getResultList();
+    public List<DetalheMovimentacao> 
+            buscarDetalheMovimentacaoPorUsuarioFlag(
+            final Usuario usuario, final boolean flag) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("ativo", flag);
+        return listPesqParam("DetalheUsuarioBean.buscarDetalhe"
+                + "MovimentacaoPorUsuarioFlag", parans);
     }
 
         /**
@@ -62,12 +71,16 @@ public class DetalheUsuarioBean extends AbstractFacade<DetalheMovimentacao> impl
      * @NamedQuary true
      */
     @Override
-    public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuarioFlagTipoMovimentacao(Usuario usuario, boolean flag, TipoMovimentacao tipoMovimentacao) {
-        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuarioFlagTipoMovimentacao");
-        q.setParameter("usuario", usuario);
-        q.setParameter("ativo", flag);
-         q.setParameter("tipoMovimentacao", tipoMovimentacao);
-        return q.getResultList();
+    public List<DetalheMovimentacao>
+            buscarDetalheMovimentacaoPorUsuarioFlagTipoMovimentacao(
+            final Usuario usuario, final boolean flag,
+            final TipoMovimentacao tipoMovimentacao) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("ativo", flag);
+        parans.put("tipoMovimentacao", tipoMovimentacao);
+        return listPesqParam("DetalheUsuarioBean.buscarDetalhe"
+                + "MovimentacaoPorUsuarioFlagTipoMovimentacao", parans);
     }
     
     /**
@@ -77,26 +90,32 @@ public class DetalheUsuarioBean extends AbstractFacade<DetalheMovimentacao> impl
      * @NamedQuary true
      */
     @Override
-    public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuario(Usuario usuario) {
-        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuario");
-        q.setParameter("usuario", usuario);
-        return q.getResultList();
+    public List<DetalheMovimentacao>
+            buscarDetalheMovimentacaoPorUsuario(final Usuario usuario) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        return listPesqParam("DetalheUsuarioBean.buscarDetalhe"
+                + "MovimentacaoPorUsuario", parans);
     }
 
-        /**
+   /**
      * Devolve uma lista com todos os Detalhes Movimentação de um usuário
      * @param usuario
      * @return 
      * @NamedQuary true
      */
     @Override
-    public List<DetalheMovimentacao> buscarDetalheMovimentacaoPorUsuarioTipoMovimentacao(Usuario usuario, TipoMovimentacao tipoMovimentacao) {
-        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuarioTipoMovimentacao");
-        q.setParameter("usuario", usuario);
-        q.setParameter("tipoMovimentacao", tipoMovimentacao);
-        return q.getResultList();
+    public List<DetalheMovimentacao> 
+            buscarDetalheMovimentacaoPorUsuarioTipoMovimentacao(
+            final Usuario usuario, 
+            final TipoMovimentacao tipoMovimentacao) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("tipoMovimentacao", tipoMovimentacao);
+        return listPesqParam("DetalheUsuarioBean.buscarDetalhe"
+                + "MovimentacaoPorUsuarioTipoMovimentacao", parans);
     }
-    
+
     /**
      * Busca DetalheMovimentacao pelo atributo detalhe passado como parâmetro.
      * Utilizado na VALIDAÇÃO NÃO INSERIR FILTROS
@@ -105,26 +124,14 @@ public class DetalheUsuarioBean extends AbstractFacade<DetalheMovimentacao> impl
      * @NamedQuary true
      */
     @Override
-    public DetalheMovimentacao buscarDetalheMovimentacaoPorDetalheUsuario(String detalhe, Usuario usuario) {
-        Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorDetalheUsuario");
-        q.setParameter("detalhe", detalhe);
-        q.setParameter("usuario", usuario);
-        try {
-            return (DetalheMovimentacao) q.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Buscar detalhe movimentação por Id
-     * @param id
-     * @return Detalhe Movimentação com mesmo id
-     * @NamedQuary false
-     */
-    @Override
-    public DetalheMovimentacao buscarDetalheMovimentacaoPorId(long id) {
-        return manager.find(DetalheMovimentacao.class, id);
+    public DetalheMovimentacao
+            buscarDetalheMovimentacaoPorDetalheUsuario(
+            final String detalhe, final Usuario usuario) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("detalhe", detalhe);
+        parans.put("usuario", usuario);
+        return pesqParam("DetalheUsuarioBean.buscarDetalhe"
+                + "MovimentacaoPorDetalheUsuario", parans);
     }
 
     /**
@@ -134,24 +141,13 @@ public class DetalheUsuarioBean extends AbstractFacade<DetalheMovimentacao> impl
      * @NamedQuary false
      */
     @Override
-    public void salvarDetalheMovimentacao(DetalheMovimentacao detalheMovimentacao) throws ValidacaoException {
-        this.detalheMobvimentacaoValidador.validar(detalheMovimentacao, this, null);
+    public void salvarDetalheMovimentacao(
+            final DetalheMovimentacao detalheMovimentacao)
+            throws ValidacaoException {
         if (detalheMovimentacao.getId() == null) {
-            this.manager.persist(detalheMovimentacao);
+            create(detalheMovimentacao);
         } else {
-            this.manager.merge(detalheMovimentacao);
+            update(detalheMovimentacao);
         }
-        manager.flush();
     }
-
-    @Override
-    public List<DetalheMovimentacao> findRange(int[] range, Usuario usuarioProprietario) {
-         Query q = manager.createNamedQuery("DetalheUsuarioBean.buscarDetalheMovimentacaoPorUsuario");
-        q.setParameter("usuario", usuarioProprietario);
-        q.setMaxResults(range[1] - range[0]);
-        q.setFirstResult(range[0]);
-        return q.getResultList();
-    }
-    
-    
 }

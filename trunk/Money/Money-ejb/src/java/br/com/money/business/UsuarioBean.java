@@ -29,7 +29,8 @@ import org.apache.commons.lang.StringUtils;
  * @author gbvbahia
  */
 @Stateless
-public class UsuarioBean extends AbstractFacade<Usuario> implements UsuarioBeanLocal {
+public class UsuarioBean extends AbstractFacade<Usuario, Long> 
+                                implements UsuarioBeanLocal {
 
     public UsuarioBean() {
         super(Usuario.class);
@@ -39,7 +40,11 @@ public class UsuarioBean extends AbstractFacade<Usuario> implements UsuarioBeanL
     protected EntityManager getEntityManager() {
         return this.manager;
     }
-    
+
+    @Override
+    protected ValidadorInterface getValidador() {
+        return usuarioValidador;
+    }
     
     @EJB(beanName="usuarioValidador")
     private ValidadorInterface usuarioValidador;
@@ -95,13 +100,14 @@ public class UsuarioBean extends AbstractFacade<Usuario> implements UsuarioBeanL
         }
         manager.flush();
     }
-    
+
     @Override
-    public void criarUsuario(Usuario usuario) throws ValidacaoException {
+    public void criarUsuario(final Usuario usuario) throws ValidacaoException {
         String newPass = null;
         if (StringUtils.isBlank(usuario.getPassword())) {
             newPass = this.geraSenha();
-            usuario.setPassword(Criptografia.encodePassword(newPass, usuario.stringAMIN()));
+            usuario.setPassword(Criptografia.encodePassword(newPass,
+                    usuario.stringAMIN()));
         }
         usuarioValidador.validar(usuario, this, null);
         if (usuario.getId() == null) {
@@ -111,10 +117,17 @@ public class UsuarioBean extends AbstractFacade<Usuario> implements UsuarioBeanL
         }
         manager.flush();
         if (newPass != null) {
-            avisaSenhaEmail(newPass, "http://sabercertificacao.com.br/money", usuario);
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "E-mail enviado ao usuário: {0} {1} para: {2}", new Object[]{usuario.getFirstName(), usuario.getLastName(), usuario.getEmail()});
+            avisaSenhaEmail(newPass, "http://sabercertificacao.com.br/money",
+                    usuario);
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO,
+                    "E-mail enviado ao usuário: {0} {1} para: {2}",
+                    new Object[]{usuario.getFirstName(), usuario.getLastName(),
+                        usuario.getEmail()});
         } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Não foi enviado e-mail ao usuário: {0} {1} para: {2}", new Object[]{usuario.getFirstName(), usuario.getLastName(), usuario.getEmail()});
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO,
+                    "Não foi enviado e-mail ao usuário: {0} {1} para: {2}",
+                    new Object[]{usuario.getFirstName(),
+                        usuario.getLastName(), usuario.getEmail()});
         }
     }
 
@@ -124,31 +137,44 @@ public class UsuarioBean extends AbstractFacade<Usuario> implements UsuarioBeanL
     }
 
 
+    /**
+     * Gera uma senha randomica de 7 caracteres.<br>
+     * Letras, números e alguns caracteres especiais.
+     * @return String com 7 caracteres.
+     */
     private String geraSenha() {
         Random r = new Random();
         String[] a = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
         String[] b = {"!", "#", "@", "&", "$"};
-        String[] c = {"A", "a", "B", "b", "C", "c", "D", "d", "E", "e", "F", "f", "G", "g", "H", "h", "I", "i", "J", "j", "K", "k", "L", "l", "Z", "z"};
-        String[] d = {"K", "k", "L", "l", "M", "m", "N", "n", "O", "o", "P", "p", "Q", "q", "R", "r", "S", "s", "T", "t", "U", "u", "V", "v", "X", "x", "Z", "z"};
-        int A = r.nextInt(a.length);
-        int A2 = r.nextInt(a.length);
-        int B = r.nextInt(b.length);
-        int C = r.nextInt(c.length);
-        int C2 = r.nextInt(c.length);
-        int D = r.nextInt(d.length);
-        int D2 = r.nextInt(d.length);
+        String[] c = {"A", "a", "B", "b", "C", "c", "D", "d", "E",
+            "e", "F", "f", "G", "g", "H", "h", "I", "i", "J", "j",
+            "K", "k", "L", "l", "Z", "z"};
+        String[] d = {"K", "k", "L", "l", "M", "m", "N", "n", "O",
+            "o", "P", "p", "Q", "q", "R", "r", "S", "s", "T", "t",
+            "U", "u", "V", "v", "X", "x", "Z", "z"};
+        int aa = r.nextInt(a.length);
+        int aaa = r.nextInt(a.length);
+        int bb = r.nextInt(b.length);
+        int cc = r.nextInt(c.length);
+        int ccc = r.nextInt(c.length);
+        int dd = r.nextInt(d.length);
+        int ddd = r.nextInt(d.length);
         String senha = "";
-        senha += c[C];
-        senha += d[D];
-        senha += b[B];
-        senha += a[A2];
-        senha += c[C2];
-        senha += d[D2];
-        senha += a[A];
+        senha += c[cc];
+        senha += d[dd];
+        senha += b[bb];
+        senha += a[aaa];
+        senha += c[ccc];
+        senha += d[ddd];
+        senha += a[aa];
         return senha;
     }
 
-    private void avisaSenhaEmail(String newPass, String url, Usuario usuario) {
+    /**
+     * Envia a senha para o usuário via e-mail.
+     */
+    private void avisaSenhaEmail(final String newPass, 
+            final String url, final Usuario usuario) {
         String body = this.bodyEmail(newPass, url, usuario);
         SimpleEmail simple = new SimpleEmail();
         simple.setBody(body);
@@ -157,7 +183,15 @@ public class UsuarioBean extends AbstractFacade<Usuario> implements UsuarioBeanL
         this.emailSendBean.enviarEmailJMS(simple);
     }
 
-    private String bodyEmail(String pass, String url, Usuario user) {
+    /**
+     * Cria o corpo do e-mail que será enviado.
+     * @param pass Senha sem estar criptografada.
+     * @param url URL de acesso ao site atual.
+     * @param user Usuário que irá receber o e-mail.
+     * @return String para ser anexada como corpo do e-mail.
+     */
+    private String bodyEmail(final String pass, final String url,
+            final Usuario user) {
         String toReturn = "";
         String quebra = "<br>";
         toReturn += "<h3>Bem vindo ao Money!</h3>";
@@ -174,11 +208,4 @@ public class UsuarioBean extends AbstractFacade<Usuario> implements UsuarioBeanL
         toReturn += url;
         return toReturn;
     }
-
-    @Override
-    public List<Usuario> findRange(int[] range, Usuario usuarioProprietario) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
-    
 }

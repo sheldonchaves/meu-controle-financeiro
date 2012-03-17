@@ -16,7 +16,7 @@ import javax.ejb.Local;
  * @author gbvbahia
  */
 @Local
-public interface DetalheUsuarioBeanLocal extends AbstractFacadeLocal<DetalheMovimentacao> {
+public interface DetalheUsuarioBeanLocal extends InterfaceFacade<DetalheMovimentacao, Long> {
 
     /**
      * Devolve uma lista com todos os Detalhes Movimentação de um usuário com filtro pela flag geral
@@ -62,12 +62,5 @@ public interface DetalheUsuarioBeanLocal extends AbstractFacadeLocal<DetalheMovi
      * @throws ValidacaoException 
      */
     public void salvarDetalheMovimentacao(DetalheMovimentacao detalheMovimentacao) throws ValidacaoException;
-
-    /**
-     * Buscar detalhe movimentação por Id
-     * @param id
-     * @return Detalhe Movimentação com mesmo id
-     */
-    public DetalheMovimentacao buscarDetalheMovimentacaoPorId(long id);
    
 }

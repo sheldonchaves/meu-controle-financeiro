@@ -13,19 +13,10 @@ import br.com.money.enums.StatusPagamento;
 import br.com.money.enums.TipoConta;
 import br.com.money.enums.TipoMovimentacao;
 import br.com.money.exceptions.ValidacaoException;
-import br.com.money.modelos.ContaBancaria;
-import br.com.money.modelos.MovimentacaoFinanceira;
-import br.com.money.modelos.ReceitaDivida;
-import br.com.money.modelos.Scheduler;
-import br.com.money.modelos.Usuario;
+import br.com.money.modelos.*;
 import br.com.money.utils.UtilBeans;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -33,9 +24,7 @@ import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.ejb.Timer;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -43,7 +32,8 @@ import org.apache.commons.lang.StringUtils;
  * @author Guilherme
  */
 @Stateless
-public class SchedulerBean extends AbstractFacade<Scheduler> implements SchedulerBeanLocal {
+public class SchedulerBean extends AbstractFacade<Scheduler, Integer>
+        implements SchedulerBeanLocal {
 
     public SchedulerBean() {
         super(Scheduler.class);
@@ -54,6 +44,10 @@ public class SchedulerBean extends AbstractFacade<Scheduler> implements Schedule
         return this.manager;
     }
 
+    @Override
+    protected ValidadorInterface getValidador() {
+        return schedulerValidador;
+    }
     @EJB
     private MovimentacaoFinanceiraBeanLocal movimentacaoFinanceiraBean;
     @EJB
@@ -66,45 +60,36 @@ public class SchedulerBean extends AbstractFacade<Scheduler> implements Schedule
     private EntityManager manager;
 
     @Override
-    public List<Scheduler> findRange(int[] range, Usuario usuarioProprietario) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }    
-    
-    @Override
     public void salvarScheduler(Scheduler scheduler) throws ValidacaoException {
-        schedulerValidador.validar(scheduler, this, null);
         if (scheduler.getId() == null) {
-            manager.persist(scheduler);
+            create(scheduler);
         } else {
-            manager.merge(scheduler);
+            update(scheduler);
         }
-        manager.flush();
     }
 
     @Override
     public Scheduler buscarSchedulerPorUsuario(Usuario usuario) {
-        Query q = manager.createNamedQuery("SchedulerBean.buscarSchedulerPorUsuario");
-        q.setParameter("user", usuario);
-        try {
-            return (Scheduler) q.getSingleResult();
-        } catch (NoResultException nr) {
-            return null;
-        }
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("user", usuario);
+        return pesqParam("SchedulerBean.buscarSchedulerPorUsuario", parans);
     }
 
     @Override
-    public List<Scheduler> buscarTodosSchelersPorStatus(boolean status) {
-        Query q = manager.createNamedQuery("SchedulerBean.buscarTodosSchelersPorStatus");
-        q.setParameter("status", status);
-        return q.getResultList();
+    public List<Scheduler> buscarTodosSchelersPorStatus(final boolean status) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("status", status);
+        return listPesqParam("SchedulerBean.buscarTodosSchelersPorStatus",
+                parans);
     }
 
-    @Schedule(hour = "3", minute = "23", dayOfWeek = "*")
+    @Schedule(hour = "5", minute = "23", dayOfWeek = "*")
     public void iniciarAvisoVencimento(Timer timer) {
         List<Scheduler> schedules = buscarTodosSchelersPorStatus(true);
         Calendar[] intervalo = getIntervalo();
         for (Scheduler sc : schedules) {
-            List<ReceitaDivida> dividas = this.receitaDividaBean.buscarReceitaDividasPorDataUsuarioStatusTipoMovimentacao(intervalo[0].getTime(),
+            List<ReceitaDivida> dividas = this.receitaDividaBean.
+                    buscarReceitaDividasPorDataUsuarioStatusTipoMovimentacao(intervalo[0].getTime(),
                     intervalo[1].getTime(), sc.getUser(), StatusPagamento.NAO_PAGA, TipoMovimentacao.RETIRADA);
             List[] contasDivididas = separarContas(dividas, sc);
             List<ReceitaDivida> contasAtrasadas = contasDivididas[0];
@@ -119,39 +104,46 @@ public class SchedulerBean extends AbstractFacade<Scheduler> implements Schedule
     }
 
     /**
-     * @param timer 
+     * @param timer
      */
     @Schedule(hour = "10", minute = "45", dayOfWeek = "Mon,Fri")//loop infinito
     public void avisarCartaoCredito(Timer timer) {
-            List<Scheduler> schedules = buscarTodosSchelersPorStatus(true);
-            Calendar[] intervalo = primeiroUltimoDiasMes();
-            for (Scheduler sc : schedules) {
-                List<MovimentacaoFinanceira> movimentacoes = this.movimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo(sc.getUser(), TipoConta.CARTAO_DE_CREDITO, intervalo[0].getTime(), intervalo[1].getTime());
-                movimentacoes.addAll(this.movimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo(sc.getUser(), TipoConta.CARTAO_DE_CREDITO, intervalo[2].getTime(), intervalo[3].getTime()));
-                Map<CartaoMesDTO, Double> contaValorMap = new TreeMap<CartaoMesDTO, Double>();
-                for (MovimentacaoFinanceira mf : movimentacoes) {
-                    CartaoMesDTO dto = new CartaoMesDTO(mf.getContaBancariaDebitada(), UtilBeans.mesAnoData(mf.getReceitaDivida().getDataVencimento()));
-                    if (contaValorMap.containsKey(dto)) {
-                        contaValorMap.put(dto, contaValorMap.get(dto) + mf.getReceitaDivida().getValorParaCalculoDireto());
-                    } else {
-                        contaValorMap.put(dto, mf.getReceitaDivida().getValorParaCalculoDireto());
-                    }
-                }
-                if (!contaValorMap.isEmpty()) {
-                    String body = defineCartaoValor(contaValorMap);
-                    body = StringUtils.replace(body, "null", "");
-                    if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
-                        String bodyFim = "<h3>Aviso semanal de cartão de crédito:</h3>" + body;
-                        enviaEmail(bodyFim, "Financeiro :: Cartão de Crédito", sc);
-                    }
+        List<Scheduler> schedules = buscarTodosSchelersPorStatus(true);
+        Calendar[] intervalo = primeiroUltimoDiasMes();
+        for (Scheduler sc : schedules) {
+            List<MovimentacaoFinanceira> movimentacoes =
+                    this.movimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo(sc.getUser(),
+                    TipoConta.CARTAO_DE_CREDITO, intervalo[0].getTime(), intervalo[1].getTime());
+            movimentacoes.addAll(this.movimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo(sc.getUser(),
+                    TipoConta.CARTAO_DE_CREDITO, intervalo[2].getTime(), intervalo[3].getTime()));
+            Map<CartaoMesDTO, Double> contaValorMap =
+                    new TreeMap<CartaoMesDTO, Double>();
+            for (MovimentacaoFinanceira mf : movimentacoes) {
+                CartaoMesDTO dto = new CartaoMesDTO(mf.getContaBancariaDebitada(),
+                        UtilBeans.mesAnoData(mf.getReceitaDivida().getDataVencimento()));
+                if (contaValorMap.containsKey(dto)) {
+                    contaValorMap.put(dto, contaValorMap.get(dto)
+                            + mf.getReceitaDivida().getValorParaCalculoDireto());
+                } else {
+                    contaValorMap.put(dto, mf.getReceitaDivida().getValorParaCalculoDireto());
                 }
             }
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Scheduler Cartão de Crédito: Executado.");
+            if (!contaValorMap.isEmpty()) {
+                String body = defineCartaoValor(contaValorMap);
+                body = StringUtils.replace(body, "null", "");
+                if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
+                    String bodyFim = "<h3>Aviso semanal de cartão de crédito:</h3>" + body;
+                    enviaEmail(bodyFim, "Financeiro :: Cartão de Crédito", sc);
+                }
+            }
         }
+        Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Scheduler Cartão de Crédito: Executado.");
+    }
 
     private String buscarTablePadrao(String body) {
         body += " <style type=\"text/css\">";
-        body += " table.reference td.red {color: red; } table.reference td.green{color: #008200;}";
+        body += " table.reference td.red {color: red; }"
+                + " table.reference td.green{color: #008200;}";
         body += " table.reference { ";
         body += " background-color:#ffffff;";
         body += " border:1px solid #c3c3c3;";

@@ -26,11 +26,17 @@ import javax.persistence.*;
  * @author Guilherme
  */
 @Stateless
-public class ReceitaDividaBean extends AbstractFacade<ReceitaDivida> implements ReceitaDividaBeanLocal {
+public class ReceitaDividaBean extends AbstractFacade<ReceitaDivida, Long>
+implements ReceitaDividaBeanLocal {
 
     @Override
     protected EntityManager getEntityManager() {
         return this.manager;
+    }
+
+    @Override
+    protected ValidadorInterface getValidador() {
+        return this.receitaDividaValidador;
     }
 
     public ReceitaDividaBean() {
@@ -39,24 +45,25 @@ public class ReceitaDividaBean extends AbstractFacade<ReceitaDivida> implements 
 
     @EJB
     private MovimentacaoFinanceiraBeanLocal movimentacaoFinanceiraBean;
+    
     @EJB(beanName = "receitaDividaValidador")
     private ValidadorInterface receitaDividaValidador;
+    
     @PersistenceContext(name = "jdbc/money")
     private EntityManager manager;
 
     @Override
     public void salvarReceitaDivida(ReceitaDivida conta) throws ValidacaoException {
         if (conta.getIdentificador() == null) {
-            String identificador = UtilBeans.getIdentificadorUnico(conta.getUsuario().getId(), conta.getDataVencimento());
+            String identificador = UtilBeans.getIdentificadorUnico(
+                    conta.getUsuario().getId(), conta.getDataVencimento());
             conta.setIdentificador(identificador);
         }
-        this.receitaDividaValidador.validar(conta, this, null);
         if (conta.getId() == null) {
-            manager.persist(conta);
+            create(conta);
         } else {
-            manager.merge(conta);
+            update(conta);
         }
-        manager.flush();
     }
 
     /**
@@ -70,10 +77,15 @@ public class ReceitaDividaBean extends AbstractFacade<ReceitaDivida> implements 
     @Override
     public void salvarReceitaDivida(ReceitaDivida conta, int parcelas, boolean salvarParcelas, ContaBancaria contaBancaria, StatusPagamento statusParcelas) throws ValidacaoException {
         if (salvarParcelas && parcelas < 1) {
-            throw new MovimentacaoFinanceiraException("movimentacaoFinanceiraqtdadeParcelasError", "Parcelas");
+            throw new MovimentacaoFinanceiraException
+                    ("movimentacaoFinanceiraqtdadeParcelasError",
+                    "Parcelas");
         }
-        if ((statusParcelas.equals(StatusPagamento.PAGA) || conta.getStatusPagamento().equals(StatusPagamento.PAGA)) && contaBancaria == null) {
-            throw new MovimentacaoFinanceiraException("movimentacaoFinanceiraContaMovimentadaNula", "Conta Bancaria");
+        if ((statusParcelas.equals(StatusPagamento.PAGA) 
+                || conta.getStatusPagamento().equals(StatusPagamento.PAGA)) 
+                && contaBancaria == null) {
+            throw new MovimentacaoFinanceiraException("movimentacaoFinanceiraContaMovimentadaNula",
+                    "Conta Bancaria");
         }
         String identificador = UtilBeans.getIdentificadorUnico(conta.getUsuario().getId(), conta.getDataVencimento());
         conta.setIdentificador(identificador);
@@ -100,7 +112,8 @@ public class ReceitaDividaBean extends AbstractFacade<ReceitaDivida> implements 
     private ReceitaDivida aumentaParcela(ReceitaDivida contaPagar, StatusPagamento status) {
         if (contaPagar.getParcelaTotal() > contaPagar.getParcelaAtual()) {
             ReceitaDivida toReturn = new ReceitaDivida();
-            toReturn.setDataVencimento(UtilBeans.aumentaMesDate(contaPagar.getDataVencimento(), 1));
+            toReturn.setDataVencimento(UtilBeans.aumentaMesDate(
+                    contaPagar.getDataVencimento(), 1));
             toReturn.setJuros(contaPagar.getJuros());
             toReturn.setObservacao(contaPagar.getObservacao());
             toReturn.setParcelaAtual(contaPagar.getParcelaAtual() + 1);
@@ -111,7 +124,8 @@ public class ReceitaDividaBean extends AbstractFacade<ReceitaDivida> implements 
             toReturn.setIdentificador(contaPagar.getIdentificador());
             toReturn.setStatusPagamento(contaPagar.getStatusPagamento());
             toReturn.setTipoMovimentacao(contaPagar.getTipoMovimentacao());
-            toReturn.setDetalheMovimentacao(contaPagar.getDetalheMovimentacao());
+            toReturn.setDetalheMovimentacao(
+                    contaPagar.getDetalheMovimentacao());
             return toReturn;
         } else {
             return null;
@@ -119,81 +133,85 @@ public class ReceitaDividaBean extends AbstractFacade<ReceitaDivida> implements 
     }
 
     @Override
-    public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho,
-            Usuario usuario, StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao) {
-        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarReceitaDividasPorUsuarioStatusPaginada");
-        q.setMaxResults(tamanho);
-        q.setFirstResult(posicaoInicial);
-        q.setParameter("usuario", usuario);
-        q.setParameter("statusPagamento", statusPagamento);
-        q.setParameter("tipoMovimentacao", tipoMovimentacao);
-        return q.getResultList();
+    public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(
+            final int posicaoInicial, final int tamanho,
+            final Usuario usuario, final StatusPagamento statusPagamento,
+            final TipoMovimentacao tipoMovimentacao) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("statusPagamento", statusPagamento);
+        parans.put("tipoMovimentacao", tipoMovimentacao);
+        return listPesqParam("ReceitaDividaBean.buscarReceitaDividas"
+                + "PorUsuarioStatusPaginada",
+                parans, tamanho, posicaoInicial);
     }
 
     @Override
-    public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho,
+    public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(
+            final int posicaoInicial, final int tamanho,
+            final Usuario usuario, final StatusPagamento statusPagamento) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("statusPagamento", statusPagamento);
+        return listPesqParam("ReceitaDividaBean.buscarReceitaDividas"
+                + "PorUsuarioStatusPaginada2",
+                parans, tamanho, posicaoInicial);
+    }
+
+    @Override
+    public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(
             Usuario usuario, StatusPagamento statusPagamento) {
-        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarReceitaDividasPorUsuarioStatusPaginada2");
-        q.setMaxResults(tamanho);
-        q.setFirstResult(posicaoInicial);
-        q.setParameter("usuario", usuario);
-        q.setParameter("statusPagamento", statusPagamento);
-        return q.getResultList();
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("statusPagamento", statusPagamento);
+        return pesqCount("ReceitaDividaBean.buscarQutdadeReceita"
+                + "DividasPorUsuarioStatusPaginada2",
+                parans).intValue();
     }
 
     @Override
-    public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(Usuario usuario, StatusPagamento statusPagamento) {
-        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada2");
-        q.setParameter("usuario", usuario);
-        q.setParameter("statusPagamento", statusPagamento);
-        Long toReturn = (Long) q.getSingleResult();
-        return toReturn.intValue();
-    }
-
-    @Override
-    public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(Usuario usuario, StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao) {
-        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada");
-        q.setParameter("usuario", usuario);
-        q.setParameter("statusPagamento", statusPagamento);
-        q.setParameter("tipoMovimentacao", tipoMovimentacao);
-        Long toReturn = (Long) q.getSingleResult();
-        return toReturn.intValue();
+    public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(
+            Usuario usuario, StatusPagamento statusPagamento,
+            TipoMovimentacao tipoMovimentacao) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("statusPagamento", statusPagamento);
+        parans.put("tipoMovimentacao", tipoMovimentacao);
+        return pesqCount("ReceitaDividaBean.buscarQutdadeReceita"
+                + "DividasPorUsuarioStatusPaginada",
+                parans).intValue();
     }
 
     @Override
     public void apagarReceitaDivida(ReceitaDivida receitaDivida, boolean deleteParcelas) {
-        ReceitaDivida rd = manager.find(ReceitaDivida.class, receitaDivida.getId());
+        ReceitaDivida rd = find(receitaDivida.getId());
         if (rd.getStatusPagamento().equals(StatusPagamento.PAGA)) {
             throw new ReceitaDividaException("deleteReceitaDividaPaga");
         }
-        manager.remove(rd);
+        remove(rd);
         if (deleteParcelas) {
-            Query q = manager.createNamedQuery("ReceitaDividaBean.apagarReceitaDivida");
-            q.setParameter("usuario", rd.getUsuario());
-            q.setParameter("statusPagamento", StatusPagamento.NAO_PAGA);
-            q.setParameter("identificador", rd.getIdentificador());
-            q.setParameter("parcelaAtual", rd.getParcelaAtual());
-            q.executeUpdate();
+            Map<String, Object> parans = AbstractFacade.getMapParans();
+            parans.put("usuario", rd.getUsuario());
+            parans.put("statusPagamento", StatusPagamento.NAO_PAGA);
+            parans.put("identificador", rd.getIdentificador());
+            parans.put("parcelaAtual", rd.getParcelaAtual());
+            update("ReceitaDividaBean.apagarReceitaDivida", parans);
         }
-        manager.flush();
     }
 
     @Override
-    public List<ReceitaDivida> buscarReceitaDividasPorDataUsuarioStatusTipoMovimentacao(Date ini, Date fim,
-            Usuario usuario, StatusPagamento status, TipoMovimentacao tipo) {
-        Query q = manager.createNamedQuery("ReceitaDividaBean.buscarReceitaDividasPorDataUsuarioStatusTipoMovimentacao");
-        q.setParameter("usuario", usuario);
-        q.setParameter("dataI", ini);
-        q.setParameter("dataF", fim);
-        q.setParameter("statusPagamento", status);
-        q.setParameter("tipoMovimentacao", tipo);
-        return q.getResultList();
+    public List<ReceitaDivida>
+            buscarReceitaDividasPorDataUsuarioStatusTipoMovimentacao(
+            final Date ini, final Date fim,
+            final Usuario usuario, final StatusPagamento status,
+            final TipoMovimentacao tipo) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("dataI", ini);
+        parans.put("dataF", fim);
+        parans.put("statusPagamento", status);
+        parans.put("tipoMovimentacao", tipo);
+        return listPesqParam("ReceitaDividaBean.buscarReceitaDividas"
+                + "PorDataUsuarioStatusTipoMovimentacao", parans);
     }
-
-    @Override
-    public List<ReceitaDivida> findRange(int[] range, Usuario usuarioProprietario) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
-    
 }

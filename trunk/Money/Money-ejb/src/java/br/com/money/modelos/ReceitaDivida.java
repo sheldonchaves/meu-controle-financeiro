@@ -6,9 +6,13 @@ package br.com.money.modelos;
 
 import br.com.money.enums.StatusPagamento;
 import br.com.money.enums.TipoMovimentacao;
+import br.com.money.modelos.commons.EntityInterface;
+import br.com.money.utils.UtilBeans;
 import br.com.money.vaidators.interfaces.ValidadoInterface;
 import java.util.Date;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,7 +20,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="money_receita_divida")
-public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivida> {
+public class ReceitaDivida implements ValidadoInterface,
+                                      EntityInterface<ReceitaDivida> {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -25,41 +30,54 @@ public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivid
     private Long id;
 
     @Column(name = "vl_valor", nullable = false)
+    @NotNull
     private Double valor;
 
     @Column(name = "vl_juros", nullable = false)
+    @NotNull
     private Double juros = 0.0;
 
     @Column(name = "dt_vencimento", nullable = false)
     @Temporal(TemporalType.DATE)
+    @NotNull
     private Date dataVencimento;
 
     @Column(name = "nm_parcela_atual", nullable = false)
+    @NotNull
     private Integer parcelaAtual;
 
     @Column(name = "nm_parcela_total", nullable = false)
+    @NotNull
     private Integer parcelaTotal;
 
     @Column(name = "ds_observacao", length = 255, nullable = true)
+    @Size(max = 255)
     private String observacao;
     
     @Column(name="nm_identificador", length=50, nullable=true)
+    @NotNull
+    @Size(max = 50)
     private String identificador;
     
     @Column(name = "en_status_pgto", nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private StatusPagamento statusPagamento = StatusPagamento.NAO_PAGA;
 
-    @Column(name="en_tipo_movimentacao", nullable=false)
+    @Column(name = "en_tipo_movimentacao", nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private TipoMovimentacao tipoMovimentacao;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name="fk_detalhe_movimentacao_id", referencedColumnName="id",nullable=false)
+    @JoinColumn(name="fk_detalhe_movimentacao_id", referencedColumnName="id",
+            nullable=false)
     private DetalheMovimentacao detalheMovimentacao;
     
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="fk_usuario_id", referencedColumnName="id")
+    @JoinColumn(name="fk_usuario_id", referencedColumnName="id", nullable = false)
+    @NotNull
     private Usuario usuario;
     
     public Date getDataVencimento() {
@@ -127,6 +145,7 @@ public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivid
     }
     
     
+    @Override
     public Long getId() {
         return id;
     }
@@ -168,12 +187,14 @@ public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivid
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof ReceitaDivida)) {
             return false;
         }
         ReceitaDivida other = (ReceitaDivida) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.id == null 
+                && other.id != null) 
+                || (this.id != null 
+                && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -181,8 +202,16 @@ public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivid
 
     @Override
     public String toString() {
-        return "ReceitaDivida{" + "id=" + id + ", valor=" + valor + ", juros=" + juros + ", dataVencimento=" + dataVencimento + ", parcelaAtual=" + parcelaAtual + ", parcelaTotal=" + parcelaTotal + ", observacao=" + observacao + ", identificador=" + identificador + ", statusPagamento=" + statusPagamento + ", tipoMovimentacao=" + tipoMovimentacao + '}';
+        return "ReceitaDivida{" + "id=" + id + ", valor*=" + valor
+                + ", juros=" + juros + ", dataVencimento*=" + dataVencimento
+                + ", parcelaAtual=" + parcelaAtual + ", parcelaTotal*="
+                + parcelaTotal + ", observacao=" + observacao
+                + ", identificador=" + identificador + ", statusPagamento="
+                + statusPagamento + ", tipoMovimentacao*="
+                + tipoMovimentacao + '}';
     }
+
+
 
     @Override
     public int compareTo(ReceitaDivida o) {
@@ -205,6 +234,23 @@ public class ReceitaDivida implements ValidadoInterface, Comparable<ReceitaDivid
         }else{//Se for uma dívida
             return this.valor * (-1);
         }
+    }
+
+    @Override
+    public String getLabel() {
+        try {
+        return getTipoMovimentacao().getTipoMovimentacaoString() + " "
+                + UtilBeans.getDataString(getDataVencimento()) + " "
+                + getParcelaTotal() + " "
+                + UtilBeans.currencyFormat(getValor());
+        } catch (Exception e) {
+            return toString();
+        }
+    }
+
+    @Override
+    public boolean verificarId() {
+        return false;
     }
     
     //===============

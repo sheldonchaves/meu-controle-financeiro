@@ -4,21 +4,13 @@
  */
 package br.com.money.modelos;
 
+import br.com.money.modelos.commons.EntityInterface;
 import br.com.money.vaidators.interfaces.ValidadoInterface;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -26,7 +18,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "money_usuario")
-public class Usuario implements ValidadoInterface {
+public class Usuario implements ValidadoInterface,
+EntityInterface<Usuario> {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,18 +29,28 @@ public class Usuario implements ValidadoInterface {
     private Long id;
 
     @Column(name = "ds_login", nullable = false, length = 10, unique = true)
+    @NotNull
+    @Size(max=10)
     private String login;
 
     @Column(name = "ds_first_name", nullable = false, length = 30)
+    @NotNull
+    @Size(max=30)
     private String firstName;
 
     @Column(name = "ds_last_name", nullable = false, length = 30)
+    @NotNull
+    @Size(max=30)
     private String lastName;
 
     @Column(name = "ds_password", nullable = false, length = 50)
+    @NotNull
+    @Size(max=50)
     private String password;
 
     @Column(name = "ds_email", nullable = false, length = 100, unique = true)
+    @NotNull
+    @Size(max=100)
     private String email;
 
     @OneToOne(targetEntity = br.com.money.modelos.Usuario.class, optional = true)
@@ -144,6 +147,7 @@ public class Usuario implements ValidadoInterface {
         this.roles = roles;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -161,7 +165,6 @@ public class Usuario implements ValidadoInterface {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Usuario)) {
             return false;
         }
@@ -176,4 +179,21 @@ public class Usuario implements ValidadoInterface {
     public String toString() {
         return this.firstName + " " + lastName;
     }
+
+    @Override
+    public String getLabel() {
+        return this.login + " :: " + this.firstName + " " + this.lastName;
+    }
+
+    @Override
+    public boolean verificarId() {
+        return false;
+    }
+
+    @Override
+    public int compareTo(Usuario o) {
+        return this.firstName.compareTo(o.firstName);
+    }
+    
+    
 }

@@ -4,8 +4,11 @@
  */
 package br.com.money.modelos;
 
+import br.com.money.modelos.commons.EntityInterface;
 import br.com.money.vaidators.interfaces.ValidadoInterface;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -13,7 +16,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "money_lembrete_contas")
-public class Scheduler implements ValidadoInterface {
+public class Scheduler implements ValidadoInterface, EntityInterface<Scheduler> {
     
     public static final int QUANTIDADE_CARACTERES_EMAIL = 255;
     
@@ -23,9 +26,13 @@ public class Scheduler implements ValidadoInterface {
     private Integer id;
 
     @Column(name = "nm_dias_vencimento", nullable = false)
+    @NotNull
     private int dias = 0;
 
-    @Column(name = "ds_email_contato", nullable = false,length=QUANTIDADE_CARACTERES_EMAIL)
+    @Column(name = "ds_email_contato", nullable = false,
+            length=QUANTIDADE_CARACTERES_EMAIL)
+    @NotNull
+    @Size(max=QUANTIDADE_CARACTERES_EMAIL)
     private String email;
 
     @Column(name = "fl_status_aviso", nullable = false)
@@ -59,6 +66,7 @@ public class Scheduler implements ValidadoInterface {
         this.status = status;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
@@ -84,7 +92,6 @@ public class Scheduler implements ValidadoInterface {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Scheduler)) {
             return false;
         }
@@ -97,6 +104,26 @@ public class Scheduler implements ValidadoInterface {
 
     @Override
     public String toString() {
-        return "LembreteConta{" + "id=" + id + ", dias=" + dias + ", email=" + email + ", status=" + status + '}';
+        return "LembreteConta{" + "id=" + id + ", dias=" + dias + ", email="
+                + email + ", status=" + status + '}';
     }
+
+    @Override
+    public String getLabel() {
+        return dias + " "
+                + email + " "
+                + status;
+    }
+
+    @Override
+    public boolean verificarId() {
+        return false;
+    }
+
+    @Override
+    public int compareTo(Scheduler o) {
+        return this.email.compareTo(o.email);
+    }
+    
+    
 }

@@ -241,6 +241,8 @@ public class UtilBeans {
         c1.set(Calendar.DAY_OF_MONTH, 1);
         c1.set(Calendar.HOUR_OF_DAY, 00);
         c1.set(Calendar.MINUTE, 00);
+        c1.set(Calendar.SECOND, 00);
+        c1.set(Calendar.MILLISECOND, 0);
         toReturn[0] = c1.getTime();
 
         Calendar c2 = Calendar.getInstance();
@@ -248,10 +250,38 @@ public class UtilBeans {
         c2.set(Calendar.DAY_OF_MONTH, c2.getActualMaximum(Calendar.DAY_OF_MONTH));
         c2.set(Calendar.HOUR_OF_DAY, 23);
         c2.set(Calendar.MINUTE, 59);
+        c2.set(Calendar.SECOND, 59);
+        c2.set(Calendar.MILLISECOND, 999);
         toReturn[1] = c2.getTime();
         return toReturn;
     }
 
+          /**
+     * Retorna um array de java.util.Date com a primeira hora do dia 
+     * e a ultima hora do dia, com base na data de referência passada
+     * @param referencia
+     * @return Data 0 : 00:00:00.000  Data 1 : 23:59:59.999
+     */
+    public static Date[] primeiroUltimoHorario(Date referencia){
+        Date[] toReturn = new Date[2];
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(referencia);
+        c1.set(Calendar.HOUR_OF_DAY, 00);
+        c1.set(Calendar.MINUTE, 00);
+        c1.set(Calendar.SECOND, 00);
+        c1.set(Calendar.MILLISECOND, 0);
+        toReturn[0] = c1.getTime();
+
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(referencia);
+        c2.set(Calendar.HOUR_OF_DAY, 23);
+        c2.set(Calendar.MINUTE, 59);
+        c2.set(Calendar.SECOND, 59);
+        c2.set(Calendar.MILLISECOND, 999);
+        toReturn[1] = c2.getTime();
+        return toReturn;
+    }
+    
         /**
      * Retorna uma String que pode ser utilizada como único identificador
      * @param idUser
@@ -291,4 +321,52 @@ public class UtilBeans {
         Calendar c = dateToCalendar(data);
         return c.get(Calendar.DAY_OF_WEEK) == dia;
     }
+    
+            /**
+         * Define a variação da String para LIKE fixa no final e variavel no
+         * inicio. Ex: "%aria"
+         */
+        public static final int LIKE_START = 0;
+        /**
+         * Define a variação da String para LIKE fixa no inicio e variavel no
+         * final. Ex: "Mar%"
+         */
+        public static final int LIKE_END = 1;
+        /**
+         * Define a variação da String para LIKE variavel no inicio e variavel
+         * no final. Ex: "%ari%"
+         */
+        public static final int LIKE_MIDDLE = 2;
+        /**
+         * Acerta o parametro para null ou concatena com % para ser incluido em
+         * consultas do tipo: <i>(:nome is null or upper(o.nome) like
+         * upper(:nome))</i>
+         *
+         * @param string
+         * @param likeType Utilizar as constantes:<br>
+         * UtilBeans.StringBeanUtils.LIKE_START
+         * UtilBeans.StringBeanUtils.LIKE_END
+         * UtilBeans.StringBeanUtils.LIKE_MIDDLE
+         * @return java.lang.String ou null
+         */
+        public static String acertaNomeParaLike(String string,
+                final int likeType) {
+            if (StringUtils.isBlank(string)) {
+                string = null;
+            } else {
+                switch (likeType) {
+                    case LIKE_START:
+                        string = "%" + string;
+                        break;
+                    case LIKE_MIDDLE:
+                        string = "%" + string + "%";
+                        break;
+                    case LIKE_END:
+                        string = string + "%";
+                        break;
+                }
+
+            }
+            return string;
+        }
 }
