@@ -1,0 +1,58 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <f:subview id="orgaotable" >
+
+        <h:form styleClass="jsfcrud_list_form" id="tableForm">
+            <h:outputText escape="false" value="#{msg.ListContaBancariaEmpty}" 
+                          rendered="#{contaBancariaController.items.rowCount == 0}"/>
+            <h:panelGroup rendered="#{contaBancariaController.items.rowCount > 0}">
+                <table class="reference" width="100%">
+                    <thead><tr>
+                            <th><h:outputText value="#{msg.contas}"/></th>
+                            <th><h:outputText value="#{msg.saldo}"/></th>
+                            <th><h:outputText value="#{msg.tipo}"/></th>
+                            <th width="150" class="ac"></th>
+                        </tr></thead>
+                    <tbody>
+                        <ui:repeat value="#{contaBancariaController.items}" var="item" varStatus="x">
+                            <tr>
+                                <td align='left'><h:outputText value="#{item.nomeConta}"/></td>
+                                <td align='right' class="#{0 > item.saldo ? 'red' : 'green'}">
+                                    <h:outputText value="#{item.saldo}">
+                                        <f:converter converterId="moneyConverter"/>
+                                    </h:outputText></td>
+                                <td align='center'><h:outputText value="#{item.tipoConta.tipoContaString}"/></td>
+                                <td><h:commandLink action="#{contaBancariaController.destroy}" styleClass="ico del" value="#{msg.remover}"
+                                                   onclick="return confirm('#{msg.desejaRemoverConta} - #{item.nomeConta}?');"/>
+                                    <h:outputText value=" "/>
+                                    <h:commandLink styleClass="ico edit" action="#{contaBancariaController.prepareEdit}" value="#{msg.editar}"/>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody></table>
+            </h:panelGroup>
+            <p:spacer width="100%" height="10"/>
+            <div class="table">
+                <div class="pagging">
+                    <table width="100%" style="font-size: 0.9em;">
+                        <tr>
+                            <td width="400px">
+                                <h:panelGrid columns="4" style="font-size: 1em;">
+                                    <h:outputText value="#{contaBancariaController.pagination.pageFirstItem + 1}...
+                                                  #{contaBancariaController.pagination.pageLastItem + 1}/#{contaBancariaController.pagination.itemsCount}"/>
+                                    <p:commandLink actionListener="#{contaBancariaController.previous}" value="#{msg.Previous} #{contaBancariaController.pagination.pageSize}" 
+                                                   disabled="#{!contaBancariaController.pagination.hasPreviousPage}" update="tableForm, footertop" />
+                                    <p:commandLink actionListener="#{contaBancariaController.next}" value="#{msg.Next} #{contaBancariaController.pagination.pageSize}" 
+                                                   disabled="#{!contaBancariaController.pagination.hasNextPage}" update="tableForm, footertop"/>
+                                    <h:commandLink action="#{contaBancariaController.prepareCreate}" value="#{msg.nova}"/>
+                                </h:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </h:form>
+    </f:subview>
+</ui:composition>
