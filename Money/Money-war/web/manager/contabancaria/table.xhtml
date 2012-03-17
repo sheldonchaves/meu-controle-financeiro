@@ -2,15 +2,18 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
-    <f:subview id="orgaotable" >
+    <f:subview id="contabancariatable" >
 
         <h:form styleClass="jsfcrud_list_form" id="tableForm">
-            <h:outputText escape="false" value="#{msg.ListContaBancariaEmpty}" 
-                          rendered="#{contaBancariaController.items.rowCount == 0}"/>
-            <h:panelGroup rendered="#{contaBancariaController.items.rowCount > 0}">
-                <table class="reference" width="100%">
+                <table class="referencesmall" width="100%">
                     <thead><tr>
-                            <th><h:outputText value="#{msg.contas}"/></th>
+                            <th><h:outputText value="#{msg.contas}"/><br></br>
+                                <h:inputText value="#{contaBancariaController.nome}" styleClass="selectTableFilter" id="search">
+                                    <p:ajax event="keyup" listener="#{contaBancariaController.recreateTable()}" update="tableForm"
+                                            oncomplete="focusCampo('contabancariatable:tableForm:search')"/>
+                                </h:inputText>
+                                <p:tooltip for="search" showEvent="focus" hideEvent="blur" value="#{msg.tipoBuscaContem}"/> 
+                            </th>
                             <th><h:outputText value="#{msg.saldo}"/></th>
                             <th><h:outputText value="#{msg.tipo}"/></th>
                             <th width="150" class="ac"></th>
@@ -32,11 +35,10 @@
                             </tr>
                         </ui:repeat>
                     </tbody></table>
-            </h:panelGroup>
-            <p:spacer width="100%" height="10"/>
+            <p:spacer width="8%" height="10"/>
             <div class="table">
                 <div class="pagging">
-                    <table width="100%" style="font-size: 0.9em;">
+                    <table width="99%" style="font-size: 0.9em;">
                         <tr>
                             <td width="400px">
                                 <h:panelGrid columns="4" style="font-size: 1em;">
