@@ -112,7 +112,7 @@ public class ContaBancariaBean extends AbstractFacade<ContaBancaria, Long> imple
         parans.put("tipoConta", tipo);
         parans.put("tipoConta2", tipo);
         parans.put("nomeConta",
-                UtilBeans.acertaNomeParaLike(nomeConta, UtilBeans.LIKE_END));
+                UtilBeans.acertaNomeParaLike(nomeConta, UtilBeans.LIKE_MIDDLE));
         return listPesqParam("ContaBancariaBean.buscarContaBancarias"
                 + "PorUsuarioTipoPaginado", parans, total - inicial, inicial);
     }
@@ -126,7 +126,7 @@ public class ContaBancariaBean extends AbstractFacade<ContaBancaria, Long> imple
         parans.put("tipoConta", tipo);
         parans.put("tipoConta2", tipo);
         parans.put("nomeConta",
-                UtilBeans.acertaNomeParaLike(nomeConta, UtilBeans.LIKE_END));
+                UtilBeans.acertaNomeParaLike(nomeConta, UtilBeans.LIKE_MIDDLE));
         return pesqCount("ContaBancariaBean.contarContaBancariasPor"
                 + "UsuarioTipo", parans).intValue();
     }
