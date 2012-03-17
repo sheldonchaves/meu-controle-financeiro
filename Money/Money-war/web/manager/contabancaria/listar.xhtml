@@ -5,10 +5,9 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
-    
-                                        <!-- CONTA BANCARIA-->
-                
-    <ui:define name="busca"></ui:define>
+
+    <!-- CONTA BANCARIA-->
+
     <ui:param name="titSupParan" value="#{msg.titlePanelContasBancarias}"/>
     <ui:define name="contsup">
         <h:form styleClass="jsfcrud_list_form" id="tableForm">
@@ -76,11 +75,11 @@
                         <f:validateLength maximum="50"/>
                     </p:inputText>
                     <p:message for="nomeConta"/>
-                    
+
                     <p:spacer width="50" height="6"/>
                     <p:spacer width="50" height="6"/>
                     <p:spacer width="50" height="6"/>
-                    
+
                     <h:outputLabel value="#{msg.saldo}:" />
                     <p:inputText value="#{contaBancariaController.current.saldo}" label="#{msg.saldo}"
                                  id="saldo" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="20"
@@ -88,11 +87,11 @@
                         <f:converter converterId="moneyConverter"/>
                     </p:inputText>
                     <p:message for="saldo"/>
-                    
+
                     <p:spacer width="50" height="6"/>
                     <p:spacer width="50" height="6"/>
                     <p:spacer width="50" height="6"/>
-                    
+
                     <h:outputLabel value="#{msg.tipo}:" />
                     <h:selectOneMenu value="#{contaBancariaController.current.tipoConta}" label="#{msg.tipo}" 
                                      id="tipoConta" required="true" requiredMessage="#{msg.campoObrigatorio}">
@@ -101,11 +100,11 @@
                         <f:converter converterId="tipoContaConverter"/>
                     </h:selectOneMenu>
                     <p:message for="tipoConta"/>
-                    
+
                     <p:spacer width="50" height="6"/>
                     <p:spacer width="50" height="6"/>
                     <p:spacer width="50" height="6"/>
-                    
+
                     <h:outputLabel value=""/>
                     <h:panelGroup style="font-size: 0.9em; text-align: left;">
                         <p:commandLink value="#{msg.salvar}" action="#{contaBancariaController.create()}"
