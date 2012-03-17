@@ -27,7 +27,8 @@
                     <h:outputLabel value="#{msg.saldo}:" />
                     <p:inputText value="#{contaBancariaController.current.saldo}" label="#{msg.saldo}"
                                  id="saldo" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="20"
-                                 size="15" binding="#{contaBancariaManager.saldoInput}" onkeypress="return(MascaraMoeda(this,'.',',',event))">
+                                 size="15" binding="#{contaBancariaManager.saldoInput}" onkeypress="return(MascaraMoeda(this,'.',',',event))"
+                                 disabled="#{contaBancariaController.current.id ne null}">
                         <f:converter converterId="moneyConverter"/>
                     </p:inputText>
                     <p:message for="saldo"/>
