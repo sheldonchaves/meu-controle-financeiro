@@ -14,7 +14,7 @@ import javax.ejb.ApplicationException;
 public abstract class ValidacaoException extends RuntimeException {
 
     private String atributoName;
-
+    private Object[] variacoes;
     public ValidacaoException(String message, String atributoName) {
         super(message);
         this.atributoName = atributoName;
@@ -30,5 +30,13 @@ public abstract class ValidacaoException extends RuntimeException {
 
     public void setAtributoName(String atributoName) {
         this.atributoName = atributoName;
+    }
+
+    public Object[] getVariacoes() {
+        return variacoes;
+    }
+
+    public void setVariacoes(Object[] variacoes) {
+        this.variacoes = variacoes;
     }
 }

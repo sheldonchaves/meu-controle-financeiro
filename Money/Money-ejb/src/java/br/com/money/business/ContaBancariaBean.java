@@ -10,13 +10,14 @@ import br.com.money.exceptions.ContaBancariaException;
 import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.Usuario;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
+import java.util.Collections;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.*;
 
 /**
  *
