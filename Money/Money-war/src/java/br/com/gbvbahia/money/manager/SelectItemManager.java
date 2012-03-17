@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.money.manager;
 
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.ContaBancariaBeanLocal;
 import br.com.money.business.interfaces.DetalheUsuarioBeanLocal;
@@ -32,6 +33,7 @@ public class SelectItemManager implements Serializable{
     @EJB
     private DetalheUsuarioBeanLocal detalheUsuarioBean;
 
+    public static final int CARACTERES_DETALHE_MOVIMENTACAO_LIMIT = 25;
     public static final String PATTERN = "dd/MM/yyyy";
     public static final Locale BRASIL = new Locale("pt", "BR");
     
@@ -74,7 +76,9 @@ public class SelectItemManager implements Serializable{
         Collections.sort(detalhes);
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
         for(DetalheMovimentacao dm : detalhes){
-            toReturn.add(new SelectItem(dm, StringUtils.substring(dm.getDetalhe(), 0, DetalheMovimentacaoManager.CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
+            toReturn.add(new SelectItem(dm,
+                    StringUtils.substring(dm.getDetalhe(), 0,
+                    CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
         }
         return toReturn;
     }
@@ -84,7 +88,9 @@ public class SelectItemManager implements Serializable{
         Collections.sort(contas);
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
         for(ContaBancaria cb : contas){
-            toReturn.add(new SelectItem(cb, StringUtils.substring(cb.getLabel(), 0, DetalheMovimentacaoManager.CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
+            toReturn.add(new SelectItem(cb,
+                    StringUtils.substring(cb.getLabel(), 0,
+                    CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
         }
         return toReturn;
     }
@@ -99,9 +105,11 @@ public class SelectItemManager implements Serializable{
         List<ContaBancaria> contas = this.contaBancariaBean.buscarContaBancariasPorUsuario(usuario);
         Collections.sort(contas);
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
-        toReturn.add(new SelectItem(null, UtilMetodos.getResourceBundle("selecione", fc)));
+        toReturn.add(new SelectItem(null, MensagemUtils.getResourceBundle("selecione", fc)));
         for(ContaBancaria cb : contas){
-            toReturn.add(new SelectItem(cb.getId(), StringUtils.substring(cb.getLabel(), 0, DetalheMovimentacaoManager.CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
+            toReturn.add(new SelectItem(cb.getId(),
+                    StringUtils.substring(cb.getLabel(), 0,
+                    CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
         }
         return toReturn;
     }
@@ -111,7 +119,9 @@ public class SelectItemManager implements Serializable{
         Collections.sort(contas);
         List<SelectItem> toReturn = new ArrayList<SelectItem>();
         for(ContaBancaria cb : contas){
-            toReturn.add(new SelectItem(cb, StringUtils.substring(cb.getLabel(), 0, DetalheMovimentacaoManager.CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
+            toReturn.add(new SelectItem(cb,
+                    StringUtils.substring(cb.getLabel(), 0,
+                    CARACTERES_DETALHE_MOVIMENTACAO_LIMIT)));
         }
         return toReturn;
     }

@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.money.validadores;
 
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -25,7 +26,7 @@ public class EmailValidador implements Validator{
           if(o == null)return;
         String email = o.toString();
         if(!EmailValidator.getInstance().isValid(email)){
-            FacesMessage msg = new FacesMessage(UtilMetodos.getResourceBundle("shcedulerEmailInvalido", fc));
+            FacesMessage msg = new FacesMessage(MensagemUtils.getResourceBundle("shcedulerEmailInvalido", fc));
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }

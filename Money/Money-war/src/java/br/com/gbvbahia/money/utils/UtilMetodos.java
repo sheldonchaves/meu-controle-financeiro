@@ -47,71 +47,9 @@ public class UtilMetodos {
         return string.replace("\n", " ").replace("\r", " ").replace(";", ",").replace("\t", " ");
     }
 
-    /**
-     * Adicione uma mensagem para ser exibida na tag messagens da JSF de sua página
-     * A String msg deve vir já pronta, o método não busca no resource bundle
-     * @param String msg
-     * @param FacesContext currentInstance
-     */
-    public static void addMessage(String msg, FacesContext currentInstance) {
-        currentInstance.addMessage(msg, new FacesMessage(msg));
-    }
-
     public static String getRealClientId(String fullId, String idLast) {
         String toReturn = StringUtils.substringBeforeLast(fullId, ":");
         return toReturn + ":" + idLast;
-    }
-
-    /**
-     * Cria  FacesMessage para ser envida ao usuario atraves do resource bundle.
-     * Menssagem a adicionada dentro deste método.
-     * @param msg
-     * @param detalhe
-     * @param currentInstance
-     * @return
-     */
-    public static void messageFactoringFull(String msg, FacesMessage.Severity severity, FacesContext currentInstance) {
-        messageFactoringFull(null, msg, severity, currentInstance);
-    }
-
-    /**
-     * Cria  FacesMessage para ser envida ao usuario atraves do resource bundle.
-     * Menssagem a adicionada dentro deste método.
-     * @param clientId
-     * @param msg Texto em negrito, antes do detail.
-     * @param severity
-     * @param currentInstance
-     */
-    public static void messageFactoringFull(String clientId, String msg, FacesMessage.Severity severity, FacesContext currentInstance) {
-        messageFactoringFull(null, clientId, msg, severity, currentInstance);
-    }
-
-    /**
-     * Cria  FacesMessage para ser envida ao usuario atraves do resource bundle.
-     * Menssagem a adicionada dentro deste método.
-     * @param detail Texto normal, após a msg
-     * @param clientId
-     * @param msg Texto em negrito, antes do detail.
-     * @param severity
-     * @param currentInstance
-     */
-    public static void messageFactoringFull(String detail, String clientId, String msg, FacesMessage.Severity severity, FacesContext currentInstance) {
-        FacesMessage message = new FacesMessage();
-        try {
-            String msgPropert = ResourceBundle.getBundle(currentInstance.getApplication().getMessageBundle()).getString(msg);
-            message.setSummary(msgPropert);
-        } catch (MissingResourceException e) {
-            message.setSummary(msg);
-        }
-        if (severity != null) {
-            message.setSeverity(severity);
-        }
-        if (detail == null) {
-            message.setDetail("");
-        } else {
-            message.setDetail(": "+detail);
-        }
-        currentInstance.addMessage(clientId, message);
     }
 
     /**
@@ -161,17 +99,6 @@ public class UtilMetodos {
         cnpj_calc += (dig == 10 || dig == 11) ? "0" : Integer.toString(dig);
 
         return str_cnpj.equals(cnpj_calc);
-    }
-
-    /**
-     * Pega uma String do resource bundle com base em uma chave informada.
-     * @param String msg
-     * @param FacesContext currentInstance
-     * @return Retorna um texto do resource bundle em formato de string
-     */
-    public static String getResourceBundle(String msg, FacesContext currentInstance) {
-        return ResourceBundle.getBundle(currentInstance.getApplication().
-                getMessageBundle()).getString(msg);
     }
 
     /**
@@ -310,18 +237,6 @@ public class UtilMetodos {
         return sdf.format(date);
     }
 
-    /**
-     * Utilizando para recuperar um bean da sessão do usuário, podendo
-     * fazer comunicação entre os beans.
-     * @param name
-     * @param fc
-     * @return
-     */
-    public static Object getBean(String name, FacesContext fc) {
-        Map sessionMap = fc.getExternalContext().getSessionMap();
-        return sessionMap.get(name);
-    }
-
     public static DecimalFormat getNumberFormater(){
         DecimalFormat df = new DecimalFormat("#,##0.00");
         return df;
@@ -362,24 +277,6 @@ public class UtilMetodos {
         Locale locale = new Locale("pt", "BR");
         NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
         return nf.format(n);
-    }
-
-    /**
-     * Para utilizar este método o Servlet SFile deve ser configurado no web.xml
-     * @param file
-     * @param facesContext
-     */
-    public static void downloadFile(File file, FacesContext facesContext) {
-        String caminhoArquivo = file.getAbsolutePath();
-        String nomeArquivo = file.getName();
-        HttpServletResponse resp = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        try {
-            resp.sendRedirect(facesContext.getExternalContext().getRequestContextPath()
-                    + "/SFile?caminhoArquivo=" + caminhoArquivo + "&nomeArquivo=" + nomeArquivo);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        facesContext.responseComplete(); // essa linha NAO PODE FALTAR
     }
 
     public static Date aumentaMesDate(Date dataVencimento, int qtdade) {
@@ -440,8 +337,9 @@ public class UtilMetodos {
      * @return
      */
     public static String getURL(FacesContext fc) {
-        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-        String toReturn = getResourceBundle("urlServidor", fc);
+        HttpSession session = (HttpSession)
+                fc.getExternalContext().getSession(false);
+        String toReturn = MensagemUtils.getResourceBundle("urlServidor", fc);
         toReturn += session.getServletContext().getContextPath();
         return toReturn;
     }

@@ -6,6 +6,7 @@ package br.com.gbvbahia.money.manager;
 
 import br.com.gbvbahia.money.manager.lazyTables.LazyReceitaDividaModel;
 import br.com.gbvbahia.money.observador.ControleObserver;
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.business.interfaces.ReceitaDividaBeanLocal;
@@ -37,7 +38,7 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name = "movimentacaoFinanceiraManager")
 @SessionScoped
-public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer {
+public class MovimentacaoFinanceiraManager implements Observer {
 
     @EJB
     private MovimentacaoFinanceiraBeanLocal movimentacaoFinanceiraBean;
@@ -58,14 +59,12 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
     // Iniciadores
     //====================
     @PreDestroy
-    @Override
     public void end() {
         ControleObserver.removeBeanObserver(loginManager.getUsuario(), this);
         Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
     }
 
     @PostConstruct
-    @Override
     public void init() {
         clean();
         this.receitasDividas = new LazyReceitaDividaModel(receitaDividaBean, loginManager.getUsuario(), StatusPagamento.NAO_PAGA, null);
@@ -97,19 +96,31 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
         if (this.receitaDivitaSelecionada == null
                 || this.receitaDivitaSelecionada.getContaBancariaTransiente() == null
                 || this.receitaDivitaSelecionada.getContaBancariaTransiente().getId() == null) {
-            UtilMetodos.messageFactoringFull("movimentacaoRealizadaContaNOk", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+            MensagemUtils.messageFactoringFull("movimentacaoRealizadaContaNOk",
+                    null, FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
             return;
         }
         try {
-            this.movimentacaoFinanceiraBean.salvarMovimentacaoFinanceira(receitaDivitaSelecionada.getContaBancariaTransiente(), receitaDivitaSelecionada);
+            this.movimentacaoFinanceiraBean.salvarMovimentacaoFinanceira(
+                    receitaDivitaSelecionada.getContaBancariaTransiente(),
+                    receitaDivitaSelecionada);
             clean();
-            UtilMetodos.messageFactoringFull("movimentacaoRealizadaOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            MensagemUtils.messageFactoringFull("movimentacaoRealizadaOk", null,
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
             ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER, ControleObserver.Eventos.CAD_CONTA_BANCARIA, ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
-                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(
+                        MensagemUtils.getResourceBundle(v.getMessage(),
+                        FacesContext.getCurrentInstance()), null, 
+                        FacesMessage.SEVERITY_ERROR, 
+                        FacesContext.getCurrentInstance());
             } else {
-                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(v.getMessage(), null,
+                        FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
             }
         }
     }
@@ -164,12 +175,10 @@ public class MovimentacaoFinanceiraManager implements InterfaceManager, Observer
         this.selctContaPagamento = selctContaPagamento;
     }
 
-    @Override
     public Locale getLocale() {
         return SelectItemManager.BRASIL;
     }
 
-    @Override
     public String getPattern() {
         return SelectItemManager.PATTERN;
     }

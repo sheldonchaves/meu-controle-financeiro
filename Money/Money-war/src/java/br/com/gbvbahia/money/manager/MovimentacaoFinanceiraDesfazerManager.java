@@ -6,6 +6,7 @@ package br.com.gbvbahia.money.manager;
 
 import br.com.gbvbahia.money.manager.lazyTables.LazyMovimentacaoFinanceiraModel;
 import br.com.gbvbahia.money.observador.ControleObserver;
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
@@ -34,7 +35,7 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name = "movimentacaoFinanceiraDesfazerManager")
 @SessionScoped
-public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, Observer {
+public class MovimentacaoFinanceiraDesfazerManager implements Observer {
 
     @EJB
     private MovimentacaoFinanceiraBeanLocal movimentacaoFinanceiraBean;
@@ -52,14 +53,12 @@ public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, 
     // Iniciadores
     //====================
     @PreDestroy
-    @Override
     public void end() {
         ControleObserver.removeBeanObserver(loginManager.getUsuario(), this);
         Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
     }
 
     @PostConstruct
-    @Override
     public void init() {
         clean();
         this.movimentacoes = new LazyMovimentacaoFinanceiraModel(movimentacaoFinanceiraBean, loginManager.getUsuario());
@@ -91,13 +90,19 @@ public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, 
         try {
             movimentacaoFinanceiraBean.desfazerMovimentacaoFinanceira(movimentacaoFinanceiraSelecionada);
             clean();
-            UtilMetodos.messageFactoringFull("movimentacaoDesRealizadaOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            MensagemUtils.messageFactoringFull("movimentacaoDesRealizadaOk", null, FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
             ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER, ControleObserver.Eventos.CAD_CONTA_BANCARIA, ControleObserver.Eventos.CAD_DETALHE_MOVIMENTACAO);
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
-                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(
+                        MensagemUtils.getResourceBundle(v.getMessage(),
+                        FacesContext.getCurrentInstance()), null,
+                        FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
             } else {
-                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(v.getMessage(), null,
+                        FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
             }
         }
     }
@@ -143,12 +148,10 @@ public class MovimentacaoFinanceiraDesfazerManager implements InterfaceManager, 
         this.movimentacaoFinanceiraSelecionada = movimentacaoFinanceiraSelecionada;
     }
 
-    @Override
     public Locale getLocale() {
         return SelectItemManager.BRASIL;
     }
 
-    @Override
     public String getPattern() {
         return SelectItemManager.PATTERN;
     }

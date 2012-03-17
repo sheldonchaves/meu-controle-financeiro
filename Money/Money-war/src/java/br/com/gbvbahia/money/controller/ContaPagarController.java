@@ -8,6 +8,7 @@ import br.com.gbvbahia.money.controller.util.PaginationHelper;
 import br.com.gbvbahia.money.manager.LoginManager;
 import br.com.gbvbahia.money.manager.SelectItemManager;
 import br.com.gbvbahia.money.observador.ControleObserver;
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.ReceitaDividaBeanLocal;
 import br.com.money.enums.StatusPagamento;
@@ -99,13 +100,21 @@ public class ContaPagarController {
                 this.receitaDividaBean.salvarReceitaDivida(current, current.getParcelaTotal(),salvarParcelas, null, StatusPagamento.NAO_PAGA);
             }
             ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER);
-            UtilMetodos.messageFactoringFull("contaPagarSalva", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            MensagemUtils.messageFactoringFull("contaPagarSalva", null,
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
             return prepareList();
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
-                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(
+                        MensagemUtils.getResourceBundle(v.getMessage(),
+                        FacesContext.getCurrentInstance()), null,
+                        FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
             } else {
-                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(v.getMessage(), null,
+                        FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
             }
             return null;
         }
@@ -140,13 +149,20 @@ public class ContaPagarController {
     private void performDestroy() {
         try {
             this.receitaDividaBean.apagarReceitaDivida(current, apagarPrestacoes);
-            UtilMetodos.messageFactoringFull("contaApagadaOK", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            MensagemUtils.messageFactoringFull("contaApagadaOK", null,
+                    FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
             clean();
         } catch (ValidacaoException v) {
             if (!StringUtils.isBlank(v.getAtributoName())) {
-                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(
+                        MensagemUtils.getResourceBundle(v.getMessage(),
+                        FacesContext.getCurrentInstance()), null,
+                        FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
             } else {
-                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(v.getMessage(), null,
+                        FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
             }
         }
     }

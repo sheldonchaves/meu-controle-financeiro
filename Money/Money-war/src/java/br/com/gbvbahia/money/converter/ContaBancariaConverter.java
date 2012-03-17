@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.money.converter;
 
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.ContaBancariaBeanLocal;
 import br.com.money.modelos.ContaBancaria;
@@ -69,7 +70,7 @@ public class ContaBancariaConverter implements Converter{
     }
     
     private void exception(FacesContext fc) {
-        FacesMessage msg = new FacesMessage(UtilMetodos.getResourceBundle("erroconvertererro", fc));
+        FacesMessage msg = new FacesMessage(MensagemUtils.getResourceBundle("erroconvertererro", fc));
         msg.setSeverity(FacesMessage.SEVERITY_FATAL);
         throw new ConverterException(msg);
     }

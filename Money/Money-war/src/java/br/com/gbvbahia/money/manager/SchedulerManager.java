@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.money.manager;
 
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.SchedulerBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
@@ -27,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
  */
 @ManagedBean(name = "schedulerManager")
 @ViewScoped
-public class SchedulerManager implements InterfaceManager {
+public class SchedulerManager  {
     
     @EJB
     private SchedulerBeanLocal schedulerBean;
@@ -43,24 +44,25 @@ public class SchedulerManager implements InterfaceManager {
     //====================
     // Iniciadores        
     //====================
-    @Override
     @PreDestroy
     public void end() {
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST,
+                this.getClass().getName() + ".end() executado!");
     }
 
-    @Override
     @PostConstruct
     public void init() {
         clean();
-        Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".init() executado!");
+        Logger.getLogger(this.getClass().getName()).log(Level.FINEST,
+                this.getClass().getName() + ".init() executado!");
     }
     
     //====================
     //Métodos de Negócio  
     //====================
     public void clean(){
-        this.shScheduler = schedulerBean.buscarSchedulerPorUsuario(loginManager.getUsuario());
+        this.shScheduler = schedulerBean.buscarSchedulerPorUsuario(
+                loginManager.getUsuario());
         if(this.shScheduler == null){
             this.shScheduler = new Scheduler();
             shScheduler.setDias(2);
@@ -73,12 +75,20 @@ public class SchedulerManager implements InterfaceManager {
     public void salvarScheduler(){
         try{
             this.schedulerBean.salvarScheduler(shScheduler);
-            UtilMetodos.messageFactoringFull("schedulerSalvo", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+            MensagemUtils.messageFactoringFull("schedulerSalvo", null,
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
         }catch(ValidacaoException v){
             if (!StringUtils.isBlank(v.getAtributoName())) {
-                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(
+                        MensagemUtils.getResourceBundle(v.getMessage(),
+                        FacesContext.getCurrentInstance()),
+                        null, FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
             } else {
-                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(v.getMessage(), null,
+                        FacesMessage.SEVERITY_ERROR, 
+                        FacesContext.getCurrentInstance());
             }
         }
     }
@@ -108,12 +118,10 @@ public class SchedulerManager implements InterfaceManager {
         this.shScheduler = shScheduler;
     }
     
-    @Override
     public Locale getLocale() {
         return SelectItemManager.BRASIL;
     }
 
-    @Override
     public String getPattern() {
         return SelectItemManager.PATTERN;
     }   

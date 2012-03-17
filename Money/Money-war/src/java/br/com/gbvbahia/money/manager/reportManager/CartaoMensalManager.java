@@ -4,7 +4,6 @@
  */
 package br.com.gbvbahia.money.manager.reportManager;
 
-import br.com.gbvbahia.money.manager.InterfaceManager;
 import br.com.gbvbahia.money.manager.LoginManager;
 import br.com.gbvbahia.money.manager.SelectItemManager;
 import br.com.gbvbahia.money.utils.UtilMetodos;
@@ -36,7 +35,7 @@ import org.primefaces.model.chart.ChartSeries;
  */
 @ManagedBean(name = "cartaoMensalManager")
 @RequestScoped
-public class CartaoMensalManager implements InterfaceManager {
+public class CartaoMensalManager {
     @EJB
     private ContaBancariaBeanLocal contaBancariaBean;
 
@@ -54,14 +53,12 @@ public class CartaoMensalManager implements InterfaceManager {
     //====================
     // Iniciadores        
     //====================
-    @Override
     @PostConstruct
     public void init() {
         Logger.getLogger(this.getClass().getName()).log(Level.FINE, "CartaoMensalManager.end() executado!");
         atualizarBarrChart();
     }
 
-    @Override
     @PreDestroy
     public void end() {
         Logger.getLogger(this.getClass().getName()).log(Level.FINE, "CartaoMensalManager.init() executado!");
@@ -113,12 +110,10 @@ public class CartaoMensalManager implements InterfaceManager {
     //====================
     //Getters AND Setters 
     //====================
-    @Override
     public Locale getLocale() {
         return SelectItemManager.BRASIL;
     }
 
-    @Override
     public String getPattern() {
         return SelectItemManager.PATTERN;
     }

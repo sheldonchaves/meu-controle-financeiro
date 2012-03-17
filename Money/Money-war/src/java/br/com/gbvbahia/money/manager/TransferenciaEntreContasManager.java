@@ -6,6 +6,7 @@ package br.com.gbvbahia.money.manager;
 
 import br.com.gbvbahia.money.manager.lazyTables.LazyTransferenciaEntreContas;
 import br.com.gbvbahia.money.observador.ControleObserver;
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.MovimentacaoFinanceiraBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
@@ -34,7 +35,7 @@ import org.primefaces.model.LazyDataModel;
  */
 @ManagedBean(name = "transferenciaEntreContasManager")
 @ViewScoped
-public class TransferenciaEntreContasManager implements InterfaceManager {
+public class TransferenciaEntreContasManager  {
     @EJB
     private MovimentacaoFinanceiraBeanLocal movimentacaoFinanceiraBean;
 
@@ -59,13 +60,11 @@ public class TransferenciaEntreContasManager implements InterfaceManager {
     // Iniciadores
     //====================
 
-    @Override
     @PreDestroy
     public void end() {
         Logger.getLogger(this.getClass().getName()).log(Level.FINEST, this.getClass().getName() + ".end() executado!");
     }
 
-    @Override
     @PostConstruct
     public void init() {
         this.transferencias = new LazyTransferenciaEntreContas(movimentacaoFinanceiraBean, this.loginManager.getUsuario());
@@ -84,12 +83,12 @@ public class TransferenciaEntreContasManager implements InterfaceManager {
         }
         
         if(selctDebitarDe != null){
-            selctDebitarDe.setSubmittedValue(UtilMetodos.getResourceBundle("selecione", FacesContext.getCurrentInstance()));
+            selctDebitarDe.setSubmittedValue(MensagemUtils.getResourceBundle("selecione", FacesContext.getCurrentInstance()));
             selctDebitarDe.setValue(null);
         }
         
         if(selctTransferirPara != null){
-            selctTransferirPara.setSubmittedValue(UtilMetodos.getResourceBundle("selecione", FacesContext.getCurrentInstance()));
+            selctTransferirPara.setSubmittedValue(MensagemUtils.getResourceBundle("selecione", FacesContext.getCurrentInstance()));
             selctTransferirPara.setValue(null);
         }
     }
@@ -98,13 +97,19 @@ public class TransferenciaEntreContasManager implements InterfaceManager {
         try{
         this.movimentacaoFinanceiraBean.realizarTransferenciaEntreContas(contaDebitar, contaCreditar, valor);
         ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_BANCARIA);
-        UtilMetodos.messageFactoringFull("TransferenciaSalva", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+        MensagemUtils.messageFactoringFull("TransferenciaSalva", null,
+                FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
         clean();
         }catch(ValidacaoException v){
             if (!StringUtils.isBlank(v.getAtributoName())) {
-                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(
+                        MensagemUtils.getResourceBundle(v.getMessage(),
+                        FacesContext.getCurrentInstance()),
+                        null, FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
             } else {
-                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+                MensagemUtils.messageFactoringFull(v.getMessage(), null,
+                        FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
             }
         }
     }
@@ -196,12 +201,10 @@ public class TransferenciaEntreContasManager implements InterfaceManager {
         this.transferencias = transferencias;
     }
     
-    @Override
     public Locale getLocale() {
         return SelectItemManager.BRASIL;
     }
 
-    @Override
     public String getPattern() {
         return SelectItemManager.PATTERN;
     }   

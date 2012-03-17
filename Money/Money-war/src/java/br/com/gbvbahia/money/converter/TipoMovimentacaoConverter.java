@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.money.converter;
 
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.enums.TipoMovimentacao;
 import javax.faces.application.FacesMessage;
@@ -31,7 +32,7 @@ public class TipoMovimentacaoConverter implements Converter{
                 return e;
             }
         }
-        FacesMessage msg = new FacesMessage(UtilMetodos.getResourceBundle("enumConverterErro", fc));
+        FacesMessage msg = new FacesMessage(MensagemUtils.getResourceBundle("enumConverterErro", fc));
         msg.setSeverity(FacesMessage.SEVERITY_FATAL);
         throw new ConverterException(msg);
     }
@@ -55,7 +56,7 @@ public class TipoMovimentacaoConverter implements Converter{
             TipoMovimentacao e = (TipoMovimentacao) value;
             return e.toString();
         } catch (ClassCastException e) {
-            FacesMessage msg = new FacesMessage(UtilMetodos.getResourceBundle("enumConverterErro", fc));
+            FacesMessage msg = new FacesMessage(MensagemUtils.getResourceBundle("enumConverterErro", fc));
             msg.setSeverity(FacesMessage.SEVERITY_FATAL);
             throw new ConverterException(msg);
         }

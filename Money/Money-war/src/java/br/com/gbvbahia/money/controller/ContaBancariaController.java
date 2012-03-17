@@ -1,15 +1,19 @@
 package br.com.gbvbahia.money.controller;
 
+import br.com.gbvbahia.money.controller.util.JsfUtil;
 import br.com.gbvbahia.money.controller.util.PaginationHelper;
 import br.com.gbvbahia.money.manager.LoginManager;
 import br.com.gbvbahia.money.manager.SelectItemManager;
 import br.com.gbvbahia.money.observador.ControleObserver;
-import br.com.gbvbahia.money.utils.UtilMetodos;
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.money.business.interfaces.ContaBancariaBeanLocal;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ContaBancaria;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -19,13 +23,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import org.apache.commons.lang.StringUtils;
 
 @ManagedBean(name = "contaBancariaController")
 @ViewScoped
-public class ContaBancariaController implements Serializable {
+public class ContaBancariaController extends EntityController<ContaBancaria>
+        implements Serializable {
 
-    public static final String CONTA_BANCARIA_RETURN = "mantem";
     public static final String CONTA_BANCARIA_CHANGE = "contasbancarias";
     @EJB
     private ContaBancariaBeanLocal contaBancariaBean;
@@ -34,8 +37,6 @@ public class ContaBancariaController implements Serializable {
     @ManagedProperty("#{selectItemManager}")
     private SelectItemManager selectItemManager;
     private ContaBancaria current;
-    private DataModel<ContaBancaria> items = null;
-    private PaginationHelper pagination;
 
     public ContaBancariaController() {
     }
@@ -43,99 +44,111 @@ public class ContaBancariaController implements Serializable {
     //Iniciadores
     //====================
 
+    /**
+     * Executado quando o bean JSF é instânciado.
+     */
+    @PostConstruct
+    public void init() {
+        Logger.getLogger(this.getClass().getName()).log(
+                JsfUtil.LEVEL_LOG,
+                "{0}.init()...", this.getClass().getName());
+    }
+
+    /**
+     * Executado quando o bean JSF é destruído.
+     */
+    @PreDestroy
+    public void end() {
+        Logger.getLogger(this.getClass().getName()).log(
+                JsfUtil.LEVEL_LOG,
+                "{0}.end()...", this.getClass().getName());
+    }
     //====================
     //Métodos de Negócio
     //====================
-    public void clean() {
-        this.current = null;
+
+    @Override
+    public void setEntity(ContaBancaria current) {
+        this.current = current;
     }
 
-    public void next() {
-        getPagination().nextPage();
-        recreateModel();
-    }
-
-    public void previous() {
-        getPagination().previousPage();
-        recreateModel();
-    }
-
-    public String prepareList() {
-        recreateModel();
-        current = null;
-        return CONTA_BANCARIA_RETURN;
-    }
-
-    public String prepareCreate() {
-        current = new ContaBancaria();
-        current.setUser(this.loginManager.getUsuario());
-        return CONTA_BANCARIA_RETURN;
-    }
-
+    @Override
     public String create() {
         try {
             getFacade().salvarContaBancaria(current);
-            UtilMetodos.messageFactoringFull("contaBancariaCadastradoOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_BANCARIA);
-            return prepareList();
+            MensagemUtils.messageFactoringFull("contaBancariaCadastradoOk",
+                    new Object[]{current.getLabel()},
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            ControleObserver.notificaObservers(loginManager.getUsuario(),
+                    ControleObserver.Eventos.CAD_CONTA_BANCARIA);
+            recreateTable();
+            return clean();
         } catch (ValidacaoException v) {
-            if (!StringUtils.isBlank(v.getAtributoName())) {
-                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-            } else {
-                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-            }
-            return null;
+            MensagemUtils.messageFactoringFull(v.getMessage(),
+                    v.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            return MANTEM;
+        } catch (Exception e) {
+            MensagemUtils.messageFactoringFull(e.getMessage(), null,
+                    FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            return MANTEM;
         }
     }
 
-    //====================
-    //Métodos Privados
-    //====================
-
-    private ContaBancariaBeanLocal getFacade() {
-        return contaBancariaBean;
+    @Override
+    protected ContaBancaria getNewEntity() {
+        return new ContaBancaria();
     }
 
-    private void performDestroy() {
+    @Override
+    protected String update() {
+        try {
+            getFacade().salvarContaBancaria(current);
+            MensagemUtils.messageFactoringFull("contaBancariaEditadaOk",
+                    new Object[]{current.getLabel()},
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            ControleObserver.notificaObservers(loginManager.getUsuario(),
+                    ControleObserver.Eventos.CAD_CONTA_BANCARIA);
+            recreateTable();
+            return clean();
+        } catch (ValidacaoException v) {
+            MensagemUtils.messageFactoringFull(v.getMessage(),
+                    v.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            return MANTEM;
+        } catch (Exception e) {
+            MensagemUtils.messageFactoringFull(e.getMessage(), null,
+                    FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            return MANTEM;
+        }
+    }
+
+    @Override
+    protected void performDestroy() {
         try {
             getFacade().apagarContaBancaria(current.getId());
-            UtilMetodos.messageFactoringFull("contaBancariaDeleteOk", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
-            ControleObserver.notificaObservers(loginManager.getUsuario(), ControleObserver.Eventos.CAD_CONTA_BANCARIA);
+            MensagemUtils.messageFactoringFull("contaBancariaDeleteOk",
+                    new Object[]{current.getLabel()},
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            clean();
+            ControleObserver.notificaObservers(loginManager.getUsuario(),
+                    ControleObserver.Eventos.CAD_CONTA_BANCARIA);
         } catch (ValidacaoException v) {
-            if (!StringUtils.isBlank(v.getAtributoName())) {
-                UtilMetodos.messageFactoringFull(UtilMetodos.getResourceBundle(v.getMessage(), FacesContext.getCurrentInstance()), null, v.getAtributoName(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-            } else {
-                UtilMetodos.messageFactoringFull(v.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-            }
+            MensagemUtils.messageFactoringFull(v.getMessage(),
+                    v.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            return;
         } catch (Exception e) {
-            UtilMetodos.messageFactoringFull(e.getMessage(), FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-            e.printStackTrace();
+            MensagemUtils.messageFactoringFull(e.getMessage(), null,
+                    FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            return;
         }
-    }
-
-    private void recreateModel() {
-        items = null;
-    }
-
-    private void recreatePagination() {
-        pagination = null;
-    }
-    
-    //====================
-    //Métodos em Tabelas
-    //====================
-
-    public String prepareEdit() {
-        current = (ContaBancaria) getItems().getRowData();
-        return CONTA_BANCARIA_RETURN;
-    }
-
-    public String destroy() {
-        current = (ContaBancaria) getItems().getRowData();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
-        return prepareList();
     }
 
     //====================
@@ -148,10 +161,13 @@ public class ContaBancariaController implements Serializable {
     //Getters AND Setters
     //====================
 
+    public ContaBancariaBeanLocal getFacade() {
+        return contaBancariaBean;
+    }
+
     public PaginationHelper getPagination() {
         if (pagination == null) {
             pagination = new PaginationHelper(5) {
-
                 @Override
                 public int getItemsCount() {
                     return getFacade().count();
@@ -159,18 +175,14 @@ public class ContaBancariaController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, loginManager.getUsuario()));
+                    return new ListDataModel(getFacade().findRange(
+                            new int[]{getPageFirstItem(),
+                                getPageFirstItem() + getPageSize()},
+                            loginManager.getUsuario()));
                 }
             };
         }
         return pagination;
-    }
-
-    public DataModel<ContaBancaria> getItems() {
-        if (items == null) {
-            items = getPagination().createPageDataModel();
-        }
-        return items;
     }
 
     public LoginManager getLoginManager() {
@@ -183,10 +195,6 @@ public class ContaBancariaController implements Serializable {
 
     public ContaBancaria getCurrent() {
         return current;
-    }
-
-    public void setCurrent(ContaBancaria current) {
-        this.current = current;
     }
 
     public SelectItemManager getSelectItemManager() {
