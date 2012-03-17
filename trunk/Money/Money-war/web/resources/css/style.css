@@ -113,7 +113,7 @@ h3 a{ text-decoration: none; }
 
 
 #main {}
-#content { float:right; width:750px; }
+#content { float:right; width:740px; }
 #sidebar { float:left; width:235px;}
 
 
@@ -125,7 +125,7 @@ h3 a{ text-decoration: none; }
 .box-head .right label { padding:4px 0 0 0;}
 .box-head .right input { margin-left:5px;}
 
-.pagging { padding:8px 10px; line-height:19px; color:#949494; }
+.pagging { line-height:19px; color:#949494; }
 .pagging a{ background:url(/money/resources/img/pagging.gif) repeat-x 0 0; height:20px; float:left; padding:0 8px; border:solid 1px #d5d5d5; text-decoration: none; color:#949494; margin-left:5px;  }
 .pagging a:hover { border-color:#8c3521; background:#ba4c32; color:#fff; }
 .pagging span{ float:left; margin-left:5px; padding-top:2px; }
@@ -276,4 +276,14 @@ table.referencesmall td {
 
 .ui-growl{
     margin-top: 80px;
+}
+
+.selectTableFilter{
+            font-size: 0.7em;
+            padding-left:19px;     /* Largura da imagem possui 20px */  
+            padding-top:5px;       /* Só pra centralizar o texto verticalmente já que a altura da imagem é de 25px */  
+            height:22px;           /* O padding influencia no tamanho do componente (é como se fosse 20px + 5px da altura) */  
+            background-image:url(/money/resources/img/lente16.png);  
+            background-repeat:no-repeat; /* Para não repetir o background ao longo de topo o componente */
+            background-color: white;
 }
