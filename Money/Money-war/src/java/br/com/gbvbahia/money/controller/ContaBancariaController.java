@@ -7,6 +7,7 @@ import br.com.gbvbahia.money.manager.SelectItemManager;
 import br.com.gbvbahia.money.observador.ControleObserver;
 import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.money.business.interfaces.ContaBancariaBeanLocal;
+import br.com.money.enums.TipoConta;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ContaBancaria;
 import java.io.Serializable;
@@ -37,6 +38,11 @@ public class ContaBancariaController extends EntityController<ContaBancaria>
     @ManagedProperty("#{selectItemManager}")
     private SelectItemManager selectItemManager;
     private ContaBancaria current;
+    /**
+     * Utilizado como filtro na paginação com pagination herdade de
+     * EntityController.
+     */
+    private String nome;
 
     public ContaBancariaController() {
     }
@@ -144,13 +150,56 @@ public class ContaBancariaController extends EntityController<ContaBancaria>
             MensagemUtils.messageFactoringFull(v.getMessage(),
                     v.getVariacoes(), FacesMessage.SEVERITY_ERROR,
                     FacesContext.getCurrentInstance());
-            return;
         } catch (Exception e) {
             MensagemUtils.messageFactoringFull(e.getMessage(), null,
                     FacesMessage.SEVERITY_ERROR,
                     FacesContext.getCurrentInstance());
-            return;
         }
+    }
+
+    @Override
+    public PaginationHelper getPagination() {
+        if (pagination == null) {
+            pagination = new PaginationHelper() {
+
+                @Override
+                public int getItemsCount() {
+                    return getFacade().contarContaBancariasPorUsuarioTipo(
+                            loginManager.getUsuario(), null, nome);
+                }
+
+                @Override
+                public DataModel createPageDataModel() {
+                    return new ListDataModel(
+                    getFacade().buscarContaBancariasPorUsuarioTipoPaginado(
+                    loginManager.getUsuario(), null, nome,
+                    getPageFirstItem(),
+                    getPageFirstItem() + getPageSize()));
+                }
+            };
+        }
+        return pagination;
+    }
+    //====================
+    //Métodos Filtros Paginação
+    //====================
+
+    /**
+     * Retorna o nome utilizado para filtro na paginação.
+     *
+     * @return nome java.lang.String
+     */
+    public String getNome() {
+        return nome;
+    }
+
+    /**
+     * Define o nome do Órgão para filtrar na paginação.
+     *
+     * @param nomeParam java.lang.String
+     */
+    public void setNome(final String nomeParam) {
+        this.nome = nomeParam;
     }
 
     //====================
@@ -165,26 +214,6 @@ public class ContaBancariaController extends EntityController<ContaBancaria>
 
     public ContaBancariaBeanLocal getFacade() {
         return contaBancariaBean;
-    }
-
-    public PaginationHelper getPagination() {
-        if (pagination == null) {
-            pagination = new PaginationHelper(5) {
-                @Override
-                public int getItemsCount() {
-                    return getFacade().count();
-                }
-
-                @Override
-                public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(
-                            new int[]{getPageFirstItem(),
-                                getPageFirstItem() + getPageSize()},
-                            loginManager.getUsuario()));
-                }
-            };
-        }
-        return pagination;
     }
 
     public LoginManager getLoginManager() {

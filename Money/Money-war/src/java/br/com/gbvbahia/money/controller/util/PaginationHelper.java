@@ -4,9 +4,14 @@ import javax.faces.model.DataModel;
 
 public abstract class PaginationHelper {
 
+    private static final int ITENS_POR_PAGINA_DEFULT = 5;
     private int pageSize;
     private int page;
 
+    public PaginationHelper() {
+        this.pageSize = ITENS_POR_PAGINA_DEFULT;
+    }
+    
     public PaginationHelper(int pageSize) {
         this.pageSize = pageSize;
     }
