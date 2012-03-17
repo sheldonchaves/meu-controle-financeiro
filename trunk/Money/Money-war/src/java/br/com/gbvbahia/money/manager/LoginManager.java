@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.money.manager;
 
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.UsuarioBeanLocal;
 import br.com.money.modelos.Usuario;
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpSession;
  */
 @ManagedBean(name = "loginManager")
 @SessionScoped
-public class LoginManager implements InterfaceManager {
+public class LoginManager {
 
     @EJB
     private UsuarioBeanLocal usuarioBean;
@@ -52,7 +53,7 @@ public class LoginManager implements InterfaceManager {
             this.usuario = prop;
             return "principal";
         } else {
-            UtilMetodos.messageFactoringFull("loginInvalido", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
+            MensagemUtils.messageFactoringFull("loginInvalido", null, FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
             Logger.getLogger(LoginManager.class.getName()).log(Level.WARNING, "Tentativa de login, {0}, sem sucesso!", usuario.getLogin());
             verificaTentativaInvalidaDeLogin();
             return null;
@@ -76,13 +77,11 @@ public class LoginManager implements InterfaceManager {
     //====================
     // Iniciadores
     //====================
-    @Override
     @PreDestroy
     public void end() {
     }
 
     @PostConstruct
-    @Override
     public void init() {
         this.usuario = new Usuario();
 //        //EM DESENVOLVIMENTO
@@ -136,12 +135,10 @@ public class LoginManager implements InterfaceManager {
         mapProtector.remove(ip);
     }
     
-    @Override
     public Locale getLocale() {
         return SelectItemManager.BRASIL;
     }
 
-    @Override
     public String getPattern() {
         return SelectItemManager.PATTERN;
     }   

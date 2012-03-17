@@ -4,9 +4,9 @@
  */
 package br.com.gbvbahia.money.manager.reportManager;
 
-import br.com.gbvbahia.money.manager.InterfaceManager;
 import br.com.gbvbahia.money.manager.LoginManager;
 import br.com.gbvbahia.money.manager.SelectItemManager;
+import br.com.gbvbahia.money.utils.MensagemUtils;
 import br.com.gbvbahia.money.utils.UtilMetodos;
 import br.com.money.business.interfaces.ReportBeanLocal;
 import br.com.money.enums.TipoMovimentacao;
@@ -32,7 +32,7 @@ import org.primefaces.model.chart.ChartSeries;
  */
 @ManagedBean(name = "acumuladoMensalManager")
 @RequestScoped
-public class AcumuladoMensalManager implements InterfaceManager {
+public class AcumuladoMensalManager {
 
     private static final Integer PERIODO = 13;
     @EJB
@@ -49,14 +49,12 @@ public class AcumuladoMensalManager implements InterfaceManager {
     //====================
     // Iniciadores        
     //====================
-    @Override
     @PostConstruct
     public void init() {
         Logger.getLogger(this.getClass().getName()).log(Level.FINE, "AcumuladoMensalManager.end() executado!");
         atualizarBarrChart();
     }
 
-    @Override
     @PreDestroy
     public void end() {
         Logger.getLogger(this.getClass().getName()).log(Level.FINE, "AcumuladoMensalManager.init() executado!");
@@ -68,8 +66,8 @@ public class AcumuladoMensalManager implements InterfaceManager {
     private void atualizarBarrChart() {
         Date[] datas = periodoInformacao();
         categoryModel = new CartesianChartModel();
-        ChartSeries receitas = new ChartSeries(UtilMetodos.getResourceBundle("receitas", FacesContext.getCurrentInstance()));
-        ChartSeries dividas = new ChartSeries(UtilMetodos.getResourceBundle("dividas", FacesContext.getCurrentInstance()));
+        ChartSeries receitas = new ChartSeries(MensagemUtils.getResourceBundle("receitas", FacesContext.getCurrentInstance()));
+        ChartSeries dividas = new ChartSeries(MensagemUtils.getResourceBundle("dividas", FacesContext.getCurrentInstance()));
         for (Date date : datas) {
             Map<TipoMovimentacao, Double> infoMap = this.reportBean.acumuladoMes(date, this.loginManager.getUsuario());
             receitas.set(UtilMetodos.getDataStringMesAno(date), infoMap.get(TipoMovimentacao.DEPOSITO));
@@ -99,12 +97,10 @@ public class AcumuladoMensalManager implements InterfaceManager {
     //====================
     //Getters AND Setters 
     //====================
-    @Override
     public Locale getLocale() {
         return SelectItemManager.BRASIL;
     }
 
-    @Override
     public String getPattern() {
         return SelectItemManager.PATTERN;
     }
