@@ -51,7 +51,6 @@
                     <div class="shell">
 
                         <!-- Message OK -->		
-                        <p:growl id="messagestemp" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="6000"/> 
                         <!-- End Message OK -->		
                         <!-- Main -->
                         <div id="main">
@@ -73,17 +72,6 @@
                                     <ui:insert name="contsup">
                                         <ui:include src="contsup.xhtml"/>
                                     </ui:insert>
-                                    <div class="table">
-                                        <!-- Pagging -->
-                                        <div class="pagging">
-                                            <ui:insert name="fotsup">
-                                                <ui:include src="fotsup.xhtml"/>
-                                            </ui:insert>
-                                        </div>
-                                        <!-- End Pagging -->
-                                    </div>
-                                    <!-- Table -->
-
                                 </div>
                                 <!-- End Box -->
 
@@ -153,6 +141,7 @@
                             <h:outputLabel value="" />
                         </f:facet>
                     </p:ajaxStatus>
+                    <p:growl id="messagestemp" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true" life="6000"/> 
                 </div>
             </div>
         </h:body>
