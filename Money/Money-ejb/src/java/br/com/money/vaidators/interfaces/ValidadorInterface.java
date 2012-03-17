@@ -6,6 +6,7 @@
 package br.com.money.vaidators.interfaces;
 
 import br.com.money.exceptions.ValidacaoException;
+import br.com.money.modelos.commons.EntityInterface;
 import javax.ejb.Local;
 
 
@@ -18,7 +19,7 @@ import javax.ejb.Local;
  * @author gbvbahia
  */
 @Local
-public interface ValidadorInterface<E extends ValidadoInterface, Bean> {
+public interface ValidadorInterface<E extends EntityInterface, Bean> {
 
     /**
      * Recebe a entidade a ser validada, um bean

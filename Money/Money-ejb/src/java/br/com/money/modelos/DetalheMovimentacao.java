@@ -5,8 +5,10 @@
 package br.com.money.modelos;
 
 import br.com.money.enums.TipoMovimentacao;
+import br.com.money.modelos.commons.EntityInterface;
 import br.com.money.vaidators.interfaces.ValidadoInterface;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -16,7 +18,8 @@ import javax.persistence.*;
 @Table(name = "money_detalhe_movimentacao",
 uniqueConstraints =
 @UniqueConstraint(name = "uk_detalhe_usuario", columnNames = {"ds_detalhe", "fk_usuario"}))
-public class DetalheMovimentacao implements ValidadoInterface, Comparable<DetalheMovimentacao> {
+public class DetalheMovimentacao implements ValidadoInterface,
+                                        EntityInterface<DetalheMovimentacao> {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,14 +31,17 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
     private Long id;
 
     @Column(name = "ds_detalhe", length = QUANTIDADE_CARACTERES_DETALHE, unique = false, nullable = false)
+    @NotNull
     private String detalhe;
 
     @Column(name="en_tipo_movimentacao", nullable=false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private TipoMovimentacao tipoMovimentacao;
     
     @ManyToOne(optional=false)
     @JoinColumn(name="fk_usuario", referencedColumnName="id")
+    @NotNull
     private Usuario usuarioProprietario;
     
     /**
@@ -102,10 +108,13 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
             return false;
         }
         final DetalheMovimentacao other = (DetalheMovimentacao) obj;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+        if (this.id != other.id && (this.id == null 
+                || !this.id.equals(other.id))) {
             return false;
         }
-        if ((this.detalhe == null) ? (other.detalhe != null) : !this.detalhe.equals(other.detalhe)) {
+        if ((this.detalhe == null) 
+                ? (other.detalhe != null) 
+                : !this.detalhe.equals(other.detalhe)) {
             return false;
         }
         return true;
@@ -113,7 +122,8 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
 
     @Override
     public String toString() {
-        return "DetalheMovimentacao{" + "id=" + id + ", detalhe=" + detalhe + ", ativo=" + ativo + '}';
+        return "DetalheMovimentacao{" + "id=" + id +
+                ", detalhe=" + detalhe + ", ativo=" + ativo + '}';
     }
 
     @Override
@@ -127,4 +137,21 @@ public class DetalheMovimentacao implements ValidadoInterface, Comparable<Detalh
         }
         return i;
     }
+
+    @Override
+    public String getLabel() {
+        try {
+        return tipoMovimentacao.getTipoMovimentacaoString() + " "
+                + this.detalhe;
+        } catch (Exception e) {
+            return toString();
+        }
+    }
+
+    @Override
+    public boolean verificarId() {
+        return false;
+    }
+    
+    
 }

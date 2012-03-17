@@ -15,21 +15,24 @@ import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.MovimentacaoFinanceira;
 import br.com.money.modelos.ReceitaDivida;
 import br.com.money.modelos.Usuario;
+import br.com.money.utils.UtilBeans;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
  * @author Guilherme
  */
 @Stateless
-public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinanceira> implements MovimentacaoFinanceiraBeanLocal {
+public class MovimentacaoFinanceiraBean extends
+        AbstractFacade<MovimentacaoFinanceira, Long>
+        implements MovimentacaoFinanceiraBeanLocal {
 
     public MovimentacaoFinanceiraBean() {
         super(MovimentacaoFinanceira.class);
@@ -38,6 +41,11 @@ public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinan
     @Override
     protected EntityManager getEntityManager() {
         return this.manager;
+    }
+
+    @Override
+    protected ValidadorInterface getValidador() {
+        return movimentacaoFinanceiraValidador;
     }
 
     @EJB
@@ -56,16 +64,15 @@ public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinan
      */
     @Override
     public void salvarMovimentacaoFinanceira(ContaBancaria contaBancaria, ReceitaDivida receitaDivida) throws ValidacaoException{
-        ContaBancaria cb = manager.find(ContaBancaria.class, contaBancaria.getId());
-        ReceitaDivida rd = manager.find(ReceitaDivida.class, receitaDivida.getId());
+        ContaBancaria cb = contaBancariaBean.find(contaBancaria.getId());
+        ReceitaDivida rd = receitaDividaBean.find(receitaDivida.getId());
         rd.setValor(receitaDivida.getValor());//Caso seja informado um novo valor ele será considerado
         MovimentacaoFinanceira mf = new MovimentacaoFinanceira(cb, rd);
         cb.setSaldo(cb.getSaldo() + rd.getValorParaCalculoDireto());
         rd.setStatusPagamento(StatusPagamento.PAGA);
-        this.movimentacaoFinanceiraValidador.validar(mf, this, null);
         this.contaBancariaBean.salvarContaBancaria(cb);
         this.receitaDividaBean.salvarReceitaDivida(rd);
-        manager.persist(mf);
+        create(mf);
         manager.flush();
     }
 
@@ -80,13 +87,16 @@ public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinan
      * @return 
      */
     @Override
-    public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, Usuario usuario, Long idContaBancaria) {
-        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarMovimentacaoPorUsuarioStatusPaginada");
-        q.setMaxResults(tamanho);
-        q.setFirstResult(posicaoInicial);
-        q.setParameter("usuario", usuario);
-        q.setParameter("id", idContaBancaria);
-        return q.getResultList();
+    public List<MovimentacaoFinanceira> 
+            buscarMovimentacaoPorUsuarioStatusPaginada(
+            final int posicaoInicial, int tamanho, Usuario usuario,
+            Long idContaBancaria) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("id", idContaBancaria);
+        return listPesqParam("MovimentacaoFinanceiraBean.buscar"
+                + "MovimentacaoPorUsuarioStatusPaginada", parans,
+                tamanho, posicaoInicial);
     }
 
    /**
@@ -98,47 +108,48 @@ public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinan
      */
     @Override
     public Integer buscarQtdadeMovimentacaoPorUsuarioStatusPaginada(Usuario usuario, Long idContaBancaria) {
-        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarQtdadeMovimentacaoPorUsuarioStatusPaginada");
-        q.setParameter("usuario", usuario);
-        q.setParameter("id", idContaBancaria);
-        Long toReturn = (Long) q.getSingleResult();
-        return toReturn.intValue();
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("id", idContaBancaria);
+        return pesqCount("MovimentacaoFinanceiraBean.buscarQtdade"
+                + "MovimentacaoPorUsuarioStatusPaginada", parans).intValue();
     }
     
     @Override
     public List<MovimentacaoFinanceira> buscarTodasTransferenciasEntreContasPaginada(int posicaoInicial, int tamanho, Usuario usuario){
-        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarTodasTransferenciasEntreContasPaginada");
-        q.setMaxResults(tamanho);
-        q.setFirstResult(posicaoInicial);
-        q.setParameter("usuario", usuario);
-        return q.getResultList();
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        return listPesqParam("MovimentacaoFinanceiraBean.buscarTodas"
+                + "TransferenciasEntreContasPaginada",
+                parans, tamanho, posicaoInicial);
     }
     
     @Override
     public Integer buscarQtdadeTodasTransferenciasEntreContasPaginada(Usuario usuario){
-        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarQtdadeTodasTransferenciasEntreContasPaginada");
-        q.setParameter("usuario", usuario);
-        Long toReturn = (Long) q.getSingleResult();
-        return toReturn.intValue();
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        return pesqCount("MovimentacaoFinanceiraBean.buscarQtdade"
+                + "TodasTransferenciasEntreContasPaginada", parans).intValue();
     }
     
     @Override
     public List<MovimentacaoFinanceira> buscarMovimentacaoPorUsuarioContaPaginada(int posicaoInicial, int tamanho, Usuario usuario, TipoConta tipoConta){
-        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarMovimentacaoPorUsuarioContaPaginada");
-        q.setMaxResults(tamanho);
-        q.setFirstResult(posicaoInicial);
-        q.setParameter("usuario", usuario);
-        q.setParameter("tipoConta", tipoConta);
-        return q.getResultList();
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("tipoConta", tipoConta);
+        return listPesqParam("MovimentacaoFinanceiraBean."
+                + "buscarMovimentacaoPorUsuarioContaPaginada",
+                parans, tamanho, posicaoInicial);
     }
     
     @Override
      public Integer buscarQtdadeMovimentacaoPorUsuarioContaPaginada(Usuario usuario, TipoConta tipoConta) {
-        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarQtdadeMovimentacaoPorUsuarioContaPaginada");
-        q.setParameter("usuario", usuario);
-        q.setParameter("tipoConta", tipoConta);
-        Long toReturn = (Long) q.getSingleResult();
-        return toReturn.intValue(); 
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("tipoConta", tipoConta);
+        return pesqCount("MovimentacaoFinanceiraBean.buscarQtdade"
+                + "MovimentacaoPorUsuarioContaPaginada",
+                parans).intValue();
      }
     
     /**
@@ -149,63 +160,60 @@ public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinan
      */
     @Override
     public void desfazerMovimentacaoFinanceira(MovimentacaoFinanceira movimentacaoFinanceira) throws ValidacaoException{
-        MovimentacaoFinanceira mv = manager.find(MovimentacaoFinanceira.class, movimentacaoFinanceira.getId());
+        MovimentacaoFinanceira mv = find(movimentacaoFinanceira.getId());
         if(mv.getReceitaDivida() == null){
-            throw new MovimentacaoFinanceiraException("movimentacaoFinanceiraDesfazerTransferenciaErro", "Receita/Dívida");
+            throw new MovimentacaoFinanceiraException("movimentacao"
+                    + "FinanceiraDesfazerTransferenciaErro",
+                    "Receita/Dívida");
         }
-        ContaBancaria cb = manager.find(ContaBancaria.class, mv.getContaBancariaDebitada().getId());
-        ReceitaDivida rd = manager.find(ReceitaDivida.class, mv.getReceitaDivida().getId());
+        ContaBancaria cb =
+                contaBancariaBean.find(mv.getContaBancariaDebitada().getId());
+        ReceitaDivida rd =
+                receitaDividaBean.find(mv.getReceitaDivida().getId());
         cb.setSaldo(cb.getSaldo() - rd.getValorParaCalculoDireto());
         rd.setStatusPagamento(StatusPagamento.NAO_PAGA);
         contaBancariaBean.salvarContaBancaria(cb);
         receitaDividaBean.salvarReceitaDivida(rd);
-        manager.remove(mv);
+        remove(mv);
         manager.flush();
     }
     
     /**
      * UTILIZE PARA TRANSFERÊNCIAS ENTRE CONTAS
-     * Cria uma movimentação fianceira que referencia uma transferência entre contas bancárias
+     * Cria uma movimentação fianceira que referencia uma
+     * transferência entre contas bancárias
      * @param contaDe
      * @param contaPara
      * @param valor
      * @throws ValidacaoException 
      */
     @Override
-    public void realizarTransferenciaEntreContas(ContaBancaria contaDe, ContaBancaria contaPara, double valor) throws ValidacaoException{
+    public void realizarTransferenciaEntreContas(ContaBancaria contaDe,
+    ContaBancaria contaPara, double valor) throws ValidacaoException{
         if(contaDe.equals(contaPara)){
-            throw new MovimentacaoFinanceiraException("transferenciaContaIguais", "Conta Origem, Conta Destino");
+            throw new MovimentacaoFinanceiraException("transferencia"
+                    + "ContaIguais", "Conta Origem, Conta Destino");
         }
-        ContaBancaria cbDe = manager.find(ContaBancaria.class, contaDe.getId());
-        ContaBancaria cbPara = manager.find(ContaBancaria.class, contaPara.getId());
+        ContaBancaria cbDe = contaBancariaBean.find(contaDe.getId());
+        ContaBancaria cbPara = contaBancariaBean.find(contaPara.getId());
         MovimentacaoFinanceira mf = new MovimentacaoFinanceira(cbDe, cbPara, valor);
-        this.movimentacaoFinanceiraValidador.validar(mf, this, null);
         cbDe.setSaldo(cbDe.getSaldo() - valor);
         cbPara.setSaldo(cbPara.getSaldo() + valor);
         this.contaBancariaBean.salvarContaBancaria(cbDe);
         this.contaBancariaBean.salvarContaBancaria(cbPara);
-        manager.persist(mf);
+        create(mf);
         manager.flush();
     }
     
     @Override
-    public List<MovimentacaoFinanceira> buscarMovimentacaoFinanceiraPorUsuarioPeriodo(Usuario usuario, TipoConta tipoConta, Date ini, Date fim){
-        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.buscarMovimentacaoFinanceiraPorUsuarioPeriodo");
-        q.setParameter("tipoConta", tipoConta);
-        q.setParameter("user", usuario);
-        q.setParameter("dataI", ini);
-        q.setParameter("dataF", fim);
-        return q.getResultList();
+    public List<MovimentacaoFinanceira> buscarMovimentacaoFinanceiraPorUsuarioPeriodo(
+            Usuario usuario, TipoConta tipoConta, Date ini, Date fim){
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("tipoConta", tipoConta);
+        parans.put("user", usuario);
+        parans.put("dataI", UtilBeans.primeiroUltimoHorario(ini)[0]);
+        parans.put("dataF", UtilBeans.primeiroUltimoHorario(fim)[1]);
+        return listPesqParam("MovimentacaoFinanceiraBean.buscar"
+                + "MovimentacaoFinanceiraPorUsuarioPeriodo", parans);
     }
-
-    @Override
-    public List<MovimentacaoFinanceira> findRange(int[] range, Usuario usuarioProprietario) {
-        Query q = manager.createNamedQuery("MovimentacaoFinanceiraBean.findRangeByUser");
-        q.setParameter("user", usuarioProprietario);
-        q.setMaxResults(range[1] - range[0]);
-        q.setFirstResult(range[0]);
-        return q.getResultList();
-    }
-    
-    
 }

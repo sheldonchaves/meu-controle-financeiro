@@ -9,26 +9,31 @@ import br.com.money.enums.TipoConta;
 import br.com.money.exceptions.ContaBancariaException;
 import br.com.money.modelos.ContaBancaria;
 import br.com.money.modelos.Usuario;
+import br.com.money.utils.UtilBeans;
 import br.com.money.vaidators.interfaces.ValidadorInterface;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
  * @author Guilherme
  */
 @Stateless
-public class ContaBancariaBean extends AbstractFacade<ContaBancaria> implements ContaBancariaBeanLocal {
+public class ContaBancariaBean extends AbstractFacade<ContaBancaria, Long> implements ContaBancariaBeanLocal {
 
     @Override
     protected EntityManager getEntityManager() {
         return this.manager;
+    }
+
+    @Override
+    protected ValidadorInterface getValidador() {
+        return this.contaBancariaValidador;
     }
 
     public ContaBancariaBean() {
@@ -42,48 +47,39 @@ public class ContaBancariaBean extends AbstractFacade<ContaBancaria> implements 
 
     @Override
     public void salvarContaBancaria(ContaBancaria contaBancaria) {
-        contaBancariaValidador.validar(contaBancaria, this, null);
         if (contaBancaria.getId() == null) {
-            manager.persist(contaBancaria);
+            create(contaBancaria);
         } else {
-            manager.merge(contaBancaria);
+            update(contaBancaria);
         }
-        manager.flush();
     }
-
-    @Override
-    public ContaBancaria buscarContaBancariaPorId(long id) {
-        return manager.find(ContaBancaria.class, id);
-    }
-    
+   
     @Override
     public ContaBancaria buscarContaBancariaPorNomeTipo(String nomeConta, TipoConta tipo) {
-        Query q = manager.createNamedQuery("ContaBancariaBean.buscarContaBancariaPorNomeTipo");
-        q.setParameter("nomeConta", nomeConta);
-        q.setParameter("tipoConta", tipo);
-        try {
-            return (ContaBancaria) q.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("nomeConta", nomeConta);
+        parans.put("tipoConta", tipo);
+        return pesqParam("ContaBancariaBean.buscarContaBancariaPorNomeTipo", parans);
     }
 
     @Override
     public List<ContaBancaria> buscarContaBancariasPorUsuario(Usuario usuario) {
-        Query q = manager.createNamedQuery("ContaBancariaBean.buscarContaBancariasPorUsuario");
-        q.setParameter("user", usuario);
-        final List<ContaBancaria> resultList = q.getResultList();
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("user", usuario);
+        final List<ContaBancaria> resultList =
+                listPesqParam("ContaBancariaBean.buscarConta"
+                + "BancariasPorUsuario", parans);
         Collections.sort(resultList);
         return resultList;
     }
 
     @Override
     public void apagarContaBancaria(Long id) {
-        ContaBancaria toDelete = manager.find(ContaBancaria.class, id);
+        ContaBancaria toDelete = find(id);
         if (toDelete != null) {
-            if (toDelete.getMovimentacaoFinanceira().isEmpty() && toDelete.getMovimentacaoFinanceiraTransferida().isEmpty()) {
-                manager.remove(toDelete);
-                manager.flush();
+            if (toDelete.getMovimentacaoFinanceira().isEmpty() 
+                    && toDelete.getMovimentacaoFinanceiraTransferida().isEmpty()) {
+                remove(toDelete);
             } else {
                 throw new ContaBancariaException("contaComMovimentacaoToDelete");
             }
@@ -108,15 +104,30 @@ public class ContaBancariaBean extends AbstractFacade<ContaBancaria> implements 
     }
 
     @Override
-    public List<ContaBancaria> findRange(int[] range, Usuario usuarioProprietario) {
-        Query q = manager.createNamedQuery("ContaBancariaBean.buscarContaBancariasPorUsuario");
-        q.setParameter("user", usuarioProprietario);
-        q.setMaxResults(range[1] - range[0]);
-        q.setFirstResult(range[0]);
-        final List<ContaBancaria> resultList = q.getResultList();
-        return resultList;
+    public List<ContaBancaria> buscarContaBancariasPorUsuarioTipoPaginado(
+            final Usuario ususario, final TipoConta tipo,
+            final String nomeConta, final int inicial, final int total) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("user", ususario);
+        parans.put("tipoConta", tipo);
+        parans.put("tipoConta2", tipo);
+        parans.put("nomeConta",
+                UtilBeans.acertaNomeParaLike(nomeConta, UtilBeans.LIKE_END));
+        return listPesqParam("ContaBancariaBean.buscarContaBancarias"
+                + "PorUsuarioTipoPaginado", parans, total - inicial, inicial);
     }
-    
-        
 
+    @Override
+    public int contarContaBancariasPorUsuarioTipo(
+            final Usuario ususario, final TipoConta tipo,
+            final String nomeConta) {
+        Map<String, Object> parans = AbstractFacade.getMapParans();
+        parans.put("user", ususario);
+        parans.put("tipoConta", tipo);
+        parans.put("tipoConta2", tipo);
+        parans.put("nomeConta",
+                UtilBeans.acertaNomeParaLike(nomeConta, UtilBeans.LIKE_END));
+        return pesqCount("ContaBancariaBean.contarContaBancariasPor"
+                + "UsuarioTipo", parans).intValue();
+    }
 }

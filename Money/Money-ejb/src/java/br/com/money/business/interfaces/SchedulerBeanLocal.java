@@ -15,7 +15,7 @@ import javax.ejb.Local;
  * @author Guilherme
  */
 @Local
-public interface SchedulerBeanLocal extends AbstractFacadeLocal<Scheduler>{
+public interface SchedulerBeanLocal extends InterfaceFacade<Scheduler, Integer>{
  
     /**
      * Salva ou atualiza u Scheduler existente.

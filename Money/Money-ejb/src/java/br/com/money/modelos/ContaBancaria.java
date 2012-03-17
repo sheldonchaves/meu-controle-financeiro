@@ -5,6 +5,7 @@
 package br.com.money.modelos;
 
 import br.com.money.enums.TipoConta;
+import br.com.money.modelos.commons.EntityInterface;
 import br.com.money.vaidators.interfaces.ValidadoInterface;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +23,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -32,7 +35,8 @@ import org.apache.commons.lang.StringUtils;
 @Table(name = "money_conta_bancaria",
 uniqueConstraints =
 @UniqueConstraint(name = "uk_nomeconta_tipoconta", columnNames = {"ds_conta", "en_tipo"}))
-public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancaria> {
+public class ContaBancaria implements ValidadoInterface,
+                                      EntityInterface<ContaBancaria> {
 
     private static final long serialVersionUID = 1L;
     public static final int CARACTERES_NOME_CONTA = 100;
@@ -42,13 +46,17 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
     private Long id;
     
     @Column(name = "ds_conta", nullable = false, length = CARACTERES_NOME_CONTA)
+    @NotNull
+    @Size(max = CARACTERES_NOME_CONTA)
     private String nomeConta;
     
     @Column(name = "en_tipo", nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private TipoConta tipoConta;
     
     @Column(name = "vl_saldo", nullable = false)
+    @NotNull
     private Double saldo = 0.00;
     
     @Column(name = "fl_status", nullable = false)
@@ -64,6 +72,7 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
     
     @ManyToOne(targetEntity = br.com.money.modelos.Usuario.class)
     @JoinColumn(name = "fk_user_id", referencedColumnName = "id", nullable = false)
+    @NotNull
     private Usuario user;
 
     public Set<MovimentacaoFinanceira> getMovimentacaoFinanceira() {
@@ -77,6 +86,7 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
         this.movimentacaoFinanceira = movimentacaoFinanceira;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -138,7 +148,14 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
 
     @Override
     public String toString() {
-        return "ContaBancaria{" + "id=" + id + ", nomeConta=" + nomeConta + ", tipoConta=" + tipoConta + ", saldo=" + saldo + ", status=" + status + '}';
+        return "ContaBancaria{" + "id=" + id + ", nomeConta*=" + nomeConta
+                + ", tipoConta*=" + tipoConta + ", saldo=" + saldo
+                + ", status=" + status + '}';
+    }
+
+    @Override
+    public boolean verificarId() {
+        return false;
     }
 
     @Override
@@ -181,6 +198,7 @@ public class ContaBancaria implements ValidadoInterface, Comparable<ContaBancari
         return hash;
     }
 
+    @Override
     public String getLabel() {
         return this.tipoConta.getAbreviacao() + " - " + StringUtils.substring(this.nomeConta, 0, 20);
     }
