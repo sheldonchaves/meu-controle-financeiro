@@ -11,7 +11,7 @@
                             <p:calendar value="#{contaPagarController.dataVencimento}"
                                         locale="pt" pattern="dd/MM/yyyy"
                                         timeZone="#{initParam['timezone']}" id="search"
-                                        maxlength="10" onkeyup="formatar(this, '##/##/####', event)"
+                                        maxlength="10" readOnlyInputText="true"
                                         navigator="true" >
                                 <p:ajax event="dateSelect" listener="#{contaPagarController.recreateTable()}" 
                                         update="tableForm"/>
@@ -26,7 +26,7 @@
                                     <p:ajax event="keyup" listener="#{contaPagarController.recreateTable()}" update="tableForm"
                                             oncomplete="focusCampo('contapagartable:tableForm:search2')"/>
                                 </h:inputText>
-                                <p:tooltip for="search" showEvent="focus" hideEvent="blur" value="#{msg.tipoBuscaContem}"/> 
+                                <p:tooltip for="search2" showEvent="focus" hideEvent="blur" value="#{msg.tipoBuscaContem}"/> 
                         </th>
                         <th><h:outputText value="#{msg.observacao}"/></th>
                         <th width="150" class="ac"></th>
