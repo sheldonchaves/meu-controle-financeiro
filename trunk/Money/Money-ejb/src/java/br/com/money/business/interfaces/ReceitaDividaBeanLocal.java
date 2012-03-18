@@ -35,32 +35,49 @@ public interface ReceitaDividaBeanLocal extends
      * @param salvarParcelas
      * @param contaBancaria
      * @param statusParcelas
-     * @throws ValidacaoException 
+     * @throws ValidacaoException
      */
-    public void salvarReceitaDivida(ReceitaDivida conta, int parcelas,boolean salvarParcelas, ContaBancaria contaBancaria, StatusPagamento statusParcelas) throws ValidacaoException;
+    public void salvarReceitaDivida(ReceitaDivida conta,
+            int parcelas,boolean salvarParcelas,
+            ContaBancaria contaBancaria, StatusPagamento statusParcelas)
+            throws ValidacaoException;
 
     /**
-     * Consulta utilizada para paginação de contas, devido umentar cada vez mais será necessário
-     * consultar de moto tardio, para que não ocorra problemas de desempenho.
+     * Consulta utilizada para paginação de contas, devido umentar
+     * cada vez mais será necessário consultar de moto tardio,
+     * para que não ocorra problemas de desempenho.
      * @param posicaoInicial Onde irá iniciar a pesquisa dos registros
      * @param tamanho Quantidade de dados máximo que será retornado
      * @param usuario O proprietário das contas
      * @param statusPagamento Se pago ou não pago
      * @param tipoMovimentacao Receita ou Dívida
+     * @param dataVencimento Opcional se null considera todos.
+     * @param detalhe Opcional, se null considera todos, referente ao
+     * detalhe de DetalheMovimentacao.
      * @return Uma List de ReceitaDivida
      */
-    List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(int posicaoInicial, int tamanho, Usuario usuario,
-            StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao);
+    List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(
+            int posicaoInicial, int tamanho, Usuario usuario,
+            StatusPagamento statusPagamento,
+            TipoMovimentacao tipoMovimentacao, Date dataVencimento,
+            String detalhe);
 
     /**
      * Traz a quantidade total de itens dentro do perfil do método<br>
-     * buscarReceitaDividasPorUsuarioStatusPaginada<br>
-     * @param usuario
-     * @param statusPagamento
-     * @param tipoMovimentacao
-     * @return 
+     * buscarReceitaDividasPorUsuarioStatusPaginada<br>.
+     * @param usuario Obrigatorio.
+     * @param statusPagamento Obrigatorio.
+     * @param tipoMovimentacao Obrigatório.
+     * @param dataVencimento Se nulotraz todos.
+     * @param detalhe Opcional, se null considera todos, referente ao
+     * detalhe de DetalheMovimentacao.
+     * @return Quantidade de linhas dentro do perfil, zero se
+     * não encontrar.
      */
-    Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(Usuario usuario, StatusPagamento statusPagamento, TipoMovimentacao tipoMovimentacao);
+    Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(
+            Usuario usuario, StatusPagamento statusPagamento,
+            TipoMovimentacao tipoMovimentacao, Date dataVencimento,
+            final String detalhe);
 
     /**
      * Apaga a ReceitaDivida passada. Se quiser apagar as parcelas passar true no segundo parâmetro.
