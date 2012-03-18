@@ -38,6 +38,8 @@ public class LoginManager {
 
     public static final String SESSION_ADMIN = "ADMIN";
 
+    private String usuarioLogin;
+    private String usuarioSenha;
     private Usuario usuario;
     
     private static Map<String, Integer> mapProtector = new HashMap<String, Integer>();
@@ -46,15 +48,15 @@ public class LoginManager {
     }
 
     public String logar() {
-        Usuario prop = usuarioBean.buscarUsuarioByLogin(usuario.getLogin());
-        if (prop != null && prop.getPassword().equals(this.usuarioBean.criptografarSenha(usuario.getPassword(), prop.stringAMIN()))) {
+        Usuario prop = usuarioBean.buscarUsuarioByLogin(usuarioLogin);
+        if (prop != null && prop.getPassword().equals(this.usuarioBean.criptografarSenha(usuarioSenha, prop.stringAMIN()))) {
             insereProprietarioSession(prop);
             removerMapProtector();
             this.usuario = prop;
             return "principal";
         } else {
             MensagemUtils.messageFactoringFull("loginInvalido", null, FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-            Logger.getLogger(LoginManager.class.getName()).log(Level.WARNING, "Tentativa de login, {0}, sem sucesso!", usuario.getLogin());
+            Logger.getLogger(LoginManager.class.getName()).log(Level.WARNING, "Tentativa de login, {0}, sem sucesso!", usuarioLogin);
             verificaTentativaInvalidaDeLogin();
             return null;
         }
@@ -105,6 +107,22 @@ public class LoginManager {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public String getUsuarioLogin() {
+        return usuarioLogin;
+    }
+
+    public void setUsuarioLogin(String usuarioLogin) {
+        this.usuarioLogin = usuarioLogin;
+    }
+
+    public String getUsuarioSenha() {
+        return usuarioSenha;
+    }
+
+    public void setUsuarioSenha(String usuarioSenha) {
+        this.usuarioSenha = usuarioSenha;
     }
 
     

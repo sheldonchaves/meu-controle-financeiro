@@ -104,7 +104,7 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
             ControleObserver.notificaObservers(loginManager.getUsuario(),
                     ControleObserver.Eventos.CAD_CONTA_PAGAR_RECEBER);
             MensagemUtils.messageFactoringFull("contaPagarSalva",
-                    new Object[]{current.toString()},
+                    new Object[]{current.getLabel()},
                     FacesMessage.SEVERITY_INFO,
                     FacesContext.getCurrentInstance());
             recreateTable();
@@ -132,7 +132,7 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
             this.receitaDividaBean.apagarReceitaDivida(current,
                     apagarPrestacoes);
             MensagemUtils.messageFactoringFull("contaApagadaOK",
-                    new Object[]{current.toString()},
+                    new Object[]{current.getLabel()},
                     FacesMessage.SEVERITY_INFO,
                     FacesContext.getCurrentInstance());
             recreateTable();
@@ -169,7 +169,7 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
         try {
             getFacade().salvarReceitaDivida(current);
             MensagemUtils.messageFactoringFull("contaPagarUpdated",
-                    new Object[]{current.toString()},
+                    new Object[]{current.getLabel()},
                     FacesMessage.SEVERITY_INFO,
                     FacesContext.getCurrentInstance());
             recreateTable();
