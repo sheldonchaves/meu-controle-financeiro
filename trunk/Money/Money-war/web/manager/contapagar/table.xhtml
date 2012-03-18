@@ -59,9 +59,9 @@
                                     <h:outputText value="#{contaPagarController.pagination.pageFirstItem + 1}...
                                                   #{contaPagarController.pagination.pageLastItem + 1}/#{contaPagarController.pagination.itemsCount}"/>
                                     <p:commandLink actionListener="#{contaPagarController.previous}" value="#{msg.Previous} #{contaPagarController.pagination.pageSize}" 
-                                                   disabled="#{!contaPagarController.pagination.hasPreviousPage}" update="tableForm, footertop" />
+                                                   disabled="#{!contaPagarController.pagination.hasPreviousPage}" update="tableForm" />
                                     <p:commandLink actionListener="#{contaPagarController.next}" value="#{msg.Next} #{contaPagarController.pagination.pageSize}" 
-                                                   disabled="#{!contaPagarController.pagination.hasNextPage}" update="tableForm, footertop"/>
+                                                   disabled="#{!contaPagarController.pagination.hasNextPage}" update="tableForm"/>
                                     <h:commandLink action="#{contaPagarController.prepareCreate}" value="#{msg.nova}"/>
                                 </h:panelGrid>
                             </td>

@@ -45,9 +45,9 @@
                                     <h:outputText value="#{contaBancariaController.pagination.pageFirstItem + 1}...
                                                   #{contaBancariaController.pagination.pageLastItem + 1}/#{contaBancariaController.pagination.itemsCount}"/>
                                     <p:commandLink actionListener="#{contaBancariaController.previous}" value="#{msg.Previous} #{contaBancariaController.pagination.pageSize}" 
-                                                   disabled="#{!contaBancariaController.pagination.hasPreviousPage}" update="tableForm, footertop" />
+                                                   disabled="#{!contaBancariaController.pagination.hasPreviousPage}" update="tableForm" />
                                     <p:commandLink actionListener="#{contaBancariaController.next}" value="#{msg.Next} #{contaBancariaController.pagination.pageSize}" 
-                                                   disabled="#{!contaBancariaController.pagination.hasNextPage}" update="tableForm, footertop"/>
+                                                   disabled="#{!contaBancariaController.pagination.hasNextPage}" update="tableForm"/>
                                     <h:commandLink action="#{contaBancariaController.prepareCreate}" value="#{msg.nova}"/>
                                 </h:panelGrid>
                             </td>

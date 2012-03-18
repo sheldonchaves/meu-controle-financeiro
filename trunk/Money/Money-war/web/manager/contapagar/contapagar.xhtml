@@ -16,66 +16,7 @@
     <ui:param name="formRender" value="#{!(contaPagarController.current == null)}"/>
     <ui:param name="titFormParan" value="#{(contaPagarController.current.id == null) ? msg.cadTitleContaBancariaNew : msg.cadTitleContaBancariaEdit}"/>
     <ui:define name="form">
-        <div class="pagging">
-            <!--h:form id="formContaBancaria" prependId="false" styleClass="jsfcrud_list_form" style="font-size: 0.9em;">
-                <h:panelGrid columns="3" style="font-size: 1.2em;">
-
-                    <p:spacer width="50" height="0"/>
-                    <p:spacer width="50" height="0"/>
-                    <p:spacer width="30" height="0"/>
-
-                    <h:outputLabel value="#{msg.nome}:" title="#{msg.titleNomeId}"/>
-                    <p:inputText value="#{contaPagarController.current.nomeConta}" label="#{msg.nomeid}" id="nomeConta"
-                                 required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="50" 
-                                 size="40">
-                        <f:validateLength maximum="50"/>
-                    </p:inputText>
-                    <p:message for="nomeConta"/>
-                    
-                    <p:spacer width="50" height="6"/>
-                    <p:spacer width="50" height="6"/>
-                    <p:spacer width="50" height="6"/>
-                    
-                    <h:outputLabel value="#{msg.saldo}:" />
-                    <p:inputText value="#{contaPagarController.current.saldo}" label="#{msg.saldo}"
-                                 id="saldo" required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="20"
-                                 size="15" binding="#{contaBancariaManager.saldoInput}" onkeypress="return(MascaraMoeda(this,'.',',',event))">
-                        <f:converter converterId="moneyConverter"/>
-                    </p:inputText>
-                    <p:message for="saldo"/>
-                    
-                    <p:spacer width="50" height="6"/>
-                    <p:spacer width="50" height="6"/>
-                    <p:spacer width="50" height="6"/>
-                    
-                    <h:outputLabel value="#{msg.tipo}:" />
-                    <h:selectOneMenu value="#{contaPagarController.current.tipoConta}" label="#{msg.tipo}" 
-                                     id="tipoConta" required="true" requiredMessage="#{msg.campoObrigatorio}">
-                        <f:selectItem itemLabel="#{msg.selecione}" itemValue=""/>
-                        <f:selectItems value="#{contaPagarController.selectTipoConta}"/>
-                        <f:converter converterId="tipoContaConverter"/>
-                    </h:selectOneMenu>
-                    <p:message for="tipoConta"/>
-                    
-                    <p:spacer width="50" height="6"/>
-                    <p:spacer width="50" height="6"/>
-                    <p:spacer width="50" height="6"/>
-                    
-                    <h:outputLabel value=""/>
-                    <h:panelGroup style="font-size: 0.9em; text-align: left;">
-                        <p:commandLink value="#{msg.salvar}" action="#{contaPagarController.create()}"
-                                       update="messages, formContaBancaria" ajax="false">
-                        </p:commandLink>
-                        <p:spacer height="100%" width="10"/>
-                        <p:commandLink value="#{msg.cancelar}" action="#{contaPagarController.clean()}" 
-                                       immediate="true" update="messages, formContaBancaria" ajax="false">
-                        </p:commandLink>
-                    </h:panelGroup>
-
-                </h:panelGrid>
-
-            </h:form-->
-        </div>
+        <ui:include src="form.xhtml"/>
     </ui:define> 
 
 </ui:composition>
