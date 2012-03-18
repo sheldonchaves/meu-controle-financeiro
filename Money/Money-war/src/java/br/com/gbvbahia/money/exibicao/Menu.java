@@ -31,7 +31,7 @@ public class Menu implements Serializable{
     
    public String telaContas(){
        defineMenuAtivo(MenuAtivo.CONTAS);
-       return "contas";
+       return "contapagar";
    }
    
    public String telaContasBancarias(){

@@ -37,7 +37,7 @@
     <context-param>
         <description>ui-lightness glass-x flick sunny dot-luv blitzer south-street mint-choc midnight le-frog aristo black-tie cupertino hot-sneaks pepper-grinder redmond trontastic rocket</description>
         <param-name>primefaces.THEME</param-name>
-        <param-value>none</param-value>
+        <param-value>humanity</param-value>
     </context-param>
     <context-param>
         <param-name>timezone</param-name>

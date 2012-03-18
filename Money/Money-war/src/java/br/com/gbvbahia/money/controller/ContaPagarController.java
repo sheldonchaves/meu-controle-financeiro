@@ -15,6 +15,7 @@ import br.com.money.enums.StatusPagamento;
 import br.com.money.enums.TipoMovimentacao;
 import br.com.money.exceptions.ValidacaoException;
 import br.com.money.modelos.ReceitaDivida;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -39,20 +40,24 @@ import org.apache.commons.lang.StringUtils;
 public class ContaPagarController extends EntityController<ReceitaDivida> {
 
     public static final String CONTA_PAGAR_CHANGE = "contas";
-    
     @EJB
     private ReceitaDividaBeanLocal receitaDividaBean;
-    
     @ManagedProperty("#{loginManager}")
     private LoginManager loginManager;
-    
     @ManagedProperty("#{selectItemManager}")
     private SelectItemManager selectItemManager;
-    
     private ReceitaDivida current;
     private boolean salvarParcelas = false;
     private boolean apagarPrestacoes = false;
-    
+
+    /**
+     * Data utilizada para filtro nas contas.
+     */
+    private Date dataVencimento;
+    /**
+     * String utilizada para filtro nas contas.
+     */
+    private String detalhe;
     /**
      * Creates a new instance of ContaPagarController
      */
@@ -62,7 +67,7 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
     //====================
     //Iniciadores
     //====================
-      /**
+    /**
      * Executado quando o bean JSF é instânciado.
      */
     @PostConstruct
@@ -84,6 +89,7 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
     //====================
     //Métodos de Negócio
     //====================
+
     @Override
     public String create() {
         try {
@@ -119,7 +125,7 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
             }
         }
     }
-    
+
     @Override
     protected void performDestroy() {
         try {
@@ -145,6 +151,7 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
             }
         }
     }
+
     @Override
     protected ReceitaDivida getNewEntity() {
         ReceitaDivida rd = new ReceitaDivida();
@@ -159,7 +166,7 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
 
     @Override
     protected String update() {
-         try {
+        try {
             getFacade().salvarReceitaDivida(current);
             MensagemUtils.messageFactoringFull("contaPagarUpdated",
                     new Object[]{current.toString()},
@@ -181,26 +188,6 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
         }
     }
 
-    //====================
-    //Métodos em Tabelas
-    //====================
-     
-    //====================
-    //Select Itens
-    //====================
-    public List<SelectItem> getDetalhes() {
-        return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(),
-                true, TipoMovimentacao.RETIRADA);
-    }
-     
-    //====================
-    //Getters AND Setters
-    //====================
-   
-    public ReceitaDividaBeanLocal getFacade() {
-        return receitaDividaBean;
-    }
-
     @Override
     public PaginationHelper getPagination() {
         if (pagination == null) {
@@ -208,24 +195,43 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade()
-                    .buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(
-                     loginManager.getUsuario(),
-                     StatusPagamento.NAO_PAGA, TipoMovimentacao.RETIRADA);
+                    return getFacade().buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(
+                            loginManager.getUsuario(),
+                            StatusPagamento.NAO_PAGA,
+                            TipoMovimentacao.RETIRADA, dataVencimento,
+                            detalhe);
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade()
-                      .buscarReceitaDividasPorUsuarioStatusPaginada(
+                    return new ListDataModel(getFacade().buscarReceitaDividasPorUsuarioStatusPaginada(
                             getPageFirstItem(), getPageSize(),
                             loginManager.getUsuario(),
                             StatusPagamento.NAO_PAGA,
-                            TipoMovimentacao.RETIRADA));
+                            TipoMovimentacao.RETIRADA, dataVencimento,
+                            detalhe));
                 }
             };
         }
         return pagination;
+    }
+    //====================
+    //Métodos em Tabelas
+    //====================
+
+    //====================
+    //Select Itens
+    //====================
+    public List<SelectItem> getDetalhes() {
+        return selectItemManager.getDetalhesUsuario(loginManager.getUsuario(),
+                true, TipoMovimentacao.RETIRADA);
+    }
+
+    //====================
+    //Getters AND Setters
+    //====================
+    public ReceitaDividaBeanLocal getFacade() {
+        return receitaDividaBean;
     }
 
     public SelectItemManager getSelectItemManager() {
@@ -247,4 +253,32 @@ public class ContaPagarController extends EntityController<ReceitaDivida> {
     public ReceitaDivida getCurrent() {
         return current;
     }
+
+    /**
+     * Recupera o Filtro de Data vencimento na paginação.
+     */
+    public Date getDataVencimento() {
+        return dataVencimento;
+    }
+    /**
+     * Define o filtro de Data vencimento na paginação.
+     */
+    public void setDataVencimento(Date dataVencimento) {
+        this.dataVencimento = dataVencimento;
+    }
+
+    /**
+     * Recupera o Filtro de detalhe pagamento na paginação.
+     * @return 
+     */
+    public String getDetalhe() {
+        return detalhe;
+    }
+    /**
+     * Define o filtro de detalhe pagamento na paginação.
+     */
+    public void setDetalhe(String detalhe) {
+        this.detalhe = detalhe;
+    }
+    
 }

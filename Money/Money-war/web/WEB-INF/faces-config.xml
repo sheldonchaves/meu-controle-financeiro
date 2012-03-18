@@ -36,8 +36,8 @@
     <navigation-rule>
         <navigation-case>
             <description>Vai para página contas de qualquer local</description>
-            <from-outcome>contas</from-outcome>
-            <to-view-id>/manager/contapagar/listar.xhtml</to-view-id>
+            <from-outcome>contapagar</from-outcome>
+            <to-view-id>/manager/contapagar/contapagar.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
