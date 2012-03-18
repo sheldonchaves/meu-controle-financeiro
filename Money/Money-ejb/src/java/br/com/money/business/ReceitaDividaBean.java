@@ -136,11 +136,16 @@ implements ReceitaDividaBeanLocal {
     public List<ReceitaDivida> buscarReceitaDividasPorUsuarioStatusPaginada(
             final int posicaoInicial, final int tamanho,
             final Usuario usuario, final StatusPagamento statusPagamento,
-            final TipoMovimentacao tipoMovimentacao) {
+            final TipoMovimentacao tipoMovimentacao,
+            final Date dataVencimento, final String detalhe) {
         Map<String, Object> parans = AbstractFacade.getMapParans();
         parans.put("usuario", usuario);
         parans.put("statusPagamento", statusPagamento);
         parans.put("tipoMovimentacao", tipoMovimentacao);
+        parans.put("dataV1", dataVencimento);
+        parans.put("dataV", dataVencimento);
+        parans.put("detalhe", UtilBeans.acertaNomeParaLike(detalhe,
+                UtilBeans.LIKE_MIDDLE));
         return listPesqParam("ReceitaDividaBean.buscarReceitaDividas"
                 + "PorUsuarioStatusPaginada",
                 parans, tamanho, posicaoInicial);
@@ -172,11 +177,16 @@ implements ReceitaDividaBeanLocal {
     @Override
     public Integer buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(
             Usuario usuario, StatusPagamento statusPagamento,
-            TipoMovimentacao tipoMovimentacao) {
+            TipoMovimentacao tipoMovimentacao,
+            final Date dataVencimento, final String detalhe) {
         Map<String, Object> parans = AbstractFacade.getMapParans();
         parans.put("usuario", usuario);
         parans.put("statusPagamento", statusPagamento);
         parans.put("tipoMovimentacao", tipoMovimentacao);
+        parans.put("dataV1", dataVencimento);
+        parans.put("dataV", dataVencimento);
+        parans.put("detalhe", UtilBeans.acertaNomeParaLike(detalhe,
+                UtilBeans.LIKE_MIDDLE));
         return pesqCount("ReceitaDividaBean.buscarQutdadeReceita"
                 + "DividasPorUsuarioStatusPaginada",
                 parans).intValue();
