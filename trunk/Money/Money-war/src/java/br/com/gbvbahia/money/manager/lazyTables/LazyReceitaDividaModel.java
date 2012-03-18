@@ -42,8 +42,10 @@ public class LazyReceitaDividaModel extends LazyDataModel<ReceitaDivida> {
             toReturn = bean.buscarReceitaDividasPorUsuarioStatusPaginada(first, tamanho, usuario, statusPagamento);
             this.setRowCount(bean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(usuario, statusPagamento));
         } else {
-            toReturn = bean.buscarReceitaDividasPorUsuarioStatusPaginada(first, tamanho, usuario, statusPagamento, tipoMovimentacao);
-            this.setRowCount(bean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(usuario, statusPagamento, tipoMovimentacao));
+            toReturn = bean.buscarReceitaDividasPorUsuarioStatusPaginada(
+                    first, tamanho, usuario, statusPagamento, tipoMovimentacao, null, null);
+            this.setRowCount(bean.buscarQutdadeReceitaDividasPorUsuarioStatusPaginada(
+                    usuario, statusPagamento, tipoMovimentacao, null, null));
         }
         Logger.getLogger(this.getClass().getName()).log(Level.FINE, "Lazy Load LazyReceitaDividaModel FIM");
         return toReturn;

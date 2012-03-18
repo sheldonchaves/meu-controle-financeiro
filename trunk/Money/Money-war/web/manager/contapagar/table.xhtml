@@ -1,0 +1,74 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <f:subview id="contapagartable" >
+
+        <h:form styleClass="jsfcrud_list_form" id="tableForm">
+            <table class="referencesmall" width="100%">
+                <thead><tr>
+                        <th><h:outputText value="#{msg.vencimento}"/><br></br>
+                            <p:calendar value="#{contaPagarController.dataVencimento}"
+                                        locale="pt" pattern="dd/MM/yyyy"
+                                        timeZone="#{initParam['timezone']}" id="search"
+                                        maxlength="10" onkeyup="formatar(this, '##/##/####', event)"
+                                        navigator="true" >
+                                <p:ajax event="dateSelect" listener="#{contaPagarController.recreateTable()}" 
+                                        update="tableForm"/>
+                            </p:calendar>
+                            <p:tooltip for="search" showEvent="focus" hideEvent="blur" value="#{msg.tipoBuscaComeca}"/> 
+                        </th>
+                        <th><h:outputText value="#{msg.valor}"/></th>
+                        <th><h:outputText value="#{msg.atual}"/></th>
+                        <th><h:outputText value="#{msg.total}"/></th>
+                        <th><h:outputText value="#{msg.detalhe}"/><br></br>
+                            <h:inputText value="#{contaPagarController.detalhe}" styleClass="selectTableFilter" id="search2">
+                                    <p:ajax event="keyup" listener="#{contaPagarController.recreateTable()}" update="tableForm"
+                                            oncomplete="focusCampo('contapagartable:tableForm:search2')"/>
+                                </h:inputText>
+                                <p:tooltip for="search" showEvent="focus" hideEvent="blur" value="#{msg.tipoBuscaContem}"/> 
+                        </th>
+                        <th><h:outputText value="#{msg.observacao}"/></th>
+                        <th width="150" class="ac"></th>
+                    </tr></thead>
+                <tbody>
+                    <ui:repeat value="#{contaPagarController.items}" var="item" varStatus="x">
+                        <tr>
+                            <td align='center'><h:outputText value="#{item.dataVencimento}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR" timeZone="#{initParam['timezone']}"/>
+                                </h:outputText></td>
+                            <td align='right'><h:outputText value="#{item.valor}"><f:converter converterId="moneyConverter"/></h:outputText></td>
+                            <td align='center'><h:outputText value="#{item.parcelaAtual}"/></td>
+                            <td align='center'><h:outputText value="#{item.parcelaTotal}"/></td>
+                            <td align='center'><h:outputText value="#{item.detalheMovimentacao.detalhe}"/></td>
+                            <td align='center'><h:outputText value="#{item.observacao}"/></td>
+                            <td><h:commandLink action="#{contaPagarController.prepareDestroy}" styleClass="ico del" value="#{msg.remover}"/>
+                                <h:outputText value=" "/>
+                                <h:commandLink styleClass="ico edit" action="#{contaPagarController.prepareEdit}" value="#{msg.editar}"/>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </tbody></table>
+            <p:spacer width="8%" height="10"/>
+            <div class="table">
+                <div class="pagging">
+                    <table width="99%" style="font-size: 0.9em;">
+                        <tr>
+                            <td width="400px">
+                                <h:panelGrid columns="4" style="font-size: 1em;">
+                                    <h:outputText value="#{contaPagarController.pagination.pageFirstItem + 1}...
+                                                  #{contaPagarController.pagination.pageLastItem + 1}/#{contaPagarController.pagination.itemsCount}"/>
+                                    <p:commandLink actionListener="#{contaPagarController.previous}" value="#{msg.Previous} #{contaPagarController.pagination.pageSize}" 
+                                                   disabled="#{!contaPagarController.pagination.hasPreviousPage}" update="tableForm, footertop" />
+                                    <p:commandLink actionListener="#{contaPagarController.next}" value="#{msg.Next} #{contaPagarController.pagination.pageSize}" 
+                                                   disabled="#{!contaPagarController.pagination.hasNextPage}" update="tableForm, footertop"/>
+                                    <h:commandLink action="#{contaPagarController.prepareCreate}" value="#{msg.nova}"/>
+                                </h:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </h:form>
+    </f:subview>
+</ui:composition>
