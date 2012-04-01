@@ -15,6 +15,12 @@ import java.io.Serializable;
 public interface EntityInterface<T> extends Comparable<T> {
 
     /**
+     * Determina o limite de caracteres a ser retornado no
+     * getLabel();.
+     */
+    int CARACTERES_LABEL = 20;
+
+    /**
      * Atributo anotado com @Id de javax.persistence.
      *
      * @return Id único do banco de dados.

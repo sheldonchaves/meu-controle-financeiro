@@ -14,17 +14,34 @@ package br.com.gbvbahia.financeiro.constantes;
  */
 public enum StatusPagamento {
 
-    PAGA("Paga"), 
+    /**
+     * Define que a conta está quitada.
+     */
+    PAGA("Paga"),
+    /**
+     * Define que a conta ainda está a pagar.
+     */
     NAO_PAGA("Não Paga");
 
+    /**
+     * Label de exibição.
+     */
     private String statusString;
 
+    /**
+     * Label de exibição.
+     * @return String.
+     */
     public String getStatusString() {
         return statusString;
     }
 
-    private StatusPagamento(String statusString) {
-        this.statusString = statusString;
+    /**
+     * Construtor Enum padrão com variavel.
+     * @param status Status Label.
+     */
+    private StatusPagamento(final String status) {
+        this.statusString = status;
     }
 
     @Override

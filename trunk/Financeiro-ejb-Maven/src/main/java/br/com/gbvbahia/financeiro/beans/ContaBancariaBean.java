@@ -12,9 +12,6 @@ import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,7 +29,9 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 //@RolesAllowed({ "admin", "user" })
-public class ContaBancariaBean extends AbstractFacade<ContaBancaria, Long> implements ContaBancariaFacade {
+public class ContaBancariaBean
+        extends AbstractFacade<ContaBancaria, Long>
+        implements ContaBancariaFacade {
 
     /**
      * Unidade de persistência <i>jdbc/money</i>.
