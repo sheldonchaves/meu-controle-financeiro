@@ -74,8 +74,7 @@ public abstract class DetalheProcedimento
      * Recupera o tipo de procedimento.<br> Retirada determina uma
      * DESPESA.<br> Deposito determina uma RECEITA.
      */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "fl_tipo_procedimento", nullable = false)
+    @Transient
     private TipoProcedimento tipoProcedimento;
 
     /**
