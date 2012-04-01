@@ -1,5 +1,6 @@
 package br.com.gbvbahia.financeiro.modelos.superclass;
 
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import java.io.Serializable;
@@ -12,7 +13,11 @@ import org.apache.commons.lang.StringUtils;
  *
  * Representa o motivo de uma conta ou receita financeira. Não
  * utilizei @MappedSuperclass porque iria obrigar a escrever um bean
- * para despesa e um para receita.
+ * para despesa e um para receita.<br>
+ * Por ser uma Entidade, @Entity, existe uma critica pela IDE do
+ * construtor, <strong>desconsidere</strong>, já que a classe é
+ * abstrata e nunca poderá ser instânciada diretamente. Cabe a
+ * sub-classes ter esse construtor e informar seu tipo a superclasse.
  *
  * @author Guilherme
  * @since v.3 01/04/2012
@@ -64,6 +69,24 @@ public abstract class DetalheProcedimento
      */
     @Column(name = "fl_ativo", nullable = false)
     private boolean ativo = true;
+    /**
+     * Recupera o tipo de procedimento.<br> Retirada determina uma
+     * DESPESA.<br> Deposito determina uma RECEITA.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "fl_tipo_procedimento", nullable = false)
+    private TipoProcedimento tipoProcedimento;
+
+    /**
+     * Obrigatório informar o tipo de procedimento.<br>
+     * Retirada determina uma DESPESA.<br>
+     * Deposito determina uma RECEITA.
+     *
+     * @param tipo Tipo de Procedimento.
+     */
+    public DetalheProcedimento(final TipoProcedimento tipo) {
+        this.tipoProcedimento = tipo;
+    }
 
     /**
      * Visibilidade e utilização, True para utilizar, false para não.
@@ -128,6 +151,16 @@ public abstract class DetalheProcedimento
      */
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    /**
+     * Recupera o tipo de procedimento.<br> Retirada determina uma
+     * DESPESA.<br> Deposito determina uma RECEITA.
+     *
+     * @return TipoProcedimento.
+     */
+    public TipoProcedimento getTipoProcedimento() {
+        return tipoProcedimento;
     }
 
     /**

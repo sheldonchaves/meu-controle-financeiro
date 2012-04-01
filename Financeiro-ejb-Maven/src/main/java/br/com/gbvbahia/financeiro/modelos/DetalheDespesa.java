@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.modelos;
 
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import java.io.Serializable;
 import javax.persistence.*;
@@ -20,5 +21,12 @@ discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("DESPESA")
 public class DetalheDespesa extends DetalheProcedimento
         implements Serializable {
+
+    /**
+     * Informa ao supertipo qual tipo ele é.
+     */
+    public DetalheDespesa() {
+        super(TipoProcedimento.DESPESA_FINANCEIRA);
+    }
 
 }
