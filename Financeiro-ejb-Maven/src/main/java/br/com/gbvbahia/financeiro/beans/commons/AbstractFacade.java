@@ -11,13 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.ConstraintViolation;
 
 /**
@@ -34,8 +34,7 @@ import javax.validation.ConstraintViolation;
  * @since 2012/02/20
  */
 //@RolesAllowed({ "admin", "user" })
-public abstract class AbstractFacade<T extends EntityInterface,
-        ID extends Serializable> implements InterfaceFacade<T, ID> {
+public abstract class AbstractFacade<T extends EntityInterface, ID extends Serializable> implements InterfaceFacade<T, ID> {
 
     /**
      * Devolve um MAP para inserir os parâmetros nomes com parâmetros
@@ -160,7 +159,7 @@ public abstract class AbstractFacade<T extends EntityInterface,
     public List<T> findRange(final int[] range) {
         javax.persistence.criteria.CriteriaQuery cq =
                 getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
+        cq.select(cq.from(entityClass)).distinct(true);
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         q.setMaxResults(range[1] - range[0]);
         q.setFirstResult(range[0]);
@@ -173,7 +172,9 @@ public abstract class AbstractFacade<T extends EntityInterface,
         javax.persistence.criteria.CriteriaQuery cq =
                 getEntityManager().getCriteriaBuilder().createQuery();
         javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-        cq.select(getEntityManager().getCriteriaBuilder().count(rt));
+        CriteriaBuilder criteriaBuilder =
+                getEntityManager().getCriteriaBuilder();
+        cq.select(criteriaBuilder.count(rt)).distinct(true);
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
@@ -203,8 +204,7 @@ public abstract class AbstractFacade<T extends EntityInterface,
     public List<T> listPesqParam(final String namedQuery,
             final Map<String, Object> params, final int max,
             final int atual) {
-        Query q = getEntityManager().createNamedQuery(namedQuery)
-                .setMaxResults(max).setFirstResult(atual);
+        Query q = getEntityManager().createNamedQuery(namedQuery).setMaxResults(max).setFirstResult(atual);
         for (String chave : params.keySet()) {
             q.setParameter(chave, params.get(chave));
         }
@@ -242,7 +242,7 @@ public abstract class AbstractFacade<T extends EntityInterface,
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     @Override
     public Long pesqCount(final String queryName,
-    final Map<String, Object> params) {
+            final Map<String, Object> params) {
         Query q = getEntityManager().createNamedQuery(queryName);
         if (params != null) {
             for (String chave : params.keySet()) {
