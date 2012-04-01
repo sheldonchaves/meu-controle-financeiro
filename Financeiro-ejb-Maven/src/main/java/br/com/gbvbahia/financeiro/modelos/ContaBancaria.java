@@ -96,7 +96,8 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     @Override
     public String getLabel() {
         return StringUtils.rightPad(tipoConta.getAbreviacao(), 3)
-                + " | " + StringUtils.substring(this.nomeConta, 0, 20);
+                + " | " + StringUtils.substring(this.nomeConta, 0,
+                CARACTERES_LABEL);
     }
 
     @Override

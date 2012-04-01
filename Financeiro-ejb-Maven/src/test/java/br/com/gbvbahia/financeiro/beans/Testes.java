@@ -35,7 +35,9 @@ import org.junit.runners.Suite;
     UsuarioBeanRemoveTest.class,
     ContaBancariaBeanCreateTest.class,
     ContaBancariaBeanSearchTest.class,
-    ContaBancariaBeanUpdateTest.class
+    ContaBancariaBeanUpdateTest.class,
+    DetalheProcedimentoBeanCreateTest.class,
+    DetalheProcedimentoBeanSearchTest.class
 })
 public class Testes {
 
