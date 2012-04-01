@@ -3,6 +3,7 @@ package br.com.gbvbahia.financeiro.modelos.superclass;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
+import br.com.gbvbahia.financeiro.utils.I18N;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,11 +14,11 @@ import org.apache.commons.lang.StringUtils;
  *
  * Representa o motivo de uma conta ou receita financeira. Não
  * utilizei @MappedSuperclass porque iria obrigar a escrever um bean
- * para despesa e um para receita.<br>
- * Por ser uma Entidade, @Entity, existe uma critica pela IDE do
- * construtor, <strong>desconsidere</strong>, já que a classe é
- * abstrata e nunca poderá ser instânciada diretamente. Cabe a
- * sub-classes ter esse construtor e informar seu tipo a superclasse.
+ * para despesa e um para receita.<br> Por ser uma Entidade, @Entity,
+ * existe uma critica pela IDE do construtor,
+ * <strong>desconsidere</strong>, já que a classe é abstrata e nunca
+ * poderá ser instânciada diretamente. Cabe a sub-classes ter esse
+ * construtor e informar seu tipo a superclasse.
  *
  * @author Guilherme
  * @since v.3 01/04/2012
@@ -78,14 +79,21 @@ public abstract class DetalheProcedimento
     private TipoProcedimento tipoProcedimento;
 
     /**
-     * Obrigatório informar o tipo de procedimento.<br>
-     * Retirada determina uma DESPESA.<br>
-     * Deposito determina uma RECEITA.
+     * Obrigatório informar o tipo de procedimento.<br> Retirada
+     * determina uma DESPESA.<br> Deposito determina uma RECEITA.
      *
      * @param tipo Tipo de Procedimento.
      */
     public DetalheProcedimento(final TipoProcedimento tipo) {
         this.tipoProcedimento = tipo;
+    }
+
+    /**
+     * Construtor nunca executado, se for uma runtime será lançada.
+     */
+    public DetalheProcedimento() {
+        throw new IllegalArgumentException(
+                I18N.getMsg("DetalheConstrutorErro"));
     }
 
     /**
