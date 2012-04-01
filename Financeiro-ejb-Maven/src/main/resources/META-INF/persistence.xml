@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="money" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/money</jta-data-source>
+    <mapping-file>xml/consultas_Usuario.xml</mapping-file>
+    <mapping-file>xml/consultas_ContaBancaria.xml</mapping-file>
+    <properties>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+      <!-- OFF SEVERE WARNING INFO CONFIG FINE FINER FINEST ALL -->
+      <property name="eclipselink.logging.level" value="WARNING"/>
+    </properties>
+  </persistence-unit>
+  <!-- TESTES UNITÁRIOS -->
+  <persistence-unit name="moneyT" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/sample</jta-data-source>
+    <mapping-file>xml/consultas_Usuario.xml</mapping-file>
+    <mapping-file>xml/consultas_ContaBancaria.xml</mapping-file>
+    <properties>
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+      <property name="eclipselink.canonicalmodel.subpackage" value="one"/>
+      <!-- OFF SEVERE WARNING INFO CONFIG FINE FINER FINEST ALL -->
+      <property name="eclipselink.logging.level" value="FINE"/>
+    </properties>
+  </persistence-unit>
+</persistence>
