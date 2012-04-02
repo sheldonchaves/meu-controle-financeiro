@@ -80,7 +80,19 @@ public class Testes {
      * @return O valor da chave solicitada.
      */
     public static String getConfig(final String key) {
-        return java.util.ResourceBundle.getBundle("br/com/gbvbahia/fi"
-                + "nanceiro/beans/ConfiguracaoTestes").getString(key);
+        return MAP.get(key);
     }
+
+    /**
+     * MAP com propriedades de teste.
+     */
+    private static final Map<String, String> MAP =
+            new HashMap<String, String>();
+    static {
+        MAP.put("keyGlassFishLocalDisck",
+                "org.glassfish.ejb.embedded.glassfish.installation.root");
+        MAP.put("ValorGlassFishLocalDisck",
+                "D:\\Java\\GlassFish\\glassfish");
+    }
+
 }
