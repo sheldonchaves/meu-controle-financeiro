@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+                 version="1.0">
+
+    <named-query name="Grupo.findAll">
+        <query>
+            SELECT a FROM Grupo a
+        </query>
+    </named-query>
+    <named-query name="Grupo.findByGrupoId">
+        <query>
+            SELECT a FROM Grupo a 
+            WHERE a.nome = :nome
+        </query>
+    </named-query>
+    
+    <named-query name="Usuario.findAll">
+        <query>
+            SELECT u FROM Usuario u	
+        </query>
+    </named-query>
+    
+    <named-query name="Usuario.findByUserId">
+        <query>
+            SELECT u FROM Usuario u WHERE u.userId = :userId
+        </query>
+    </named-query>
+    <named-query name="Usuario.findByBlocked">
+        <query>
+            SELECT u FROM Usuario u WHERE u.blocked = :blocked
+        </query>
+    </named-query>
+    <named-query name="Usuario.findByEmail">
+        <query>
+            SELECT u FROM Usuario u WHERE u.email = :email
+        </query>
+    </named-query>
+    <named-query name="Usuario.findByFirstName">
+        <query>
+            SELECT u FROM Usuario u WHERE u.firstName = :firstName
+        </query>
+    </named-query>
+</entity-mappings>
