@@ -16,9 +16,9 @@
   <persistence-unit name="moneyT" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/sample</jta-data-source>
-    <mapping-file>../java/xml/consultas_Usuario.xml</mapping-file>
-    <mapping-file>../java/xml/consultas_ContaBancaria.xml</mapping-file>
-    <mapping-file>../java/xml/consultas_DetalheProcedimento.xml</mapping-file>
+    <mapping-file>xml\consultas_Usuario.xml</mapping-file>
+    <mapping-file>xml\consultas_ContaBancaria.xml</mapping-file>
+    <mapping-file>xml\consultas_DetalheProcedimento.xml</mapping-file>
     <properties>
       <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
       <property name="eclipselink.canonicalmodel.subpackage" value="one"/>
