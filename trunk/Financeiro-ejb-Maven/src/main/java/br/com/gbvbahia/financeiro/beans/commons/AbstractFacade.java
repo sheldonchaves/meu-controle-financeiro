@@ -6,11 +6,13 @@ package br.com.gbvbahia.financeiro.beans.commons;
 
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
+import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
@@ -43,8 +45,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
      * @return java.util.HashMap
      */
     public static Map<String, Object> getMapParans() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        return params;
+        return new HashMap<String, Object>();
     }
     /**
      * Classe de entidade que representa a implementação.
@@ -128,6 +129,9 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
             getEntityManager().remove(getEntityManager().merge(entity));
             getEntityManager().flush();
         } catch (PersistenceException p) {
+            Logger.getLogger(this.getClass().getName()).log(
+                    UtilBeans.LEVEL_LOG,
+                    "Problema ao remover: " + entity.toString(), p);
             throw new NegocioException("AbstractFacade.entityRemoveErro",
                     new String[]{entity.getLabel(), p.getMessage()});
         } catch (javax.validation.ConstraintViolationException e) {
@@ -183,8 +187,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<T> listPesq(final String namedQuery) {
         Query q = getEntityManager().createNamedQuery(namedQuery);
-        List<T> list = q.getResultList();
-        return list;
+        return q.getResultList();
     }
 
     @Override
@@ -195,8 +198,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
         for (String chave : params.keySet()) {
             q.setParameter(chave, params.get(chave));
         }
-        List<T> list = q.getResultList();
-        return list;
+        return q.getResultList();
     }
 
     @Override
@@ -208,8 +210,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
         for (String chave : params.keySet()) {
             q.setParameter(chave, params.get(chave));
         }
-        List<T> list = q.getResultList();
-        return list;
+        return q.getResultList();
     }
 
     @Override
@@ -232,8 +233,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     public T pesqParam(final String namedQuery) {
         Query q = getEntityManager().createNamedQuery(namedQuery);
         try {
-            T t = (T) q.getSingleResult();
-            return t;
+            return (T) q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
