@@ -4,12 +4,12 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
-import com.sun.appserv.security.ProgrammaticLogin;
-import java.util.HashMap;
-import java.util.Map;
-import javax.ejb.embeddable.EJBContainer;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import br.com.gbvbahia.financeiro.modelos.*;
+import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
+import com.bm.testsuite.dataloader.CSVInitialDataSet;
+import com.bm.testsuite.dataloader.DateFormats;
+import java.sql.Connection;
+import org.apache.commons.lang.ArrayUtils;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -43,56 +43,127 @@ import org.junit.runners.Suite;
 })
 public class Testes {
 
-    /**
-     * Container EJB (GlassFish) para testes.
-     */
-    public static EJBContainer c;
-
-    /**
-     * Carrega o container antes da suite de testes.
-     *
-     * @throws Exception Se algum problema ocorrer.
-     */
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        Map p = new HashMap();
-        p.put(getConfig("keyGlassFishLocalDisck"),
-                getConfig("ValorGlassFishLocalDisck"));
-        Testes.c = javax.ejb.embeddable.EJBContainer.createEJBContainer(p);
-        System.out.println("Opening the container");
-    }
-
-    /**
-     * Descarrega o container após a suite de testes.
-     *
-     * @throws Exception Se algum problema ocorrer.
-     */
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-        Testes.c.close();
-        System.out.println("Close the container");
-    }
-
-    /**
-     * Recupera uma informação do arquivo de configuração do teste.
-     *
-     * @param key Chave que representa o valor solicitado.
-     * @return O valor da chave solicitada.
-     */
-    public static String getConfig(final String key) {
-        return MAP.get(key);
-    }
-
-    /**
-     * MAP com propriedades de teste.
-     */
-    private static final Map<String, String> MAP =
-            new HashMap<String, String>();
     static {
-        MAP.put("keyGlassFishLocalDisck",
-                "org.glassfish.ejb.embedded.glassfish.installation.root");
-        MAP.put("ValorGlassFishLocalDisck",
-                "D:\\Java\\GlassFish\\glassfish");
+        getUseBeans(new Class[]{Integer.class});
     }
 
+    /**
+     * Todas as entidades devem ser declaradas neste array, isso
+     * garante que todas as tabelas serão criadas para deleção em
+     * tearDown.
+     *
+     * @param noEntityes Classes que não são entidades mas precisam
+     * ser declaradas para utilização, como outros beans.
+     * @return Classes de Entidades utilizadas na aplicação.
+     */
+    public static Class[] getUseBeans(final Class[] noEntityes) {
+        Class[] entityes = new Class[]{Usuario.class,
+            Grupo.class, ContaBancaria.class, DetalheProcedimento.class,
+            DetalheDespesa.class, DetalheReceita.class,
+            AgendaProcedimentoFixo.class};
+
+        return (Class[]) ArrayUtils.addAll(entityes, noEntityes);
+    }
+
+    /**
+     * Todas as entidades devem ser declaradas neste array, isso
+     * garante que todas as tabelas serão criadas para deleção em
+     * tearDown. ser declaradas para utilização, como outros beans.
+     *
+     * @return Classes de Entidades utilizadas na aplicação.
+     */
+    public static Class[] getUseBeans() {
+        return getUseBeans(null);
+    }
+
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     *
+     * @return Representacao do arquivo usuarios.csv em um
+     * CSVInitialDataSet.
+     */
+    public static CSVInitialDataSet<Usuario> getUsuariosCSV() {
+        return new CSVInitialDataSet<Usuario>(Usuario.class,
+                "usuarios.csv", "userId", "pass", "email",
+                "firstName", "lastName", "blocked");
+    }
+
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     *
+     * @return Representacao do arquivo usuariosconjuge.csv em um
+     * CSVInitialDataSet.
+     */
+    public static CSVInitialDataSet<Usuario> getUsuariosConjugeCSV() {
+        return new CSVInitialDataSet<Usuario>(Usuario.class,
+                "usuariosconjuje.csv", "userId", "pass", "email",
+                "firstName", "lastName", "blocked", "conjuge");
+    }
+
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     *
+     * @return Representacao do arquivo contasbancarias.csv em um
+     * CSVInitialDataSet.
+     */
+    public static CSVInitialDataSet<ContaBancaria> getContasBancoCSV() {
+        return new CSVInitialDataSet<ContaBancaria>(ContaBancaria.class,
+                "contasbancarias.csv", "codigo", "nomeConta",
+                "tipoConta", "saldo", "status", "usuario");
+    }
+    /**
+     * Quantidade linhas do arquivo detalheprocedimentos.csv.
+     */
+    public static final int LINHAS_DETALHE_CSV = 4;
+
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     *
+     * @return Representacao do arquivo contasbancarias.csv em um
+     * CSVInitialDataSet.
+     */
+    public static CSVInitialDataSet<DetalheProcedimento> getDetalhesCSV() {
+        return new CSVInitialDataSet<DetalheProcedimento>(DetalheProcedimento.class,
+                "detalheprocedimentos.csv", "id", "detalhe",
+                "usuario", "ativo", "tipo");
+    }
+    /**
+     * Quantidade linhas do arquivo agendaprocedimentofixo.csv.
+     */
+    public static final int LINHAS_AGENDA_CSV = 7;
+
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     *
+     * @return Representacao do arquivo agendaprocedimentofixo.csv em
+     * um CSVInitialDataSet.
+     */
+    public static CSVInitialDataSet<AgendaProcedimentoFixo> getAgendaCSV() {
+        return new CSVInitialDataSet<AgendaProcedimentoFixo>(AgendaProcedimentoFixo.class,
+                "agendaprocedimentofixo.csv", "codigo", "valorFixo",
+                "dataPrimeiroVencimento", "observacao", "usuario",
+                "detalhe", "periodo",
+                "quantidadePeriodo").addDateFormat(
+                DateFormats.USER_DATE.setUserDefinedFomatter("yyyy MM dd"));
+    }
+
+    /**
+     * As classes de teste devem sobrescrever tearDown() de
+     * BaseSessionBeanFixture. Bug do EJB3Unit que não realiza a
+     * limpeza dos dados entre um teste e outro.<br> Esse método
+     * unifica o local de deleção das tabelas.
+     *
+     * @param con
+     * @throws Exception
+     */
+    public static void tearDown(Connection con) throws Exception {
+        con.setAutoCommit(true);
+        con.prepareStatement("DELETE from fin_agenda_procedimento_fixo").executeUpdate();
+        con.prepareStatement("DELETE from fin_detalhe").executeUpdate();
+        con.prepareStatement("DELETE from fin_conta_bancaria").executeUpdate();
+        con.prepareStatement("DELETE from fin_usuario_grupo").executeUpdate();
+        con.prepareStatement("DELETE from fin_usuario").executeUpdate();
+        con.prepareStatement("DELETE from fin_grupo").executeUpdate();
+        con.close();
+    }
 }

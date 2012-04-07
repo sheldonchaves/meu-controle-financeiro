@@ -3,9 +3,6 @@
   <persistence-unit name="money" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/money</jta-data-source>
-    <mapping-file>META-INF/consultas_Usuario.xml</mapping-file>
-    <mapping-file>META-INF/consultas_ContaBancaria.xml</mapping-file>
-    <mapping-file>META-INF/consultas_DetalheProcedimento.xml</mapping-file>
     <properties>
       <property name="eclipselink.ddl-generation" value="create-tables"/>
       <!-- OFF SEVERE WARNING INFO CONFIG FINE FINER FINEST ALL -->
@@ -16,9 +13,6 @@
   <persistence-unit name="moneyT" transaction-type="JTA">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/sample</jta-data-source>
-    <mapping-file>META-INF/consultas_Usuario.xml</mapping-file>
-    <mapping-file>META-INF/consultas_ContaBancaria.xml</mapping-file>
-    <mapping-file>META-INF/consultas_DetalheProcedimento.xml</mapping-file>
     <properties>
       <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
       <property name="eclipselink.canonicalmodel.subpackage" value="one"/>

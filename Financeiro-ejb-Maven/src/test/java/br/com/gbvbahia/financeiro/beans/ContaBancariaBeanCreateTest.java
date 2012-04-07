@@ -4,38 +4,50 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
+import br.com.gbvbahia.financeiro.modelos.Grupo;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
-import java.util.List;
-import java.util.Map;
-import javax.ejb.embeddable.EJBContainer;
-import org.junit.AfterClass;
+import com.bm.cfg.Ejb3UnitCfg;
+import com.bm.testsuite.BaseSessionBeanFixture;
+import com.bm.testsuite.dataloader.CSVInitialDataSet;
+import com.bm.utils.BasicDataSource;
+import java.sql.Connection;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.BeforeClass;
-import static br.com.gbvbahia.financeiro.beans.Testes.c;
-import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
-import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
-import java.util.HashMap;
 
 /**
  *
  * @author Guilherme
  */
-public class ContaBancariaBeanCreateTest {
+public class ContaBancariaBeanCreateTest
+        extends BaseSessionBeanFixture<ContaBancariaFacade> {
 
-    private static ContaBancariaFacade instance = null;
-    private static UsuarioFacade usuarioFacade = null;
-    public static final int CONTAS_CRIADAS = 2;
+    /**
+     * Define as classes que serão utilizadas durante o testes, menos
+     * o Bean a ser testado.
+     */
+    private static final Class[] USED_BEANS = Testes.getUseBeans();
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     */
+    private static final CSVInitialDataSet<Usuario> USUARIO_CSV =
+            Testes.getUsuariosCSV();
+
     public ContaBancariaBeanCreateTest() {
+        super(ContaBancariaFacade.class, USED_BEANS, USUARIO_CSV);
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        instance = (ContaBancariaFacade) c.getContext().lookup("java:global/classes/ContaBancariaBean");
-        usuarioFacade = (UsuarioFacade) c.getContext().lookup("java:global/classes/UsuarioBean");
+    /**
+     * Provedor do Facede de Teste
+     *
+     * @return
+     */
+    private ContaBancariaFacade getBean() {
+        ContaBancariaFacade instance = this.getBeanToTest();
+        assertNotNull("EJB Não pode ser nulo!", instance);
+        return instance;
     }
 
     /**
@@ -43,14 +55,20 @@ public class ContaBancariaBeanCreateTest {
      */
     @Test
     public void testCreate() throws Exception {
+        Usuario user = getEntityManager().find(Usuario.class, "user01");
+        assertNotNull("Usuario para criar conta não pode ser nulo.",
+                user);
         ContaBancaria entity = new ContaBancaria();
         entity.setNomeConta("Banco do Brasil Gui CC");
         entity.setTipoConta(TipoConta.CORRENTE);
         entity.setSaldo(300.00d);
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
+        entity.setUsuario(user);
+        ContaBancariaFacade instance = getBean();
+        getEntityManager().getTransaction().begin();
         instance.create(entity);
+        getEntityManager().getTransaction().commit();
         assertTrue("Contra criada não encontrada",
-                !instance.findAll().isEmpty());
+                instance.findAll(user, true).size() == 1);
     }
 
     /**
@@ -58,23 +76,21 @@ public class ContaBancariaBeanCreateTest {
      */
     @Test
     public void testCreateBlock() throws Exception {
+        Usuario user = getEntityManager().find(Usuario.class, "user01");
+        assertNotNull("Usuario para criar conta não pode ser nulo.",
+                user);
         ContaBancaria entity = new ContaBancaria();
         entity.setNomeConta("Banco do Brasil Gui POU");
         entity.setTipoConta(TipoConta.POUPANCA);
         entity.setSaldo(00.00d);
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
+        entity.setUsuario(user);
         entity.setStatus(false);
+        ContaBancariaFacade instance = getBean();
+        getEntityManager().getTransaction().begin();
         instance.create(entity);
-        boolean erro = true;
-        for (ContaBancaria cb : instance.findAll()) {
-            if(!cb.isStatus() 
-                    && cb.getNomeConta().equals("Banco do Brasil Gui POU")) {
-                erro = false;
-            }
-        }
-        if (erro) {
-            fail("Não foi encontrada a conta bloqueada!");
-        }
+        getEntityManager().getTransaction().commit();
+        assertTrue("Contra criada não encontrada",
+                instance.findAll(user, false).size() == 1);
     }
 
     /**
@@ -84,12 +100,24 @@ public class ContaBancariaBeanCreateTest {
      */
     @Test(expected = NegocioException.class)
     public void testCreateNomeSizeSmall() throws Exception {
-        ContaBancaria entity = new ContaBancaria();
-        entity.setNomeConta("BB");
-        entity.setTipoConta(TipoConta.CORRENTE);
-        entity.setSaldo(300.00d);
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
-        instance.create(entity);
+        try {
+            Usuario user = getEntityManager().find(Usuario.class, "user01");
+            ContaBancaria entity = new ContaBancaria();
+            entity.setNomeConta("BB");
+            entity.setTipoConta(TipoConta.CORRENTE);
+            entity.setSaldo(300.00d);
+            entity.setUsuario(user);
+            ContaBancariaFacade instance = getBean();
+            getEntityManager().getTransaction().begin();
+            instance.create(entity);
+            getEntityManager().getTransaction().commit();
+            fail("Uma NegocioException deveria ter sido lançada!");
+        } catch (NegocioException e) {
+            if (getEntityManager().getTransaction().isActive()) {
+                this.getEntityManager().getTransaction().rollback();
+            }
+            assertTrue("NegocioException Lançada", true);
+        }
     }
 
     /**
@@ -99,20 +127,32 @@ public class ContaBancariaBeanCreateTest {
      */
     @Test(expected = NegocioException.class)
     public void testCreateNomeSizeLarge() throws Exception {
-        ContaBancaria entity = new ContaBancaria();
-        StringBuilder sb = new StringBuilder("");
-        for (int i = 0; i <= ContaBancaria.CARACTERES_MAX_NOME_CONTA; i++) {
-            if (i % 2 == 0) {
-                sb.append("a");
-            } else {
-                sb.append("b");
+        try {
+            Usuario user = getEntityManager().find(Usuario.class, "user01");
+            ContaBancaria entity = new ContaBancaria();
+            StringBuilder sb = new StringBuilder("");
+            for (int i = 0; i <= ContaBancaria.CARACTERES_MAX_NOME_CONTA; i++) {
+                if (i % 2 == 0) {
+                    sb.append("a");
+                } else {
+                    sb.append("b");
+                }
             }
+            entity.setNomeConta(sb.toString());
+            entity.setTipoConta(TipoConta.CORRENTE);
+            entity.setSaldo(300.00d);
+            entity.setUsuario(user);
+            ContaBancariaFacade instance = getBean();
+            getEntityManager().getTransaction().begin();
+            instance.create(entity);
+            getEntityManager().getTransaction().commit();
+            fail("Uma NegocioException deveria ter sido lançada!");
+        } catch (NegocioException e) {
+            if (getEntityManager().getTransaction().isActive()) {
+                this.getEntityManager().getTransaction().rollback();
+            }
+            assertTrue("NegocioException Lançada", true);
         }
-        entity.setNomeConta(sb.toString());
-        entity.setTipoConta(TipoConta.CORRENTE);
-        entity.setSaldo(300.00d);
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
-        instance.create(entity);
     }
 
     /**
@@ -122,11 +162,22 @@ public class ContaBancariaBeanCreateTest {
      */
     @Test(expected = NegocioException.class)
     public void criarContaSemUsuario() throws Exception {
-        ContaBancaria entity = new ContaBancaria();
-        entity.setNomeConta("Banco do Brasil Gui CC");
-        entity.setTipoConta(TipoConta.CORRENTE);
-        entity.setSaldo(300.00d);
-        instance.create(entity);
+        try {
+            ContaBancaria entity = new ContaBancaria();
+            entity.setNomeConta("Banco do Brasil Gui CC");
+            entity.setTipoConta(TipoConta.CORRENTE);
+            entity.setSaldo(300.00d);
+            ContaBancariaFacade instance = getBean();
+            getEntityManager().getTransaction().begin();
+            instance.create(entity);
+            getEntityManager().getTransaction().commit();
+            fail("Uma NegocioException deveria ter sido lançada!");
+        } catch (NegocioException e) {
+            if (getEntityManager().getTransaction().isActive()) {
+                this.getEntityManager().getTransaction().rollback();
+            }
+            assertTrue("NegocioException Lançada", true);
+        }
     }
 
     /**
@@ -136,11 +187,36 @@ public class ContaBancariaBeanCreateTest {
      */
     @Test(expected = NegocioException.class)
     public void criarContaSemSaldo() throws Exception {
-        ContaBancaria entity = new ContaBancaria();
-        entity.setNomeConta("Banco do Brasil Gui CC");
-        entity.setTipoConta(TipoConta.CORRENTE);
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
-        entity.setSaldo(null);
-        instance.create(entity);
+        try {
+            Usuario user = getEntityManager().find(Usuario.class, "user01");
+            ContaBancaria entity = new ContaBancaria();
+            entity.setNomeConta("Banco do Brasil Gui CC");
+            entity.setTipoConta(TipoConta.CORRENTE);
+            entity.setUsuario(user);
+            entity.setSaldo(null);
+            ContaBancariaFacade instance = getBean();
+            getEntityManager().getTransaction().begin();
+            instance.create(entity);
+            getEntityManager().getTransaction().commit();
+            fail("Uma NegocioException deveria ter sido lançada!");
+        } catch (NegocioException e) {
+            if (getEntityManager().getTransaction().isActive()) {
+                this.getEntityManager().getTransaction().rollback();
+            }
+            assertTrue("NegocioException Lançada", true);
+        }
+    }
+
+    /**
+     * Se for uma base de dados a mesma deve ser limpa. Em memória não
+     * ha necessidade.
+     *
+     * @throws Exception
+     */
+    @Override
+    public void tearDown() throws Exception {
+        BasicDataSource ds = new BasicDataSource(Ejb3UnitCfg.getConfiguration());
+        Connection con = ds.getConnection();
+        Testes.tearDown(con);
     }
 }
