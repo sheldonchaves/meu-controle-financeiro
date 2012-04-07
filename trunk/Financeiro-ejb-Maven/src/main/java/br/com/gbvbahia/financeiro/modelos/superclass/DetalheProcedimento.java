@@ -29,6 +29,16 @@ import org.apache.commons.lang.StringUtils;
 @DiscriminatorColumn(name = "tipo",
 discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("PROCEDIMENTO")
+@NamedQueries({
+    @NamedQuery(name = "DetalheProcedimento.findAllReceita",
+    query = "SELECT distinct a FROM DetalheReceita a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
+    + " AND (:ativo2 = 'todos' OR a.ativo = :ativo) "),
+    @NamedQuery(name = "DetalheProcedimento.findAllDespesa",
+    query = "SELECT distinct a FROM DetalheDespesa a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
+    + " AND (:ativo2 = 'todos' OR a.ativo = :ativo) ")
+})
 public abstract class DetalheProcedimento
         implements EntityInterface<DetalheProcedimento>, Serializable {
 
@@ -74,17 +84,22 @@ public abstract class DetalheProcedimento
      * Recupera o tipo de procedimento.<br> Retirada determina uma
      * DESPESA.<br> Deposito determina uma RECEITA.
      */
+    @Column(name = "tipo", insertable = false, updatable = false)
+    private String tipo;
+    /**
+     *Define o tipo que implementa DetalheProcedimento.
+     */
     @Transient
-    private TipoProcedimento tipoProcedimento;
+    private final TipoProcedimento tipoProcedimento;
 
     /**
      * Obrigatório informar o tipo de procedimento.<br> Retirada
      * determina uma DESPESA.<br> Deposito determina uma RECEITA.
      *
-     * @param tipo Tipo de Procedimento.
+     * @param tipoEnum Tipo de Procedimento.
      */
-    public DetalheProcedimento(final TipoProcedimento tipo) {
-        this.tipoProcedimento = tipo;
+    public DetalheProcedimento(final TipoProcedimento tipoEnum) {
+        this.tipoProcedimento = tipoEnum;
     }
 
     /**
@@ -158,6 +173,15 @@ public abstract class DetalheProcedimento
      */
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    /**
+     * Utilizado para identificar o tipo pelo EntityManager.
+     *
+     * @return RECEITA ou DESPESA.
+     */
+    public String getTipo() {
+        return tipo;
     }
 
     /**

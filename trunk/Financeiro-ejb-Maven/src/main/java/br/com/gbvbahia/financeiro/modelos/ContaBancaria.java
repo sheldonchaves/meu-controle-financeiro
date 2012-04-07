@@ -24,7 +24,18 @@ import org.apache.commons.lang.StringUtils;
 @Entity
 @Table(name = "fin_conta_bancaria", uniqueConstraints =
 @UniqueConstraint(name = "uk_id_desc_tipo",
-        columnNames = { "id", "ds_conta", "en_tipo" }))
+columnNames = { "id", "ds_conta", "en_tipo" }))
+@NamedQueries({
+    @NamedQuery(name = "ContaBancaria.findAll",
+    query = "SELECT distinct a FROM ContaBancaria a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
+    + " AND (:status2 = 'todos' OR a.status = :status) "),
+    @NamedQuery(name = "ContaBancaria.findTipoConta",
+    query = "SELECT distinct a FROM ContaBancaria a "
+    + " WHERE a.tipoConta = :tipoConta "
+    + " AND (:status2 = 'todos' OR a.status = :status) "
+    + " AND (a.usuario = :usuario OR a.usuario.conjuge = :usuario) ")
+})
 public class ContaBancaria implements EntityInterface<ContaBancaria>,
         Serializable {
 

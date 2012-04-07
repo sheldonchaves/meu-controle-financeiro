@@ -19,6 +19,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "fin_grupo")
+@NamedQueries({
+    @NamedQuery(name = "Grupo.findAll",
+    query = " SELECT a FROM Grupo a "),
+    @NamedQuery(name = "Grupo.findByGrupoId",
+    query = " SELECT a FROM Grupo a "
+    + " WHERE a.nome = :nome ")
+})
 @XmlRootElement
 public class Grupo implements EntityInterface<Grupo>, Serializable {
 

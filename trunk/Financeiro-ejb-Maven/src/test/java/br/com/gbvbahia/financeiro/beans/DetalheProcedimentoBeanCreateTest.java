@@ -4,37 +4,48 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
-import static br.com.gbvbahia.financeiro.beans.Testes.c;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
-import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
-import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
-import br.com.gbvbahia.financeiro.modelos.DetalheDespesa;
-import br.com.gbvbahia.financeiro.modelos.DetalheReceita;
-import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.modelos.*;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
-import static org.junit.Assert.assertTrue;
-import org.junit.BeforeClass;
+import com.bm.cfg.Ejb3UnitCfg;
+import com.bm.testsuite.BaseSessionBeanFixture;
+import com.bm.testsuite.dataloader.CSVInitialDataSet;
+import com.bm.utils.BasicDataSource;
+import java.sql.Connection;
 import org.junit.Test;
 
 /**
  *
  * @author Guilherme
  */
-public class DetalheProcedimentoBeanCreateTest {
+public class DetalheProcedimentoBeanCreateTest
+        extends BaseSessionBeanFixture<DetalheProcedimentoFacade> {
 
-    private static ContaBancariaFacade contaBancariaFacade = null;
-    private static UsuarioFacade usuarioFacade = null;
-    private static DetalheProcedimentoFacade instance = null;
+    /**
+     * Define as classes que serão utilizadas durante o testes, menos
+     * o Bean a ser testado.
+     */
+    private static final Class[] USED_BEANS = Testes.getUseBeans();
+    private static final CSVInitialDataSet<Usuario> USUARIO_CSV =
+            Testes.getUsuariosConjugeCSV();
+    private static final CSVInitialDataSet<ContaBancaria> CONTAS_CSV =
+            Testes.getContasBancoCSV();
 
     public DetalheProcedimentoBeanCreateTest() {
+        super(DetalheProcedimentoFacade.class, USED_BEANS,
+                USUARIO_CSV, CONTAS_CSV);
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        contaBancariaFacade = (ContaBancariaFacade) c.getContext().lookup("java:global/classes/ContaBancariaBean");
-        usuarioFacade = (UsuarioFacade) c.getContext().lookup("java:global/classes/UsuarioBean");
-        instance = (DetalheProcedimentoFacade) c.getContext().lookup("java:global/classes/DetalheProcedimentoBean");
+    /**
+     * Provedor do Facede de Teste
+     *
+     * @return
+     */
+    private DetalheProcedimentoFacade getBean() {
+        DetalheProcedimentoFacade instance = this.getBeanToTest();
+        assertNotNull("EJB Não pode ser nulo!", instance);
+        return instance;
     }
 
     /**
@@ -42,14 +53,17 @@ public class DetalheProcedimentoBeanCreateTest {
      */
     @Test
     public void testCreateDespesa() throws Exception {
+        DetalheProcedimentoFacade instance = getBean();
+        final Usuario user = getEntityManager().find(Usuario.class, "user01");
         DetalheProcedimento entity = new DetalheDespesa();
         entity.setDetalhe("Transporte");
-        final Usuario user = usuarioFacade.find("gbvbahia");
         entity.setUsuario(user);
+        getEntityManager().getTransaction().begin();
         instance.create(entity);
+        getEntityManager().getTransaction().commit();
         assertTrue("Despesa criada não encontrada",
-                !instance.findAllDetalheDespesa(user,
-                Boolean.TRUE).isEmpty());
+                instance.findAllDetalheDespesa(user,
+                Boolean.TRUE).size() == 1);
     }
 
     /**
@@ -57,14 +71,17 @@ public class DetalheProcedimentoBeanCreateTest {
      */
     @Test
     public void testCreateReceita() throws Exception {
+        DetalheProcedimentoFacade instance = getBean();
+        final Usuario user = getEntityManager().find(Usuario.class, "user01");
         DetalheProcedimento entity = new DetalheReceita();
         entity.setDetalhe("Salário Mensal");
-        final Usuario user = usuarioFacade.find("esposa");
         entity.setUsuario(user);
+        getEntityManager().getTransaction().begin();
         instance.create(entity);
+        getEntityManager().getTransaction().commit();
         assertTrue("Despesa criada não encontrada",
-                !instance.findAllDetalheReceita(user,
-                Boolean.TRUE).isEmpty());
+                instance.findAllDetalheReceita(user,
+                Boolean.TRUE).size() == 1);
     }
 
     /**
@@ -74,12 +91,15 @@ public class DetalheProcedimentoBeanCreateTest {
      */
     @Test
     public void testCreateReceitaBlock() throws Exception {
+        DetalheProcedimentoFacade instance = getBean();
+        final Usuario user = getEntityManager().find(Usuario.class, "user03");
         DetalheProcedimento entity = new DetalheReceita();
         entity.setDetalhe("Salário Semanal");
-        final Usuario user = usuarioFacade.find("esposa");
         entity.setUsuario(user);
         entity.setAtivo(false);
+        getEntityManager().getTransaction().begin();
         instance.create(entity);
+        getEntityManager().getTransaction().commit();
         assertTrue("Despesa criada não encontrada",
                 !instance.findAllDetalheReceita(user,
                 Boolean.FALSE).isEmpty());
@@ -90,12 +110,15 @@ public class DetalheProcedimentoBeanCreateTest {
      */
     @Test
     public void testCreateDespesaBlock() throws Exception {
+        DetalheProcedimentoFacade instance = getBean();
+        final Usuario user = getEntityManager().find(Usuario.class, "user03");
         DetalheProcedimento entity = new DetalheDespesa();
         entity.setDetalhe("Escola");
-        final Usuario user = usuarioFacade.find("gbvbahia");
         entity.setUsuario(user);
         entity.setAtivo(false);
+        getEntityManager().getTransaction().begin();
         instance.create(entity);
+        getEntityManager().getTransaction().commit();
         assertTrue("Despesa criada não encontrada",
                 !instance.findAllDetalheDespesa(user,
                 Boolean.FALSE).isEmpty());
@@ -104,10 +127,13 @@ public class DetalheProcedimentoBeanCreateTest {
     /**
      * Tenta cria um detalheProcedimento com detalhe com maior
      * quantidade de caracteres do que é permitido.
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     @Test(expected = NegocioException.class)
     public void testCreateLimiteMaxCaracteres() throws Exception {
+        DetalheProcedimentoFacade instance = getBean();
+        final Usuario user = getEntityManager().find(Usuario.class, "user03");
         DetalheProcedimento entity = new DetalheDespesa();
         StringBuilder sb = new StringBuilder("");
         for (int i = 0;
@@ -120,24 +146,58 @@ public class DetalheProcedimentoBeanCreateTest {
             }
         }
         entity.setDetalhe(sb.toString());
-        final Usuario user = usuarioFacade.find("gbvbahia");
         entity.setUsuario(user);
         entity.setAtivo(false);
-        instance.create(entity);
+        try {
+            getEntityManager().getTransaction().begin();
+            instance.create(entity);
+            getEntityManager().getTransaction().commit();
+            fail("Uma NegocioException deveria ter sido lançada!");
+        } catch (NegocioException e) {
+            if (getEntityManager().getTransaction().isActive()) {
+                this.getEntityManager().getTransaction().rollback();
+            }
+            assertTrue("NegocioException Lançada", true);
+        }
     }
-    
-     /**
+
+    /**
      * Tenta cria um detalheProcedimento com detalhe com menor
      * quantidade de caracteres do que é permitido.
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     @Test(expected = NegocioException.class)
     public void testCreateLimiteMinCaracteres() throws Exception {
+        DetalheProcedimentoFacade instance = getBean();
+        final Usuario user = getEntityManager().find(Usuario.class, "user03");
         DetalheProcedimento entity = new DetalheDespesa();
         entity.setDetalhe("ABC");
-        final Usuario user = usuarioFacade.find("gbvbahia");
         entity.setUsuario(user);
         entity.setAtivo(true);
-        instance.create(entity);
+        try {
+            getEntityManager().getTransaction().begin();
+            instance.create(entity);
+            getEntityManager().getTransaction().commit();
+            fail("Uma NegocioException deveria ter sido lançada!");
+        } catch (NegocioException e) {
+            if (getEntityManager().getTransaction().isActive()) {
+                this.getEntityManager().getTransaction().rollback();
+            }
+            assertTrue("NegocioException Lançada", true);
+        }
+    }
+
+    /**
+     * Se for uma base de dados a mesma deve ser limpa. Em memória não
+     * ha necessidade.
+     *
+     * @throws Exception
+     */
+    @Override
+    public void tearDown() throws Exception {
+        BasicDataSource ds = new BasicDataSource(Ejb3UnitCfg.getConfiguration());
+        Connection con = ds.getConnection();
+        Testes.tearDown(con);
     }
 }

@@ -7,50 +7,64 @@ package br.com.gbvbahia.financeiro.beans;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
+import br.com.gbvbahia.financeiro.modelos.Grupo;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import com.bm.cfg.Ejb3UnitCfg;
+import com.bm.testsuite.BaseSessionBeanFixture;
+import com.bm.testsuite.dataloader.CSVInitialDataSet;
+import com.bm.utils.BasicDataSource;
+import java.sql.Connection;
 import java.util.List;
-import java.util.Map;
-import javax.ejb.embeddable.EJBContainer;
-import org.junit.AfterClass;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.BeforeClass;
-import static br.com.gbvbahia.financeiro.beans.Testes.c;
-import static br.com.gbvbahia.financeiro.beans.ContaBancariaBeanCreateTest.*;
-import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
-import java.util.HashMap;
 
 /**
  *
  * @author Guilherme
  */
-public class ContaBancariaBeanSearchTest {
+public class ContaBancariaBeanSearchTest
+        extends BaseSessionBeanFixture<ContaBancariaFacade> {
 
-    private static ContaBancariaFacade instance = null;
-    private static UsuarioFacade usuarioFacade = null;
+    /**
+     * Define as classes que serão utilizadas durante o testes, menos
+     * o Bean a ser testado.
+     */
+    private static final Class[] USED_BEANS = Testes.getUseBeans();
+    private static final CSVInitialDataSet<Usuario> USUARIO_CSV =
+            Testes.getUsuariosConjugeCSV();
+    private static final CSVInitialDataSet<ContaBancaria> CONTAS_CSV =
+            Testes.getContasBancoCSV();
 
     public ContaBancariaBeanSearchTest() {
+        super(ContaBancariaFacade.class, USED_BEANS, USUARIO_CSV,
+                CONTAS_CSV);
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        instance = (ContaBancariaFacade) c.getContext().lookup("java:global/classes/ContaBancariaBean");
-        usuarioFacade = (UsuarioFacade) c.getContext().lookup("java:global/classes/UsuarioBean");
+    /**
+     * Provedor do Facede de Teste
+     *
+     * @return
+     */
+    private ContaBancariaFacade getBean() {
+        ContaBancariaFacade instance = this.getBeanToTest();
+        assertNotNull("EJB Não pode ser nulo!", instance);
+        return instance;
     }
 
     /**
      * Busca todas as contas, parâmetro proprietario passado esposa.
-     * Status deve ser ignorado.
-     * Uma conta bloqueada poupança e uma conta corrente foram criadas
-     * é para retornar duas contas.
+     * Status deve ser ignorado. Uma conta bloqueada poupança e uma
+     * conta corrente foram criadas é para retornar duas contas.
      */
     @Test
     public void testFindAll_Usuario_Boolean() throws Exception {
-        Usuario proprietario = usuarioFacade.find("esposa");
+        Usuario proprietario = getEntityManager().find(Usuario.class, "user01");
+        ContaBancariaFacade instance = getBean();
         Boolean status = null;
         List<ContaBancaria> result = instance.findAll(proprietario, status);
         assertTrue("Conta conjuge não encontrada",
-                result.size() == CONTAS_CRIADAS);
+                result.size() == 2);
     }
 
     /**
@@ -58,14 +72,12 @@ public class ContaBancariaBeanSearchTest {
      */
     @Test
     public void testFindAll_Usuario_Boolean2() throws Exception {
-        Usuario proprietario = usuarioFacade.find("esposa");
+        Usuario esposa = getEntityManager().find(Usuario.class, "user02");
+        ContaBancariaFacade instance = getBean();
         Boolean status = true;
-        List<ContaBancaria> result = instance.findAll(proprietario, status);
-        for (ContaBancaria cb : result) {
-            if (!cb.isStatus()) {
-                fail("Busca por conta ativa retornou conta bloqueada.");
-            }
-        }
+        List<ContaBancaria> result = instance.findAll(esposa, status);
+        assertTrue("Conta marido ativa não encontrado.",
+                result.size() == 1);
     }
 
     /**
@@ -73,14 +85,12 @@ public class ContaBancariaBeanSearchTest {
      */
     @Test
     public void testFindAll_Usuario_Boolean3() throws Exception {
-        Usuario proprietario = usuarioFacade.find("gbvbahia");
+        Usuario proprietario = getEntityManager().find(Usuario.class, "user01");
+        ContaBancariaFacade instance = getBean();
         Boolean status = false;
         List<ContaBancaria> result = instance.findAll(proprietario, status);
-        for (ContaBancaria cb : result) {
-            if (cb.isStatus()) {
-                fail("Busca por conta bloqueada retornou conta ativa.");
-            }
-        }
+        assertTrue("Conta proprietario inativa não encontrado.",
+                result.size() == 1);
     }
 
     /**
@@ -89,7 +99,8 @@ public class ContaBancariaBeanSearchTest {
      */
     @Test
     public void testBuscarTipoConta() throws Exception {
-        Usuario proprietario = usuarioFacade.find("gbvbahia");
+        Usuario proprietario = getEntityManager().find(Usuario.class, "user01");
+        ContaBancariaFacade instance = getBean();
         Boolean status = null;
         List result = instance.buscarTipoConta(TipoConta.CORRENTE, proprietario, status);
         assertTrue("Busca conta corrente", result.size() == 1);
@@ -101,7 +112,8 @@ public class ContaBancariaBeanSearchTest {
      */
     @Test
     public void testBuscarTipoConta2() throws Exception {
-        Usuario proprietario = usuarioFacade.find("gbvbahia");
+        Usuario proprietario = getEntityManager().find(Usuario.class, "user01");
+        ContaBancariaFacade instance = getBean();
         Boolean status = false;
         List result = instance.buscarTipoConta(TipoConta.CORRENTE, proprietario, status);
         assertTrue("Busca conta corrente", result.isEmpty());
@@ -113,9 +125,23 @@ public class ContaBancariaBeanSearchTest {
      */
     @Test
     public void testBuscarTipoConta3() throws Exception {
-        Usuario proprietario = usuarioFacade.find("gbvbahia");
+        Usuario proprietario = getEntityManager().find(Usuario.class, "user01");
+        ContaBancariaFacade instance = getBean();
         Boolean status = false;
         List result = instance.buscarTipoConta(TipoConta.POUPANCA, proprietario, status);
-        assertTrue("Busca conta corrente", result.size() == 1);
+        assertTrue("Busca conta poupança", result.size() == 1);
+    }
+
+    /**
+     * Se for uma base de dados a mesma deve ser limpa. Em memória não
+     * ha necessidade.
+     *
+     * @throws Exception
+     */
+    @Override
+    public void tearDown() throws Exception {
+        BasicDataSource ds = new BasicDataSource(Ejb3UnitCfg.getConfiguration());
+        Connection con = ds.getConnection();
+        Testes.tearDown(con);
     }
 }

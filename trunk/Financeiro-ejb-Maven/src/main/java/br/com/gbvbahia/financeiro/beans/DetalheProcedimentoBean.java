@@ -11,6 +11,7 @@ import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,7 +23,7 @@ import javax.persistence.PersistenceContext;
  * @since v.3 01/04/2012
  */
 @Stateless
-//@RolesAllowed({ "admin", "user" })
+@RolesAllowed({ "admin", "user" })
 public class DetalheProcedimentoBean
         extends AbstractFacade<DetalheProcedimento, Long>
         implements DetalheProcedimentoFacade {

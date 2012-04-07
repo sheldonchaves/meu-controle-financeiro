@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
@@ -35,7 +36,7 @@ import javax.validation.ConstraintViolation;
  * @author Guilherme Braga
  * @since 2012/02/20
  */
-//@RolesAllowed({ "admin", "user" })
+@RolesAllowed({ "admin", "user" })
 public abstract class AbstractFacade<T extends EntityInterface, ID extends Serializable> implements InterfaceFacade<T, ID> {
 
     /**

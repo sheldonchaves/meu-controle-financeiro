@@ -8,6 +8,7 @@ import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,7 +20,7 @@ import javax.persistence.PersistenceContext;
  * @since 01/04/2012
  */
 @Stateless
-//@RolesAllowed({ "admin", "user" })
+@RolesAllowed({ "admin", "user" })
 public class AgendaProcedimentoFixoBean
         extends AbstractFacade<AgendaProcedimentoFixo, Long>
         implements AgendaProcedimentoFixoFacade {

@@ -1,0 +1,4 @@
+"user01","123","user01@hotmail.com","user01","user01","false","user02"
+"user02","123","user02@hotmail.com","user02","user02","false","user01"
+"user03","123","user03@hotmail.com","user03","user03","false","user04"
+"user04","123","user04@hotmail.com","user04","user04","false","user03"

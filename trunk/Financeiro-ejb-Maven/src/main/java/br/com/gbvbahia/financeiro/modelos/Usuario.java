@@ -26,6 +26,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "fin_usuario")
+@NamedQueries({
+    @NamedQuery(name = "Usuario.findAll",
+    query = " SELECT u FROM Usuario u "),
+    @NamedQuery(name = "Usuario.findByUserId",
+    query = " SELECT u FROM Usuario u "
+    + " WHERE u.userId = :userId "),
+    @NamedQuery(name = "Usuario.findByBlocked",
+    query = " SELECT u FROM Usuario u "
+    + " WHERE u.blocked = :blocked "),
+    @NamedQuery(name = "Usuario.findByEmail",
+    query = " SELECT u FROM Usuario u "
+    + " WHERE u.email = :email "),
+    @NamedQuery(name = "Usuario.findByFirstName",
+    query = " SELECT u FROM Usuario u "
+    + " WHERE u.firstName = :firstName ")
+})
 @XmlRootElement
 public class Usuario implements EntityInterface<Usuario>, Serializable {
 
@@ -339,7 +355,7 @@ public class Usuario implements EntityInterface<Usuario>, Serializable {
         }
         Usuario other = (Usuario) object;
         if ((this.userId == null && other.userId != null)
-                || (this.userId != null 
+                || (this.userId != null
                 && !this.userId.equals(other.userId))) {
             return false;
         }

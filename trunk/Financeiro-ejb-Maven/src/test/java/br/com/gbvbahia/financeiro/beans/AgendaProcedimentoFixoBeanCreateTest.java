@@ -4,40 +4,49 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
-import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
-import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
-import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
-import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
-import java.util.List;
-import java.util.Map;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.BeforeClass;
-import static br.com.gbvbahia.financeiro.beans.Testes.c;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
+import br.com.gbvbahia.financeiro.modelos.*;
+import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
+import com.bm.cfg.Ejb3UnitCfg;
+import com.bm.testsuite.BaseSessionBeanFixture;
+import com.bm.testsuite.dataloader.CSVInitialDataSet;
+import com.bm.utils.BasicDataSource;
+import java.sql.Connection;
 import java.util.Date;
+import org.junit.Test;
 
 /**
  *
  * @author Guilherme
  */
-public class AgendaProcedimentoFixoBeanCreateTest {
+public class AgendaProcedimentoFixoBeanCreateTest
+        extends BaseSessionBeanFixture<AgendaProcedimentoFixoFacade> {
 
-    private static ContaBancariaFacade contaBancariaFacade = null;
-    private static UsuarioFacade usuarioFacade = null;
-    private static DetalheProcedimentoFacade detalheProcedimentoFacade = null;
-    private static AgendaProcedimentoFixoFacade agendaProcedimentoFixoFacade = null;
+    /**
+     * Define as classes que serão utilizadas durante o testes, menos
+     * o Bean a ser testado.
+     */
+    private static final Class[] USED_BEANS = Testes.getUseBeans();
+    private static final CSVInitialDataSet<Usuario> USUARIO_CSV =
+            Testes.getUsuariosConjugeCSV();
+    private static final CSVInitialDataSet<DetalheProcedimento> DET_CSV =
+            Testes.getDetalhesCSV();
 
     public AgendaProcedimentoFixoBeanCreateTest() {
+        super(AgendaProcedimentoFixoFacade.class, USED_BEANS,
+                USUARIO_CSV, DET_CSV);
     }
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        contaBancariaFacade = (ContaBancariaFacade) c.getContext().lookup("java:global/classes/ContaBancariaBean");
-        usuarioFacade = (UsuarioFacade) c.getContext().lookup("java:global/classes/UsuarioBean");
-        detalheProcedimentoFacade = (DetalheProcedimentoFacade) c.getContext().lookup("java:global/classes/DetalheProcedimentoBean");
-        agendaProcedimentoFixoFacade = (AgendaProcedimentoFixoFacade) c.getContext().lookup("java:global/classes/AgendaProcedimentoFixoBean");
+    /**
+     * Provedor do Facede de Teste
+     *
+     * @return
+     */
+    private AgendaProcedimentoFixoFacade getBean() {
+        AgendaProcedimentoFixoFacade instance = this.getBeanToTest();
+        assertNotNull("EJB Não pode ser nulo!", instance);
+        return instance;
     }
 
     /**
@@ -45,13 +54,18 @@ public class AgendaProcedimentoFixoBeanCreateTest {
      */
     @Test
     public void testCreate() throws Exception {
+        AgendaProcedimentoFixoFacade instance = getBean();
+        Usuario user = getEntityManager().find(Usuario.class, "user03");
+        DetalheDespesa dd = getEntityManager().find(DetalheDespesa.class, 1l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
         entity.setValorFixo(10.00);
         entity.setDataPrimeiroVencimento(new Date());
         entity.setObservacao("Teste de Agenda.");
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
-        entity.setDetalhe(detalheProcedimentoFacade.find(1l));
-        agendaProcedimentoFixoFacade.create(entity);
+        entity.setUsuario(user);
+        entity.setDetalhe(dd);
+        getEntityManager().getTransaction().begin();
+        instance.create(entity);
+        getEntityManager().getTransaction().commit();
         assertNotNull("Entidade com ID null após ser gravada.",
                 entity.getCodigo());
     }
@@ -61,13 +75,26 @@ public class AgendaProcedimentoFixoBeanCreateTest {
      */
     @Test(expected = NegocioException.class)
     public void testCreateValorErro() throws Exception {
+        AgendaProcedimentoFixoFacade instance = getBean();
+        Usuario user = getEntityManager().find(Usuario.class, "user01");
+        DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
         entity.setValorFixo(0.00);
         entity.setDataPrimeiroVencimento(new Date());
         entity.setObservacao("Teste de Agenda Erro Valor.");
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
-        entity.setDetalhe(detalheProcedimentoFacade.find(1l));
-        agendaProcedimentoFixoFacade.create(entity);
+        entity.setUsuario(user);
+        entity.setDetalhe(dr);
+        try {
+            getEntityManager().getTransaction().begin();
+            instance.create(entity);
+            getEntityManager().getTransaction().commit();
+            fail("Uma NegocioException deveria ter sido lançada!");
+        } catch (NegocioException e) {
+            if (getEntityManager().getTransaction().isActive()) {
+                this.getEntityManager().getTransaction().rollback();
+            }
+            assertTrue("NegocioException Lançada", true);
+        }
     }
 
     /**
@@ -75,12 +102,26 @@ public class AgendaProcedimentoFixoBeanCreateTest {
      */
     @Test(expected = NegocioException.class)
     public void testCreateDataNula() throws Exception {
+        AgendaProcedimentoFixoFacade instance = getBean();
+        Usuario user = getEntityManager().find(Usuario.class, "user01");
+        DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
+
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
         entity.setValorFixo(10.00);
         entity.setObservacao("Teste de Agenda Data nula.");
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
-        entity.setDetalhe(detalheProcedimentoFacade.find(1l));
-        agendaProcedimentoFixoFacade.create(entity);
+        entity.setUsuario(user);
+        entity.setDetalhe(dr);
+        try {
+            getEntityManager().getTransaction().begin();
+            instance.create(entity);
+            getEntityManager().getTransaction().commit();
+            fail("Uma NegocioException deveria ter sido lançada!");
+        } catch (NegocioException e) {
+            if (getEntityManager().getTransaction().isActive()) {
+                this.getEntityManager().getTransaction().rollback();
+            }
+            assertTrue("NegocioException Lançada", true);
+        }
     }
 
     /**
@@ -88,13 +129,26 @@ public class AgendaProcedimentoFixoBeanCreateTest {
      */
     @Test(expected = NegocioException.class)
     public void testCreateObsCurta() throws Exception {
+        AgendaProcedimentoFixoFacade instance = getBean();
+        Usuario user = getEntityManager().find(Usuario.class, "user01");
+        DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
         entity.setValorFixo(10.00);
         entity.setDataPrimeiroVencimento(new Date());
         entity.setObservacao("Test");
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
-        entity.setDetalhe(detalheProcedimentoFacade.find(1l));
-        agendaProcedimentoFixoFacade.create(entity);
+        entity.setUsuario(user);
+        entity.setDetalhe(dr);
+        try {
+            getEntityManager().getTransaction().begin();
+            instance.create(entity);
+            getEntityManager().getTransaction().commit();
+            fail("Uma NegocioException deveria ter sido lançada!");
+        } catch (NegocioException e) {
+            if (getEntityManager().getTransaction().isActive()) {
+                this.getEntityManager().getTransaction().rollback();
+            }
+            assertTrue("NegocioException Lançada", true);
+        }
     }
 
     /**
@@ -102,6 +156,9 @@ public class AgendaProcedimentoFixoBeanCreateTest {
      */
     @Test(expected = NegocioException.class)
     public void testCreateObsLong() throws Exception {
+        AgendaProcedimentoFixoFacade instance = getBean();
+        Usuario user = getEntityManager().find(Usuario.class, "user01");
+        DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
         entity.setValorFixo(10.00);
         entity.setDataPrimeiroVencimento(new Date());
@@ -112,25 +169,31 @@ public class AgendaProcedimentoFixoBeanCreateTest {
                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
-        entity.setDetalhe(detalheProcedimentoFacade.find(1l));
-        agendaProcedimentoFixoFacade.create(entity);
-    }
-    
-     /**
-      * Criar varias agendas para pesquisa de range e cont.
-     * Test of create method, of class AgendaProcedimentoFixoBean.
-     */
-    @Test
-    public void testCreateVarias() throws Exception {
-        for (int i = 0; i < 100; i++) {
-        AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
-        entity.setValorFixo(10.00 + i);
-        entity.setDataPrimeiroVencimento(new Date());
-        entity.setObservacao("Teste de Agenda " + i);
-        entity.setUsuario(usuarioFacade.find("gbvbahia"));
-        entity.setDetalhe(detalheProcedimentoFacade.find(1l));
-        agendaProcedimentoFixoFacade.create(entity);
+        entity.setUsuario(user);
+        entity.setDetalhe(dr);
+        try {
+            getEntityManager().getTransaction().begin();
+            instance.create(entity);
+            getEntityManager().getTransaction().commit();
+            fail("Uma NegocioException deveria ter sido lançada!");
+        } catch (NegocioException e) {
+            if (getEntityManager().getTransaction().isActive()) {
+                this.getEntityManager().getTransaction().rollback();
+            }
+            assertTrue("NegocioException Lançada", true);
         }
+    }
+
+    /**
+     * Se for uma base de dados a mesma deve ser limpa. Em memória não
+     * ha necessidade.
+     *
+     * @throws Exception
+     */
+    @Override
+    public void tearDown() throws Exception {
+        BasicDataSource ds = new BasicDataSource(Ejb3UnitCfg.getConfiguration());
+        Connection con = ds.getConnection();
+        Testes.tearDown(con);
     }
 }
