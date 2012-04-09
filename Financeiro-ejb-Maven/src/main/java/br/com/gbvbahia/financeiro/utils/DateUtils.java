@@ -16,7 +16,8 @@ import java.util.Date;
 public final class DateUtils {
 
     /**
-     * Classe exclusiva de métodos estaticos, não pode ser instânciada.
+     * Classe exclusiva de métodos estaticos, não pode ser
+     * instânciada.
      */
     private DateUtils() {
     }
@@ -44,6 +45,20 @@ public final class DateUtils {
     public static String getDateToNameFile() {
         Date date = new Date();
         SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+        return sd.format(date);
+    }
+
+    /**
+     * Formata a data do dia, formato DD/MM/AA.
+     *
+     * @param date Data a ser formatada.
+     * @return java.lang.String DD/MM/AA
+     */
+    public static String getDateToString(final Date date) {
+        if (date == null) {
+            return null;
+        }
+        SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yy");
         return sd.format(date);
     }
 }

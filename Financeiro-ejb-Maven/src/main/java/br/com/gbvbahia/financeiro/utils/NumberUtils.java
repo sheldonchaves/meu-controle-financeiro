@@ -34,17 +34,6 @@ public final class NumberUtils {
     }
 
     /**
-     * Formata o valor passado para moeda Brasileira. 1,000.00 = R$ 1.000,00
-     *
-     * @param valor java.lang.Double a ser formatado.
-     * @return java.lang.String valor formatado.
-     */
-    public static String formatCurrency(final Double valor) {
-        NumberFormat nf = getCurencyNumberFormat();
-        return nf.format(valor);
-    }
-
-    /**
      * Retorna um formatador para exibição de números financeiro:<br> Ex:
      * 65.7654 formata para R$ 65,77<br> Altera sua formatação será de acordo
      * com o padrão Brasileiro<br> Ex: 1,000.98 converte para 1.000,98.
