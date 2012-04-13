@@ -7,6 +7,7 @@ package br.com.gbvbahia.financeiro.modelos.superclass;
 import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
+import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18N;
@@ -67,7 +68,8 @@ public abstract class Procedimento
      * Representa o detalhe do gasto/receita.
      */
     @ManyToOne
-    @JoinColumn(name = "detalhe_procedimento")
+    @NotNull
+    @JoinColumn(name = "detalhe_procedimento", nullable = false)
     private DetalheProcedimento detalhe;
     /**
      * Para receitas/despesas sem ser por agentamento, cadastradas
@@ -93,6 +95,16 @@ public abstract class Procedimento
     @Size(max = 150, min = 5)
     @Column(name = "observacao", nullable = false, length = 150)
     private String observacao;
+    /**
+     * Usuario responsavel.
+     *
+     */
+    @ManyToOne
+    @JoinColumn(name = "fk_user_id",
+    referencedColumnName = "user_id",
+    nullable = false)
+    @NotNull
+    private Usuario usuario;
     /**
      * Deve ser informado no construtor de quem implementa.<br> Define
      * se o Procedimento é uma receita, entra dinheiro ou uma despesa,
@@ -224,7 +236,7 @@ public abstract class Procedimento
      *
      * @param idBd ID banco.
      */
-    public void setId(Long idBd) {
+    public void setId(final Long idBd) {
         this.id = idBd;
     }
 
@@ -262,6 +274,24 @@ public abstract class Procedimento
      */
     public void setStatusPagamento(final StatusPagamento status) {
         this.statusPagamento = status;
+    }
+
+    /**
+     * Usuário proprietario.
+     *
+     * @return proprietario.
+     */
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    /**
+     * Usuario proprietario.
+     *
+     * @param user proprietario;
+     */
+    public void setUsuario(final Usuario user) {
+        this.usuario = user;
     }
 
     /**
@@ -347,6 +377,22 @@ public abstract class Procedimento
             return valorReal;
         }
         return valorEstimado;
+    }
+
+    /**
+     * Retorna o valor, real ou estimado e negativo de for despesa e
+     * positivo se for receita.
+     *
+     * @see getValor()
+     * @return Positivo de receita negativo se despesa.
+     */
+    public Double getValorProcedimento() {
+        double toReturn = getValor();
+        if (this.tipoProcedimento.equals(TipoProcedimento.DESPESA_FINANCEIRA)) {
+            return toReturn * -1;
+        } else {
+            return toReturn;
+        }
     }
 
     @Override
