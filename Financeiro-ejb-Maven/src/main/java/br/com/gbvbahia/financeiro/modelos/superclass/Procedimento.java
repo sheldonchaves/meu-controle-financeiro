@@ -119,8 +119,10 @@ public abstract class Procedimento
      * se o Procedimento é uma receita, entra dinheiro ou uma despesa,
      * saída de dinheiro.
      */
-    @Transient
-    private final TipoProcedimento tipoProcedimento;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Column(name = "tipo_procedimento", nullable = false)
+    private TipoProcedimento tipoProcedimento;
 
     /**
      * Padrão, nunca deve ser utilizado, lança RuntimeException.

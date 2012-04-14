@@ -60,11 +60,13 @@ public class Testes {
      * @return Classes de Entidades utilizadas na aplicação.
      */
     public static Class[] getUseBeans(final Class... noEntityes) {
-        Class[] entityes = new Class[]{Usuario.class,
-            Grupo.class, ContaBancaria.class, DetalheProcedimento.class,
-            DetalheDespesa.class, DetalheReceita.class,
-            AgendaProcedimentoFixo.class, CartaoCredito.class,
-            Procedimento.class, DespesaProcedimento.class};
+        Class[] entityes = new Class[]{
+            Usuario.class, Grupo.class, ContaBancaria.class,
+            DetalheProcedimento.class, DetalheDespesa.class,
+            DetalheReceita.class, AgendaProcedimentoFixo.class,
+            CartaoCredito.class, DespesaProcedimento.class,
+            Procedimento.class, DespesaParceladaProcedimento.class
+        };
 
         return (Class[]) ArrayUtils.addAll(entityes, noEntityes);
     }
@@ -174,7 +176,7 @@ public class Testes {
                 "desp_procedimento.csv", "id", "dataVencimento",
                 "valorEstimado", "valorReal", "detalhe",
                 "classificacaoProcedimento", "statusPagamento",
-                "observacao", "usuario", "tipo",
+                "observacao", "usuario", "tipo", "tipoProcedimento",
                 "cartaoCredito").addDateFormat(
                 DateFormats.USER_DATE.setUserDefinedFomatter("yyyy MM dd"));
     }
@@ -192,6 +194,7 @@ public class Testes {
         con.setAutoCommit(true);
         con.prepareStatement("DELETE from fin_agenda_procedimento_fixo").executeUpdate();
         con.prepareStatement("DELETE from fin_procedimento_despesa_unica").executeUpdate();
+        con.prepareStatement("DELETE from fin_procedimento_despesa_parcelada").executeUpdate();
         con.prepareStatement("DELETE from fin_procedimento").executeUpdate();
         con.prepareStatement("DELETE from fin_detalhe").executeUpdate();
         con.prepareStatement("DELETE from fin_conta_bancaria").executeUpdate();

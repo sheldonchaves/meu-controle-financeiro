@@ -5,6 +5,7 @@
 package br.com.gbvbahia.financeiro.beans.facades;
 
 import br.com.gbvbahia.financeiro.beans.commons.InterfaceFacade;
+import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
@@ -26,12 +27,28 @@ public interface ProcedimentoFacade
 
     /**
      * Busca todas as DespesasProcedimento por filtros.
+     *
      * @param cartao Cartão de Crédito, se null traz todos.
      * @param status SatusPagamento, se null traz todos.
-     * @param usuario Usuário ou Conjuge responsavel, deve ser informado.
+     * @param usuario Usuário ou Conjuge responsavel, deve ser
+     * informado.
      * @return List&lt;DespesaProcedimento&gt;
      */
     List<DespesaProcedimento> buscarDespesaProcedimento(
             final CartaoCredito cartao, final StatusPagamento status,
             final Usuario usuario);
+
+    /**
+     * Cria contas parceladas a partir de qualquer Procedimento
+     * passado.
+     * @param entity Procedimento.
+     * @param parTotal Quantidade de parcelas do parcelamento.
+     * Obrigatório.
+     * @param parAtual Parcela atual do parcelamento. Obrigatório.
+     * @param cartao Cartão de crédito onde foi parcelado. Opcional.
+     * @throws NegocioException Caso alguma validação seja violada.
+     */
+    void create(final Procedimento entity,
+            final int parTotal, final int parAtual,
+            final CartaoCredito cartao) throws NegocioException;
 }

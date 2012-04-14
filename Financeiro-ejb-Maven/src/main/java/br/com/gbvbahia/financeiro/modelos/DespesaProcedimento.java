@@ -27,7 +27,7 @@ import javax.persistence.*;
         + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
         + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario)")
 })
-@DiscriminatorValue("DESPESA")
+@DiscriminatorValue("DESPESA_UNICA")
 public class DespesaProcedimento extends Procedimento
         implements Serializable {
 

@@ -4,6 +4,8 @@
  */
 package br.com.gbvbahia.financeiro.utils;
 
+import java.util.Date;
+import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -63,5 +65,30 @@ public final class StringBeanUtils {
             }
 
         }
+    }
+
+    /**
+     * Retorna uma String que pode ser utilizada como único
+     * identificador.
+     *
+     * @param login Um identificador do usuário proprietario. Não pode
+     * ser nulo.
+     * @param data Uma data para casar com o usuário, será olhado até
+     * os milesimos desta data, garantindo 99,999% de confiabilidade
+     * na unicidade.<br> Não pode ser nula.
+     * @return String formato: 2-00000133-76d1-7b80-0000-01337a76f1f9
+     */
+    public static synchronized String getIdentificadorUnico(
+            final String login, final Date data) {
+        if (data == null) {
+            throw new IllegalArgumentException(I18N.getMsg("idDataInvalida"));
+        }
+        if (login == null) {
+            throw new IllegalArgumentException(I18N.getMsg("idUserInvalido"));
+        }
+        UUID uuid = new UUID(data.getTime(), new Date().getTime());
+        String toReturn = StringUtils.substring(login, 0, 5)
+                + "-" + uuid.toString();
+        return toReturn;
     }
 }
