@@ -5,7 +5,10 @@
 package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
-import br.com.gbvbahia.financeiro.modelos.*;
+import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
+import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
+import br.com.gbvbahia.financeiro.modelos.ReceitaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import com.bm.cfg.Ejb3UnitCfg;
