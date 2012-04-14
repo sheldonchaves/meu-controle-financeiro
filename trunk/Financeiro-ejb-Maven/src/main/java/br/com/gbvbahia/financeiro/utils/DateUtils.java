@@ -28,11 +28,11 @@ public final class DateUtils {
      * @param date java.util.Date
      * @return java.lang.String
      */
-    public static String getDateDiaMesAno(Date date) {
-        if (date == null) {
-            date = new Date();
-        }
+    public static String getDateDiaMesAno(final Date date) {
         SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        if (date == null) {
+            return sd.format(new Date());
+        }
         return sd.format(date);
     }
 

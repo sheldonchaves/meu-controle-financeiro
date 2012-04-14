@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.TransactionAttribute;
@@ -131,8 +132,9 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
             getEntityManager().flush();
         } catch (PersistenceException p) {
             Logger.getLogger(this.getClass().getName()).log(
-                    UtilBeans.LEVEL_LOG,
+                    Level.WARNING,
                     "Problema ao remover: " + entity.toString(), p);
+            p.printStackTrace();
             throw new NegocioException("AbstractFacade.entityRemoveErro",
                     new String[]{entity.getLabel(), p.getMessage()});
         } catch (javax.validation.ConstraintViolationException e) {

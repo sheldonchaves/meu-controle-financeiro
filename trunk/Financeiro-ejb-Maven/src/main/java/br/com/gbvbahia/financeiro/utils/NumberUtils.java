@@ -29,8 +29,7 @@ public final class NumberUtils {
      * aspas).
      */
     public static String numeroString(final Integer numero) {
-        String anoString = numero == null ? "" : numero.toString();
-        return anoString;
+        return numero == null ? "" : numero.toString();
     }
 
     /**
