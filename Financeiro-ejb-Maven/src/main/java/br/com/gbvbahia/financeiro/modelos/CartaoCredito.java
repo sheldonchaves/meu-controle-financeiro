@@ -31,6 +31,12 @@ import javax.validation.constraints.Size;
         "id", "ds_cartao"
     })
 })
+@NamedQueries({
+    @NamedQuery(name = "CartaoCredito.Ativos",
+    query = "Select c From CartaoCredito c "
+    + "Where c.ativo = true "
+    + "AND c.usuario = :usuario ")
+})
 public class CartaoCredito implements EntityInterface<CartaoCredito>,
         Serializable {
 
@@ -45,7 +51,7 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
      * Descrição única do cartão de crédito.
      */
     @NotNull
-    @Size(max = 30, min = 5)
+    @Size(max = 30, min = 3)
     @Column(name = "ds_cartao", nullable = false, length = 30)
     private String cartao;
     /**
@@ -69,6 +75,11 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
     @NotNull
     @Column(name = "dia_limite", nullable = false)
     private Integer diaMesmoMes = 7;
+    /**
+     * Define se o cartão ainda é utilizado ou não.
+     */
+    @Column(name = "ativo", nullable = false)
+    private boolean ativo = true;
     /**
      * Usuario responsavel.
      *
@@ -187,6 +198,7 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
 
     /**
      * Usuário proprietario.
+     *
      * @return proprietario.
      */
     public Usuario getUsuario() {
@@ -195,10 +207,29 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
 
     /**
      * Usuario proprietario.
+     *
      * @param user proprietario;
      */
     public void setUsuario(final Usuario user) {
         this.usuario = user;
+    }
+
+    /**
+     * Define se cartão está ativo ou não.
+     *
+     * @return True ativo, False não ativo.
+     */
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    /**
+     * Define se cartão está ativo ou não.
+     *
+     * @param active True ativo, False não ativo.
+     */
+    public void setAtivo(final boolean active) {
+        this.ativo = active;
     }
 
     @Override
