@@ -6,7 +6,10 @@ package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
-import br.com.gbvbahia.financeiro.modelos.*;
+import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
+import br.com.gbvbahia.financeiro.modelos.DetalheDespesa;
+import br.com.gbvbahia.financeiro.modelos.DetalheReceita;
+import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;

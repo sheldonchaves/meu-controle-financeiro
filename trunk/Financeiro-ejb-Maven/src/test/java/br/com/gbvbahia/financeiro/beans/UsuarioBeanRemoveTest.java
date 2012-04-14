@@ -7,7 +7,6 @@ package br.com.gbvbahia.financeiro.beans;
 import org.junit.*;
 import static org.junit.Assert.*;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
-import br.com.gbvbahia.financeiro.modelos.Grupo;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;

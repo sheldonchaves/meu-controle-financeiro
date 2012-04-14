@@ -8,7 +8,6 @@ import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
-import br.com.gbvbahia.financeiro.modelos.Grupo;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
