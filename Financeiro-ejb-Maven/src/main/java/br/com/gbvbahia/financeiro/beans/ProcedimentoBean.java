@@ -12,6 +12,7 @@ import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.ReceitaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import br.com.gbvbahia.financeiro.utils.I18N;
@@ -81,6 +82,27 @@ public class ProcedimentoBean
             super.create(dpp);
         }
 
+    }
+
+    @Override
+    public List<ReceitaProcedimento> buscarReceitaProcedimento(
+            final StatusPagamento status, final Usuario usuario) {
+           UtilBeans.checkNull(usuario);
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", usuario);
+        //Se null StatusPagamento.NAO_PAGA é ignorado
+        parans.put("status", status == null
+                ? StatusPagamento.NAO_PAGA : status);
+        //Se null todos = todos e retorna tudo.
+        parans.put("status2", status == null ? "todos" : "filtro");
+        List<ReceitaProcedimento> toReturn =
+                new ArrayList<ReceitaProcedimento>();
+        final List<Procedimento> despesas =
+                listPesqParam("Receita.StatusUsuario", parans);
+        for (Procedimento p : despesas) {
+            toReturn.add((ReceitaProcedimento) p);
+        }
+        return toReturn;
     }
 
     @Override

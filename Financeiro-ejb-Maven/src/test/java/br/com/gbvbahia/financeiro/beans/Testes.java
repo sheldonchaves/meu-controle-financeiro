@@ -66,9 +66,9 @@ public class Testes {
             DetalheProcedimento.class, DetalheDespesa.class,
             DetalheReceita.class, AgendaProcedimentoFixo.class,
             CartaoCredito.class, DespesaProcedimento.class,
-            Procedimento.class, DespesaParceladaProcedimento.class
+            Procedimento.class, DespesaParceladaProcedimento.class,
+            ReceitaProcedimento.class
         };
-
         return (Class[]) ArrayUtils.addAll(entityes, noEntityes);
     }
 
@@ -183,6 +183,21 @@ public class Testes {
     }
 
     /**
+     * Cria dados com base no CSV X a classe informada.
+     *
+     * @return Representacao do arquivo procedimento.csv em um
+     * CSVInitialDataSet.
+     */
+    public static CSVInitialDataSet<ReceitaProcedimento> getRececProcimentoCSV() {
+        return new CSVInitialDataSet<ReceitaProcedimento>(ReceitaProcedimento.class,
+                "receita_procedimento.csv", "id", "dataVencimento",
+                "valorEstimado", "valorReal", "detalhe",
+                "classificacaoProcedimento", "statusPagamento",
+                "observacao", "usuario", "tipo", "tipoProcedimento").addDateFormat(
+                DateFormats.USER_DATE.setUserDefinedFomatter("yyyy MM dd"));
+    }
+
+    /**
      * As classes de teste devem sobrescrever tearDown() de
      * BaseSessionBeanFixture. Bug do EJB3Unit que não realiza a
      * limpeza dos dados entre um teste e outro.<br> Esse método
@@ -193,10 +208,11 @@ public class Testes {
      */
     public static void tearDown(Connection con) throws Exception {
         con.setAutoCommit(true);
-        con.prepareStatement("DELETE from fin_agenda_procedimento_fixo").executeUpdate();
         con.prepareStatement("DELETE from fin_procedimento_despesa_unica").executeUpdate();
         con.prepareStatement("DELETE from fin_procedimento_despesa_parcelada").executeUpdate();
+        con.prepareStatement("DELETE from fin_procedimento_receita_unica").executeUpdate();
         con.prepareStatement("DELETE from fin_procedimento").executeUpdate();
+        con.prepareStatement("DELETE from fin_agenda_procedimento_fixo").executeUpdate();
         con.prepareStatement("DELETE from fin_detalhe").executeUpdate();
         con.prepareStatement("DELETE from fin_conta_bancaria").executeUpdate();
         con.prepareStatement("DELETE from fin_cartao_credito").executeUpdate();
