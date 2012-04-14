@@ -39,7 +39,8 @@ import org.junit.runners.Suite;
     DetalheProcedimentoBeanCreateTest.class,
     DetalheProcedimentoBeanSearchTest.class,
     AgendaProcedimentoFixoBeanCreateTest.class,
-    AgendaProcedimentoFixoBeanSearchTest.class
+    AgendaProcedimentoFixoBeanSearchTest.class,
+    CartaoCreditoTest.class
 })
 public class Testes {
 
@@ -60,7 +61,7 @@ public class Testes {
         Class[] entityes = new Class[]{Usuario.class,
             Grupo.class, ContaBancaria.class, DetalheProcedimento.class,
             DetalheDespesa.class, DetalheReceita.class,
-            AgendaProcedimentoFixo.class};
+            AgendaProcedimentoFixo.class, CartaoCredito.class};
 
         return (Class[]) ArrayUtils.addAll(entityes, noEntityes);
     }
@@ -148,6 +149,18 @@ public class Testes {
     }
 
     /**
+     * Cria dados com base no CSV X a classe informada.
+     *
+     * @return Representacao do arquivo cartao_credito.csv em
+     * um CSVInitialDataSet.
+     */
+    public static CSVInitialDataSet<CartaoCredito> getCartaoCSV() {
+        return new CSVInitialDataSet<CartaoCredito>(CartaoCredito.class,
+                "cartao_credito.csv", "id", "cartao",
+                "diaVencimento", "diaMesmoMes", "ativo", "usuario");
+    }
+
+    /**
      * As classes de teste devem sobrescrever tearDown() de
      * BaseSessionBeanFixture. Bug do EJB3Unit que não realiza a
      * limpeza dos dados entre um teste e outro.<br> Esse método
@@ -161,6 +174,7 @@ public class Testes {
         con.prepareStatement("DELETE from fin_agenda_procedimento_fixo").executeUpdate();
         con.prepareStatement("DELETE from fin_detalhe").executeUpdate();
         con.prepareStatement("DELETE from fin_conta_bancaria").executeUpdate();
+        con.prepareStatement("DELETE from fin_cartao_credito").executeUpdate();
         con.prepareStatement("DELETE from fin_usuario_grupo").executeUpdate();
         con.prepareStatement("DELETE from fin_usuario").executeUpdate();
         con.prepareStatement("DELETE from fin_grupo").executeUpdate();
