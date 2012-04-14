@@ -22,13 +22,20 @@ import javax.validation.constraints.Size;
  * previsto.<br> A data primeiro vencimento representa a data de
  * inicio do procedimento fixo, a partir dela que as proximas serão
  * considerada. <br> Perido diz que campo quantidade deve acrescentar,
- * em dias, mes ou anos.
+ * em dias, mes ou anos.<br>
+ * Para receitas deve ser utilizado ReceitaProcedimento<br>
+ * Para despesas deve ser utilizado DespesasProcedimento.<br>
  *
  * @author Guilherme
  * @since v.3 01/04/2012
  */
 @Entity
 @Table(name = "fin_agenda_procedimento_fixo")
+@NamedQueries({
+    @NamedQuery(name = "AgendaProcedimentoFixo.UltimaData",
+    query = " SELECT MAX(p.dataVencimento) From Procedimento p "
+    + "WHERE (p.agenda = :agenda) ")
+})
 public class AgendaProcedimentoFixo
         implements EntityInterface<AgendaProcedimentoFixo>, Serializable {
 

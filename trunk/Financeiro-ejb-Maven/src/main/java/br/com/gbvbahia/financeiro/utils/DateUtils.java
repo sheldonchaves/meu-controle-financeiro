@@ -23,7 +23,7 @@ public final class DateUtils {
     }
 
     /**
-     * Retorna uma data no formato de String DD/MM/AAAA.
+     * Retorna uma data no formato de String DD/MM/AAAA HH:mm:ss.
      *
      * @param date java.util.Date
      * @return java.lang.String
@@ -45,6 +45,20 @@ public final class DateUtils {
     public static String getDateToNameFile() {
         Date date = new Date();
         SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+        return sd.format(date);
+    }
+
+    /**
+     * Formata a data, formato AAAAMMDD, para ser incluida na
+     * nomenclatura de um método.
+     *
+     * @return java.lang.String yyyMMdd
+     */
+    public static String getDateDirect(Date date) {
+        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+        if (date == null) {
+            return sd.format(new Date());
+        }
         return sd.format(date);
     }
 

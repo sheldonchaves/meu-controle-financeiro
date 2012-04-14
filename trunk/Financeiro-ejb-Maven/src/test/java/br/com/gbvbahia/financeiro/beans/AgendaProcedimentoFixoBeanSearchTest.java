@@ -5,15 +5,16 @@
 package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
-import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
-import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.modelos.*;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
+import br.com.gbvbahia.financeiro.utils.DateUtils;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.utils.BasicDataSource;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.junit.Test;
 
@@ -29,16 +30,35 @@ public class AgendaProcedimentoFixoBeanSearchTest
      * o Bean a ser testado.
      */
     private static final Class[] USED_BEANS = Testes.getUseBeans();
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     */
     private static final CSVInitialDataSet<Usuario> USUARIO_CSV =
             Testes.getUsuariosConjugeCSV();
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     */
     private static final CSVInitialDataSet<DetalheProcedimento> DET_CSV =
             Testes.getDetalhesCSV();
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     */
     private static final CSVInitialDataSet<AgendaProcedimentoFixo> AGENDA_CSV =
             Testes.getAgendaCSV();
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     */
+    private static final CSVInitialDataSet<CartaoCredito> CARTAO_CSV =
+            Testes.getCartaoCSV();
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     */
+    private static final CSVInitialDataSet<ReceitaProcedimento> RECE_PROCEDIMENTO_CSV = Testes.getRececProcimentoCSV();
 
     public AgendaProcedimentoFixoBeanSearchTest() {
         super(AgendaProcedimentoFixoFacade.class, USED_BEANS,
-                USUARIO_CSV, DET_CSV, AGENDA_CSV);
+                USUARIO_CSV, DET_CSV, AGENDA_CSV, CARTAO_CSV,
+                RECE_PROCEDIMENTO_CSV);
     }
 
     /**
@@ -69,6 +89,21 @@ public class AgendaProcedimentoFixoBeanSearchTest
             ids.add(apf.getCodigo());
         }
         assertTrue("Não existe ID repetidos.", true);
+    }
+
+    @Test
+    public void testBuscarUltimaData() throws Exception {
+        AgendaProcedimentoFixoFacade instance = getBean();
+        AgendaProcedimentoFixo ag1 = instance.find(1l);
+        assertNotNull("ag1 Não pode ser nulo!", ag1);
+        AgendaProcedimentoFixo ag8 = instance.find(8l);
+        assertNotNull("ag1 Não pode ser nulo!", ag8);
+        Date lastDate1 = instance.buscarUltimaData(ag1);
+        assertNull("LastDate1 deveria ser null", lastDate1);
+        Date lastDate2 = instance.buscarUltimaData(ag8);
+        assertNotNull("LastDate2 não deveria ser null", lastDate2);
+        assertEquals("Maxima data incorreta", "20120801",
+                DateUtils.getDateDirect(lastDate2));
     }
 
     /**

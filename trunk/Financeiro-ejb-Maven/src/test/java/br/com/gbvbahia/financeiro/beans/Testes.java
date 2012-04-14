@@ -193,7 +193,8 @@ public class Testes {
                 "receita_procedimento.csv", "id", "dataVencimento",
                 "valorEstimado", "valorReal", "detalhe",
                 "classificacaoProcedimento", "statusPagamento",
-                "observacao", "usuario", "tipo", "tipoProcedimento").addDateFormat(
+                "observacao", "usuario", "tipo", "tipoProcedimento",
+                "agenda").addDateFormat(
                 DateFormats.USER_DATE.setUserDefinedFomatter("yyyy MM dd"));
     }
 

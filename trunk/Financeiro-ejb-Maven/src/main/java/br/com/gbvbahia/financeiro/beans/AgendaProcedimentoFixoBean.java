@@ -8,10 +8,13 @@ import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import java.util.Date;
+import java.util.Map;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  * Bean de entidade a AgendaProcedimentoFixo.
@@ -41,5 +44,13 @@ public class AgendaProcedimentoFixoBean
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    @Override
+    public Date buscarUltimaData(AgendaProcedimentoFixo agenda) {
+        UtilBeans.checkNull(agenda);
+        Query q = em.createNamedQuery("AgendaProcedimentoFixo.UltimaData");
+        q.setParameter("agenda", agenda);
+        return (Date) q.getSingleResult();
     }
 }

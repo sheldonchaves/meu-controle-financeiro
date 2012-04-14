@@ -7,6 +7,7 @@ package br.com.gbvbahia.financeiro.modelos.superclass;
 import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
+import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
@@ -31,8 +32,8 @@ import org.apache.commons.lang.StringUtils;
 @NamedQueries({
     @NamedQuery(name = "Procedimento.TipoProcedimento",
     query = " SELECT p From Procedimento p "
-        + "WHERE (p.tipoProcedimento = :tipoProcedimento) "
-        + "AND (p.usuario = :usuario OR p.usuario.conjuge = :usuario)")
+    + "WHERE (p.tipoProcedimento = :tipoProcedimento) "
+    + "AND (p.usuario = :usuario OR p.usuario.conjuge = :usuario)")
 })
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo",
@@ -110,6 +111,13 @@ public abstract class Procedimento
      */
     @Column(name = "tipo", insertable = false, updatable = false)
     private String tipo;
+    /**
+     * Se essa conta for criada por uma agenda, a mesma deverá ser
+     * cadastrada para fins de atualização.
+     */
+    @ManyToOne
+    @JoinColumn(name = "fk_agenda_procedimento_fixo")
+    private AgendaProcedimentoFixo agenda;
     /**
      * Usuario responsavel.
      *
@@ -379,6 +387,22 @@ public abstract class Procedimento
      */
     public TipoProcedimento getTipoProcedimento() {
         return tipoProcedimento;
+    }
+
+    /**
+     * Recupera a agenda de origem.
+     * @return Agenda ou null se não for de uma agenda.
+     */
+    public AgendaProcedimentoFixo getAgenda() {
+        return agenda;
+    }
+
+    /**
+     * Determina a agenda que criou.
+     * @param agendaProcedimento Agenda de origem.
+     */
+    public void setAgenda(final AgendaProcedimentoFixo agendaProcedimento) {
+        this.agenda = agendaProcedimento;
     }
 
     @Override
