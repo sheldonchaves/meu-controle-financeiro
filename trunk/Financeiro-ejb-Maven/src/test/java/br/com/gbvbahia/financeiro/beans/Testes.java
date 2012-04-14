@@ -6,6 +6,7 @@ package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.modelos.*;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
+import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.testsuite.dataloader.DateFormats;
 import java.sql.Connection;
@@ -40,7 +41,8 @@ import org.junit.runners.Suite;
     DetalheProcedimentoBeanSearchTest.class,
     AgendaProcedimentoFixoBeanCreateTest.class,
     AgendaProcedimentoFixoBeanSearchTest.class,
-    CartaoCreditoTest.class
+    CartaoCreditoTest.class,
+    DespesaProcedimentoBeanTest.class
 })
 public class Testes {
 
@@ -57,11 +59,12 @@ public class Testes {
      * ser declaradas para utilização, como outros beans.
      * @return Classes de Entidades utilizadas na aplicação.
      */
-    public static Class[] getUseBeans(final Class[] noEntityes) {
+    public static Class[] getUseBeans(final Class... noEntityes) {
         Class[] entityes = new Class[]{Usuario.class,
             Grupo.class, ContaBancaria.class, DetalheProcedimento.class,
             DetalheDespesa.class, DetalheReceita.class,
-            AgendaProcedimentoFixo.class, CartaoCredito.class};
+            AgendaProcedimentoFixo.class, CartaoCredito.class,
+            Procedimento.class, DespesaProcedimento.class};
 
         return (Class[]) ArrayUtils.addAll(entityes, noEntityes);
     }
@@ -151,13 +154,29 @@ public class Testes {
     /**
      * Cria dados com base no CSV X a classe informada.
      *
-     * @return Representacao do arquivo cartao_credito.csv em
-     * um CSVInitialDataSet.
+     * @return Representacao do arquivo cartao_credito.csv em um
+     * CSVInitialDataSet.
      */
     public static CSVInitialDataSet<CartaoCredito> getCartaoCSV() {
         return new CSVInitialDataSet<CartaoCredito>(CartaoCredito.class,
                 "cartao_credito.csv", "id", "cartao",
                 "diaVencimento", "diaMesmoMes", "ativo", "usuario");
+    }
+
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     *
+     * @return Representacao do arquivo procedimento.csv em um
+     * CSVInitialDataSet.
+     */
+    public static CSVInitialDataSet<DespesaProcedimento> getDespProcimentoCSV() {
+        return new CSVInitialDataSet<DespesaProcedimento>(DespesaProcedimento.class,
+                "desp_procedimento.csv", "id", "dataVencimento",
+                "valorEstimado", "valorReal", "detalhe",
+                "classificacaoProcedimento", "statusPagamento",
+                "observacao", "usuario", "tipo",
+                "cartaoCredito").addDateFormat(
+                DateFormats.USER_DATE.setUserDefinedFomatter("yyyy MM dd"));
     }
 
     /**
@@ -172,6 +191,8 @@ public class Testes {
     public static void tearDown(Connection con) throws Exception {
         con.setAutoCommit(true);
         con.prepareStatement("DELETE from fin_agenda_procedimento_fixo").executeUpdate();
+        con.prepareStatement("DELETE from fin_procedimento_despesa_unica").executeUpdate();
+        con.prepareStatement("DELETE from fin_procedimento").executeUpdate();
         con.prepareStatement("DELETE from fin_detalhe").executeUpdate();
         con.prepareStatement("DELETE from fin_conta_bancaria").executeUpdate();
         con.prepareStatement("DELETE from fin_cartao_credito").executeUpdate();

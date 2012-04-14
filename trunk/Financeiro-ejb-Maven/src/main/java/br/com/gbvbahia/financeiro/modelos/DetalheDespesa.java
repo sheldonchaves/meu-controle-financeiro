@@ -16,8 +16,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "fin_detalhe")
-@DiscriminatorColumn(name = "tipo",
-discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("DESPESA")
 public class DetalheDespesa extends DetalheProcedimento
         implements Serializable {

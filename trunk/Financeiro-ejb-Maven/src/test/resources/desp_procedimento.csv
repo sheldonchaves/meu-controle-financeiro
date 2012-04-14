@@ -1,0 +1,6 @@
+1,"2012 01 10",158.65,158.65,1,"VARIAVEL","NAO_PAGA","Despesa Teste 1","user01","DESPESA",
+2,"2012 01 05",55.00,65.00,2,"FIXA","NAO_PAGA","Despesa Teste 2","user01","DESPESA",2
+3,"2012 01 07",471.00,471.00,2,"VARIAVEL","NAO_PAGA","Despesa Teste 3","user02","DESPESA",
+4,"2012 01 19",622.41,622.41,2,"VARIAVEL","PAGA","Despesa Teste 4","user01","DESPESA",1
+5,"2012 01 12",22.45,22.45,3,"VARIAVEL","PAGA","Despesa Teste 5","user03","DESPESA",4
+6,"2012 01 15",122.45,122.45,4,"VARIAVEL","PAGA","Despesa Teste 6","user02","DESPESA",1
