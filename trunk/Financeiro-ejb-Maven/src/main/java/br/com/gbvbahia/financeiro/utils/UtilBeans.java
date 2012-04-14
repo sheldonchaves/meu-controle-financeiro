@@ -23,7 +23,6 @@ public final class UtilBeans {
      */
     private UtilBeans() {
     }
-
     /**
      * Definie o nível de log para toda aplicação.
      */
@@ -32,4 +31,20 @@ public final class UtilBeans {
      * Unidade de persistência da aplicação.
      */
     public static final String PERSISTENCE_UNIT = "money";
+
+    /**
+     * Valida os parâmetros para que se algum for nulo lance uma
+     * IllegalArgumentException
+     *
+     * @param parametro Parâmetros a serem checados.
+     */
+    public static void checkNull(Object... parametro) {
+        for (int i = 0; i < parametro.length; i++) {
+            if (parametro[i] == null) {
+                throw new IllegalArgumentException(
+                        I18N.getMsg("parametrosObrigatorios"));
+            }
+
+        }
+    }
 }

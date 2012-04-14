@@ -8,6 +8,7 @@ import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
@@ -65,6 +66,7 @@ public class ProcedimentoBean
     public void create(final Procedimento entity,
             final int parTotal, final int parAtual,
             final CartaoCredito cartao) throws NegocioException {
+        UtilBeans.checkNull(entity);
         validarParcelas(parTotal, parAtual);
         int parcelaAtual = parAtual;
         String idU = idParcelamento(entity);
@@ -85,6 +87,7 @@ public class ProcedimentoBean
     public List<DespesaProcedimento> buscarDespesaProcedimento(
             final CartaoCredito cartao, final StatusPagamento status,
             final Usuario usuario) {
+        UtilBeans.checkNull(usuario);
         Map<String, Object> parans = getMapParans();
         parans.put("usuario", usuario);
         //Se null StatusPagamento.NAO_PAGA é ignorado
@@ -101,6 +104,16 @@ public class ProcedimentoBean
             toReturn.add((DespesaProcedimento) p);
         }
         return toReturn;
+    }
+
+    @Override
+    public List<Procedimento> buscarPorTipoProcedimento(
+            final Usuario user, final TipoProcedimento tipo) {
+        UtilBeans.checkNull(user, tipo);
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", user);
+        parans.put("tipoProcedimento", tipo);
+        return listPesqParam("Procedimento.TipoProcedimento", parans);
     }
 
     /**

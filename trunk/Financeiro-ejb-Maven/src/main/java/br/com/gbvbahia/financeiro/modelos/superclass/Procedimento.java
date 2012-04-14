@@ -28,6 +28,12 @@ import org.apache.commons.lang.StringUtils;
  */
 @Entity
 @Table(name = "fin_procedimento")
+@NamedQueries({
+    @NamedQuery(name = "Procedimento.TipoProcedimento",
+    query = " SELECT p From Procedimento p "
+        + "WHERE (p.tipoProcedimento = :tipoProcedimento) "
+        + "AND (p.usuario = :usuario OR p.usuario.conjuge = :usuario)")
+})
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo",
 discriminatorType = DiscriminatorType.STRING)

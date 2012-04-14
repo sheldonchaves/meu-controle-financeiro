@@ -6,6 +6,7 @@ package br.com.gbvbahia.financeiro.beans.commons;
 
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
+import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ import javax.validation.ConstraintViolation;
  * @author Guilherme Braga
  * @since 2012/02/20
  */
-@RolesAllowed({ "admin", "user" })
+@RolesAllowed({"admin", "user"})
 public abstract class AbstractFacade<T extends EntityInterface, ID extends Serializable> implements InterfaceFacade<T, ID> {
 
     /**
@@ -75,6 +76,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void create(final T entity) throws NegocioException {
+        UtilBeans.checkNull(entity);
         if (entity.verificarId()) {
             if (entity.getId() == null) {
                 throw new NegocioException("AbstractFacade"
@@ -97,6 +99,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void update(final T entity) throws NegocioException {
+        UtilBeans.checkNull(entity);
         try {
             getEntityManager().merge(entity);
             getEntityManager().flush();
@@ -110,6 +113,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     public void update(final String namedQuery,
             final Map<String, Object> params)
             throws NegocioException {
+        UtilBeans.checkNull(namedQuery);
         Query q = getEntityManager().createNamedQuery(namedQuery);
         if (params != null) {
             for (String chave : params.keySet()) {
@@ -127,6 +131,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void remove(final T entity) throws NegocioException {
+        UtilBeans.checkNull(entity);
         try {
             getEntityManager().remove(getEntityManager().merge(entity));
             getEntityManager().flush();
@@ -145,6 +150,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public T find(final ID id) {
+        UtilBeans.checkNull(id);
         try {
             return getEntityManager().find(entityClass, id);
         } catch (NoResultException e) {
@@ -164,6 +170,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<T> findRange(final int[] range) {
+        UtilBeans.checkNull(range);
         javax.persistence.criteria.CriteriaQuery cq =
                 getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass)).distinct(true);
@@ -189,6 +196,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<T> listPesq(final String namedQuery) {
+        UtilBeans.checkNull(namedQuery);
         Query q = getEntityManager().createNamedQuery(namedQuery);
         return q.getResultList();
     }
@@ -197,6 +205,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<T> listPesqParam(final String namedQuery,
             final Map<String, Object> params) {
+        UtilBeans.checkNull(namedQuery, params);
         Query q = getEntityManager().createNamedQuery(namedQuery);
         for (String chave : params.keySet()) {
             q.setParameter(chave, params.get(chave));
@@ -209,6 +218,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     public List<T> listPesqParam(final String namedQuery,
             final Map<String, Object> params, final int max,
             final int atual) {
+        UtilBeans.checkNull(namedQuery, params);
         Query q = getEntityManager().createNamedQuery(namedQuery).setMaxResults(max).setFirstResult(atual);
         for (String chave : params.keySet()) {
             q.setParameter(chave, params.get(chave));
@@ -220,6 +230,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public T pesqParam(final String namedQuery,
             final Map<String, Object> params) {
+        UtilBeans.checkNull(namedQuery, params);
         Query q = getEntityManager().createNamedQuery(namedQuery);
         for (String chave : params.keySet()) {
             q.setParameter(chave, params.get(chave));
@@ -234,6 +245,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public T pesqParam(final String namedQuery) {
+        UtilBeans.checkNull(namedQuery);
         Query q = getEntityManager().createNamedQuery(namedQuery);
         try {
             return (T) q.getSingleResult();
@@ -246,6 +258,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @Override
     public Long pesqCount(final String queryName,
             final Map<String, Object> params) {
+        UtilBeans.checkNull(queryName);
         Query q = getEntityManager().createNamedQuery(queryName);
         if (params != null) {
             for (String chave : params.keySet()) {
