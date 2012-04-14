@@ -35,7 +35,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CartaoCredito.Ativos",
     query = "Select c From CartaoCredito c "
     + "Where c.ativo = true "
-    + "AND c.usuario = :usuario ")
+    + "AND (c.usuario = :usuario OR c.usuario.conjuge = :usuario) ")
 })
 public class CartaoCredito implements EntityInterface<CartaoCredito>,
         Serializable {
