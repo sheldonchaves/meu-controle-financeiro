@@ -27,13 +27,25 @@ public class DetalheProcedimentoBeanSearchTest
      * o Bean a ser testado.
      */
     private static final Class[] USED_BEANS = Testes.getUseBeans();
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     */
     private static final CSVInitialDataSet<Usuario> USUARIO_CSV =
             Testes.getUsuariosConjugeCSV();
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     */
     private static final CSVInitialDataSet<ContaBancaria> CONTAS_CSV =
             Testes.getContasBancoCSV();
+    /**
+     * Cria dados com base no CSV X a classe informada.
+     */
     private static final CSVInitialDataSet<DetalheProcedimento> DET_CSV =
             Testes.getDetalhesCSV();
 
+    /**
+     * Construtor padrão com informações para o teste.
+     */
     public DetalheProcedimentoBeanSearchTest() {
         super(DetalheProcedimentoFacade.class, USED_BEANS,
                 USUARIO_CSV, CONTAS_CSV, DET_CSV);
@@ -60,6 +72,18 @@ public class DetalheProcedimentoBeanSearchTest
         DetalheProcedimentoFacade instance = getBean();
         int result = instance.count();
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Retorna todos os Detalhes como superclasse, são 4, duas
+     * receitas e duas despesas criados no teste anterior.
+     */
+    @Test
+    public void testAll() throws Exception {
+        int expResult = Testes.LINHAS_DETALHE_CSV;
+        DetalheProcedimentoFacade instance = getBean();
+        List<DetalheProcedimento> result = instance.findAll();
+        assertEquals(expResult, result.size());
     }
 
     /**

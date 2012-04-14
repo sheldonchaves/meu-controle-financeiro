@@ -29,6 +29,9 @@ import org.apache.commons.lang.StringUtils;
 @Entity
 @Table(name = "fin_procedimento")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "tipo",
+discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("PROCEDIMENTO")
 public abstract class Procedimento
         implements EntityInterface<Procedimento>, Serializable {
 
@@ -95,6 +98,12 @@ public abstract class Procedimento
     @Size(max = 150, min = 5)
     @Column(name = "observacao", nullable = false, length = 150)
     private String observacao;
+    /**
+     * Recupera o tipo de procedimento.<br>Cada subclasse define o
+     * valor em @DiscriminatorValue("***")
+     */
+    @Column(name = "tipo", insertable = false, updatable = false)
+    private String tipo;
     /**
      * Usuario responsavel.
      *
@@ -342,6 +351,15 @@ public abstract class Procedimento
      */
     public void setValorReal(final Double valor) {
         this.valorReal = valor;
+    }
+
+    /**
+     * Utilizado para identificar o tipo pelo EntityManager.
+     *
+     * @return @DiscriminatorValue("***")
+     */
+    public String getTipo() {
+        return tipo;
     }
 
     /**
