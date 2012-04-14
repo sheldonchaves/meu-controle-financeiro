@@ -45,9 +45,9 @@ public class AgendaProcedimentoFixoBean
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     @Override
-    public Date buscarUltimaData(AgendaProcedimentoFixo agenda) {
+    public Date buscarUltimaData(final AgendaProcedimentoFixo agenda) {
         UtilBeans.checkNull(agenda);
         Query q = em.createNamedQuery("AgendaProcedimentoFixo.UltimaData");
         q.setParameter("agenda", agenda);
