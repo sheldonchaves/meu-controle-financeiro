@@ -10,6 +10,7 @@ import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.ReceitaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import java.util.List;
@@ -55,9 +56,10 @@ public interface ProcedimentoFacade
             final CartaoCredito cartao) throws NegocioException;
 
     /**
-     * Busca contas pela Enum TipoProcedimento<br>
-     * DESPESA_FINANCEIRA Despesa, gasto, saída de dinheiro.<br>
-     * RECEITA_FINANCEIRA Receita, lucro, entrada de dinheiro.
+     * Busca contas pela Enum TipoProcedimento<br> DESPESA_FINANCEIRA
+     * Despesa, gasto, saída de dinheiro.<br> RECEITA_FINANCEIRA
+     * Receita, lucro, entrada de dinheiro.
+     *
      * @param user Usuário responsável. Obrigatório.
      * @param tipo TipoProcedimento. Obrigatório.
      * @return Lista de Procedimentos no perfil solicitado. Ou lista
@@ -65,4 +67,15 @@ public interface ProcedimentoFacade
      */
     List<Procedimento> buscarPorTipoProcedimento(
             final Usuario user, final TipoProcedimento tipo);
+
+    /**
+     * Busca todas as ReceitasProcedimento por filtros.
+     *
+     * @param status SatusPagamento, se null traz todos.
+     * @param usuario Usuário ou Conjuge responsavel, deve ser
+     * informado.
+     * @return List&lt;ReceitaProcedimento&gt;
+     */
+    List<ReceitaProcedimento> buscarReceitaProcedimento(
+            final StatusPagamento status, final Usuario usuario);
 }
