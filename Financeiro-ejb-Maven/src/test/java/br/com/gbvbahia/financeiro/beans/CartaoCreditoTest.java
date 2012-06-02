@@ -5,13 +5,17 @@
 package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
+import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.maker.MakeEntity;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.utils.BasicDataSource;
 import java.sql.Connection;
+import javax.naming.InitialContext;
+import javax.persistence.EntityManager;
 import org.junit.Test;
 
 /**
@@ -56,10 +60,30 @@ public class CartaoCreditoTest
     @Test
     public void testBuscarCartoesAtivo() throws Exception {
         Usuario user = getEntityManager().find(Usuario.class, "user01");
+        popularBanco(getEntityManager(), user);
         CartaoCreditoFacade instance = getBean();
         assertEquals("Quantidade de cartões ativos incorreto",
-                1, instance.buscarCartoesAtivos(user).size());
+                11, instance.buscarCartoesAtivos(user).size());
     }
+
+    private void popularBanco(EntityManager manager, Usuario userCartao)
+            throws Exception {
+        for (int i = 0; i < 10; i++) {
+            CartaoCredito cartaoCredito = MakeEntity.makeEntity(CartaoCredito.class, false);
+            cartaoCredito.setAtivo(true);
+            cartaoCredito.setUsuario(userCartao);
+            manager.getTransaction().begin();
+            manager.persist(cartaoCredito);
+            manager.getTransaction().commit();
+        }
+  
+    }
+    
+    private UsuarioFacade getUsuarioFacade() throws Exception {
+        InitialContext context = new InitialContext();
+        return (UsuarioFacade) context.lookup("EJB3Unit/usuarioFacade/remote");
+    }
+
     /**
      * Se for uma base de dados a mesma deve ser limpa.
      *

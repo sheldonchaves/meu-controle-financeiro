@@ -74,6 +74,8 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
      */
     @NotNull
     @Column(name = "dia_limite", nullable = false)
+    @Max(15)
+    @Min(0)
     private Integer diaMesmoMes = 7;
     /**
      * Define se o cartão ainda é utilizado ou não.
