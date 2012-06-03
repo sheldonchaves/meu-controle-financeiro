@@ -2,15 +2,38 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.gbvbahia.financeiro.beans;
+package br.com.gbvbahia.financeiro;
 
+import br.com.gbvbahia.financeiro.beans.AgendaProcedimentoFixoBeanCreateTest;
+import br.com.gbvbahia.financeiro.beans.AgendaProcedimentoFixoBeanSearchTest;
+import br.com.gbvbahia.financeiro.beans.CartaoCreditoTest;
+import br.com.gbvbahia.financeiro.beans.ContaBancariaBeanCreateTest;
+import br.com.gbvbahia.financeiro.beans.ContaBancariaBeanSearchTest;
+import br.com.gbvbahia.financeiro.beans.ContaBancariaBeanUpdateTest;
+import br.com.gbvbahia.financeiro.beans.DespesaProcedimentoBeanTest;
+import br.com.gbvbahia.financeiro.beans.DetalheProcedimentoBeanCreateTest;
+import br.com.gbvbahia.financeiro.beans.DetalheProcedimentoBeanSearchTest;
+import br.com.gbvbahia.financeiro.beans.ProcedimentoBeanTest;
+import br.com.gbvbahia.financeiro.beans.ProvisaoBeanTest;
+import br.com.gbvbahia.financeiro.beans.UsuarioBeanCreateTest;
+import br.com.gbvbahia.financeiro.beans.UsuarioBeanRemoveTest;
+import br.com.gbvbahia.financeiro.beans.UsuarioBeanSearchTest;
+import br.com.gbvbahia.financeiro.beans.UsuarioBeanUpdateTest;
+import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
+import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.*;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import br.com.gbvbahia.financeiro.utils.I18nTest;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.testsuite.dataloader.DateFormats;
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.util.Set;
+import javax.naming.InitialContext;
+import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -18,13 +41,12 @@ import org.junit.runners.Suite;
 /**
  * <strong>Lembre-se de iniciar o JavaDB antes de executar os testes.
  * </strong> Este deve ser o mesmo que a unidade de persistencia do
- * GlassFish jdbc/sample aponta.<br><strong>Lembre-se de configurar o
- * local do GlassFish</strong> no arquivo
- * ConfiguracaoTestes.properties propriedade ValorGlassFishLocalDisck
- * antes de executar os testes. Veja que para cada barra são inseridas
- * 4. Suite de testes para garantir ordem na execução, os métodos
- * detas classes poderão ser executados em qualquer ordem, mas as
- * classes serão executadas na ordem que aparecem.<br>
+ * GlassFish jdbc/sample aponta.<br><strong>Lembre-se de configurar o local
+ * do GlassFish</strong> no arquivo ConfiguracaoTestes.properties
+ * propriedade ValorGlassFishLocalDisck antes de executar os testes. Veja
+ * que para cada barra são inseridas 4. Suite de testes para garantir ordem
+ * na execução, os métodos detas classes poderão ser executados em qualquer
+ * ordem, mas as classes serão executadas na ordem que aparecem.<br>
  *
  * @author Guilherme Braga
  * @since 31/03/2012
@@ -55,12 +77,11 @@ public class Testes {
     }
 
     /**
-     * Todas as entidades devem ser declaradas neste array, isso
-     * garante que todas as tabelas serão criadas para deleção em
-     * tearDown.
+     * Todas as entidades devem ser declaradas neste array, isso garante
+     * que todas as tabelas serão criadas para deleção em tearDown.
      *
-     * @param noEntityes Classes que não são entidades mas precisam
-     * ser declaradas para utilização, como outros beans.
+     * @param noEntityes Classes que não são entidades mas precisam ser
+     * declaradas para utilização, como outros beans.
      * @return Classes de Entidades utilizadas na aplicação.
      */
     public static Class[] getUseBeans(final Class... noEntityes) {
@@ -76,9 +97,9 @@ public class Testes {
     }
 
     /**
-     * Todas as entidades devem ser declaradas neste array, isso
-     * garante que todas as tabelas serão criadas para deleção em
-     * tearDown. ser declaradas para utilização, como outros beans.
+     * Todas as entidades devem ser declaradas neste array, isso garante
+     * que todas as tabelas serão criadas para deleção em tearDown. ser
+     * declaradas para utilização, como outros beans.
      *
      * @return Classes de Entidades utilizadas na aplicação.
      */
@@ -116,10 +137,56 @@ public class Testes {
      * @return Representacao do arquivo contasbancarias.csv em um
      * CSVInitialDataSet.
      */
-    public static CSVInitialDataSet<ContaBancaria> getContasBancoCSV() {
+    public static CSVInitialDataSet<ContaBancaria> getContasBancoCSV_() {
         return new CSVInitialDataSet<ContaBancaria>(ContaBancaria.class,
                 "contasbancarias.csv", "codigo", "nomeConta",
                 "tipoConta", "saldo", "status", "usuario");
+    }
+
+    /**
+     * Cria contas que antes estavam no getContasBancoCSV
+     *
+     * @param manager EntityManager
+     * @throws Exception
+     */
+    public static void createContasBancarias(EntityManager manager)
+            throws Exception {
+        try {
+            ContaBancaria conta1 = new ContaBancaria();
+            conta1.setUsuario(getUsuarioFacade().find("user01"));
+            conta1.setNomeConta("Banco do Brasil");
+            conta1.setTipoConta(TipoConta.CORRENTE);
+            conta1.setSaldo(new BigDecimal("1200.00"));
+            conta1.setStatus(true);
+            ContaBancaria conta2 = new ContaBancaria();
+            conta2.setUsuario(getUsuarioFacade().find("user01"));
+            conta2.setNomeConta("Bradesco");
+            conta2.setTipoConta(TipoConta.POUPANCA);
+            conta2.setSaldo(new BigDecimal("200.00"));
+            conta2.setStatus(false);
+            ContaBancaria conta3 = new ContaBancaria();
+            conta3.setUsuario(getUsuarioFacade().find("user03"));
+            conta3.setNomeConta("Itaú");
+            conta3.setTipoConta(TipoConta.INVESTIMENTO);
+            conta3.setSaldo(new BigDecimal("1500.00"));
+            conta3.setStatus(true);
+            manager.getTransaction().begin();
+            manager.persist(conta3);
+            manager.persist(conta2);
+            manager.persist(conta1);
+            manager.getTransaction().commit();
+        } catch (ConstraintViolationException e) {
+            Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+            for (ConstraintViolation<?> violation : violations) {
+                String message = violation.getMessage();
+                System.out.println("ATENÇÃO: ***   CRIAÇÃO DE CONTAS ABORTADA!!!");
+                System.out.println(message);
+            }
+        } finally {
+            if (manager.getTransaction().isActive()) {
+                manager.getTransaction().rollback();
+            }
+        }
     }
     /**
      * Quantidade linhas do arquivo detalheprocedimentos.csv.
@@ -145,8 +212,8 @@ public class Testes {
     /**
      * Cria dados com base no CSV X a classe informada.
      *
-     * @return Representacao do arquivo agendaprocedimentofixo.csv em
-     * um CSVInitialDataSet.
+     * @return Representacao do arquivo agendaprocedimentofixo.csv em um
+     * CSVInitialDataSet.
      */
     public static CSVInitialDataSet<AgendaProcedimentoFixo> getAgendaCSV() {
         return new CSVInitialDataSet<AgendaProcedimentoFixo>(AgendaProcedimentoFixo.class,
@@ -203,9 +270,9 @@ public class Testes {
 
     /**
      * As classes de teste devem sobrescrever tearDown() de
-     * BaseSessionBeanFixture. Bug do EJB3Unit que não realiza a
-     * limpeza dos dados entre um teste e outro.<br> Esse método
-     * unifica o local de deleção das tabelas.
+     * BaseSessionBeanFixture. Bug do EJB3Unit que não realiza a limpeza
+     * dos dados entre um teste e outro.<br> Esse método unifica o local de
+     * deleção das tabelas.
      *
      * @param con
      * @throws Exception
@@ -224,5 +291,16 @@ public class Testes {
         con.prepareStatement("DELETE from fin_usuario").executeUpdate();
         con.prepareStatement("DELETE from fin_grupo").executeUpdate();
         con.close();
+    }
+
+    /**
+     * Retorna o UsuarioFacade através de lookup.
+     *
+     * @return UsuarioFacade.
+     * @throws Exception
+     */
+    public static UsuarioFacade getUsuarioFacade() throws Exception {
+        InitialContext context = new InitialContext();
+        return (UsuarioFacade) context.lookup("EJB3Unit/usuarioFacade/remote");
     }
 }

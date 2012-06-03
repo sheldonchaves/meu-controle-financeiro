@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.Testes;
 import org.junit.*;
 import static org.junit.Assert.*;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;

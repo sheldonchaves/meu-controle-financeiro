@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;

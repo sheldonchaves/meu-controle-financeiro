@@ -4,8 +4,8 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
-import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import com.bm.cfg.Ejb3UnitCfg;
@@ -36,11 +36,6 @@ public class DetalheProcedimentoBeanSearchTest
     /**
      * Cria dados com base no CSV X a classe informada.
      */
-    private static final CSVInitialDataSet<ContaBancaria> CONTAS_CSV =
-            Testes.getContasBancoCSV();
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     */
     private static final CSVInitialDataSet<DetalheProcedimento> DET_CSV =
             Testes.getDetalhesCSV();
 
@@ -49,7 +44,7 @@ public class DetalheProcedimentoBeanSearchTest
      */
     public DetalheProcedimentoBeanSearchTest() {
         super(DetalheProcedimentoFacade.class, USED_BEANS,
-                USUARIO_CSV, CONTAS_CSV, DET_CSV);
+                USUARIO_CSV, DET_CSV);
     }
 
     /**

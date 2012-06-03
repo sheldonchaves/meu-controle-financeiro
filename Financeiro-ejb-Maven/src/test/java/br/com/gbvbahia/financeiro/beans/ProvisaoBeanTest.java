@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
