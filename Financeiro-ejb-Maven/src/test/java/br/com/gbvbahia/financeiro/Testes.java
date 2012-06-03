@@ -132,18 +132,6 @@ public class Testes {
     }
 
     /**
-     * Cria dados com base no CSV X a classe informada.
-     *
-     * @return Representacao do arquivo contasbancarias.csv em um
-     * CSVInitialDataSet.
-     */
-    public static CSVInitialDataSet<ContaBancaria> getContasBancoCSV_() {
-        return new CSVInitialDataSet<ContaBancaria>(ContaBancaria.class,
-                "contasbancarias.csv", "codigo", "nomeConta",
-                "tipoConta", "saldo", "status", "usuario");
-    }
-
-    /**
      * Cria contas que antes estavam no getContasBancoCSV
      *
      * @param manager EntityManager
