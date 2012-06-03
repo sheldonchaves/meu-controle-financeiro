@@ -7,16 +7,18 @@ package br.com.gbvbahia.financeiro.modelos;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang.StringUtils;
 
 /**
  * Representa uma conta bancária ou qualquer tipo de local onde deseja
- * armazenar e controlar dinheiro/saldo.<br> Não pode existir um conta
- * para o mesmo usuário, com mesmo tipo e mesmo nome, existe uma
- * restrição a nível de BD.
+ * armazenar e controlar dinheiro/saldo.<br> Não pode existir um conta para
+ * o mesmo usuário, com mesmo tipo e mesmo nome, existe uma restrição a
+ * nível de BD.
  *
  * @since v.1 31/03/2012
  * @author Guilherme
@@ -24,7 +26,7 @@ import org.apache.commons.lang.StringUtils;
 @Entity
 @Table(name = "fin_conta_bancaria", uniqueConstraints =
 @UniqueConstraint(name = "uk_id_desc_tipo",
-columnNames = { "id", "ds_conta", "en_tipo" }))
+columnNames = {"id", "ds_conta", "en_tipo"}))
 @NamedQueries({
     @NamedQuery(name = "ContaBancaria.findAll",
     query = "SELECT distinct a FROM ContaBancaria a "
@@ -46,7 +48,7 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     /**
      * Limite minimo de caracteres para nome da conta.
      */
-    public static final int CARACTERES_MIN_NOME_CONTA = 5;
+    public static final int CARACTERES_MIN_NOME_CONTA = 3;
     /**
      * Identificador no BD.
      */
@@ -55,9 +57,9 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     @Column(name = "id")
     private Long codigo;
     /**
-     * Nome de identificação da conta bancária.<br> Não pode existir
-     * um conta para o mesmo usuário, com mesmo tipo e mesmo nome,
-     * existe uma restrição a nível de BD.
+     * Nome de identificação da conta bancária.<br> Não pode existir um
+     * conta para o mesmo usuário, com mesmo tipo e mesmo nome, existe uma
+     * restrição a nível de BD.
      */
     @Column(name = "ds_conta", nullable = false,
     length = CARACTERES_MAX_NOME_CONTA)
@@ -66,31 +68,31 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     min = CARACTERES_MIN_NOME_CONTA)
     private String nomeConta;
     /**
-     * Tipo da conta bancária.<br> Não pode existir um conta para o
-     * mesmo usuário, com mesmo tipo e mesmo nome, existe uma
-     * restrição a nível de BD.
+     * Tipo da conta bancária.<br> Não pode existir um conta para o mesmo
+     * usuário, com mesmo tipo e mesmo nome, existe uma restrição a nível
+     * de BD.
      */
     @Column(name = "en_tipo", nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
     private TipoConta tipoConta;
     /**
-     * Salda conta, valor modificado a medida que a conta sofre
-     * alterações.
+     * Salda conta, valor modificado a medida que a conta sofre alterações.
      */
     @Column(name = "vl_saldo", nullable = false)
     @NotNull
-    private Double saldo = 0.00;
+    @Digits(fraction = 2, integer = 12)
+    private BigDecimal saldo = BigDecimal.ZERO;
     /**
-     * Status da conta, True = Conta em movimentação, False =
-     * Desconciderar conta.
+     * Status da conta, True = Conta em movimentação, False = Desconciderar
+     * conta.
      */
     @Column(name = "fl_status", nullable = false)
     private boolean status = true;
     /**
-     * Usuario responsavel pela conta bancária.<br> Não pode existir
-     * um conta para o mesmo usuário, com mesmo tipo e mesmo nome,
-     * existe uma restrição a nível de BD.
+     * Usuario responsavel pela conta bancária.<br> Não pode existir um
+     * conta para o mesmo usuário, com mesmo tipo e mesmo nome, existe uma
+     * restrição a nível de BD.
      */
     @ManyToOne
     @JoinColumn(name = "fk_user_id",
@@ -167,7 +169,7 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
      *
      * @return Double.
      */
-    public Double getSaldo() {
+    public BigDecimal getSaldo() {
         return saldo;
     }
 
@@ -176,7 +178,7 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
      *
      * @param saldoConta Double.
      */
-    public void setSaldo(final Double saldoConta) {
+    public void setSaldo(final BigDecimal saldoConta) {
         this.saldo = saldoConta;
     }
 
@@ -199,11 +201,11 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     }
 
     /**
-     * Conta de movimentação financeira. CORRENTE<br> Conta onde o
-     * dinheiro deve ficar parado recebendo rendimentos. POUPANCA<br>
-     * Conta fixa, onde o dinehrio não deve ou não pode ser resgatado
-     * a qualquer hora, como um titulo de capitalização ou
-     * aponsetadoria privada. INVESTIMENTO;<br>
+     * Conta de movimentação financeira. CORRENTE<br> Conta onde o dinheiro
+     * deve ficar parado recebendo rendimentos. POUPANCA<br> Conta fixa,
+     * onde o dinehrio não deve ou não pode ser resgatado a qualquer hora,
+     * como um titulo de capitalização ou aponsetadoria privada.
+     * INVESTIMENTO;<br>
      *
      * @return TipoConta
      */
@@ -212,12 +214,12 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     }
 
     /**
-     * Conta de movimentação financeira. CORRENTE("Conta Corrente",
-     * "CC", 1), Conta onde o dinheiro deve ficar parado recebendo
-     * rendimentos. POUPANCA("Poupança", "POU", 2), Conta fixa, onde o
-     * dinehrio não deve ou não pode ser resgatado a qualquer hora,
-     * como um titulo de capitalização ou aponsetadoria privada.
-     * INVESTIMENTO("Investimento", "INV", 3);
+     * Conta de movimentação financeira. CORRENTE("Conta Corrente", "CC",
+     * 1), Conta onde o dinheiro deve ficar parado recebendo rendimentos.
+     * POUPANCA("Poupança", "POU", 2), Conta fixa, onde o dinehrio não deve
+     * ou não pode ser resgatado a qualquer hora, como um titulo de
+     * capitalização ou aponsetadoria privada. INVESTIMENTO("Investimento",
+     * "INV", 3);
      *
      * @param tipoConta
      */

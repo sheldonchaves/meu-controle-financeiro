@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
@@ -13,6 +14,7 @@ import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.utils.BasicDataSource;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import org.junit.Test;
 
@@ -60,7 +62,7 @@ public class ContaBancariaBeanCreateTest
         ContaBancaria entity = new ContaBancaria();
         entity.setNomeConta("Banco do Brasil Gui CC");
         entity.setTipoConta(TipoConta.CORRENTE);
-        entity.setSaldo(300.00d);
+        entity.setSaldo(new BigDecimal("300.00"));
         entity.setUsuario(user);
         ContaBancariaFacade instance = getBean();
         getEntityManager().getTransaction().begin();
@@ -81,7 +83,7 @@ public class ContaBancariaBeanCreateTest
         ContaBancaria entity = new ContaBancaria();
         entity.setNomeConta("Banco do Brasil Gui POU");
         entity.setTipoConta(TipoConta.POUPANCA);
-        entity.setSaldo(00.00d);
+        entity.setSaldo(new BigDecimal("00.00"));
         entity.setUsuario(user);
         entity.setStatus(false);
         ContaBancariaFacade instance = getBean();
@@ -104,7 +106,7 @@ public class ContaBancariaBeanCreateTest
             ContaBancaria entity = new ContaBancaria();
             entity.setNomeConta("BB");
             entity.setTipoConta(TipoConta.CORRENTE);
-            entity.setSaldo(300.00d);
+            entity.setSaldo(new BigDecimal("300.00"));
             entity.setUsuario(user);
             ContaBancariaFacade instance = getBean();
             getEntityManager().getTransaction().begin();
@@ -139,7 +141,7 @@ public class ContaBancariaBeanCreateTest
             }
             entity.setNomeConta(sb.toString());
             entity.setTipoConta(TipoConta.CORRENTE);
-            entity.setSaldo(300.00d);
+            entity.setSaldo(new BigDecimal("300.00"));
             entity.setUsuario(user);
             ContaBancariaFacade instance = getBean();
             getEntityManager().getTransaction().begin();
@@ -165,7 +167,7 @@ public class ContaBancariaBeanCreateTest
             ContaBancaria entity = new ContaBancaria();
             entity.setNomeConta("Banco do Brasil Gui CC");
             entity.setTipoConta(TipoConta.CORRENTE);
-            entity.setSaldo(300.00d);
+            entity.setSaldo(new BigDecimal("300.00"));
             ContaBancariaFacade instance = getBean();
             getEntityManager().getTransaction().begin();
             instance.create(entity);

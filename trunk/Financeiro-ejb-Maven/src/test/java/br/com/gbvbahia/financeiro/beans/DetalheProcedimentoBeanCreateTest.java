@@ -4,9 +4,9 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
-import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.DetalheDespesa;
 import br.com.gbvbahia.financeiro.modelos.DetalheReceita;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
@@ -32,12 +32,11 @@ public class DetalheProcedimentoBeanCreateTest
     private static final Class[] USED_BEANS = Testes.getUseBeans();
     private static final CSVInitialDataSet<Usuario> USUARIO_CSV =
             Testes.getUsuariosConjugeCSV();
-    private static final CSVInitialDataSet<ContaBancaria> CONTAS_CSV =
-            Testes.getContasBancoCSV();
+
 
     public DetalheProcedimentoBeanCreateTest() {
         super(DetalheProcedimentoFacade.class, USED_BEANS,
-                USUARIO_CSV, CONTAS_CSV);
+                USUARIO_CSV);
     }
 
     /**

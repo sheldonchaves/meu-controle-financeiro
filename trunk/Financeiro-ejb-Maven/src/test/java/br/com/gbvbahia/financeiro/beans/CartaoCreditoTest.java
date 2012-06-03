@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
@@ -79,11 +80,6 @@ public class CartaoCreditoTest
   
     }
     
-    private UsuarioFacade getUsuarioFacade() throws Exception {
-        InitialContext context = new InitialContext();
-        return (UsuarioFacade) context.lookup("EJB3Unit/usuarioFacade/remote");
-    }
-
     /**
      * Se for uma base de dados a mesma deve ser limpa.
      *

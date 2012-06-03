@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
@@ -26,18 +27,17 @@ public class ContaBancariaBeanSearchTest
         extends BaseSessionBeanFixture<ContaBancariaFacade> {
 
     /**
-     * Define as classes que serão utilizadas durante o testes, menos
-     * o Bean a ser testado.
+     * Define as classes que serão utilizadas durante o testes, menos o
+     * Bean a ser testado.
      */
     private static final Class[] USED_BEANS = Testes.getUseBeans();
     private static final CSVInitialDataSet<Usuario> USUARIO_CSV =
             Testes.getUsuariosConjugeCSV();
-    private static final CSVInitialDataSet<ContaBancaria> CONTAS_CSV =
-            Testes.getContasBancoCSV();
+//    private static final CSVInitialDataSet<ContaBancaria> CONTAS_CSV =
+//            Testes.getContasBancoCSV();
 
     public ContaBancariaBeanSearchTest() {
-        super(ContaBancariaFacade.class, USED_BEANS, USUARIO_CSV,
-                CONTAS_CSV);
+        super(ContaBancariaFacade.class, USED_BEANS, USUARIO_CSV);
     }
 
     /**
@@ -52,12 +52,13 @@ public class ContaBancariaBeanSearchTest
     }
 
     /**
-     * Busca todas as contas, parâmetro proprietario passado esposa.
-     * Status deve ser ignorado. Uma conta bloqueada poupança e uma
-     * conta corrente foram criadas é para retornar duas contas.
+     * Busca todas as contas, parâmetro proprietario passado esposa. Status
+     * deve ser ignorado. Uma conta bloqueada poupança e uma conta corrente
+     * foram criadas é para retornar duas contas.
      */
     @Test
     public void testFindAll_Usuario_Boolean() throws Exception {
+        Testes.createContasBancarias(getEntityManager());
         Usuario proprietario = getEntityManager().find(Usuario.class, "user01");
         ContaBancariaFacade instance = getBean();
         Boolean status = null;
@@ -71,6 +72,7 @@ public class ContaBancariaBeanSearchTest
      */
     @Test
     public void testFindAll_Usuario_Boolean2() throws Exception {
+        Testes.createContasBancarias(getEntityManager());
         Usuario esposa = getEntityManager().find(Usuario.class, "user02");
         ContaBancariaFacade instance = getBean();
         Boolean status = true;
@@ -84,6 +86,7 @@ public class ContaBancariaBeanSearchTest
      */
     @Test
     public void testFindAll_Usuario_Boolean3() throws Exception {
+        Testes.createContasBancarias(getEntityManager());
         Usuario proprietario = getEntityManager().find(Usuario.class, "user01");
         ContaBancariaFacade instance = getBean();
         Boolean status = false;
@@ -93,11 +96,12 @@ public class ContaBancariaBeanSearchTest
     }
 
     /**
-     * Busca conta corrente em qualquer status, deve retornar uma
-     * conta a outra criada foi poupança
+     * Busca conta corrente em qualquer status, deve retornar uma conta a
+     * outra criada foi poupança
      */
     @Test
     public void testBuscarTipoConta() throws Exception {
+        Testes.createContasBancarias(getEntityManager());
         Usuario proprietario = getEntityManager().find(Usuario.class, "user01");
         ContaBancariaFacade instance = getBean();
         Boolean status = null;
@@ -106,8 +110,8 @@ public class ContaBancariaBeanSearchTest
     }
 
     /**
-     * Busca conta corrente em status cancelada, não deve retornar a
-     * conta corrente criada está ativa.
+     * Busca conta corrente em status cancelada, não deve retornar a conta
+     * corrente criada está ativa.
      */
     @Test
     public void testBuscarTipoConta2() throws Exception {
@@ -119,11 +123,12 @@ public class ContaBancariaBeanSearchTest
     }
 
     /**
-     * Busca conta pupança em status cancelada, deve retornar uma a
-     * conta poupança criada está cancelada.
+     * Busca conta pupança em status cancelada, deve retornar uma a conta
+     * poupança criada está cancelada.
      */
     @Test
     public void testBuscarTipoConta3() throws Exception {
+        Testes.createContasBancarias(getEntityManager());
         Usuario proprietario = getEntityManager().find(Usuario.class, "user01");
         ContaBancariaFacade instance = getBean();
         Boolean status = false;
@@ -132,8 +137,8 @@ public class ContaBancariaBeanSearchTest
     }
 
     /**
-     * Se for uma base de dados a mesma deve ser limpa. Em memória não
-     * ha necessidade.
+     * Se for uma base de dados a mesma deve ser limpa. Em memória não ha
+     * necessidade.
      *
      * @throws Exception
      */

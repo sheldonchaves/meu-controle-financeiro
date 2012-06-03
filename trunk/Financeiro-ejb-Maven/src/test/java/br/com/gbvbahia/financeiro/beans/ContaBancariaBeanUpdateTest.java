@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
@@ -31,12 +32,10 @@ public class ContaBancariaBeanUpdateTest
     private static final Class[] USED_BEANS = Testes.getUseBeans();
     private static final CSVInitialDataSet<Usuario> USUARIO_CSV =
             Testes.getUsuariosConjugeCSV();
-    private static final CSVInitialDataSet<ContaBancaria> CONTAS_CSV =
-            Testes.getContasBancoCSV();
+
 
     public ContaBancariaBeanUpdateTest() {
-        super(ContaBancariaFacade.class, USED_BEANS, USUARIO_CSV,
-                CONTAS_CSV);
+        super(ContaBancariaFacade.class, USED_BEANS, USUARIO_CSV);
     }
 
     /**
@@ -55,6 +54,7 @@ public class ContaBancariaBeanUpdateTest
      */
     @Test(expected = NegocioException.class)
     public void testUpdate_UserNull() throws Exception {
+        Testes.createContasBancarias(getEntityManager());
         try {
             Usuario proprietario =
                     this.getEntityManager().find(Usuario.class,
