@@ -31,8 +31,7 @@ public final class I18N {
      */
     public static String getMsg(final String chave) {
         try {
-            return ResourceBundle.getBundle("br/com/gbvbahia/"
-                    + "financeiro/utils/Messagens").getString(chave);
+            return ResourceBundle.getBundle("Messagens").getString(chave);
         } catch (Exception e) {
             Logger.getLogger(I18N.class.getName()).log(Level.INFO,
                     "Menssagem não encontrada para {0}", new Object[]{chave});

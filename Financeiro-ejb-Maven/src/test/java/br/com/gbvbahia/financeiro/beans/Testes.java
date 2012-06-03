@@ -7,6 +7,7 @@ package br.com.gbvbahia.financeiro.beans;
 import br.com.gbvbahia.financeiro.modelos.*;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
+import br.com.gbvbahia.financeiro.utils.I18nTest;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.testsuite.dataloader.DateFormats;
 import java.sql.Connection;
@@ -30,6 +31,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+    I18nTest.class,
     UsuarioBeanCreateTest.class,
     UsuarioBeanSearchTest.class,
     UsuarioBeanUpdateTest.class,
