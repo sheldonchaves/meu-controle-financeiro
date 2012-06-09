@@ -8,9 +8,11 @@ import br.com.gbvbahia.financeiro.constantes.Periodo;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -52,8 +54,9 @@ public class AgendaProcedimentoFixo
      */
     @Column(name = "vl_fixo", nullable = false)
     @NotNull
-    @DecimalMin(value = "0.01")
-    private Double valorFixo = 0.00;
+    @Digits(fraction = 2, integer = 12)
+    @DecimalMin(value="0.01")
+    private BigDecimal valorFixo = BigDecimal.ZERO;
     /**
      * Data que será considerada como 1º vencimento da conta. A partir
      * desta data é realizado todo calculo para as contas serem
@@ -304,7 +307,7 @@ public class AgendaProcedimentoFixo
      *
      * @return Double.
      */
-    public Double getValorFixo() {
+    public BigDecimal getValorFixo() {
         return valorFixo;
     }
 
@@ -314,7 +317,7 @@ public class AgendaProcedimentoFixo
      *
      * @param valor Double
      */
-    public void setValorFixo(final Double valor) {
+    public void setValorFixo(final BigDecimal valor) {
         this.valorFixo = valor;
     }
 }

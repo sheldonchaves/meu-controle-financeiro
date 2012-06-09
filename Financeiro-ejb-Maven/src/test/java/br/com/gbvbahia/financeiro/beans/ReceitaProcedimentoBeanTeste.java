@@ -7,7 +7,10 @@ package br.com.gbvbahia.financeiro.beans;
 import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
-import br.com.gbvbahia.financeiro.modelos.*;
+import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
+import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.ReceitaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import com.bm.cfg.Ejb3UnitCfg;
@@ -40,30 +43,24 @@ public class ReceitaProcedimentoBeanTeste
      */
     private static final CSVInitialDataSet<DetalheProcedimento> DET_CSV =
             Testes.getDetalhesCSV();
-        private static final CSVInitialDataSet<AgendaProcedimentoFixo> AGENDA_CSV =
-            Testes.getAgendaCSV();
+
     /**
      * Cria dados com base no CSV X a classe informada.
      */
     private static final CSVInitialDataSet<CartaoCredito> CARTAO_CSV =
             Testes.getCartaoCSV();
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     */
-    private static final CSVInitialDataSet<DespesaProcedimento> DESP_PROCEDIMENTO_CSV = Testes.getDespProcimentoCSV();
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     */
-    private static final CSVInitialDataSet<ReceitaProcedimento> RECE_PROCEDIMENTO_CSV = Testes.getRececProcimentoCSV();
+
 
     public ReceitaProcedimentoBeanTeste() {
         super(ProcedimentoFacade.class, USED_BEANS, USUARIO_CSV,
-                DET_CSV, AGENDA_CSV, CARTAO_CSV, DESP_PROCEDIMENTO_CSV,
-                RECE_PROCEDIMENTO_CSV);
+                DET_CSV, CARTAO_CSV);
     }
 
     @Test
     public void testBuscarReceitaProcedimento() throws Exception {
+        Testes.createAgendas(getEntityManager());
+        Testes.criarDespProcedimentos(getEntityManager());
+        Testes.criarReceitaProcedimentos(getEntityManager());
         ProcedimentoFacade instance = getBean();
         Usuario user1 = getEntityManager().find(Usuario.class, "user01");
         assertNotNull("Usuario Não pode ser nulo!", user1);

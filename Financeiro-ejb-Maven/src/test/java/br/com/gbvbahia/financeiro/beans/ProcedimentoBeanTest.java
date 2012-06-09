@@ -28,8 +28,8 @@ public class ProcedimentoBeanTest
         extends BaseSessionBeanFixture<ProcedimentoFacade> {
 
     /**
-     * Define as classes que serão utilizadas durante o testes, menos
-     * o Bean a ser testado.
+     * Define as classes que serão utilizadas durante o testes, menos o
+     * Bean a ser testado.
      */
     private static final Class[] USED_BEANS = Testes.getUseBeans();
     /**
@@ -47,26 +47,25 @@ public class ProcedimentoBeanTest
      */
     private static final CSVInitialDataSet<CartaoCredito> CARTAO_CSV =
             Testes.getCartaoCSV();
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     */
-    private static final CSVInitialDataSet<DespesaProcedimento>
-            DESP_PROCEDIMENTO_CSV = Testes.getDespProcimentoCSV();
+
 
     public ProcedimentoBeanTest() {
         super(ProcedimentoFacade.class, USED_BEANS, USUARIO_CSV,
-                DET_CSV, CARTAO_CSV, DESP_PROCEDIMENTO_CSV);
+                DET_CSV, CARTAO_CSV);
     }
 
     @Test
     public void testBuscarPorTipoProcedimento() throws Exception {
+        Testes.createAgendas(getEntityManager());
+        Testes.criarDespProcedimentos(getEntityManager());
+        Testes.criarReceitaProcedimentos(getEntityManager());
         ProcedimentoFacade instance = getBean();
         Usuario user = getEntityManager().find(Usuario.class, "user01");
         assertNotNull("Usuario Não pode ser nulo!", user);
         List<Procedimento> despesas =
                 instance.buscarPorTipoProcedimento(user,
                 TipoProcedimento.DESPESA_FINANCEIRA);
-        assertEquals("Despesas valor incorreto.", 4, despesas.size());
+        assertEquals("Despesas valor incorreto.", 5, despesas.size());
     }
 
     /**

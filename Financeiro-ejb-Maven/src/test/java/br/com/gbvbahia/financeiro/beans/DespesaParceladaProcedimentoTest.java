@@ -47,14 +47,11 @@ public class DespesaParceladaProcedimentoTest
      */
     private static final CSVInitialDataSet<CartaoCredito> CARTAO_CSV =
             Testes.getCartaoCSV();
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     */
-    private static final CSVInitialDataSet<DespesaProcedimento> DESP_PROCEDIMENTO_CSV = Testes.getDespProcimentoCSV();
+
 
     public DespesaParceladaProcedimentoTest() {
         super(ProcedimentoFacade.class, USED_BEANS, USUARIO_CSV,
-                DET_CSV, CARTAO_CSV, DESP_PROCEDIMENTO_CSV);
+                DET_CSV, CARTAO_CSV);
     }
 
     @Test

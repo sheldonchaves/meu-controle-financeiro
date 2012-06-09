@@ -5,6 +5,7 @@
 package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.Testes;
+import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
@@ -27,10 +28,10 @@ public class DespesaProcedimentoBeanTest
         extends BaseSessionBeanFixture<ProcedimentoFacade> {
 
     /**
-     * Define as classes que serão utilizadas durante o testes, menos
-     * o Bean a ser testado.
+     * Define as classes que serão utilizadas durante o testes, menos o
+     * Bean a ser testado.
      */
-    private static final Class[] USED_BEANS = Testes.getUseBeans();
+    private static final Class[] USED_BEANS = Testes.getUseBeans(CartaoCreditoFacade.class);
     /**
      * Cria dados com base no CSV X a classe informada.
      */
@@ -46,15 +47,11 @@ public class DespesaProcedimentoBeanTest
      */
     private static final CSVInitialDataSet<CartaoCredito> CARTAO_CSV =
             Testes.getCartaoCSV();
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     */
-    private static final CSVInitialDataSet<DespesaProcedimento>
-            DESP_PROCEDIMENTO_CSV = Testes.getDespProcimentoCSV();
+
 
     public DespesaProcedimentoBeanTest() {
         super(ProcedimentoFacade.class, USED_BEANS, USUARIO_CSV,
-                DET_CSV, CARTAO_CSV, DESP_PROCEDIMENTO_CSV);
+                DET_CSV, CARTAO_CSV);
     }
 
     /**
@@ -70,6 +67,8 @@ public class DespesaProcedimentoBeanTest
 
     @Test
     public void testBuscarDespesaProcedimento() throws Exception {
+        Testes.createAgendas(getEntityManager());
+        Testes.criarDespProcedimentos(getEntityManager());
         ProcedimentoFacade instance = getBean();
         Usuario user1 = getEntityManager().find(Usuario.class, "user01");
         assertNotNull("Usuario Não pode ser nulo!", user1);
@@ -92,7 +91,7 @@ public class DespesaProcedimentoBeanTest
                 instance.buscarDespesaProcedimento(cc1, null, user1);
         assertEquals("Quantidade de DespesaProcedimento não confere.",
                 2, despesasT3.size());
-        
+
     }
 
     /**

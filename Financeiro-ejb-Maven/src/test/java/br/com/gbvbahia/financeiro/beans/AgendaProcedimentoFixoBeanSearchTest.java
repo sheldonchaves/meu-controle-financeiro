@@ -8,7 +8,6 @@ import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
-import br.com.gbvbahia.financeiro.modelos.ReceitaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
@@ -30,8 +29,8 @@ public class AgendaProcedimentoFixoBeanSearchTest
         extends BaseSessionBeanFixture<AgendaProcedimentoFixoFacade> {
 
     /**
-     * Define as classes que serão utilizadas durante o testes, menos
-     * o Bean a ser testado.
+     * Define as classes que serão utilizadas durante o testes, menos o
+     * Bean a ser testado.
      */
     private static final Class[] USED_BEANS = Testes.getUseBeans();
     /**
@@ -47,22 +46,12 @@ public class AgendaProcedimentoFixoBeanSearchTest
     /**
      * Cria dados com base no CSV X a classe informada.
      */
-    private static final CSVInitialDataSet<AgendaProcedimentoFixo> AGENDA_CSV =
-            Testes.getAgendaCSV();
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     */
     private static final CSVInitialDataSet<CartaoCredito> CARTAO_CSV =
             Testes.getCartaoCSV();
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     */
-    private static final CSVInitialDataSet<ReceitaProcedimento> RECE_PROCEDIMENTO_CSV = Testes.getRececProcimentoCSV();
 
     public AgendaProcedimentoFixoBeanSearchTest() {
         super(AgendaProcedimentoFixoFacade.class, USED_BEANS,
-                USUARIO_CSV, DET_CSV, AGENDA_CSV, CARTAO_CSV,
-                RECE_PROCEDIMENTO_CSV);
+                USUARIO_CSV, DET_CSV, CARTAO_CSV);
     }
 
     /**
@@ -81,6 +70,7 @@ public class AgendaProcedimentoFixoBeanSearchTest
      */
     @Test
     public void testFindRange() throws Exception {
+        Testes.createAgendas(getEntityManager());
         AgendaProcedimentoFixoFacade instance = getBean();
         List<Long> ids = new ArrayList<Long>();
         List<AgendaProcedimentoFixo> list = instance.findRange(new int[]{0, Testes.LINHAS_AGENDA_CSV});
@@ -97,10 +87,12 @@ public class AgendaProcedimentoFixoBeanSearchTest
 
     @Test
     public void testBuscarUltimaData() throws Exception {
+        Testes.createAgendas(getEntityManager());
+        Testes.criarReceitaProcedimentos(getEntityManager());
         AgendaProcedimentoFixoFacade instance = getBean();
-        AgendaProcedimentoFixo ag1 = instance.find(1l);
+        AgendaProcedimentoFixo ag1 = Testes.getAgenda(instance, "Conta de Água");
         assertNotNull("ag1 Não pode ser nulo!", ag1);
-        AgendaProcedimentoFixo ag8 = instance.find(8l);
+        AgendaProcedimentoFixo ag8 = Testes.getAgenda(instance, "Salario Mensal");
         assertNotNull("ag1 Não pode ser nulo!", ag8);
         Date lastDate1 = instance.buscarUltimaData(ag1);
         assertNull("LastDate1 deveria ser null", lastDate1);
@@ -111,8 +103,8 @@ public class AgendaProcedimentoFixoBeanSearchTest
     }
 
     /**
-     * Se for uma base de dados a mesma deve ser limpa. Em memória não
-     * ha necessidade.
+     * Se for uma base de dados a mesma deve ser limpa. Em memória não ha
+     * necessidade.
      *
      * @throws Exception
      */

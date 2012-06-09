@@ -19,11 +19,18 @@ import br.com.gbvbahia.financeiro.beans.UsuarioBeanCreateTest;
 import br.com.gbvbahia.financeiro.beans.UsuarioBeanRemoveTest;
 import br.com.gbvbahia.financeiro.beans.UsuarioBeanSearchTest;
 import br.com.gbvbahia.financeiro.beans.UsuarioBeanUpdateTest;
+import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
+import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
+import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
+import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
+import br.com.gbvbahia.financeiro.constantes.Periodo;
+import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.*;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
+import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18nTest;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.testsuite.dataloader.DateFormats;
@@ -197,19 +204,70 @@ public class Testes {
      */
     public static final int LINHAS_AGENDA_CSV = 7;
 
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     *
-     * @return Representacao do arquivo agendaprocedimentofixo.csv em um
-     * CSVInitialDataSet.
-     */
-    public static CSVInitialDataSet<AgendaProcedimentoFixo> getAgendaCSV() {
-        return new CSVInitialDataSet<AgendaProcedimentoFixo>(AgendaProcedimentoFixo.class,
-                "agendaprocedimentofixo.csv", "codigo", "valorFixo",
-                "dataPrimeiroVencimento", "observacao", "usuario",
-                "detalhe", "periodo",
-                "quantidadePeriodo").addDateFormat(
-                DateFormats.USER_DATE.setUserDefinedFomatter("yyyy MM dd"));
+    public static void createAgendas(EntityManager manager) throws Exception {
+        try {
+            AgendaProcedimentoFixo agenda1 = criateAgenda("33.59",
+                    "20120110", "Conta de Água", "user01",
+                    4L, Periodo.MESES, 1);
+            AgendaProcedimentoFixo agenda2 = criateAgenda("133.59",
+                    "20120105", "Conta de Luz", "user02",
+                    4L, Periodo.MESES, 1);
+            AgendaProcedimentoFixo agenda3 = criateAgenda("150.00",
+                    "20120101", "Supermercado", "user02",
+                    2L, Periodo.DIAS, 7);
+            AgendaProcedimentoFixo agenda4 = criateAgenda("80.00",
+                    "20120101", "Gasolina", "user01",
+                    1L, Periodo.DIAS, 7);
+            AgendaProcedimentoFixo agenda5 = criateAgenda("50.00",
+                    "20120101", "Lavagem Carro", "user01",
+                    1L, Periodo.DIAS, 15);
+            AgendaProcedimentoFixo agenda6 = criateAgenda("50.00",
+                    "20120101", "Almoços Rua", "user01",
+                    2L, Periodo.DIAS, 7);
+            AgendaProcedimentoFixo agenda7 = criateAgenda("360.00",
+                    "20120110", "Condominio", "user02",
+                    4L, Periodo.MESES, 1);
+            AgendaProcedimentoFixo agenda8 = criateAgenda("3360.00",
+                    "20120101", "Salario Mensal", "user01",
+                    4L, Periodo.MESES, 1);
+
+            manager.getTransaction().begin();
+            manager.persist(agenda1);
+            manager.persist(agenda2);
+            manager.persist(agenda3);
+            manager.persist(agenda4);
+            manager.persist(agenda5);
+            manager.persist(agenda6);
+            manager.persist(agenda7);
+            manager.persist(agenda8);
+            manager.getTransaction().commit();
+        } catch (ConstraintViolationException e) {
+            Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+            for (ConstraintViolation<?> violation : violations) {
+                String message = violation.getMessage();
+                System.out.println("ATENÇÃO: ***   CRIAÇÃO DE AGENDAS ABORTADA!!!");
+                System.out.println(message);
+            }
+        } finally {
+            if (manager.getTransaction().isActive()) {
+                manager.getTransaction().rollback();
+            }
+        }
+    }
+
+    private static AgendaProcedimentoFixo criateAgenda(String valor,
+            String data, String observacao, String userId,
+            long idDetProcedimento, Periodo periodo,
+            int quantidadePeriodo) throws Exception {
+        AgendaProcedimentoFixo agenda = new AgendaProcedimentoFixo();
+        agenda.setValorFixo(new BigDecimal(valor));
+        agenda.setDataPrimeiroVencimento(DateUtils.convertStringToCalendar(data, "yyyyMMdd"));
+        agenda.setObservacao(observacao);
+        agenda.setUsuario(getUsuarioFacade().find(userId));
+        agenda.setDetalhe(getDetalheProcedimentoFacade().find(idDetProcedimento));
+        agenda.setPeriodo(periodo);
+        agenda.setQuantidadePeriodo(quantidadePeriodo);
+        return agenda;
     }
 
     /**
@@ -225,35 +283,145 @@ public class Testes {
     }
 
     /**
-     * Cria dados com base no CSV X a classe informada.
+     * createAgendas() deve ser chamado antes.
      *
-     * @return Representacao do arquivo procedimento.csv em um
-     * CSVInitialDataSet.
+     * @param manager
+     * @throws Exception
      */
-    public static CSVInitialDataSet<DespesaProcedimento> getDespProcimentoCSV() {
-        return new CSVInitialDataSet<DespesaProcedimento>(DespesaProcedimento.class,
-                "desp_procedimento.csv", "id", "dataVencimento",
-                "valorEstimado", "valorReal", "detalhe",
-                "classificacaoProcedimento", "statusPagamento",
-                "observacao", "usuario", "tipo", "tipoProcedimento",
-                "cartaoCredito").addDateFormat(
-                DateFormats.USER_DATE.setUserDefinedFomatter("yyyy MM dd"));
+    public static void criarDespProcedimentos(EntityManager manager) throws Exception {
+        DespesaProcedimento rp1 = criaDespesa("10/01/2012", "158.65",
+                "158.65", 1L, ClassificacaoProcedimento.VARIAVEL,
+                StatusPagamento.NAO_PAGA, "Despesa Teste 1", "user01", null);
+        DespesaProcedimento rp2 = criaDespesa("05/01/2012", "55.00",
+                "65.00", 2L, ClassificacaoProcedimento.FIXA,
+                StatusPagamento.NAO_PAGA, "Despesa Teste 2", "user01", 2L);
+        DespesaProcedimento rp3 = criaDespesa("07/01/2012", "471.00",
+                "471.00", 2L, ClassificacaoProcedimento.VARIAVEL,
+                StatusPagamento.NAO_PAGA, "Despesa Teste 3", "user02", null);
+        DespesaProcedimento rp4 = criaDespesa("19/01/2012", "622.41",
+                "622.41", 2L, ClassificacaoProcedimento.VARIAVEL,
+                StatusPagamento.PAGA, "Despesa Teste 4", "user01", 1L);
+        DespesaProcedimento rp5 = criaDespesa("12/01/2012", "22.45",
+                "22.45", 3L, ClassificacaoProcedimento.VARIAVEL,
+                StatusPagamento.PAGA, "Despesa Teste 5", "user03", 4L);
+        DespesaProcedimento rp6 = criaDespesa("15/01/2012", "22.45",
+                "22.45", 3L, ClassificacaoProcedimento.VARIAVEL,
+                StatusPagamento.PAGA, "Despesa Teste 6", "user02", 1L);
+
+        try {
+            manager.getTransaction().begin();
+            manager.persist(rp1);
+            manager.persist(rp2);
+            manager.persist(rp3);
+            manager.persist(rp5);
+            manager.persist(rp6);
+            manager.persist(rp4);
+            manager.getTransaction().commit();
+        } catch (ConstraintViolationException e) {
+            Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+            for (ConstraintViolation<?> violation : violations) {
+                String message = violation.getMessage();
+                System.out.println("ATENÇÃO: ***   CRIAÇÃO DE DESPESA PROCEDIMENTO ABORTADA!!!");
+                System.out.println(message);
+            }
+        } finally {
+            if (manager.getTransaction().isActive()) {
+                manager.getTransaction().rollback();
+            }
+        }
+    }
+
+    private static DespesaProcedimento criaDespesa(String data,
+            String vrEstimadno, String vrReal, Long idDetProc,
+            ClassificacaoProcedimento clas, StatusPagamento status,
+            String obs, String user, Long cartaoId) throws Exception {
+        DespesaProcedimento rp = new DespesaProcedimento();
+        rp.setDataVencimento(DateUtils.convertStringToCalendar(data, "dd/MM/yyyy"));
+        rp.setValorEstimado(new BigDecimal(vrEstimadno));
+        rp.setValorReal(new BigDecimal(vrReal));
+        rp.setDetalhe(getDetalheProcedimentoFacade().find(idDetProc));
+        rp.setClassificacaoProcedimento(clas);
+        rp.setStatusPagamento(status);
+        rp.setObservacao(obs);
+        rp.setUsuario(getUsuarioFacade().find(user));
+        if (cartaoId != null) {
+            rp.setCartaoCredito(getCartaoFacade().find(cartaoId));
+        }
+        return rp;
     }
 
     /**
-     * Cria dados com base no CSV X a classe informada.
+     * createAgendas() deve ser chamado antes. criarDespProcedimentos()
+     * deve ser chamado antes.
      *
-     * @return Representacao do arquivo procedimento.csv em um
-     * CSVInitialDataSet.
+     * @param manager
+     * @throws Exception
      */
-    public static CSVInitialDataSet<ReceitaProcedimento> getRececProcimentoCSV() {
-        return new CSVInitialDataSet<ReceitaProcedimento>(ReceitaProcedimento.class,
-                "receita_procedimento.csv", "id", "dataVencimento",
-                "valorEstimado", "valorReal", "detalhe",
-                "classificacaoProcedimento", "statusPagamento",
-                "observacao", "usuario", "tipo", "tipoProcedimento",
-                "agenda").addDateFormat(
-                DateFormats.USER_DATE.setUserDefinedFomatter("yyyy MM dd"));
+    public static void criarReceitaProcedimentos(EntityManager manager) throws Exception {
+        ReceitaProcedimento rp1 = criaReceita("01/07/2012", "3458.65",
+                "3458.65", 3L, ClassificacaoProcedimento.FIXA,
+                StatusPagamento.NAO_PAGA, "Despesa Teste 1", "user01",
+                getAgenda(Testes.getAgendaFacade(), "Salario Mensal").getCodigo());
+        ReceitaProcedimento rp2 = criaReceita("01/08/2012", "3555.00",
+                "3465.00", 4L, ClassificacaoProcedimento.FIXA,
+                StatusPagamento.NAO_PAGA, "Despesa Teste 2", "user01",
+                getAgenda(Testes.getAgendaFacade(), "Salario Mensal").getCodigo());
+        ReceitaProcedimento rp3 = criaReceita("01/04/2012", "3471.00",
+                "3671.00", 3L, ClassificacaoProcedimento.FIXA,
+                StatusPagamento.NAO_PAGA, "Despesa Teste 3", "user02", null);
+        ReceitaProcedimento rp4 = criaReceita("01/03/2012", "3622.41",
+                "3222.41", 4L, ClassificacaoProcedimento.FIXA,
+                StatusPagamento.NAO_PAGA, "Despesa Teste 4", "user01", null);
+        ReceitaProcedimento rp5 = criaReceita("01/01/2012", "3222.45",
+                "3422.45", 4L, ClassificacaoProcedimento.FIXA,
+                StatusPagamento.PAGA, "Despesa Teste 5", "user03", null);
+        ReceitaProcedimento rp6 = criaReceita("01/02/2012", "3122.45",
+                "3422.45", 4L, ClassificacaoProcedimento.FIXA,
+                StatusPagamento.PAGA, "Despesa Teste 6", "user02", null);
+        ReceitaProcedimento rp7 = criaReceita("01/03/2012", "3622.41",
+                "3222.41", 4L, ClassificacaoProcedimento.FIXA,
+                StatusPagamento.NAO_PAGA, "Despesa Teste 7", "user04", null);
+        try {
+            manager.getTransaction().begin();
+            manager.persist(rp1);
+            manager.persist(rp2);
+            manager.persist(rp3);
+            manager.persist(rp5);
+            manager.persist(rp6);
+            manager.persist(rp4);
+            manager.persist(rp7);
+            manager.getTransaction().commit();
+        } catch (ConstraintViolationException e) {
+            Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+            for (ConstraintViolation<?> violation : violations) {
+                String message = violation.getMessage();
+                System.out.println("ATENÇÃO: ***   CRIAÇÃO DE RECEITA PROCEDIMENTO ABORTADA!!!");
+                System.out.println(message);
+            }
+        } finally {
+            if (manager.getTransaction().isActive()) {
+                manager.getTransaction().rollback();
+            }
+        }
+    }
+
+    private static ReceitaProcedimento criaReceita(String data,
+            String vrEstimadno, String vrReal, Long idDetProc,
+            ClassificacaoProcedimento clas, StatusPagamento status,
+            String obs, String user, Long agendaId) throws Exception {
+        ReceitaProcedimento rp = new ReceitaProcedimento();
+        rp.setDataVencimento(DateUtils.convertStringToCalendar(data, "dd/MM/yyyy"));
+        rp.setValorEstimado(new BigDecimal(vrEstimadno));
+        rp.setValorReal(new BigDecimal(vrReal));
+        rp.setDetalhe(getDetalheProcedimentoFacade().find(idDetProc));
+        rp.setClassificacaoProcedimento(clas);
+        rp.setStatusPagamento(status);
+        rp.setObservacao(obs);
+        rp.setUsuario(getUsuarioFacade().find(user));
+        if (agendaId != null) {
+            rp.setAgenda(getAgendaFacade().find(agendaId));
+        }
+        return rp;
     }
 
     /**
@@ -290,5 +458,56 @@ public class Testes {
     public static UsuarioFacade getUsuarioFacade() throws Exception {
         InitialContext context = new InitialContext();
         return (UsuarioFacade) context.lookup("EJB3Unit/usuarioFacade/remote");
+    }
+
+    /**
+     * Retorna o DetalheProcedimentoFacade através de lookup.
+     *
+     * @return DetalheProcedimentoFacade.
+     * @throws Exception
+     */
+    public static DetalheProcedimentoFacade getDetalheProcedimentoFacade()
+            throws Exception {
+        InitialContext context = new InitialContext();
+        return (DetalheProcedimentoFacade) context.lookup("EJB3Unit/detalheProcedimentoFacade/remote");
+    }
+
+    /**
+     * Retorna o AgendaProcedimentoFixoFacade através de lookup.
+     *
+     * @return AgendaProcedimentoFixoFacade.
+     * @throws Exception
+     */
+    public static AgendaProcedimentoFixoFacade getAgendaFacade()
+            throws Exception {
+        InitialContext context = new InitialContext();
+        return (AgendaProcedimentoFixoFacade) context.lookup("EJB3Unit/agendaProcedimentoFixoFacade/remote");
+    }
+
+    /**
+     * Retorna o CartaoCreditoFacade através de lookup.
+     *
+     * @return CartaoCreditoFacade.
+     * @throws Exception
+     */
+    public static CartaoCreditoFacade getCartaoFacade() throws Exception {
+        InitialContext context = new InitialContext();
+        return (CartaoCreditoFacade) context.lookup("EJB3Unit/cartaoCreditoFacade/remote");
+    }
+
+    /**
+     * Busca a AgendaProcedimento em memória pela observação.
+     * @param facade
+     * @param obs
+     * @return Agenda com a bservacao passada, nulo se não encontrar
+     */
+    public static AgendaProcedimentoFixo getAgenda(AgendaProcedimentoFixoFacade facade,
+            String obs) {
+        for (AgendaProcedimentoFixo ag : facade.findAll()) {
+            if (ag.getObservacao().equalsIgnoreCase(obs)) {
+                return ag;
+            }
+        }
+        return null;
     }
 }

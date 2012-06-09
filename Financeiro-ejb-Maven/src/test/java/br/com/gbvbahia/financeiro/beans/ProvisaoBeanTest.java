@@ -10,7 +10,6 @@ import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
-import br.com.gbvbahia.financeiro.modelos.ReceitaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
@@ -37,8 +36,8 @@ public class ProvisaoBeanTest
         extends BaseSessionBeanFixture<ProvisaoFacade> {
 
     /**
-     * Define as classes que serão utilizadas durante o testes, menos
-     * o Bean a ser testado.
+     * Define as classes que serão utilizadas durante o testes, menos o
+     * Bean a ser testado.
      */
     private static final Class[] USED_BEANS =
             Testes.getUseBeans(ProcedimentoFacade.class,
@@ -56,38 +55,28 @@ public class ProvisaoBeanTest
     /**
      * Cria dados com base no CSV X a classe informada.
      */
-    private static final CSVInitialDataSet<AgendaProcedimentoFixo> AGENDA_CSV =
-            Testes.getAgendaCSV();
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     */
     private static final CSVInitialDataSet<CartaoCredito> CARTAO_CSV =
             Testes.getCartaoCSV();
-    /**
-     * Cria dados com base no CSV X a classe informada.
-     */
-    private static final CSVInitialDataSet<ReceitaProcedimento>
-            RECE_PROCEDIMENTO_CSV = Testes.getRececProcimentoCSV();
 
     /**
      * Padrão.
      */
     public ProvisaoBeanTest() {
         super(ProvisaoFacade.class, USED_BEANS,
-                USUARIO_CSV, DET_CSV, AGENDA_CSV, CARTAO_CSV,
-                RECE_PROCEDIMENTO_CSV);
+                USUARIO_CSV, DET_CSV, CARTAO_CSV);
     }
 
     /**
      * Verifica se a data inicial da conta existente está sendo
      * considerada.
+     *
      * @throws Exception Qualquer problema.
      */
     @Test
     public void testProvisionar() throws Exception {
+        Testes.createAgendas(getEntityManager());
         ProvisaoFacade instance = getBean();
-        AgendaProcedimentoFixo ag8 =
-                getEntityManager().find(AgendaProcedimentoFixo.class, 8l);
+        AgendaProcedimentoFixo ag8 = Testes.getAgenda(Testes.getAgendaFacade(), "Salario Mensal");
         assertNotNull("ag1 Não pode ser nulo!", ag8);
         getEntityManager().getTransaction().begin();
         instance.provisionar(ag8);
@@ -103,18 +92,21 @@ public class ProvisaoBeanTest
             }
         }
         assertEquals("Total Procedimento criados não bate com esperado.",
-                calcularContas(), totalCriados);
+                12, totalCriados);
+//        assertEquals("Total Procedimento criados não bate com esperado.",
+//                calcularContas(), totalCriados);
     }
 
     /**
      * Verifica se 12 contas são criadas.
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     @Test
     public void testProvisionar2() throws Exception {
+        Testes.createAgendas(getEntityManager());
         ProvisaoFacade instance = getBean();
-        AgendaProcedimentoFixo ag7 =
-                getEntityManager().find(AgendaProcedimentoFixo.class, 7l);
+        AgendaProcedimentoFixo ag7 = Testes.getAgenda(Testes.getAgendaFacade(), "Condominio");
         assertNotNull("ag1 Não pode ser nulo!", ag7);
         getEntityManager().getTransaction().begin();
         instance.provisionar(ag7);
@@ -135,8 +127,8 @@ public class ProvisaoBeanTest
 
     /**
      * Realiza a conta de quantas contas devem ser criadas com base na
-     * utltima conta criada no arquivo receita_procedimento com agenda
-     * id 8. A maior data 08/01/2012
+     * utltima conta criada no arquivo receita_procedimento com agenda id
+     * 8. A maior data 08/01/2012
      *
      * @return Quantidade de contas que devem ter sido criadas.
      */
@@ -166,8 +158,8 @@ public class ProvisaoBeanTest
     }
 
     /**
-     * Se for uma base de dados a mesma deve ser limpa. Em memória não
-     * ha necessidade.
+     * Se for uma base de dados a mesma deve ser limpa. Em memória não ha
+     * necessidade.
      *
      * @throws Exception
      */

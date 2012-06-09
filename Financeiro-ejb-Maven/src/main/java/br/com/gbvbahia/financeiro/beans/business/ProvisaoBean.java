@@ -161,7 +161,7 @@ public class ProvisaoBean implements ProvisaoFacade {
 
     /**
      * Responsável por criar os procedimentos, ele não realiza nenhuma
-     * validação, ou cecagem de pré-existência, somente cria.<br>
+     * validação, ou checagem de pré-existência, somente cria.<br>
      * Antes de realizar a solicitação de criação todos os checks
      * devem ser realizado.s
      *

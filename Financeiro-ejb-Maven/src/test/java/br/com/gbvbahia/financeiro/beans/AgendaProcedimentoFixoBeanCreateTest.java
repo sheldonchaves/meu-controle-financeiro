@@ -16,6 +16,7 @@ import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.utils.BasicDataSource;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.Date;
 import org.junit.Test;
@@ -62,7 +63,7 @@ public class AgendaProcedimentoFixoBeanCreateTest
         Usuario user = getEntityManager().find(Usuario.class, "user03");
         DetalheDespesa dd = getEntityManager().find(DetalheDespesa.class, 1l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
-        entity.setValorFixo(10.00);
+        entity.setValorFixo(new BigDecimal("10.00"));
         entity.setDataPrimeiroVencimento(new Date());
         entity.setObservacao("Teste de Agenda.");
         entity.setUsuario(user);
@@ -83,7 +84,7 @@ public class AgendaProcedimentoFixoBeanCreateTest
         Usuario user = getEntityManager().find(Usuario.class, "user01");
         DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
-        entity.setValorFixo(0.00);
+        entity.setValorFixo(new BigDecimal("0.00"));
         entity.setDataPrimeiroVencimento(new Date());
         entity.setObservacao("Teste de Agenda Erro Valor.");
         entity.setUsuario(user);
@@ -111,7 +112,7 @@ public class AgendaProcedimentoFixoBeanCreateTest
         DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
 
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
-        entity.setValorFixo(10.00);
+        entity.setValorFixo(new BigDecimal("10.00"));
         entity.setObservacao("Teste de Agenda Data nula.");
         entity.setUsuario(user);
         entity.setDetalhe(dr);
@@ -137,7 +138,7 @@ public class AgendaProcedimentoFixoBeanCreateTest
         Usuario user = getEntityManager().find(Usuario.class, "user01");
         DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
-        entity.setValorFixo(10.00);
+        entity.setValorFixo(new BigDecimal("10.00"));
         entity.setDataPrimeiroVencimento(new Date());
         entity.setObservacao("Test");
         entity.setUsuario(user);
@@ -164,7 +165,7 @@ public class AgendaProcedimentoFixoBeanCreateTest
         Usuario user = getEntityManager().find(Usuario.class, "user01");
         DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
-        entity.setValorFixo(10.00);
+        entity.setValorFixo(new BigDecimal("10.00"));
         entity.setDataPrimeiroVencimento(new Date());
         entity.setObservacao("Testaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
