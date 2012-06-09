@@ -14,8 +14,10 @@ import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.NumberUtils;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang.StringUtils;
@@ -65,7 +67,8 @@ public abstract class Procedimento
      */
     @NotNull
     @Column(name = "valor_estimado", nullable = false)
-    private Double valorEstimado;
+    @Digits(fraction = 2, integer = 12)
+    private BigDecimal valorEstimado;
     /**
      * Valor real pago na conta, utilizado nas receitas fixas, em que
      * estimativas futuras são realizadas. Não é obrigatório nas
@@ -73,7 +76,8 @@ public abstract class Procedimento
      * informado.<br> <b>PODE SER NULO</b>
      */
     @Column(name = "valor_real")
-    private Double valorReal;
+    @Digits(fraction = 2, integer = 12)
+    private BigDecimal valorReal;
     /**
      * Representa o detalhe do gasto/receita.
      */
@@ -328,7 +332,7 @@ public abstract class Procedimento
      *
      * @return Valor.
      */
-    public Double getValorEstimado() {
+    public BigDecimal getValorEstimado() {
         return valorEstimado;
     }
 
@@ -341,7 +345,7 @@ public abstract class Procedimento
      *
      * @param valor Valor
      */
-    public void setValorEstimado(final Double valor) {
+    public void setValorEstimado(final BigDecimal valor) {
         this.valorEstimado = valor;
     }
 
@@ -353,7 +357,7 @@ public abstract class Procedimento
      *
      * @return Valor <b>PODE SER NULO</b>
      */
-    public Double getValorReal() {
+    public BigDecimal getValorReal() {
         return valorReal;
     }
 
@@ -365,7 +369,7 @@ public abstract class Procedimento
      *
      * @param valor valor
      */
-    public void setValorReal(final Double valor) {
+    public void setValorReal(final BigDecimal valor) {
         this.valorReal = valor;
     }
 
@@ -411,7 +415,7 @@ public abstract class Procedimento
                 + " | "
                 + DateUtils.getDateToString(dataVencimento)
                 + " | "
-                + NumberUtils.currencyFormat(getValor())
+                + NumberUtils.currencyFormat(getValor().doubleValue())
                 + " | "
                 + tipoProcedimento.name();
     }
@@ -422,7 +426,7 @@ public abstract class Procedimento
      *
      * @return Real se houver ou estimado.
      */
-    public Double getValor() {
+    public BigDecimal getValor() {
         if (valorReal != null) {
             return valorReal;
         }
@@ -436,10 +440,10 @@ public abstract class Procedimento
      * @see getValor()
      * @return Positivo de receita negativo se despesa.
      */
-    public Double getValorProcedimento() {
-        double toReturn = getValor();
+    public BigDecimal getValorProcedimento() {
+        BigDecimal toReturn = getValor();
         if (this.tipoProcedimento.equals(TipoProcedimento.DESPESA_FINANCEIRA)) {
-            return toReturn * -1;
+            return toReturn.multiply(new BigDecimal("-1"));
         } else {
             return toReturn;
         }

@@ -4,7 +4,9 @@
  */
 package br.com.gbvbahia.financeiro.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -16,8 +18,7 @@ import java.util.Date;
 public final class DateUtils {
 
     /**
-     * Classe exclusiva de métodos estaticos, não pode ser
-     * instânciada.
+     * Classe exclusiva de métodos estaticos, não pode ser instânciada.
      */
     private DateUtils() {
     }
@@ -49,8 +50,8 @@ public final class DateUtils {
     }
 
     /**
-     * Formata a data, formato AAAAMMDD, para ser incluida na
-     * nomenclatura de um método.
+     * Formata a data, formato AAAAMMDD, para ser incluida na nomenclatura
+     * de um método.
      *
      * @return java.lang.String yyyMMdd
      */
@@ -74,5 +75,20 @@ public final class DateUtils {
         }
         SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yy");
         return sd.format(date);
+    }
+
+    /**
+     * Converte uma data em String para um objeto date.
+     * @param date A data a ser convertida.
+     * @param pattern O formato da data passada, dd/MM/yyyy ou MM/dd/yy...
+     * @return Date referente a data passada.
+     */
+    public static Date convertStringToCalendar(String date, String pattern) {
+        SimpleDateFormat sd = new SimpleDateFormat(pattern);
+        try {
+            return sd.parse(date);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }
