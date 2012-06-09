@@ -7,7 +7,9 @@ package br.com.gbvbahia.financeiro.modelos;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Detalhe de receita financeira.
