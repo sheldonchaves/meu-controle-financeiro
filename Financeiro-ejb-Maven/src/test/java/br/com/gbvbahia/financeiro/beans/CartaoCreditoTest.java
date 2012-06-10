@@ -70,7 +70,7 @@ public class CartaoCreditoTest
     private void popularBanco(EntityManager manager, Usuario userCartao)
             throws Exception {
         for (int i = 0; i < 10; i++) {
-            CartaoCredito cartaoCredito = MakeEntity.makeEntity(CartaoCredito.class, false);
+            CartaoCredito cartaoCredito = MakeEntity.makeEntity(null, CartaoCredito.class, false);
             cartaoCredito.setAtivo(true);
             cartaoCredito.setUsuario(userCartao);
             manager.getTransaction().begin();
