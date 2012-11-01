@@ -53,7 +53,7 @@ public class UsuarioBeanUpdateTest
     @Test
     public void testUpdate_GenericType() throws Exception {
         UsuarioFacade instance = getBean();
-        Usuario ent = TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "user_create", false);
+        Usuario ent = TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false);
         Usuario entity = instance.find(ent.getUserId());
         entity.setFirstName("Gui");
         getEntityManager().getTransaction().begin();
@@ -67,7 +67,7 @@ public class UsuarioBeanUpdateTest
     public void atualizarConjuge() throws Exception {
         UsuarioFacade instance = getBean();
         List<Usuario> usrs = TestesMake.makeEntitiesBD(getEntityManager(),
-                Usuario.class, "user_create", 5, false);
+                Usuario.class, "test_1", 5, false);
         Usuario marido = usrs.get(0);
         Usuario esposa = usrs.get(1);
         marido.setConjuge(esposa);
@@ -93,9 +93,9 @@ public class UsuarioBeanUpdateTest
     public void testCreate() throws Exception {
         try {
             Usuario criado = TestesMake.makeEntityBD(getEntityManager(),
-                    Usuario.class, "user_create", true);
+                    Usuario.class, "test_1", true);
             UsuarioFacade instance = getBean();
-            Usuario entity = MakeEntity.makeEntity("user_create", Usuario.class);
+            Usuario entity = MakeEntity.makeEntity("test_1", Usuario.class);
             entity.setUserId(criado.getUserId());//ID ja existe!!!
             getEntityManager().getTransaction().begin();
             instance.create(entity);

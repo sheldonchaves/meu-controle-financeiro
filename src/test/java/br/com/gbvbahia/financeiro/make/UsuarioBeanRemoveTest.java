@@ -54,7 +54,7 @@ public class UsuarioBeanRemoveTest
     public void testRemove() throws Exception {
         UsuarioFacade instance = getBean();
         Usuario entity = TestesMake.makeEntityBD(getEntityManager(),
-                Usuario.class, "user_create", false);
+                Usuario.class, "test_1", false);
         getEntityManager().getTransaction().begin();
         instance.remove(entity);
         getEntityManager().getTransaction().commit();
