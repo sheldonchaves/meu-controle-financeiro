@@ -74,14 +74,6 @@ public class UsuarioBeanUpdateTest
         assertEquals(entity.getFirstName(), us.getFirstName());
     }
 
-    /**
-     * Test of update method, of class UsuarioBean.
-     */
-    @Test
-    public void testUpdate_String_Map() throws Exception {
-        assertTrue("Sem query Update para teste aqui.", true);
-    }
-
     @Test
     public void atualizarConjuge() throws Exception {
         UsuarioFacade instance = getBean();

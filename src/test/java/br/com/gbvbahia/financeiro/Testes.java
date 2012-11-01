@@ -62,8 +62,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     UsuarioBeanCreateTest.class,
     UsuarioBeanSearchTest.class,
- //   UsuarioBeanUpdateTest.class,
-//    UsuarioBeanRemoveTest.class,
+    UsuarioBeanUpdateTest.class,
+    UsuarioBeanRemoveTest.class,
 //    ContaBancariaBeanCreateTest.class,
 //    ContaBancariaBeanSearchTest.class,
 //    ContaBancariaBeanUpdateTest.class,
