@@ -8,10 +8,7 @@ import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
-import br.com.gbvbahia.financeiro.make.UsuarioBeanCreateTest;
-import br.com.gbvbahia.financeiro.make.UsuarioBeanRemoveTest;
-import br.com.gbvbahia.financeiro.make.UsuarioBeanSearchTest;
-import br.com.gbvbahia.financeiro.make.UsuarioBeanUpdateTest;
+import br.com.gbvbahia.financeiro.make.*;
 import br.com.gbvbahia.financeiro.modelos.*;
 import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
@@ -33,7 +30,8 @@ import org.junit.runners.Suite;
     UsuarioBeanCreateTest.class,
     UsuarioBeanSearchTest.class,
     UsuarioBeanUpdateTest.class,
-    UsuarioBeanRemoveTest.class
+    UsuarioBeanRemoveTest.class,
+    ContaBancariaBeanCreateTest.class
 })
 public class TestesMake {
 
