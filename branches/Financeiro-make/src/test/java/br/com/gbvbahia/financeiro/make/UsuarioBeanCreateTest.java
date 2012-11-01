@@ -62,7 +62,7 @@ public class UsuarioBeanCreateTest
      */
     @Test
     public void testCreate() throws Exception {
-        Usuario entity = MakeEntity.makeEntity("user_create", Usuario.class);
+        Usuario entity = MakeEntity.makeEntity("test_1", Usuario.class);
         UsuarioFacade instance = getBean();
         getEntityManager().getTransaction().begin();
         instance.create(entity);
@@ -78,7 +78,7 @@ public class UsuarioBeanCreateTest
      */
     @Test
     public void testFindRange() throws Exception {
-        TestesMake.makeEntitiesBD(getEntityManager(), Usuario.class, "user_create", 8, false);
+        TestesMake.makeEntitiesBD(getEntityManager(), Usuario.class, "test_1", 8, false);
         int[] range = {0, 5};
         UsuarioFacade instance = getBean();
         List result = instance.findRange(range);
@@ -96,7 +96,7 @@ public class UsuarioBeanCreateTest
     @Test(expected = NegocioException.class)
     public void criaUsuarioLoginInvalido() throws Exception {
         try {
-            Usuario entity = MakeEntity.makeEntity("user_create", Usuario.class);
+            Usuario entity = MakeEntity.makeEntity("test_1", Usuario.class);
             StringBuilder sb = new StringBuilder("");
             for (int i = 0; i <= Usuario.LIMIT_MAX_CARACTERES_LOGIN_ID; i++) {
                 if (i % 2 == 0) {
@@ -128,7 +128,7 @@ public class UsuarioBeanCreateTest
     @Test(expected = NegocioException.class)
     public void criaUsuarioEmailInvalido() throws Exception {
         try {
-            Usuario entity = MakeEntity.makeEntity("user_create", Usuario.class);
+            Usuario entity = MakeEntity.makeEntity("test_1", Usuario.class);
             entity.setEmail("user Login Errado@hotmail.com");
             UsuarioFacade instance = getBean();
             getEntityManager().getTransaction().begin();

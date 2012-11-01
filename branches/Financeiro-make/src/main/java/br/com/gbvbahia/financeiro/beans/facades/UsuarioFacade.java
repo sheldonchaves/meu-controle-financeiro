@@ -5,6 +5,7 @@
 package br.com.gbvbahia.financeiro.beans.facades;
 
 import br.com.gbvbahia.financeiro.beans.commons.InterfaceFacade;
+import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import javax.ejb.Local;
 
@@ -34,5 +35,13 @@ public interface UsuarioFacade extends InterfaceFacade<Usuario, String> {
      * @return true se estiver e false se não.
      */
     boolean usuarioInGrupo(final String grupoId);
+    
+    /**
+     * Faz amarração entre os usuários como conjuges.
+     * @param usr1 Usuario a ser atrelado ao segundo.
+     * @param usr2 Usuario a ser atrelado ao primeiro.
+     * @throws NegocioException se algo estiver invalido.
+     */
+    void definirConjuge(Usuario usr1, Usuario usr2) throws NegocioException;
     
 }

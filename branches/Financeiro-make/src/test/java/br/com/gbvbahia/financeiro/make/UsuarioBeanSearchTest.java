@@ -54,7 +54,7 @@ public class UsuarioBeanSearchTest
     @Test
     public void testFind() throws Exception {
         List<Usuario> users = TestesMake.makeEntitiesBD(getEntityManager(),
-                Usuario.class, "user_create", 8, false);
+                Usuario.class, "test_1", 8, false);
         String id = users.get(3).getUserId();
         UsuarioFacade instance = getBean();
         Usuario result = instance.find(id);
@@ -67,7 +67,7 @@ public class UsuarioBeanSearchTest
     @Test
     public void testFindAll() throws Exception {
         TestesMake.makeEntitiesBD(getEntityManager(), Usuario.class,
-                "user_create", 8, false);
+                "test_1", 8, false);
         UsuarioFacade instance = getBean();
         List result = instance.findAll();
         assertTrue("Procurando todos os usuários, findAll!", !result.isEmpty());
@@ -79,7 +79,7 @@ public class UsuarioBeanSearchTest
     @Test
     public void testCount() throws Exception {
         TestesMake.makeEntitiesBD(getEntityManager(), Usuario.class,
-                "user_create", 8, false);
+                "test_1", 8, false);
         UsuarioFacade instance = getBean();
         int result = instance.count();
         assertTrue("Contar Usuarios", result == 8);
@@ -91,7 +91,7 @@ public class UsuarioBeanSearchTest
     @Test
     public void testListPesq() throws Exception {
         TestesMake.makeEntitiesBD(getEntityManager(), Usuario.class,
-                "user_create", 8, false);
+                "test_1", 8, false);
         UsuarioFacade instance = getBean();
         String namedQuery = "Usuario.findAll";
         List<Usuario> result = instance.listPesq(namedQuery);
@@ -105,7 +105,7 @@ public class UsuarioBeanSearchTest
     @Test
     public void testListPesqParam_String_Map() throws Exception {
         List<Usuario> users = TestesMake.makeEntitiesBD(getEntityManager(),
-                Usuario.class, "user_create", 4, false);
+                Usuario.class, "test_1", 4, false);
         UsuarioFacade instance = getBean();
         String namedQuery = "Usuario.findByFirstName";
         Map parans = UsuarioBean.getMapParans();
@@ -124,7 +124,7 @@ public class UsuarioBeanSearchTest
     @Test
     public void testListPesqParam_4args() throws Exception {
         List<Usuario> users = TestesMake.makeEntitiesBD(getEntityManager(),
-                Usuario.class, "user_create", 5, false);
+                Usuario.class, "test_1", 5, false);
         UsuarioFacade instance = getBean();
         String namedQuery = "Usuario.findByFirstName";
         Map parans = UsuarioBean.getMapParans();
@@ -144,7 +144,7 @@ public class UsuarioBeanSearchTest
     @Test
     public void testPesqParam_String_Map() throws Exception {
         List<Usuario> users = TestesMake.makeEntitiesBD(getEntityManager(),
-                Usuario.class, "user_create", 4, false);
+                Usuario.class, "test_1", 4, false);
         String namedQuery = "Usuario.findByUserId";
         Map<String, Object> params = UsuarioBean.getMapParans();
         params.put("userId", users.get(3).getUserId());

@@ -5,6 +5,7 @@
 package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
+import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
@@ -17,11 +18,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * <strong>SEGURANCA</strong> <br> RolesAllowed pode ser aplicada na
- * classe e/ou em metodos, aplicada na classe tem valor em todos os
- * métodos, menos os que a sobrescreverem ou utilizar outra aotação,
- * como:<br> PermitAll, DenyAll e RolesAllowed.<br> Sendo que esta
- * ultima pode ser menos ou mais
+ * <strong>SEGURANCA</strong> <br> RolesAllowed pode ser aplicada na classe
+ * e/ou em metodos, aplicada na classe tem valor em todos os métodos, menos os
+ * que a sobrescreverem ou utilizar outra aotação, como:<br> PermitAll,
+ * DenyAll e RolesAllowed.<br> Sendo que esta ultima pode ser menos ou mais
  * restringida:@RolesAllowed({"admins"})<br><br>
  *
  * @author Guilherme
@@ -39,16 +39,14 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
     @PersistenceContext(unitName = UtilBeans.PERSISTENCE_UNIT)
     private EntityManager em;
     /**
-     * javax.ejb.SessionContext é por onde o Conteiner J2EE
-     * disponibiliza informações sobre a aplicação, inclusive sobre o
-     * usuário logado.
+     * javax.ejb.SessionContext é por onde o Conteiner J2EE disponibiliza
+     * informações sobre a aplicação, inclusive sobre o usuário logado.
      */
     @Resource
     private SessionContext context;
 
     /**
-     * Construtor padrão que passa o tipo de classe para
-     * AbstractFacade.
+     * Construtor padrão que passa o tipo de classe para AbstractFacade.
      */
     public UsuarioBean() {
         super(Usuario.class);
@@ -82,8 +80,8 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
     /**
      * Verifica se o usuário logado é de um determinado grupo.
      *
-     * @param grupoId String referente ao nome único do grupo que se
-     * deseja verificar.
+     * @param grupoId String referente ao nome único do grupo que se deseja
+     * verificar.
      * @return true se estiver e false se não.
      */
     @Override
@@ -93,5 +91,13 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
         } catch (IllegalStateException e) {
             return false;
         }
+    }
+
+    @Override
+    public void definirConjuge(Usuario usr1, Usuario usr2) throws NegocioException {
+        usr1.setConjuge(usr2);
+        usr2.setConjuge(usr1);
+        super.update(usr2);
+        super.update(usr1);
     }
 }
