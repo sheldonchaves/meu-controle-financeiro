@@ -5,7 +5,6 @@
 package br.com.gbvbahia.financeiro.make;
 
 import br.com.gbvbahia.financeiro.beans.*;
-import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.TestesMake;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -30,7 +29,7 @@ public class UsuarioBeanRemoveTest
      * Define as classes que serão utilizadas durante o testes, menos
      * o Bean a ser testado.
      */
-    private static final Class[] USED_BEANS = Testes.getUseBeans();
+    private static final Class[] USED_BEANS = TestesMake.getUseBeans();
 
     public UsuarioBeanRemoveTest() {
         super(UsuarioFacade.class, USED_BEANS);
@@ -71,6 +70,6 @@ public class UsuarioBeanRemoveTest
     public void tearDown() throws Exception {
         BasicDataSource ds = new BasicDataSource(Ejb3UnitCfg.getConfiguration());
         Connection con = ds.getConnection();
-        Testes.tearDown(con);
+        TestesMake.tearDown(con);
     }
 }

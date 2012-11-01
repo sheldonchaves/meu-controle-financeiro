@@ -4,7 +4,6 @@
  */
 package br.com.gbvbahia.financeiro.make;
 
-import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.TestesMake;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
@@ -28,7 +27,7 @@ public class ContaBancariaBeanCreateTest
      * Define as classes que serão utilizadas durante o testes, menos o Bean a
      * ser testado.
      */
-    private static final Class[] USED_BEANS = Testes.getUseBeans();
+    private static final Class[] USED_BEANS = TestesMake.getUseBeans();
 
     public ContaBancariaBeanCreateTest() {
         super(ContaBancariaFacade.class, USED_BEANS);
@@ -204,6 +203,6 @@ public class ContaBancariaBeanCreateTest
     public void tearDown() throws Exception {
         BasicDataSource ds = new BasicDataSource(Ejb3UnitCfg.getConfiguration());
         Connection con = ds.getConnection();
-        Testes.tearDown(con);
+        TestesMake.tearDown(con);
     }
 }

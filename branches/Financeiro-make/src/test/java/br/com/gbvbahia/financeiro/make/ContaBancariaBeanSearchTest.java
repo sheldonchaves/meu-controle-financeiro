@@ -4,17 +4,13 @@
  */
 package br.com.gbvbahia.financeiro.make;
 
-import br.com.gbvbahia.financeiro.beans.*;
-import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.TestesMake;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
-import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.maker.MakeEntity;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
-import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.utils.BasicDataSource;
 import java.sql.Connection;
 import java.util.List;
@@ -33,7 +29,7 @@ public class ContaBancariaBeanSearchTest
      * Define as classes que serão utilizadas durante o testes, menos o Bean a
      * ser testado.
      */
-    private static final Class[] USED_BEANS = Testes.getUseBeans();
+    private static final Class[] USED_BEANS = TestesMake.getUseBeans();
 
     public ContaBancariaBeanSearchTest() {
         super(ContaBancariaFacade.class, USED_BEANS);
@@ -150,7 +146,7 @@ public class ContaBancariaBeanSearchTest
     public void tearDown() throws Exception {
         BasicDataSource ds = new BasicDataSource(Ejb3UnitCfg.getConfiguration());
         Connection con = ds.getConnection();
-        Testes.tearDown(con);
+        TestesMake.tearDown(con);
     }
 
     /**
