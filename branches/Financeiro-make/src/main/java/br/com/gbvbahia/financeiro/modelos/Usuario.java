@@ -128,6 +128,7 @@ public class Usuario implements EntityInterface<Usuario>, Serializable {
      * Não possui implementação atualmente, pode ser utilizado para
      * criar código de recuperação de senha.
      */
+    //@NotNull //Primeiro teste uma nova regra de validacao
     @Size(max = 32)
     @Column(name = "confirmation_code", length = 32)
     private String confirmationCode;

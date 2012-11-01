@@ -33,7 +33,6 @@ import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18nTest;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
-import com.bm.testsuite.dataloader.DateFormats;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.Set;
@@ -55,27 +54,27 @@ import org.junit.runners.Suite;
  * na execução, os métodos detas classes poderão ser executados em qualquer
  * ordem, mas as classes serão executadas na ordem que aparecem.<br>
  *
+ * TESTES SEM MAKE
  * @author Guilherme Braga
  * @since 31/03/2012
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    I18nTest.class,
     UsuarioBeanCreateTest.class,
     UsuarioBeanSearchTest.class,
-    UsuarioBeanUpdateTest.class,
-    UsuarioBeanRemoveTest.class,
-    ContaBancariaBeanCreateTest.class,
-    ContaBancariaBeanSearchTest.class,
-    ContaBancariaBeanUpdateTest.class,
-    DetalheProcedimentoBeanCreateTest.class,
-    DetalheProcedimentoBeanSearchTest.class,
-    AgendaProcedimentoFixoBeanCreateTest.class,
-    AgendaProcedimentoFixoBeanSearchTest.class,
-    CartaoCreditoTest.class,
-    DespesaProcedimentoBeanTest.class,
-    ProcedimentoBeanTest.class,
-    ProvisaoBeanTest.class
+ //   UsuarioBeanUpdateTest.class,
+//    UsuarioBeanRemoveTest.class,
+//    ContaBancariaBeanCreateTest.class,
+//    ContaBancariaBeanSearchTest.class,
+//    ContaBancariaBeanUpdateTest.class,
+//    DetalheProcedimentoBeanCreateTest.class,
+//    DetalheProcedimentoBeanSearchTest.class,
+//    AgendaProcedimentoFixoBeanCreateTest.class,
+//    AgendaProcedimentoFixoBeanSearchTest.class,
+//    CartaoCreditoTest.class,
+//    DespesaProcedimentoBeanTest.class,
+//    ProcedimentoBeanTest.class,
+//    ProvisaoBeanTest.class
 })
 public class Testes {
 
