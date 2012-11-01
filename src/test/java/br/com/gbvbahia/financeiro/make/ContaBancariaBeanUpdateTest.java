@@ -4,13 +4,14 @@
  */
 package br.com.gbvbahia.financeiro.make;
 
+import br.com.gbvbahia.financeiro.TestesMake;
 import br.com.gbvbahia.financeiro.beans.*;
-import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.maker.MakeEntity;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
@@ -30,13 +31,11 @@ public class ContaBancariaBeanUpdateTest
      * Define as classes que serão utilizadas durante o testes, menos
      * o Bean a ser testado.
      */
-    private static final Class[] USED_BEANS = Testes.getUseBeans();
-    private static final CSVInitialDataSet<Usuario> USUARIO_CSV =
-            Testes.getUsuariosConjugeCSV();
+    private static final Class[] USED_BEANS = TestesMake.getUseBeans();
 
 
     public ContaBancariaBeanUpdateTest() {
-        super(ContaBancariaFacade.class, USED_BEANS, USUARIO_CSV);
+        super(ContaBancariaFacade.class, USED_BEANS);
     }
 
     /**
@@ -55,17 +54,10 @@ public class ContaBancariaBeanUpdateTest
      */
     @Test(expected = NegocioException.class)
     public void testUpdate_UserNull() throws Exception {
-        Testes.createContasBancarias(getEntityManager());
+        List<ContaBancaria> contas = criarContas();
         try {
-            Usuario proprietario =
-                    this.getEntityManager().find(Usuario.class,
-                    "user01");
             ContaBancariaFacade instance = getBean();
-            Boolean status = false;
-            List<ContaBancaria> result =
-                    instance.buscarTipoConta(TipoConta.POUPANCA,
-                    proprietario, status);
-            ContaBancaria entity = result.get(0);
+            ContaBancaria entity = instance.find(contas.get(0).getCodigo());
             entity.setUsuario(null);
             getEntityManager().getTransaction().begin();
             instance.update(entity);
@@ -89,6 +81,31 @@ public class ContaBancariaBeanUpdateTest
     public void tearDown() throws Exception {
         BasicDataSource ds = new BasicDataSource(Ejb3UnitCfg.getConfiguration());
         Connection con = ds.getConnection();
-        Testes.tearDown(con);
+        TestesMake.tearDown(con);
+    }
+    
+        /**
+     * Cria 3 contas e 5 usuários. 1 e 2 com usr 0 - 1 (Conjuges) 3 com usr 2
+     *
+     * @return Contas criadas
+     */
+    private List<ContaBancaria> criarContas() throws Exception {
+        List<Usuario> usuarios = TestesMake.makeEntitiesBD(getEntityManager(),
+                Usuario.class, "test_1", 5, false);
+        getEntityManager().getTransaction().begin();
+        TestesMake.getUsuarioFacade().definirConjuge(usuarios.get(0), usuarios.get(1));
+        TestesMake.getUsuarioFacade().definirConjuge(usuarios.get(2), usuarios.get(3));
+        getEntityManager().getTransaction().commit();
+        int count = 0;
+        List<ContaBancaria> contas = MakeEntity.makeEntities("test_1",
+                ContaBancaria.class, 3, false);
+        count = 0;
+        for (ContaBancaria conta : contas) {
+            conta.setUsuario(usuarios.get(count++));
+            getEntityManager().getTransaction().begin();
+            getEntityManager().persist(conta);
+            getEntityManager().getTransaction().commit();
+        }
+        return contas;
     }
 }
