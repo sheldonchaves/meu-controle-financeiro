@@ -4,16 +4,17 @@
  */
 package br.com.gbvbahia.financeiro.make;
 
-import br.com.gbvbahia.financeiro.beans.*;
 import br.com.gbvbahia.financeiro.Testes;
+import br.com.gbvbahia.financeiro.TestesMake;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.maker.MakeEntity;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
-import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.utils.BasicDataSource;
 import java.sql.Connection;
+import java.util.List;
 import org.junit.Test;
 
 /**
@@ -52,54 +53,35 @@ public class UsuarioBeanUpdateTest
     @Test
     public void testUpdate_GenericType() throws Exception {
         UsuarioFacade instance = getBean();
-        Usuario ent = new Usuario();
-        ent.setEmail("gbvbahia02@hotmail.com");
-        ent.setFirstName("Guilhe");
-        ent.setUserId("gbvb");
-        ent.setPass("102030");
-        ent.setLastName("Bra");
-        getEntityManager().getTransaction().begin();
-        instance.create(ent);
-        getEntityManager().getTransaction().commit();
-        Usuario entity = instance.find("gbvb");
+        Usuario ent = TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "user_create", false);
+        Usuario entity = instance.find(ent.getUserId());
         entity.setFirstName("Gui");
         getEntityManager().getTransaction().begin();
         instance.update(entity);
         getEntityManager().getTransaction().commit();
-        Usuario us = instance.find("gbvb");
+        Usuario us = instance.find(ent.getUserId());
         assertEquals(entity.getFirstName(), us.getFirstName());
-    }
-
-    /**
-     * Test of update method, of class UsuarioBean.
-     */
-    @Test
-    public void testUpdate_String_Map() throws Exception {
-        assertTrue("Sem query Update para teste aqui.", true);
     }
 
     @Test
     public void atualizarConjuge() throws Exception {
         UsuarioFacade instance = getBean();
-        Usuario entity = new Usuario();
-        entity.setEmail("esposa@hotmail.com");
-        entity.setFirstName("Esposa");
-        entity.setUserId("esposa");
-        entity.setPass("123456");
-        entity.setLastName("Mulher");
+        List<Usuario> usrs = TestesMake.makeEntitiesBD(getEntityManager(),
+                Usuario.class, "user_create", 5, false);
+        Usuario marido = usrs.get(0);
+        Usuario esposa = usrs.get(1);
+        marido.setConjuge(esposa);
+        esposa.setConjuge(marido);
         getEntityManager().getTransaction().begin();
-        instance.create(entity);
-        getEntityManager().getTransaction().commit();
-        Usuario marido = instance.find("user01");
-        marido.setConjuge(entity);
-        entity.setConjuge(marido);
-        getEntityManager().getTransaction().begin();
-        instance.update(entity);
+        instance.update(esposa);
         instance.update(marido);
         getEntityManager().getTransaction().commit();
-        Usuario maridoCheck = instance.find("user01");
+        Usuario maridoCheck = instance.find(marido.getUserId());
         assertEquals("Esposa não é a mesma!",
-                entity, maridoCheck.getConjuge());
+                esposa, maridoCheck.getConjuge());
+        assertNull("Este Usuario não pode ter conjuge", usrs.get(2).getConjuge());
+        assertNull("Este Usuario não pode ter conjuge", usrs.get(3).getConjuge());
+        assertNull("Este Usuario não pode ter conjuge", usrs.get(4).getConjuge());
     }
 
     /**
@@ -110,13 +92,11 @@ public class UsuarioBeanUpdateTest
     @Test(expected = NegocioException.class)
     public void testCreate() throws Exception {
         try {
+            Usuario criado = TestesMake.makeEntityBD(getEntityManager(),
+                    Usuario.class, "user_create", true);
             UsuarioFacade instance = getBean();
-            Usuario entity = new Usuario();
-            entity.setEmail("outro@hotmail.com");
-            entity.setFirstName("Outro");
-            entity.setUserId("user01");
-            entity.setPass("123456");
-            entity.setLastName("Outro");
+            Usuario entity = MakeEntity.makeEntity("user_create", Usuario.class);
+            entity.setUserId(criado.getUserId());//ID ja existe!!!
             getEntityManager().getTransaction().begin();
             instance.create(entity);
             getEntityManager().getTransaction().commit();

@@ -149,24 +149,6 @@ public class UsuarioBeanSearchTest
     }
 
     /**
-     * Test of pesqParam method, of class UsuarioBean.
-     */
-    @Test
-    public void testPesqParam_String() throws Exception {
-        assertTrue("Sem query com unico resultado com parametros"
-                + " para teste aqui.", true);
-    }
-
-    /**
-     * Test of pesqCount method, of class UsuarioBean.
-     */
-    @Test
-    public void testPesqCount() throws Exception {
-        assertTrue("Sem query com unico resultado com parametros"
-                + " para teste aqui.", true);
-    }
-
-    /**
      * Se for uma base de dados a mesma deve ser limpa. Em memória não
      * ha necessidade.
      *
