@@ -1,4 +1,4 @@
-package br.com.gbvbahia.financeiro.modelos.superclass;
+package br.com.gbvbahia.financeiro.modelos;
 
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
@@ -12,34 +12,26 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  *
- * Representa o motivo de uma conta ou receita financeira. Não
- * utilizei @MappedSuperclass porque iria obrigar a escrever um bean
- * para despesa e um para receita.<br> Por ser uma Entidade, @Entity,
- * existe uma critica pela IDE do construtor,
- * <strong>desconsidere</strong>, já que a classe é abstrata e nunca
- * poderá ser instânciada diretamente. Cabe a sub-classes ter esse
- * construtor e informar seu tipo a superclasse.
+ * Representa o motivo de uma conta ou receita financeira. Não utilizei
+ * @MappedSuperclass porque iria obrigar a escrever um bean para despesa e
+ * um para receita.<br> Por ser uma Entidade, @Entity, existe uma critica
+ * pela IDE do construtor, <strong>desconsidere</strong>, já que a classe é
+ * abstrata e nunca poderá ser instânciada diretamente. Cabe a sub-classes
+ * ter esse construtor e informar seu tipo a superclasse.
  *
  * @author Guilherme
  * @since v.3 01/04/2012
  */
 @Entity
 @Table(name = "fin_detalhe")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo",
-discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue("PROCEDIMENTO")
 @NamedQueries({
-    @NamedQuery(name = "DetalheProcedimento.findAllReceita",
-    query = "SELECT distinct a FROM DetalheReceita a "
+    @NamedQuery(name = "DetalheProcedimento.findAllProcedimento",
+    query = "SELECT distinct a FROM DetalheProcedimento a "
     + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
-    + " AND (:ativo2 = 'todos' OR a.ativo = :ativo) "),
-    @NamedQuery(name = "DetalheProcedimento.findAllDespesa",
-    query = "SELECT distinct a FROM DetalheDespesa a "
-    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
-    + " AND (:ativo2 = 'todos' OR a.ativo = :ativo) ")
+    + " AND (:ativo2 = 'todos' OR a.ativo = :ativo) "
+    + " AND (:tipo2 = 'todos' OR a.tipo = :tipo) ")
 })
-public abstract class DetalheProcedimento
+public class DetalheProcedimento
         implements EntityInterface<DetalheProcedimento>, Serializable {
 
     /**
@@ -84,30 +76,30 @@ public abstract class DetalheProcedimento
      * Recupera o tipo de procedimento.<br> Retirada determina uma
      * DESPESA.<br> Deposito determina uma RECEITA.
      */
-    @Column(name = "tipo", insertable = false, updatable = false)
-    private String tipo;
-    /**
-     *Define o tipo que implementa DetalheProcedimento.
-     */
-    @Transient
-    private final TipoProcedimento tipoProcedimento;
-
-    /**
-     * Obrigatório informar o tipo de procedimento.<br> Retirada
-     * determina uma DESPESA.<br> Deposito determina uma RECEITA.
-     *
-     * @param tipoEnum Tipo de Procedimento.
-     */
-    public DetalheProcedimento(final TipoProcedimento tipoEnum) {
-        this.tipoProcedimento = tipoEnum;
-    }
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Column(name = "tipo")
+    private TipoProcedimento tipo;
 
     /**
      * Construtor nunca executado, se for uma runtime será lançada.
      */
     public DetalheProcedimento() {
-        throw new IllegalArgumentException(
-                I18N.getMsg("DetalheConstrutorErro"));
+    }
+
+    public DetalheProcedimento(TipoProcedimento tipo) {
+        this.tipo = tipo;
+    }
+
+    public DetalheProcedimento(Usuario usuario, TipoProcedimento tipo) {
+        this.usuario = usuario;
+        this.tipo = tipo;
+    }
+
+    public DetalheProcedimento(String detalhe, Usuario usuario, TipoProcedimento tipo) {
+        this.detalhe = detalhe;
+        this.usuario = usuario;
+        this.tipo = tipo;
     }
 
     /**
@@ -176,11 +168,12 @@ public abstract class DetalheProcedimento
     }
 
     /**
-     * Utilizado para identificar o tipo pelo EntityManager.
+     * Recupera o tipo de procedimento.<br> Retirada determina uma
+     * DESPESA.<br> Deposito determina uma RECEITA.
      *
-     * @return RECEITA ou DESPESA.
+     * @return TipoProcedimento.
      */
-    public String getTipo() {
+    public TipoProcedimento getTipo() {
         return tipo;
     }
 
@@ -190,8 +183,8 @@ public abstract class DetalheProcedimento
      *
      * @return TipoProcedimento.
      */
-    public TipoProcedimento getTipoProcedimento() {
-        return tipoProcedimento;
+    public void setTipo(TipoProcedimento tipo) {
+        this.tipo = tipo;
     }
 
     /**

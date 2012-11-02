@@ -6,8 +6,9 @@ package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
-import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.List;
 import java.util.Map;
@@ -48,26 +49,18 @@ public class DetalheProcedimentoBean
     }
 
     @Override
-    public List<DetalheProcedimento> findAllDetalheReceita(
-            final Usuario user, final Boolean ativo) {
+    public List<DetalheProcedimento> findAllDetalhe(
+            final Usuario user, final Boolean ativo, TipoProcedimento tipo) {
         Map<String, Object> parans = getMapParans();
         parans.put("usuario", user);
         //Se null esse true é ignorado
         parans.put("ativo", ativo == null ? true : ativo);
         //Se null esse garante trazer todos.
         parans.put("ativo2", ativo == null ? "todos" : "filtro");
-        return listPesqParam("DetalheProcedimento.findAllReceita", parans);
-    }
-
-    @Override
-    public List<DetalheProcedimento> findAllDetalheDespesa(
-            final Usuario user, final Boolean ativo) {
-        Map<String, Object> parans = getMapParans();
-        parans.put("usuario", user);
-        //Se null esse true é ignorado
-        parans.put("ativo", ativo == null ? true : ativo);
+                //Se null esse true é ignorado
+        parans.put("tipo", tipo);
         //Se null esse garante trazer todos.
-        parans.put("ativo2", ativo == null ? "todos" : "filtro");
-        return listPesqParam("DetalheProcedimento.findAllDespesa", parans);
+        parans.put("tipo2", tipo == null ? "todos" : "filtro");
+        return listPesqParam("DetalheProcedimento.findAllProcedimento", parans);
     }
 }

@@ -8,10 +8,8 @@ import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
-import br.com.gbvbahia.financeiro.modelos.DetalheDespesa;
-import br.com.gbvbahia.financeiro.modelos.DetalheReceita;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
-import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
@@ -61,7 +59,7 @@ public class AgendaProcedimentoFixoBeanCreateTest
     public void testCreate() throws Exception {
         AgendaProcedimentoFixoFacade instance = getBean();
         Usuario user = getEntityManager().find(Usuario.class, "user03");
-        DetalheDespesa dd = getEntityManager().find(DetalheDespesa.class, 1l);
+        DetalheProcedimento dd = getEntityManager().find(DetalheProcedimento.class, 1l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
         entity.setValorFixo(new BigDecimal("10.00"));
         entity.setDataPrimeiroVencimento(new Date());
@@ -82,7 +80,7 @@ public class AgendaProcedimentoFixoBeanCreateTest
     public void testCreateValorErro() throws Exception {
         AgendaProcedimentoFixoFacade instance = getBean();
         Usuario user = getEntityManager().find(Usuario.class, "user01");
-        DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
+        DetalheProcedimento dr = getEntityManager().find(DetalheProcedimento.class, 3l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
         entity.setValorFixo(new BigDecimal("0.00"));
         entity.setDataPrimeiroVencimento(new Date());
@@ -109,7 +107,7 @@ public class AgendaProcedimentoFixoBeanCreateTest
     public void testCreateDataNula() throws Exception {
         AgendaProcedimentoFixoFacade instance = getBean();
         Usuario user = getEntityManager().find(Usuario.class, "user01");
-        DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
+        DetalheProcedimento dr = getEntityManager().find(DetalheProcedimento.class, 3l);
 
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
         entity.setValorFixo(new BigDecimal("10.00"));
@@ -136,7 +134,7 @@ public class AgendaProcedimentoFixoBeanCreateTest
     public void testCreateObsCurta() throws Exception {
         AgendaProcedimentoFixoFacade instance = getBean();
         Usuario user = getEntityManager().find(Usuario.class, "user01");
-        DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
+        DetalheProcedimento dr = getEntityManager().find(DetalheProcedimento.class, 3l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
         entity.setValorFixo(new BigDecimal("10.00"));
         entity.setDataPrimeiroVencimento(new Date());
@@ -163,7 +161,7 @@ public class AgendaProcedimentoFixoBeanCreateTest
     public void testCreateObsLong() throws Exception {
         AgendaProcedimentoFixoFacade instance = getBean();
         Usuario user = getEntityManager().find(Usuario.class, "user01");
-        DetalheReceita dr = getEntityManager().find(DetalheReceita.class, 3l);
+        DetalheProcedimento dr = getEntityManager().find(DetalheProcedimento.class, 3l);
         AgendaProcedimentoFixo entity = new AgendaProcedimentoFixo();
         entity.setValorFixo(new BigDecimal("10.00"));
         entity.setDataPrimeiroVencimento(new Date());

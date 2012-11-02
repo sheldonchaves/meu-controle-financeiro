@@ -5,16 +5,13 @@
 package br.com.gbvbahia.financeiro.make;
 
 import br.com.gbvbahia.financeiro.TestesMake;
-import br.com.gbvbahia.financeiro.beans.*;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
-import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.maker.MakeEntity;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
-import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.utils.BasicDataSource;
 import java.sql.Connection;
 import java.util.List;
@@ -84,8 +81,9 @@ public class ContaBancariaBeanUpdateTest
         TestesMake.tearDown(con);
     }
     
-        /**
-     * Cria 3 contas e 5 usuários. 1 e 2 com usr 0 - 1 (Conjuges) 3 com usr 2
+    /**
+     * Cria 3 contas e 5 usuários. 1 e 2 com usr 0 - 1 (Conjuges) 3 com usr
+     * 2
      *
      * @return Contas criadas
      */

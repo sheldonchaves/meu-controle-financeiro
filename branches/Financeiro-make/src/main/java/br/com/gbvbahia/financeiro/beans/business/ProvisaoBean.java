@@ -136,7 +136,7 @@ public class ProvisaoBean implements ProvisaoFacade {
     private Procedimento makeProcedimento(AgendaProcedimentoFixo agenda,
             Date dataVencimento) {
         Procedimento toReturn = null;
-        switch (agenda.getDetalhe().getTipoProcedimento()) {
+        switch (agenda.getDetalhe().getTipo()) {
             case DESPESA_FINANCEIRA:
                 toReturn = new DespesaProcedimento();
                 break;
