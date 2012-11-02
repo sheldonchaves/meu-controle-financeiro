@@ -6,8 +6,9 @@ package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
-import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
@@ -93,7 +94,7 @@ public class DetalheProcedimentoBeanSearchTest
         DetalheProcedimentoFacade instance = getBean();
         Boolean ativo = true;
         int expResult = 1;
-        List result = instance.findAllDetalheReceita(user, ativo);
+        List result = instance.findAllDetalhe(user, ativo, TipoProcedimento.RECEITA_FINANCEIRA);
         assertEquals(expResult, result.size());
     }
 
@@ -108,7 +109,7 @@ public class DetalheProcedimentoBeanSearchTest
         DetalheProcedimentoFacade instance = getBean();
         Boolean ativo = false;
         int expResult = 1;
-        List result = instance.findAllDetalheReceita(user, ativo);
+        List result = instance.findAllDetalhe(user, ativo, TipoProcedimento.RECEITA_FINANCEIRA);
         assertEquals(expResult, result.size());
     }
 
@@ -122,7 +123,7 @@ public class DetalheProcedimentoBeanSearchTest
         DetalheProcedimentoFacade instance = getBean();
         Boolean ativo = null;
         int expResult = 2;
-        List result = instance.findAllDetalheReceita(user, ativo);
+        List result = instance.findAllDetalhe(user, ativo, TipoProcedimento.RECEITA_FINANCEIRA);
         assertEquals(expResult, result.size());
     }
 
@@ -137,7 +138,7 @@ public class DetalheProcedimentoBeanSearchTest
         DetalheProcedimentoFacade instance = getBean();
         Boolean ativo = true;
         int expResult = 1;
-        List result = instance.findAllDetalheDespesa(user, ativo);
+        List result = instance.findAllDetalhe(user, ativo, TipoProcedimento.DESPESA_FINANCEIRA);
         assertEquals(expResult, result.size());
     }
 
@@ -152,7 +153,7 @@ public class DetalheProcedimentoBeanSearchTest
         DetalheProcedimentoFacade instance = getBean();
         Boolean ativo = false;
         int expResult = 1;
-        List result = instance.findAllDetalheDespesa(user, ativo);
+        List result = instance.findAllDetalhe(user, ativo, TipoProcedimento.DESPESA_FINANCEIRA);
         assertEquals(expResult, result.size());
     }
 
@@ -166,7 +167,7 @@ public class DetalheProcedimentoBeanSearchTest
         DetalheProcedimentoFacade instance = getBean();
         Boolean ativo = null;
         int expResult = 2;
-        List result = instance.findAllDetalheDespesa(user, ativo);
+        List result = instance.findAllDetalhe(user, ativo, TipoProcedimento.DESPESA_FINANCEIRA);
         assertEquals(expResult, result.size());
     }
 

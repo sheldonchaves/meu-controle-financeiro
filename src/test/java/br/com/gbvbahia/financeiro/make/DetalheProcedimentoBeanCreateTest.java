@@ -7,10 +7,9 @@ package br.com.gbvbahia.financeiro.make;
 import br.com.gbvbahia.financeiro.TestesMake;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
-import br.com.gbvbahia.financeiro.modelos.DetalheDespesa;
-import br.com.gbvbahia.financeiro.modelos.DetalheReceita;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
-import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
+import br.com.gbvbahia.maker.MakeEntity;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.utils.BasicDataSource;
@@ -52,16 +51,15 @@ public class DetalheProcedimentoBeanCreateTest
     @Test
     public void testCreateDespesa() throws Exception {
         DetalheProcedimentoFacade instance = getBean();
-        final Usuario user = TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false);
-        DetalheProcedimento entity = new DetalheDespesa();
-        entity.setDetalhe("Transporte");
+        Usuario user = TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false);
+        DetalheProcedimento entity = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
         entity.setUsuario(user);
         getEntityManager().getTransaction().begin();
         instance.create(entity);
         getEntityManager().getTransaction().commit();
         assertTrue("Despesa criada não encontrada",
-                instance.findAllDetalheDespesa(user,
-                Boolean.TRUE).size() == 1);
+                instance.findAllDetalhe(user,
+                entity.isAtivo(), entity.getTipo()).size() == 1);
     }
 
     /**
@@ -71,15 +69,14 @@ public class DetalheProcedimentoBeanCreateTest
     public void testCreateReceita() throws Exception {
         DetalheProcedimentoFacade instance = getBean();
         final Usuario user = TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false);
-        DetalheProcedimento entity = new DetalheReceita();
-        entity.setDetalhe("Salário Mensal");
+        DetalheProcedimento entity = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
         entity.setUsuario(user);
         getEntityManager().getTransaction().begin();
         instance.create(entity);
         getEntityManager().getTransaction().commit();
         assertTrue("Despesa criada não encontrada",
-                instance.findAllDetalheReceita(user,
-                Boolean.TRUE).size() == 1);
+                instance.findAllDetalhe(user,
+                entity.isAtivo(), entity.getTipo()).size() == 1);
     }
 
     /**
@@ -91,16 +88,15 @@ public class DetalheProcedimentoBeanCreateTest
     public void testCreateReceitaBlock() throws Exception {
         DetalheProcedimentoFacade instance = getBean();
         final Usuario user = TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false);
-        DetalheProcedimento entity = new DetalheReceita();
-        entity.setDetalhe("Salário Semanal");
+        DetalheProcedimento entity = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
         entity.setUsuario(user);
         entity.setAtivo(false);
         getEntityManager().getTransaction().begin();
         instance.create(entity);
         getEntityManager().getTransaction().commit();
         assertTrue("Despesa criada não encontrada",
-                !instance.findAllDetalheReceita(user,
-                Boolean.FALSE).isEmpty());
+                !instance.findAllDetalhe(user,
+                Boolean.FALSE, entity.getTipo()).isEmpty());
     }
 
     /**
@@ -110,16 +106,15 @@ public class DetalheProcedimentoBeanCreateTest
     public void testCreateDespesaBlock() throws Exception {
         DetalheProcedimentoFacade instance = getBean();
         final Usuario user = TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false);
-        DetalheProcedimento entity = new DetalheDespesa();
-        entity.setDetalhe("Escola");
+        DetalheProcedimento entity = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
         entity.setUsuario(user);
         entity.setAtivo(false);
         getEntityManager().getTransaction().begin();
         instance.create(entity);
         getEntityManager().getTransaction().commit();
         assertTrue("Despesa criada não encontrada",
-                !instance.findAllDetalheDespesa(user,
-                Boolean.FALSE).isEmpty());
+                !instance.findAllDetalhe(user,
+                Boolean.FALSE, entity.getTipo()).isEmpty());
     }
 
     /**
@@ -132,7 +127,7 @@ public class DetalheProcedimentoBeanCreateTest
     public void testCreateLimiteMaxCaracteres() throws Exception {
         DetalheProcedimentoFacade instance = getBean();
         final Usuario user = TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false);
-        DetalheProcedimento entity = new DetalheDespesa();
+        DetalheProcedimento entity = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
         StringBuilder sb = new StringBuilder("");
         for (int i = 0;
                 i <= DetalheProcedimento.QUANTIDADE_MAX_CARACTERES_DETALHE;
@@ -169,7 +164,7 @@ public class DetalheProcedimentoBeanCreateTest
     public void testCreateLimiteMinCaracteres() throws Exception {
         DetalheProcedimentoFacade instance = getBean();
          final Usuario user = TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false);
-        DetalheProcedimento entity = new DetalheDespesa();
+        DetalheProcedimento entity = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
         entity.setDetalhe("ABC");
         entity.setUsuario(user);
         entity.setAtivo(true);

@@ -1,4 +1,4 @@
-1,"Transporte","user01","true","DESPESA"
-2,"Supermarcado","user01","false","DESPESA"
-3,"Computador","user03","true","RECEITA"
-4,"Manutenção da Casa","user03","false","RECEITA"
+1,"Transporte","user01","true","DESPESA_FINANCEIRA"
+2,"Supermarcado","user01","false","DESPESA_FINANCEIRA"
+3,"Computador","user03","true","RECEITA_FINANCEIRA"
+4,"Manutenção da Casa","user03","false","RECEITA_FINANCEIRA"

@@ -6,7 +6,6 @@ package br.com.gbvbahia.financeiro.modelos;
 
 import br.com.gbvbahia.financeiro.constantes.Periodo;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
-import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;

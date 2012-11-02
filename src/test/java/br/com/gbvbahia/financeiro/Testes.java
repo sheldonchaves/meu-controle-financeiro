@@ -28,7 +28,7 @@ import br.com.gbvbahia.financeiro.constantes.Periodo;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.*;
-import br.com.gbvbahia.financeiro.modelos.superclass.DetalheProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18nTest;
@@ -55,6 +55,7 @@ import org.junit.runners.Suite;
  * ordem, mas as classes serão executadas na ordem que aparecem.<br>
  *
  * TESTES SEM MAKE
+ *
  * @author Guilherme Braga
  * @since 31/03/2012
  */
@@ -67,8 +68,8 @@ import org.junit.runners.Suite;
     ContaBancariaBeanCreateTest.class,
     ContaBancariaBeanSearchTest.class,
     ContaBancariaBeanUpdateTest.class,
-    DetalheProcedimentoBeanCreateTest.class,
-//    DetalheProcedimentoBeanSearchTest.class,
+    DetalheProcedimentoBeanCreateTest.class, 
+    DetalheProcedimentoBeanSearchTest.class,
 //    AgendaProcedimentoFixoBeanCreateTest.class,
 //    AgendaProcedimentoFixoBeanSearchTest.class,
 //    CartaoCreditoTest.class,
@@ -93,8 +94,8 @@ public class Testes {
     public static Class[] getUseBeans(final Class... noEntityes) {
         Class[] entityes = new Class[]{
             Usuario.class, Grupo.class, ContaBancaria.class,
-            DetalheProcedimento.class, DetalheDespesa.class,
-            DetalheReceita.class, AgendaProcedimentoFixo.class,
+            DetalheProcedimento.class, DetalheProcedimento.class,
+            AgendaProcedimentoFixo.class,
             CartaoCredito.class, DespesaProcedimento.class,
             Procedimento.class, DespesaParceladaProcedimento.class,
             ReceitaProcedimento.class
@@ -496,6 +497,7 @@ public class Testes {
 
     /**
      * Busca a AgendaProcedimento em memória pela observação.
+     *
      * @param facade
      * @param obs
      * @return Agenda com a bservacao passada, nulo se não encontrar
