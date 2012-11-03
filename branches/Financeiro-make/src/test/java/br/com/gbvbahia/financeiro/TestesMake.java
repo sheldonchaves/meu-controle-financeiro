@@ -37,6 +37,7 @@ import org.junit.runners.Suite;
     DetalheProcedimentoBeanSearchTest.class,
     AgendaProcedimentoFixoBeanCreateTest.class,
     AgendaProcedimentoFixoBeanSearchTest.class,
+    CartaoCreditoTest.class,
 })
 public class TestesMake {
 
