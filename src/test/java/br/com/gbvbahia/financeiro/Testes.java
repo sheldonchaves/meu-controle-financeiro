@@ -70,7 +70,7 @@ import org.junit.runners.Suite;
     ContaBancariaBeanUpdateTest.class,
     DetalheProcedimentoBeanCreateTest.class, 
     DetalheProcedimentoBeanSearchTest.class,
-//    AgendaProcedimentoFixoBeanCreateTest.class,
+    AgendaProcedimentoFixoBeanCreateTest.class,
 //    AgendaProcedimentoFixoBeanSearchTest.class,
 //    CartaoCreditoTest.class,
 //    DespesaProcedimentoBeanTest.class,

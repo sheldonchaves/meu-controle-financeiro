@@ -10,10 +10,8 @@ import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.make.*;
 import br.com.gbvbahia.financeiro.modelos.*;
-import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import br.com.gbvbahia.maker.MakeEntity;
-import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import java.sql.Connection;
 import java.util.List;
 import javax.naming.InitialContext;
@@ -35,7 +33,9 @@ import org.junit.runners.Suite;
     ContaBancariaBeanCreateTest.class,
     ContaBancariaBeanSearchTest.class,
     ContaBancariaBeanUpdateTest.class,
-    DetalheProcedimentoBeanCreateTest.class
+    DetalheProcedimentoBeanCreateTest.class,
+    DetalheProcedimentoBeanSearchTest.class,
+    AgendaProcedimentoFixoBeanCreateTest.class,
 })
 public class TestesMake {
 
