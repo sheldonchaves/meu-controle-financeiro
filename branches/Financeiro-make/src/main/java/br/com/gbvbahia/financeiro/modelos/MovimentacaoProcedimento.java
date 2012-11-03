@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 /**
  * Representa uma movimentação financeira entre uma conta e um
- * procedimento, uma despesa pagara ou receita recebida.
+ * procedimento, uma despesa paga ou receita recebida.
  *
  * @since v.3 03/06/2012
  * @author Guilherme
