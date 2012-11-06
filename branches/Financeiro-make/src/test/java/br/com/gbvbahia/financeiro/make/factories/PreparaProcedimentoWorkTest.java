@@ -12,7 +12,6 @@ import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.maker.MakeEntity;
 import br.com.gbvbahia.maker.works.common.ValueSpecializedFactory;
 import java.lang.reflect.Field;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import org.apache.commons.lang3.StringUtils;
 
@@ -54,15 +53,17 @@ public class PreparaProcedimentoWorkTest implements ValueSpecializedFactory {
             }else {
                 usr = TestesMake.getUsuarioFacade().findAll().get(0);
             }
+            procedimento.setUsuario(usr);
+            
             DetalheProcedimento detalhe = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
             detalhe.setAtivo(true);
-            detalhe.setTipo(TipoProcedimento.RECEITA_FINANCEIRA);
-            detalhe.setUsuario(usr);
+            detalhe.setTipo(procedimento.getTipoProcedimento());
+            detalhe.setUsuario(procedimento.getUsuario());
             manager.getTransaction().begin();
             TestesMake.getDetalheProcedimentoFacade().create(detalhe);
             manager.getTransaction().commit();
             procedimento.setDetalhe(detalhe);
-            procedimento.setUsuario(usr);
+            
             
         } catch (Exception e) {
             throw new RuntimeException(e);

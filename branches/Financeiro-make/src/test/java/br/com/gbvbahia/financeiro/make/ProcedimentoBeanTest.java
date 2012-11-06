@@ -7,8 +7,10 @@ package br.com.gbvbahia.financeiro.make;
 import br.com.gbvbahia.financeiro.TestesMake;
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.make.factories.PreparaProcedimentoWorkTest;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
+import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.maker.MakeEntity;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
@@ -24,8 +26,8 @@ public class ProcedimentoBeanTest
         extends BaseSessionBeanFixture<ProcedimentoFacade> {
 
     /**
-     * Define as classes que serão utilizadas durante o testes, menos o
-     * Bean a ser testado.
+     * Define as classes que serão utilizadas durante o testes, menos o Bean a
+     * ser testado.
      */
     private static final Class[] USED_BEANS = TestesMake.getUseBeans(CartaoCreditoFacade.class);
 
@@ -45,11 +47,23 @@ public class ProcedimentoBeanTest
     }
 
     @Test
-    public void testBuscarDespesaProcedimento() throws Exception {
+    public void testBuscarProcedimento() throws Exception {
         PreparaProcedimentoWorkTest.manager = getEntityManager();
-       Procedimento receita = MakeEntity.makeEntity("test_1", Procedimento.class);
-        System.out.println(receita);
-
+        ProcedimentoFacade facade = getBean();
+        Procedimento receita1 = MakeEntity.makeEntity("test_1", Procedimento.class);
+        Procedimento receita2 = MakeEntity.makeEntity("test_1", Procedimento.class);
+        receita2.setUsuario(TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false));
+        getEntityManager().getTransaction().begin();
+        facade.create(receita1);
+        facade.create(receita2);
+        getEntityManager().getTransaction().commit();
+        int exp = 1;
+        int result = facade.buscarCartaoStatusUsrTipoProcedimento(receita1.getUsuario(),
+                null, null, TipoProcedimento.RECEITA_FINANCEIRA).size();
+        assertEquals("Quantidade INDIVIDUAL RECEITA_FINANCEIRA não bate.", exp, result);
+        exp = 2;
+        result = facade.findAll().size();
+        assertEquals("Quantidade TOTAL RECEITA_FINANCEIRA não bate.", exp, result);
     }
 
     /**
