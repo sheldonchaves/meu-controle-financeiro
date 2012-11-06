@@ -13,8 +13,8 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * Representa uma conta parcelada de pagamento, como uma som comprado
- * em 12x ou um carro em 7x prestações.<br> Possui parcelas.
+ * Representa uma conta parcelada de pagamento, como uma som comprado em 12x
+ * ou um carro em 7x prestações.<br> Possui parcelas.
  *
  * @since 14/04/2012
  * @author Guilherme
@@ -22,27 +22,29 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "fin_procedimento_despesa_parcelada")
 @NamedQueries({
-    @NamedQuery(name = "DespesaParcelada.CartaoStatusUsuario",
+    @NamedQuery(name = "DespesaParcelada.cartaoStatusUsuarioData",
     query = " SELECT d From DespesaParceladaProcedimento d "
-    + "WHERE (:cartao is null OR d.cartaoCredito = :cartao) "
+    + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
-    + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario)")
+    + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
+    + "AND (:dataI2 = 'todos' OR d.dataVencimento >= :dataI) "
+    + "AND (:dataF2 = 'todos' OR d.dataVencimento <= :dataF) ")
 })
 @DiscriminatorValue("DESPESA_PARCELADA")
 public class DespesaParceladaProcedimento extends Procedimento
         implements Serializable {
 
     /**
-     * Construtor padrão que informa ao Procedimento que está extensão
-     * é uma Despesa.
+     * Construtor padrão que informa ao Procedimento que está extensão é uma
+     * Despesa.
      */
     public DespesaParceladaProcedimento() {
         super(TipoProcedimento.DESPESA_FINANCEIRA);
     }
 
     /**
-     * Construtor que cria uma despesa carregando os dados de
-     * um procedimento.
+     * Construtor que cria uma despesa carregando os dados de um procedimento.
+     *
      * @param procedimento Procedimento de origem.
      */
     public DespesaParceladaProcedimento(final Procedimento procedimento) {
@@ -72,9 +74,8 @@ public class DespesaParceladaProcedimento extends Procedimento
     @Min(value = 2)
     private Integer parcelaTotal;
     /**
-     * Cada conta parcelada deve ter um ID que as une, para facilitar
-     * uma deleção e/ou atualização.<br> Cada parcelamento tem seu ID
-     * único.
+     * Cada conta parcelada deve ter um ID que as une, para facilitar uma
+     * deleção e/ou atualização.<br> Cada parcelamento tem seu ID único.
      */
     @Column(name = "nm_identificador", length = 100, nullable = false)
     @NotNull

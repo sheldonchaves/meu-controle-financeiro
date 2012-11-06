@@ -11,6 +11,7 @@ import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -60,4 +61,20 @@ public interface ProcedimentoFacade
      */
     List<Procedimento> buscarPorTipoProcedimento(
             final Usuario user, final TipoProcedimento tipo);
+    
+        /**
+     * Retorna uma lista com Procedimento que são DespesaParceladaProcedimento
+     * pode ser feito cast sem problemas.
+     *
+     * @param usuario Proprietário ou conjuge do proprietario. Obrigatório
+     * @param cartao Cartao onde foi feito pagamento. Opcional.
+     * @param statusPagamento Status do pagamento. Opcional
+     * @param dataI Data Inicial do vendimento. Opcional
+     * @param dataF Data Final do vendimento. Opcional
+     * @return DespesasParceladas no perfil ou uma lista vazia se não encontrar.
+     */
+    List<Procedimento> buscarPorUsuarioCartaoStatusData(
+            final Usuario usuario, final CartaoCredito cartao,
+            final StatusPagamento statusPagamento,
+            final Date dataI, final Date dataF);
 }

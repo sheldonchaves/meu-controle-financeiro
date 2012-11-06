@@ -11,11 +11,13 @@ import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
-import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
+import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -45,8 +47,7 @@ public class ProcedimentoBean
     }
 
     /**
-     * Construtor padrão que passa o tipo de classe para
-     * AbstractFacade.
+     * Construtor padrão que passa o tipo de classe para AbstractFacade.
      */
     public ProcedimentoBean() {
         super(Procedimento.class);
@@ -84,19 +85,17 @@ public class ProcedimentoBean
     @Override
     public List<Procedimento> buscarCartaoStatusUsrTipoProcedimento(
             Usuario user, CartaoCredito cartao, StatusPagamento status,
-            TipoProcedimento tipo){
+            TipoProcedimento tipo) {
         Map<String, Object> parans = getMapParans();
-         parans.put("usuario", user);
-         parans.put("status", status == null  ? StatusPagamento.NAO_PAGA : status);
-         parans.put("status2", status == null ? "todos" : "filtro");
-         parans.put("cartao", cartao);
-         parans.put("cartao2", cartao == null ? "todos" : "filtro");
-         parans.put("tipoProcedimento2", tipo == null ? "todos" : "filtro");
-         parans.put("tipoProcedimento", tipo == null ? TipoProcedimento.DESPESA_FINANCEIRA : tipo);
+        parans.put("usuario", user);
+        parans.put("status", status == null ? StatusPagamento.NAO_PAGA : status);
+        parans.put("status2", status == null ? "todos" : "filtro");
+        parans.put("cartao", cartao);
+        parans.put("cartao2", cartao == null ? "todos" : "filtro");
+        parans.put("tipoProcedimento2", tipo == null ? "todos" : "filtro");
+        parans.put("tipoProcedimento", tipo == null ? TipoProcedimento.DESPESA_FINANCEIRA : tipo);
         return listPesqParam("Procedimento.buscarCartaoStatusUsrTipoProcedimento", parans);
     }
-    
-   
 
     @Override
     public List<Procedimento> buscarPorTipoProcedimento(
@@ -109,14 +108,41 @@ public class ProcedimentoBean
     }
 
     /**
-     * Valida as parcelas:<br> Total de parcelas não pode ser menor
-     * que 2.<br> A parcela atual não pode ser menor que 1.<br> O
-     * total de parcelas não pode ser menor que a parcela atual.<br>
+     * Retorna uma lista com Procedimento que são DespesaParceladaProcedimento
+     * pode ser feito cast sem problemas.
+     *
+     * @param usuario Proprietário ou conjuge do proprietario. Obrigatório
+     * @param cartao Cartao onde foi feito pagamento. Opcional.
+     * @param statusPagamento Status do pagamento. Opcional
+     * @param dataI Data Inicial do vendimento. Opcional
+     * @param dataF Data Final do vendimento. Opcional
+     * @return DespesasParceladas no perfil ou uma lista vazia se não encontrar.
+     */
+    public List<Procedimento> buscarPorUsuarioCartaoStatusData(
+            final Usuario usuario, final CartaoCredito cartao,
+            final StatusPagamento statusPagamento,
+            final Date dataI, final Date dataF) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", usuario);
+        parans.put("status", statusPagamento == null ? StatusPagamento.NAO_PAGA : statusPagamento);
+        parans.put("status2", statusPagamento == null ? "todos" : "filtro");
+        parans.put("cartao", cartao);
+        parans.put("cartao2", cartao == null ? "todos" : "filtro");
+        parans.put("dataI", DateUtils.zerarHora(dataI));
+        parans.put("dataI2", dataI == null ? "todos" : "filtro");
+        parans.put("dataF", DateUtils.zerarHora(dataF));
+        parans.put("dataF2", dataF == null ? "todos" : "filtro");
+        return listPesqParam("DespesaParcelada.cartaoStatusUsuarioData", parans);
+    }
+
+    /**
+     * Valida as parcelas:<br> Total de parcelas não pode ser menor que 2.<br>
+     * A parcela atual não pode ser menor que 1.<br> O total de parcelas não
+     * pode ser menor que a parcela atual.<br>
      *
      * @param parAtual Parcela atual.
      * @param parTotal Parcela total.
-     * @throws NegocioException se as parcelas não estiverem em
-     * conformidade.
+     * @throws NegocioException se as parcelas não estiverem em conformidade.
      */
     private void validarParcelas(final int parTotal,
             final int parAtual) throws NegocioException {
