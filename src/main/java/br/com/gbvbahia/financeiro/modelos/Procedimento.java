@@ -45,7 +45,7 @@ discriminatorType = DiscriminatorType.STRING)
     
     @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento",
     query = " SELECT d From Procedimento d "
-        + "WHERE (:cartao is null OR d.cartaoCredito = :cartao) "
+        + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
         + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
         + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
         + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) ")
@@ -188,6 +188,7 @@ public class Procedimento
     @Override
     public String toString() {
         return "Procedimento{" + "id=" + id
+                + ", tipoProcedimento=" + tipoProcedimento
                 + ", dataVencimento=" + dataVencimento
                 + ", valorEstimado=" + valorEstimado
                 + ", valorReal=" + valorReal
