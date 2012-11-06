@@ -9,8 +9,6 @@ import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
-import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
-import br.com.gbvbahia.financeiro.modelos.ReceitaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import java.util.List;
@@ -28,25 +26,10 @@ public interface ProcedimentoFacade
         extends InterfaceFacade<Procedimento, Long> {
 
     /**
-     * Busca todas as DespesasProcedimento por filtros.
-     *
-     * @param cartao Cartão de Crédito, se null traz todos.
-     * @param status SatusPagamento, se null traz todos.
-     * @param usuario Usuário ou Conjuge responsavel, deve ser
-     * informado.
-     * @return List&lt;DespesaProcedimento&gt;
-     */
-    List<DespesaProcedimento> buscarDespesaProcedimento(
-            final CartaoCredito cartao, final StatusPagamento status,
-            final Usuario usuario);
-
-    /**
-     * Cria contas parceladas a partir de qualquer Procedimento
-     * passado.
+     * Cria contas parceladas a partir de qualquer Procedimento passado.
      *
      * @param entity Procedimento.
-     * @param parTotal Quantidade de parcelas do parcelamento.
-     * Obrigatório.
+     * @param parTotal Quantidade de parcelas do parcelamento. Obrigatório.
      * @param parAtual Parcela atual do parcelamento. Obrigatório.
      * @param cartao Cartão de crédito onde foi parcelado. Opcional.
      * @throws NegocioException Caso alguma validação seja violada.
@@ -56,26 +39,25 @@ public interface ProcedimentoFacade
             final CartaoCredito cartao) throws NegocioException;
 
     /**
-     * Busca contas pela Enum TipoProcedimento<br> DESPESA_FINANCEIRA
-     * Despesa, gasto, saída de dinheiro.<br> RECEITA_FINANCEIRA
-     * Receita, lucro, entrada de dinheiro.
+     * Busca por filtros passados, somente Usuario é obrigatorio.
      *
-     * @param user Usuário responsável. Obrigatório.
-     * @param tipo TipoProcedimento. Obrigatório.
-     * @return Lista de Procedimentos no perfil solicitado. Ou lista
-     * vazia se não encontrar.
+     * @param user Usuario responsavel. Obrigatorio.
+     * @param cartao Cartão que efetuou pagamento, Opcional.
+     * @param status Status Paga ou Nao Paga, Opcional.
+     * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA, Opcional.
+     * @return Lista com procedimentos no perfil, se não encontrar retorna
+     * lista vazia.
+     */
+    List<Procedimento> buscarCartaoStatusUsrTipoProcedimento(
+            Usuario user, CartaoCredito cartao, StatusPagamento status,
+            TipoProcedimento tipo);
+    
+    /**
+     * Busca contas/receitas por tipo e usuario
+     * @param user Usuario obrigatorio Obrigatorio
+     * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA, Obrigatorio
+     * @return Lista com contas no padrao, lista vazia se nao achar.
      */
     List<Procedimento> buscarPorTipoProcedimento(
             final Usuario user, final TipoProcedimento tipo);
-
-    /**
-     * Busca todas as ReceitasProcedimento por filtros.
-     *
-     * @param status SatusPagamento, se null traz todos.
-     * @param usuario Usuário ou Conjuge responsavel, deve ser
-     * informado.
-     * @return List&lt;ReceitaProcedimento&gt;
-     */
-    List<ReceitaProcedimento> buscarReceitaProcedimento(
-            final StatusPagamento status, final Usuario usuario);
 }

@@ -53,10 +53,9 @@ public class TestesMake {
         Class[] entityes = new Class[]{
             Usuario.class, Grupo.class, ContaBancaria.class,
             DetalheProcedimento.class, DetalheProcedimento.class,
-            AgendaProcedimentoFixo.class,
+            AgendaProcedimentoFixo.class, 
             CartaoCredito.class, DespesaProcedimento.class,
-            Procedimento.class, DespesaParceladaProcedimento.class,
-            ReceitaProcedimento.class
+            Procedimento.class, DespesaParceladaProcedimento.class
         };
         return (Class[]) ArrayUtils.addAll(entityes, noEntityes);
     }
@@ -130,7 +129,6 @@ public class TestesMake {
         con.setAutoCommit(true);
         con.prepareStatement("DELETE from fin_procedimento_despesa_unica").executeUpdate();
         con.prepareStatement("DELETE from fin_procedimento_despesa_parcelada").executeUpdate();
-        con.prepareStatement("DELETE from fin_procedimento_receita_unica").executeUpdate();
         con.prepareStatement("DELETE from fin_procedimento").executeUpdate();
         con.prepareStatement("DELETE from fin_agenda_procedimento_fixo").executeUpdate();
         con.prepareStatement("DELETE from fin_detalhe").executeUpdate();

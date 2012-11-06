@@ -23,10 +23,7 @@ import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
-import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
-import br.com.gbvbahia.financeiro.constantes.Periodo;
-import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
-import br.com.gbvbahia.financeiro.constantes.TipoConta;
+import br.com.gbvbahia.financeiro.constantes.*;
 import br.com.gbvbahia.financeiro.modelos.*;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
@@ -98,7 +95,6 @@ public class Testes {
             AgendaProcedimentoFixo.class,
             CartaoCredito.class, DespesaProcedimento.class,
             Procedimento.class, DespesaParceladaProcedimento.class,
-            ReceitaProcedimento.class
         };
         return (Class[]) ArrayUtils.addAll(entityes, noEntityes);
     }
@@ -289,22 +285,22 @@ public class Testes {
      * @throws Exception
      */
     public static void criarDespProcedimentos(EntityManager manager) throws Exception {
-        DespesaProcedimento rp1 = criaDespesa("10/01/2012", "158.65",
+        Procedimento rp1 = criaDespesa("10/01/2012", "158.65",
                 "158.65", 1L, ClassificacaoProcedimento.VARIAVEL,
                 StatusPagamento.NAO_PAGA, "Despesa Teste 1", "user01", null);
-        DespesaProcedimento rp2 = criaDespesa("05/01/2012", "55.00",
+        Procedimento rp2 = criaDespesa("05/01/2012", "55.00",
                 "65.00", 2L, ClassificacaoProcedimento.FIXA,
                 StatusPagamento.NAO_PAGA, "Despesa Teste 2", "user01", 2L);
-        DespesaProcedimento rp3 = criaDespesa("07/01/2012", "471.00",
+        Procedimento rp3 = criaDespesa("07/01/2012", "471.00",
                 "471.00", 2L, ClassificacaoProcedimento.VARIAVEL,
                 StatusPagamento.NAO_PAGA, "Despesa Teste 3", "user02", null);
-        DespesaProcedimento rp4 = criaDespesa("19/01/2012", "622.41",
+        Procedimento rp4 = criaDespesa("19/01/2012", "622.41",
                 "622.41", 2L, ClassificacaoProcedimento.VARIAVEL,
                 StatusPagamento.PAGA, "Despesa Teste 4", "user01", 1L);
-        DespesaProcedimento rp5 = criaDespesa("12/01/2012", "22.45",
+        Procedimento rp5 = criaDespesa("12/01/2012", "22.45",
                 "22.45", 3L, ClassificacaoProcedimento.VARIAVEL,
                 StatusPagamento.PAGA, "Despesa Teste 5", "user03", 4L);
-        DespesaProcedimento rp6 = criaDespesa("15/01/2012", "22.45",
+        Procedimento rp6 = criaDespesa("15/01/2012", "22.45",
                 "22.45", 3L, ClassificacaoProcedimento.VARIAVEL,
                 StatusPagamento.PAGA, "Despesa Teste 6", "user02", 1L);
 
@@ -331,7 +327,7 @@ public class Testes {
         }
     }
 
-    private static DespesaProcedimento criaDespesa(String data,
+    private static Procedimento criaDespesa(String data,
             String vrEstimadno, String vrReal, Long idDetProc,
             ClassificacaoProcedimento clas, StatusPagamento status,
             String obs, String user, Long cartaoId) throws Exception {
@@ -358,27 +354,27 @@ public class Testes {
      * @throws Exception
      */
     public static void criarReceitaProcedimentos(EntityManager manager) throws Exception {
-        ReceitaProcedimento rp1 = criaReceita("01/07/2012", "3458.65",
+        Procedimento rp1 = criaReceita("01/07/2012", "3458.65",
                 "3458.65", 3L, ClassificacaoProcedimento.FIXA,
                 StatusPagamento.NAO_PAGA, "Despesa Teste 1", "user01",
                 getAgenda(Testes.getAgendaFacade(), "Salario Mensal").getCodigo());
-        ReceitaProcedimento rp2 = criaReceita("01/08/2012", "3555.00",
+        Procedimento rp2 = criaReceita("01/08/2012", "3555.00",
                 "3465.00", 4L, ClassificacaoProcedimento.FIXA,
                 StatusPagamento.NAO_PAGA, "Despesa Teste 2", "user01",
                 getAgenda(Testes.getAgendaFacade(), "Salario Mensal").getCodigo());
-        ReceitaProcedimento rp3 = criaReceita("01/04/2012", "3471.00",
+        Procedimento rp3 = criaReceita("01/04/2012", "3471.00",
                 "3671.00", 3L, ClassificacaoProcedimento.FIXA,
                 StatusPagamento.NAO_PAGA, "Despesa Teste 3", "user02", null);
-        ReceitaProcedimento rp4 = criaReceita("01/03/2012", "3622.41",
+        Procedimento rp4 = criaReceita("01/03/2012", "3622.41",
                 "3222.41", 4L, ClassificacaoProcedimento.FIXA,
                 StatusPagamento.NAO_PAGA, "Despesa Teste 4", "user01", null);
-        ReceitaProcedimento rp5 = criaReceita("01/01/2012", "3222.45",
+        Procedimento rp5 = criaReceita("01/01/2012", "3222.45",
                 "3422.45", 4L, ClassificacaoProcedimento.FIXA,
                 StatusPagamento.PAGA, "Despesa Teste 5", "user03", null);
-        ReceitaProcedimento rp6 = criaReceita("01/02/2012", "3122.45",
+        Procedimento rp6 = criaReceita("01/02/2012", "3122.45",
                 "3422.45", 4L, ClassificacaoProcedimento.FIXA,
                 StatusPagamento.PAGA, "Despesa Teste 6", "user02", null);
-        ReceitaProcedimento rp7 = criaReceita("01/03/2012", "3622.41",
+        Procedimento rp7 = criaReceita("01/03/2012", "3622.41",
                 "3222.41", 4L, ClassificacaoProcedimento.FIXA,
                 StatusPagamento.NAO_PAGA, "Despesa Teste 7", "user04", null);
         try {
@@ -405,11 +401,11 @@ public class Testes {
         }
     }
 
-    private static ReceitaProcedimento criaReceita(String data,
+    private static Procedimento criaReceita(String data,
             String vrEstimadno, String vrReal, Long idDetProc,
             ClassificacaoProcedimento clas, StatusPagamento status,
             String obs, String user, Long agendaId) throws Exception {
-        ReceitaProcedimento rp = new ReceitaProcedimento();
+        Procedimento rp = new Procedimento(TipoProcedimento.RECEITA_FINANCEIRA);
         rp.setDataVencimento(DateUtils.convertStringToCalendar(data, "dd/MM/yyyy"));
         rp.setValorEstimado(new BigDecimal(vrEstimadno));
         rp.setValorReal(new BigDecimal(vrReal));
@@ -437,7 +433,6 @@ public class Testes {
         con.setAutoCommit(true);
         con.prepareStatement("DELETE from fin_procedimento_despesa_unica").executeUpdate();
         con.prepareStatement("DELETE from fin_procedimento_despesa_parcelada").executeUpdate();
-        con.prepareStatement("DELETE from fin_procedimento_receita_unica").executeUpdate();
         con.prepareStatement("DELETE from fin_procedimento").executeUpdate();
         con.prepareStatement("DELETE from fin_agenda_procedimento_fixo").executeUpdate();
         con.prepareStatement("DELETE from fin_detalhe").executeUpdate();

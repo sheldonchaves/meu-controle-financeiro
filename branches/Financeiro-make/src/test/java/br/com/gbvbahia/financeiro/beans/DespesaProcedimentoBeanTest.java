@@ -7,6 +7,8 @@ package br.com.gbvbahia.financeiro.beans;
 import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
+import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
@@ -79,16 +81,16 @@ public class DespesaProcedimentoBeanTest
         List<Procedimento> todos = instance.findAll();
         assertEquals("Quantidade de DespesaProcedimento não confere.",
                 6, todos.size());
-        final List<DespesaProcedimento> despesasT1 =
-                instance.buscarDespesaProcedimento(null, null, user1);
+        final List<Procedimento> despesasT1 =
+                instance.buscarCartaoStatusUsrTipoProcedimento(user1, null, null,  TipoProcedimento.DESPESA_FINANCEIRA);
         assertEquals("Quantidade de DespesaProcedimento não confere.",
                 5, despesasT1.size());
-        final List<DespesaProcedimento> despesasT2 =
-                instance.buscarDespesaProcedimento(cc2, null, user1);
+        final List<Procedimento> despesasT2 =
+                instance.buscarCartaoStatusUsrTipoProcedimento(user1,cc2, null, TipoProcedimento.DESPESA_FINANCEIRA);
         assertEquals("Quantidade de DespesaProcedimento não confere.",
                 1, despesasT2.size());
-        final List<DespesaProcedimento> despesasT3 =
-                instance.buscarDespesaProcedimento(cc1, null, user1);
+        final List<Procedimento> despesasT3 =
+                instance.buscarCartaoStatusUsrTipoProcedimento(user1, cc1, null, TipoProcedimento.DESPESA_FINANCEIRA);
         assertEquals("Quantidade de DespesaProcedimento não confere.",
                 2, despesasT3.size());
 
