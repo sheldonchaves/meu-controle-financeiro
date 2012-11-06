@@ -7,6 +7,7 @@ package br.com.gbvbahia.financeiro;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
+import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.make.*;
 import br.com.gbvbahia.financeiro.modelos.*;
@@ -38,13 +39,12 @@ import org.junit.runners.Suite;
     AgendaProcedimentoFixoBeanCreateTest.class,
     AgendaProcedimentoFixoBeanSearchTest.class,
     CartaoCreditoTest.class,
-    ProcedimentoBeanTest.class,
-})
+    ProcedimentoBeanTest.class,})
 public class TestesMake {
 
     /**
-     * Todas as entidades devem ser declaradas neste array, isso garante
-     * que todas as tabelas serão criadas para deleção em tearDown.
+     * Todas as entidades devem ser declaradas neste array, isso garante que
+     * todas as tabelas serão criadas para deleção em tearDown.
      *
      * @param noEntityes Classes que não são entidades mas precisam ser
      * declaradas para utilização, como outros beans.
@@ -54,7 +54,7 @@ public class TestesMake {
         Class[] entityes = new Class[]{
             Usuario.class, Grupo.class, ContaBancaria.class,
             DetalheProcedimento.class, DetalheProcedimento.class,
-            AgendaProcedimentoFixo.class, 
+            AgendaProcedimentoFixo.class,
             CartaoCredito.class, DespesaProcedimento.class,
             Procedimento.class, DespesaParceladaProcedimento.class
         };
@@ -62,9 +62,9 @@ public class TestesMake {
     }
 
     /**
-     * Todas as entidades devem ser declaradas neste array, isso garante
-     * que todas as tabelas serão criadas para deleção em tearDown. ser
-     * declaradas para utilização, como outros beans.
+     * Todas as entidades devem ser declaradas neste array, isso garante que
+     * todas as tabelas serão criadas para deleção em tearDown. ser declaradas
+     * para utilização, como outros beans.
      *
      * @return Classes de Entidades utilizadas na aplicação.
      */
@@ -119,8 +119,8 @@ public class TestesMake {
 
     /**
      * As classes de teste devem sobrescrever tearDown() de
-     * BaseSessionBeanFixture. Bug do EJB3Unit que não realiza a limpeza
-     * dos dados entre um teste e outro.<br> Esse método unifica o local de
+     * BaseSessionBeanFixture. Bug do EJB3Unit que não realiza a limpeza dos
+     * dados entre um teste e outro.<br> Esse método unifica o local de
      * deleção das tabelas.
      *
      * @param con
@@ -185,5 +185,16 @@ public class TestesMake {
     public static CartaoCreditoFacade getCartaoFacade() throws Exception {
         InitialContext context = new InitialContext();
         return (CartaoCreditoFacade) context.lookup("EJB3Unit/cartaoCreditoFacade/remote");
+    }
+
+    /**
+     * Retorna o ProcedimentoFacade através de lookup.
+     *
+     * @return ProcedimentoFacade.
+     * @throws Exception
+     */
+    public static ProcedimentoFacade getProcedimentoFacade() throws Exception {
+        InitialContext context = new InitialContext();
+        return (ProcedimentoFacade) context.lookup("EJB3Unit/procedimentoFacade/remote");
     }
 }
