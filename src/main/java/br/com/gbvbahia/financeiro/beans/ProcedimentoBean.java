@@ -11,14 +11,11 @@ import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
-import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
-import br.com.gbvbahia.financeiro.modelos.ReceitaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -85,48 +82,20 @@ public class ProcedimentoBean
     }
 
     @Override
-    public List<ReceitaProcedimento> buscarReceitaProcedimento(
-            final StatusPagamento status, final Usuario usuario) {
-           UtilBeans.checkNull(usuario);
+    public List<Procedimento> buscarCartaoStatusUsrTipoProcedimento(
+            Usuario user, CartaoCredito cartao, StatusPagamento status,
+            TipoProcedimento tipo){
         Map<String, Object> parans = getMapParans();
-        parans.put("usuario", usuario);
-        //Se null StatusPagamento.NAO_PAGA é ignorado
-        parans.put("status", status == null
-                ? StatusPagamento.NAO_PAGA : status);
-        //Se null todos = todos e retorna tudo.
-        parans.put("status2", status == null ? "todos" : "filtro");
-        List<ReceitaProcedimento> toReturn =
-                new ArrayList<ReceitaProcedimento>();
-        final List<Procedimento> despesas =
-                listPesqParam("Receita.StatusUsuario", parans);
-        for (Procedimento p : despesas) {
-            toReturn.add((ReceitaProcedimento) p);
-        }
-        return toReturn;
+         parans.put("usuario", user);
+         parans.put("status", status == null  ? StatusPagamento.NAO_PAGA : status);
+         parans.put("status2", status == null ? "todos" : "filtro");
+         parans.put("cartao", cartao);
+         parans.put("tipoProcedimento2", tipo == null ? "todos" : "filtro");
+         parans.put("tipoProcedimento", tipo == null ? TipoProcedimento.DESPESA_FINANCEIRA : tipo);
+        return listPesqParam("Procedimento.buscarCartaoStatusUsrTipoProcedimento", parans);
     }
-
-    @Override
-    public List<DespesaProcedimento> buscarDespesaProcedimento(
-            final CartaoCredito cartao, final StatusPagamento status,
-            final Usuario usuario) {
-        UtilBeans.checkNull(usuario);
-        Map<String, Object> parans = getMapParans();
-        parans.put("usuario", usuario);
-        //Se null StatusPagamento.NAO_PAGA é ignorado
-        parans.put("status", status == null
-                ? StatusPagamento.NAO_PAGA : status);
-        //Se null todos = todos e retorna tudo.
-        parans.put("status2", status == null ? "todos" : "filtro");
-        parans.put("cartao", cartao);
-        List<DespesaProcedimento> toReturn =
-                new ArrayList<DespesaProcedimento>();
-        final List<Procedimento> despesas =
-                listPesqParam("Despesa.CartaoStatusUsuario", parans);
-        for (Procedimento p : despesas) {
-            toReturn.add((DespesaProcedimento) p);
-        }
-        return toReturn;
-    }
+    
+   
 
     @Override
     public List<Procedimento> buscarPorTipoProcedimento(

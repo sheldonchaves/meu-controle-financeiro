@@ -7,9 +7,9 @@ package br.com.gbvbahia.financeiro.beans;
 import br.com.gbvbahia.financeiro.Testes;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
-import br.com.gbvbahia.financeiro.modelos.ReceitaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
@@ -69,14 +69,14 @@ public class ReceitaProcedimentoBeanTeste
         List<Procedimento> todos = instance.findAll();
         assertEquals("Quantidade de Procedimentos não confere.",
                 13, todos.size());
-        List<ReceitaProcedimento> receitas =
-                instance.buscarReceitaProcedimento(StatusPagamento.PAGA,
-                user1);
+        List<Procedimento> receitas =
+                instance.buscarCartaoStatusUsrTipoProcedimento(user1,null,StatusPagamento.PAGA,
+                TipoProcedimento.RECEITA_FINANCEIRA);
         assertEquals("Quantidade de Receitas não confere.",
                 1, receitas.size());
-        List<ReceitaProcedimento> receitas2 =
-                instance.buscarReceitaProcedimento(StatusPagamento.NAO_PAGA,
-                user2);
+        List<Procedimento> receitas2 =
+                instance.buscarCartaoStatusUsrTipoProcedimento(user1, null, StatusPagamento.NAO_PAGA,
+                TipoProcedimento.RECEITA_FINANCEIRA);
         assertEquals("Quantidade de Receitas não confere.",
                 4, receitas2.size());
     }

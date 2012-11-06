@@ -11,8 +11,6 @@ import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
-import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
-import br.com.gbvbahia.financeiro.modelos.ReceitaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
@@ -135,19 +133,7 @@ public class ProvisaoBean implements ProvisaoFacade {
      */
     private Procedimento makeProcedimento(AgendaProcedimentoFixo agenda,
             Date dataVencimento) {
-        Procedimento toReturn = null;
-        switch (agenda.getDetalhe().getTipo()) {
-            case DESPESA_FINANCEIRA:
-                toReturn = new DespesaProcedimento();
-                break;
-            case RECEITA_FINANCEIRA:
-                toReturn = new ReceitaProcedimento();
-                break;
-            default:
-                throw new IllegalArgumentException(
-                        I18N.getMsg("peridoInvalido",
-                        "ProvisaoBean.makeProcedimento"));
-        }
+        Procedimento toReturn = new Procedimento(agenda.getDetalhe().getTipo());
         toReturn.setAgenda(agenda);
         toReturn.setClassificacaoProcedimento(ClassificacaoProcedimento.FIXA);
         toReturn.setDataVencimento(dataVencimento);

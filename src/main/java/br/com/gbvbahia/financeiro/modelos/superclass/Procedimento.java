@@ -9,6 +9,7 @@ import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
+import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
@@ -24,25 +25,32 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Representa uma conta a pagar ou receber, devido a mistura de conta
- * com conta bancaria, alterei o nome para procedimento.
+ * Representa uma conta a pagar ou receber, devido a mistura de conta com
+ * conta bancaria, alterei o nome para procedimento.
  *
  * @since v.3 08/04/2012
  * @author Guilherme
  */
 @Entity
 @Table(name = "fin_procedimento")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "tipo",
+discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("RECEITA")
 @NamedQueries({
     @NamedQuery(name = "Procedimento.TipoProcedimento",
     query = " SELECT p From Procedimento p "
     + "WHERE (p.tipoProcedimento = :tipoProcedimento) "
-    + "AND (p.usuario = :usuario OR p.usuario.conjuge = :usuario)")
+    + "AND (p.usuario = :usuario OR p.usuario.conjuge = :usuario)"),
+    
+    @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento",
+    query = " SELECT d From Procedimento d "
+        + "WHERE (:cartao is null OR d.cartaoCredito = :cartao) "
+        + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
+        + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
+        + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) ")
 })
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "tipo",
-discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue("PROCEDIMENTO")
-public abstract class Procedimento
+public class Procedimento
         implements EntityInterface<Procedimento>, Serializable {
 
     /**
@@ -60,11 +68,10 @@ public abstract class Procedimento
     @NotNull
     private Date dataVencimento;
     /**
-     * Valor estimado a pagar/receber do procedimento, este valor
-     * sempre deverá ser informado. Caso não se tenha o valor real
-     * este será considerado em calculos de estimativas.<br> Em contas
-     * Variaveis, em que o valor real já existe, setar este igual ao
-     * real.
+     * Valor estimado a pagar/receber do procedimento, este valor sempre
+     * deverá ser informado. Caso não se tenha o valor real este será
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
+     * que o valor real já existe, setar este igual ao real.
      */
     @NotNull
     @Column(name = "valor_estimado", nullable = false)
@@ -87,9 +94,9 @@ public abstract class Procedimento
     @JoinColumn(name = "detalhe_procedimento", nullable = false)
     private DetalheProcedimento detalhe;
     /**
-     * Para receitas/despesas sem ser por agentamento, cadastradas
-     * pelo usuário, sempre será Variavel.<br> Quando o procedimento
-     * for criado pelo agendador, será Fixo.
+     * Para receitas/despesas sem ser por agentamento, cadastradas pelo
+     * usuário, sempre será Variavel.<br> Quando o procedimento for criado
+     * pelo agendador, será Fixo.
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "classe_procedimento", nullable = false)
@@ -110,12 +117,7 @@ public abstract class Procedimento
     @Size(max = 150, min = 5)
     @Column(name = "observacao", nullable = false, length = 150)
     private String observacao;
-    /**
-     * Recupera o tipo de procedimento.<br>Cada subclasse define o
-     * valor em @DiscriminatorValue("***")
-     */
-    @Column(name = "tipo", insertable = false, updatable = false)
-    private String tipo;
+
     /**
      * Se essa conta for criada por uma agenda, a mesma deverá ser
      * cadastrada para fins de atualização.
@@ -134,26 +136,24 @@ public abstract class Procedimento
     @NotNull
     private Usuario usuario;
     /**
-     * Deve ser informado no construtor de quem implementa.<br> Define
-     * se o Procedimento é uma receita, entra dinheiro ou uma despesa,
-     * saída de dinheiro.
+     * Deve ser informado no construtor de quem implementa.<br> Define se o
+     * Procedimento é uma receita, entra dinheiro ou uma despesa, saída de
+     * dinheiro.
      */
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name = "tipo_procedimento", nullable = false)
-    private TipoProcedimento tipoProcedimento;
+    private TipoProcedimento tipoProcedimento = TipoProcedimento.RECEITA_FINANCEIRA;
 
     /**
      * Padrão, nunca deve ser utilizado, lança RuntimeException.
      */
     public Procedimento() {
-        throw new IllegalArgumentException(
-                I18N.getMsg("ProcedimentoConstrutorErro"));
     }
 
     /**
-     * Obrigatório informar o tipo de procedimento.<br> Retirada
-     * determina uma DESPESA.<br> Deposito determina uma RECEITA.
+     * Obrigatório informar o tipo de procedimento.<br> Retirada determina
+     * uma DESPESA.<br> Deposito determina uma RECEITA.
      *
      * @param tipoEnum Tipo de Procedimento.
      */
@@ -198,9 +198,9 @@ public abstract class Procedimento
     }
 
     /**
-     * Para receitas/despesas sem ser por agentamento, cadastradas
-     * pelo usuário, sempre será Variavel.<br> Quando o procedimento
-     * for criado pelo agendador, será Fixo.
+     * Para receitas/despesas sem ser por agentamento, cadastradas pelo
+     * usuário, sempre será Variavel.<br> Quando o procedimento for criado
+     * pelo agendador, será Fixo.
      *
      * @return Classificação correspondente.
      */
@@ -209,9 +209,9 @@ public abstract class Procedimento
     }
 
     /**
-     * Para receitas/despesas sem ser por agentamento, cadastradas
-     * pelo usuário, sempre será Variavel.<br> Quando o procedimento
-     * for criado pelo agendador, será Fixo.
+     * Para receitas/despesas sem ser por agentamento, cadastradas pelo
+     * usuário, sempre será Variavel.<br> Quando o procedimento for criado
+     * pelo agendador, será Fixo.
      *
      * @param classProcedimento Classificação correspondente.
      */
@@ -325,11 +325,10 @@ public abstract class Procedimento
     }
 
     /**
-     * Valor estimado a pagar/receber do procedimento, este valor
-     * sempre deverá ser informado. Caso não se tenha o valor real
-     * este será considerado em calculos de estimativas.<br> Em contas
-     * Variaveis, em que o valor real já existe, setar este igual ao
-     * real.
+     * Valor estimado a pagar/receber do procedimento, este valor sempre
+     * deverá ser informado. Caso não se tenha o valor real este será
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
+     * que o valor real já existe, setar este igual ao real.
      *
      * @return Valor.
      */
@@ -338,11 +337,10 @@ public abstract class Procedimento
     }
 
     /**
-     * Valor estimado a pagar/receber do procedimento, este valor
-     * sempre deverá ser informado. Caso não se tenha o valor real
-     * este será considerado em calculos de estimativas.<br> Em contas
-     * Variaveis, em que o valor real já existe, setar este igual ao
-     * real.
+     * Valor estimado a pagar/receber do procedimento, este valor sempre
+     * deverá ser informado. Caso não se tenha o valor real este será
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
+     * que o valor real já existe, setar este igual ao real.
      *
      * @param valor Valor
      */
@@ -365,22 +363,12 @@ public abstract class Procedimento
     /**
      * Valor real pago na conta, utilizado nas receitas fixas, em que
      * estimativas futuras são realizadas. Não é obrigatório nas
-     * despesas/receitas fixas, nas variaveis sempre deverá ser
-     * informado.
+     * despesas/receitas fixas, nas variaveis sempre deverá ser informado.
      *
      * @param valor valor
      */
     public void setValorReal(final BigDecimal valor) {
         this.valorReal = valor;
-    }
-
-    /**
-     * Utilizado para identificar o tipo pelo EntityManager.
-     *
-     * @return @DiscriminatorValue("***")
-     */
-    public String getTipo() {
-        return tipo;
     }
 
     /**
@@ -396,6 +384,7 @@ public abstract class Procedimento
 
     /**
      * Recupera a agenda de origem.
+     *
      * @return Agenda ou null se não for de uma agenda.
      */
     public AgendaProcedimentoFixo getAgenda() {
@@ -404,6 +393,7 @@ public abstract class Procedimento
 
     /**
      * Determina a agenda que criou.
+     *
      * @param agendaProcedimento Agenda de origem.
      */
     public void setAgenda(final AgendaProcedimentoFixo agendaProcedimento) {
@@ -435,7 +425,7 @@ public abstract class Procedimento
     }
 
     /**
-     * Retorna o valor, real ou estimado e negativo de for despesa e
+     * Retorna o valor, real ou estimado e negativo se for despesa e
      * positivo se for receita.
      *
      * @see getValor()
