@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.gbvbahia.financeiro.modelos.superclass;
+package br.com.gbvbahia.financeiro.modelos;
 
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;

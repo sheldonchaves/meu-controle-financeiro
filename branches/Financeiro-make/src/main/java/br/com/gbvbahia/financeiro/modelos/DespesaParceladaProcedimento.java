@@ -5,7 +5,6 @@
 package br.com.gbvbahia.financeiro.modelos;
 
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
-import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.Min;

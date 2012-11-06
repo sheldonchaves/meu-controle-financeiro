@@ -5,7 +5,6 @@
 package br.com.gbvbahia.financeiro.modelos;
 
 import br.com.gbvbahia.financeiro.modelos.superclass.MovimentacaoFinanceira;
-import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import javax.persistence.*;
 
