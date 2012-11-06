@@ -4,16 +4,11 @@
  */
 package br.com.gbvbahia.financeiro.modelos;
 
-import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
-import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
-import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
-import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
-import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.NumberUtils;
 import java.io.Serializable;
 import java.math.BigDecimal;
