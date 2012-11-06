@@ -20,7 +20,7 @@ import org.junit.Test;
  *
  * @author Guilherme
  */
-public class DespesaProcedimentoBeanTest
+public class ProcedimentoBeanTest
         extends BaseSessionBeanFixture<ProcedimentoFacade> {
 
     /**
@@ -29,7 +29,7 @@ public class DespesaProcedimentoBeanTest
      */
     private static final Class[] USED_BEANS = TestesMake.getUseBeans(CartaoCreditoFacade.class);
 
-    public DespesaProcedimentoBeanTest() {
+    public ProcedimentoBeanTest() {
         super(ProcedimentoFacade.class, USED_BEANS);
     }
 

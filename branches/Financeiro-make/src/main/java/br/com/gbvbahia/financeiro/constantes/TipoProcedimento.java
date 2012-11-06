@@ -40,9 +40,4 @@ public enum TipoProcedimento {
     private TipoProcedimento(final String tipoMovimentacao) {
         this.tipoMovimentacaoString = tipoMovimentacao;
     }
-
-    @Override
-    public String toString() {
-        return this.getTipoMovimentacaoString();
-    }
 }

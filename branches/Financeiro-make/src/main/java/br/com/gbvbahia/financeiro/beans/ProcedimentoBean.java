@@ -90,6 +90,7 @@ public class ProcedimentoBean
          parans.put("status", status == null  ? StatusPagamento.NAO_PAGA : status);
          parans.put("status2", status == null ? "todos" : "filtro");
          parans.put("cartao", cartao);
+         parans.put("cartao2", cartao == null ? "todos" : "filtro");
          parans.put("tipoProcedimento2", tipo == null ? "todos" : "filtro");
          parans.put("tipoProcedimento", tipo == null ? TipoProcedimento.DESPESA_FINANCEIRA : tipo);
         return listPesqParam("Procedimento.buscarCartaoStatusUsrTipoProcedimento", parans);
