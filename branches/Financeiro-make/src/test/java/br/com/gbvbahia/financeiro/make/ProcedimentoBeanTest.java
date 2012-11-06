@@ -9,6 +9,9 @@ import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.make.factories.PreparaProcedimentoWorkTest;
+import br.com.gbvbahia.financeiro.make.factories.PrepareDespesaProcedimentoWorkTest;
+import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.maker.MakeEntity;
@@ -64,6 +67,29 @@ public class ProcedimentoBeanTest
         exp = 2;
         result = facade.findAll().size();
         assertEquals("Quantidade TOTAL RECEITA_FINANCEIRA não bate.", exp, result);
+    }
+
+    @Test
+    public void testBuscarCartaoStatusUsrTipoProcedimento() throws Exception {
+        PreparaProcedimentoWorkTest.manager = getEntityManager();
+        ProcedimentoFacade facade = getBean();
+        Procedimento receita1 = MakeEntity.makeEntity("test_1", Procedimento.class);
+        Procedimento receita2 = MakeEntity.makeEntity("test_1", Procedimento.class);
+        receita2.setUsuario(TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false));
+        getEntityManager().getTransaction().begin();
+        facade.create(receita1);
+        facade.create(receita2);
+        getEntityManager().getTransaction().commit();
+
+        PrepareDespesaProcedimentoWorkTest.manager = getEntityManager();
+        DespesaParceladaProcedimento despesa = MakeEntity.makeEntity("test_1", DespesaParceladaProcedimento.class);
+        getEntityManager().getTransaction().begin();
+        //Cria duas por causa do parcelamento
+        facade.create(despesa, despesa.getParcelaTotal(), despesa.getParcelaAtual(), null);
+        getEntityManager().getTransaction().commit();
+        int exp = 4;
+        int result = facade.findAll().size();
+         assertEquals("Quantidade PROCEDIMENTOS RCEITA E DESPESA não bate.", exp, result);
     }
 
     /**
