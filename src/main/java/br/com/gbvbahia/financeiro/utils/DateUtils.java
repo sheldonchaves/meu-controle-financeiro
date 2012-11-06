@@ -50,8 +50,8 @@ public final class DateUtils {
     }
 
     /**
-     * Formata a data, formato AAAAMMDD, para ser incluida na nomenclatura
-     * de um método.
+     * Formata a data, formato AAAAMMDD, para ser incluida na nomenclatura de
+     * um método.
      *
      * @return java.lang.String yyyMMdd
      */
@@ -79,6 +79,7 @@ public final class DateUtils {
 
     /**
      * Converte uma data em String para um objeto date.
+     *
      * @param date A data a ser convertida.
      * @param pattern O formato da data passada, dd/MM/yyyy ou MM/dd/yy...
      * @return Date referente a data passada.
@@ -90,5 +91,24 @@ public final class DateUtils {
         } catch (ParseException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    /**
+     * Zera a hora, minuto e segunda de uma data.
+     *
+     * @param data
+     * @return Data zerada nas horas, minutos e segundos ou nulo se parametro
+     * for nulo.
+     */
+    public static Date zerarHora(Date data) {
+        if (data != null) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(data);
+            c.set(Calendar.HOUR_OF_DAY, 0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.MILLISECOND, 0);
+            return c.getTime();
+        }
+        return data;
     }
 }
