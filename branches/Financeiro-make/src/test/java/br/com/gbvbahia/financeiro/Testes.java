@@ -70,7 +70,7 @@ import org.junit.runners.Suite;
     AgendaProcedimentoFixoBeanCreateTest.class,
     AgendaProcedimentoFixoBeanSearchTest.class,
     CartaoCreditoTest.class,
-//    DespesaProcedimentoBeanTest.class,
+    DespesaProcedimentoBeanTest.class,
 //    ProcedimentoBeanTest.class,
 //    ProvisaoBeanTest.class
 })
