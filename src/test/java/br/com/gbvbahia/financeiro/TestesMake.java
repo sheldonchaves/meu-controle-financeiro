@@ -10,7 +10,7 @@ import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.make.*;
 import br.com.gbvbahia.financeiro.modelos.*;
-import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
+import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.maker.MakeEntity;
 import java.sql.Connection;
 import java.util.List;

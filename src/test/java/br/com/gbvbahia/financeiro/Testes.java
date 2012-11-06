@@ -26,7 +26,7 @@ import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.constantes.*;
 import br.com.gbvbahia.financeiro.modelos.*;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
-import br.com.gbvbahia.financeiro.modelos.superclass.Procedimento;
+import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18nTest;
 import com.bm.testsuite.dataloader.CSVInitialDataSet;
