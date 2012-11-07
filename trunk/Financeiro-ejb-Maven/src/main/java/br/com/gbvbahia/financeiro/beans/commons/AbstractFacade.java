@@ -6,7 +6,6 @@ package br.com.gbvbahia.financeiro.beans.commons;
 
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
-import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.io.Serializable;
 import java.util.HashMap;
