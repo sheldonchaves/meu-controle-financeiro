@@ -1,11 +1,13 @@
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.GrupoFacade;
 import br.com.gbvbahia.financeiro.modelos.Grupo;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -22,6 +24,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 @RolesAllowed({"admin", "user"})
+@Interceptors({LogTime.class})
 public class GrupoBean extends AbstractFacade<Grupo, String>
         implements GrupoFacade {
 
