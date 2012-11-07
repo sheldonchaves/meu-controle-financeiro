@@ -45,6 +45,5 @@ public class DataFutureWorkTest implements ValueSpecializedFactory {
         } else if (f.getType().equals(Calendar.class)) {
             f.set(entity, MakeCalendar.getInFuture());
         }
-
     }
 }
