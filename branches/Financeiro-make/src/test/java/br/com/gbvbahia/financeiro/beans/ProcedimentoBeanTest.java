@@ -63,7 +63,7 @@ public class ProcedimentoBeanTest
         Usuario user = getEntityManager().find(Usuario.class, "user01");
         assertNotNull("Usuario Não pode ser nulo!", user);
         List<Procedimento> despesas =
-                instance.buscarPorTipoProcedimento(user,
+                instance.buscarPorUsuarioTipoProcedimento(user,
                 TipoProcedimento.DESPESA_FINANCEIRA);
         assertEquals("Despesas valor incorreto.", 5, despesas.size());
     }

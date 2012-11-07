@@ -19,6 +19,7 @@ import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.utils.BasicDataSource;
 import java.sql.Connection;
+import java.util.List;
 import org.junit.Test;
 
 /**
@@ -61,7 +62,7 @@ public class ProcedimentoBeanTest
         facade.create(receita2);
         getEntityManager().getTransaction().commit();
         int exp = 1;
-        int result = facade.buscarCartaoStatusUsrTipoProcedimento(receita1.getUsuario(),
+        int result = facade.buscarPorUsuarioCartaoStatusTipo(receita1.getUsuario(),
                 null, null, TipoProcedimento.RECEITA_FINANCEIRA).size();
         assertEquals("Quantidade INDIVIDUAL RECEITA_FINANCEIRA não bate.", exp, result);
         exp = 2;
@@ -75,21 +76,22 @@ public class ProcedimentoBeanTest
         ProcedimentoFacade facade = getBean();
         Procedimento receita1 = MakeEntity.makeEntity("test_1", Procedimento.class);
         Procedimento receita2 = MakeEntity.makeEntity("test_1", Procedimento.class);
+        PrepareDespesaProcedimentoWorkTest.manager = getEntityManager();
+        DespesaParceladaProcedimento despesa = MakeEntity.makeEntity("test_1", DespesaParceladaProcedimento.class);
+        //Nesta posicao garante que receita1 e despesa tenham o mesmo usuario.
         receita2.setUsuario(TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false));
         getEntityManager().getTransaction().begin();
         facade.create(receita1);
         facade.create(receita2);
-        getEntityManager().getTransaction().commit();
-
-        PrepareDespesaProcedimentoWorkTest.manager = getEntityManager();
-        DespesaParceladaProcedimento despesa = MakeEntity.makeEntity("test_1", DespesaParceladaProcedimento.class);
-        getEntityManager().getTransaction().begin();
         //Cria duas por causa do parcelamento
         facade.create(despesa, despesa.getParcelaTotal(), despesa.getParcelaAtual(), null);
         getEntityManager().getTransaction().commit();
         int exp = 4;
         int result = facade.findAll().size();
          assertEquals("Quantidade PROCEDIMENTOS RCEITA E DESPESA não bate.", exp, result);
+         exp = 2;//Query de buscarCartaoStatusUsrTipoProcedimento roda sobre DespesaParceladaProcedimento ignorando as duas receitas.
+         result = facade.buscarPorUsuarioCartaoStatusTipo(receita1.getUsuario(), null, null, null).size();
+         assertEquals("Quantidade PROCEDIMENTOS DESPESA não bate.", exp, result);
     }
 
     /**

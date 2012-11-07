@@ -82,15 +82,15 @@ public class DespesaProcedimentoBeanTest
         assertEquals("Quantidade de DespesaProcedimento não confere.",
                 6, todos.size());
         final List<Procedimento> despesasT1 =
-                instance.buscarCartaoStatusUsrTipoProcedimento(user1, null, null,  TipoProcedimento.DESPESA_FINANCEIRA);
+                instance.buscarPorUsuarioCartaoStatusTipo(user1, null, null,  TipoProcedimento.DESPESA_FINANCEIRA);
         assertEquals("Quantidade de DespesaProcedimento não confere.",
                 5, despesasT1.size());
         final List<Procedimento> despesasT2 =
-                instance.buscarCartaoStatusUsrTipoProcedimento(user1,cc2, null, null);
+                instance.buscarPorUsuarioCartaoStatusTipo(user1,cc2, null, null);
         assertEquals("Quantidade de DespesaProcedimento não confere.",
                 1, despesasT2.size());
         final List<Procedimento> despesasT3 =
-                instance.buscarCartaoStatusUsrTipoProcedimento(user1, cc1, null, TipoProcedimento.DESPESA_FINANCEIRA);
+                instance.buscarPorUsuarioCartaoStatusTipo(user1, cc1, null, TipoProcedimento.DESPESA_FINANCEIRA);
         assertEquals("Quantidade de DespesaProcedimento não confere.",
                 2, despesasT3.size());
 

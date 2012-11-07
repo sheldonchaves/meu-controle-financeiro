@@ -83,7 +83,7 @@ public class ProcedimentoBean
     }
 
     @Override
-    public List<Procedimento> buscarCartaoStatusUsrTipoProcedimento(
+    public List<Procedimento> buscarPorUsuarioCartaoStatusTipo(
             Usuario user, CartaoCredito cartao, StatusPagamento status,
             TipoProcedimento tipo) {
         Map<String, Object> parans = getMapParans();
@@ -98,7 +98,7 @@ public class ProcedimentoBean
     }
 
     @Override
-    public List<Procedimento> buscarPorTipoProcedimento(
+    public List<Procedimento> buscarPorUsuarioTipoProcedimento(
             final Usuario user, final TipoProcedimento tipo) {
         UtilBeans.checkNull(user, tipo);
         Map<String, Object> parans = getMapParans();
