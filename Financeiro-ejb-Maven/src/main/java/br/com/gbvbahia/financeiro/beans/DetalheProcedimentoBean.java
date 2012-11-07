@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -25,6 +27,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 @RolesAllowed({ "admin", "user" })
+@Interceptors({LogTime.class})
 public class DetalheProcedimentoBean
         extends AbstractFacade<DetalheProcedimento, Long>
         implements DetalheProcedimentoFacade {

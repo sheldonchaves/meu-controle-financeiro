@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
@@ -14,6 +15,7 @@ import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -30,6 +32,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @DeclareRoles({"admin", "user"})
 @RolesAllowed({"admin", "user"})
+@Interceptors({LogTime.class})
 public class UsuarioBean extends AbstractFacade<Usuario, String>
         implements UsuarioFacade {
 

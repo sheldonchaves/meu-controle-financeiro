@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans.business;
 
+import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
@@ -19,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import org.apache.commons.lang3.time.DateUtils;
 
 /**
@@ -33,6 +35,7 @@ import org.apache.commons.lang3.time.DateUtils;
  * @author Guilherme
  */
 @Stateless
+@Interceptors({LogTime.class})
 public class ProvisaoBean implements ProvisaoFacade {
 
     /**

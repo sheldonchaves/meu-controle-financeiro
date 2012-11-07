@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans.business;
 
+import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.business.interfaces.AccessControlBusiness;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
@@ -11,6 +12,7 @@ import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import org.apache.log4j.Logger;
 
 /**
@@ -23,6 +25,7 @@ import org.apache.log4j.Logger;
  * @author Guilherme Braga
  */
 @Stateless
+@Interceptors({LogTime.class})
 public class AccessControlBean implements AccessControlBusiness {
 
     /**

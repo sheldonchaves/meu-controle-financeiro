@@ -4,14 +4,15 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.Date;
-import java.util.Map;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -24,6 +25,7 @@ import javax.persistence.Query;
  */
 @Stateless
 @RolesAllowed({ "admin", "user" })
+@Interceptors({LogTime.class})
 public class AgendaProcedimentoFixoBean
         extends AbstractFacade<AgendaProcedimentoFixo, Long>
         implements AgendaProcedimentoFixoFacade {
