@@ -7,6 +7,7 @@ package br.com.gbvbahia.financeiro.make;
 import br.com.gbvbahia.financeiro.TestesMake;
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
+import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.make.factories.PreparaProcedimentoWorkTest;
 import br.com.gbvbahia.financeiro.make.factories.PrepareDespesaProcedimentoWorkTest;
@@ -14,11 +15,13 @@ import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.maker.MakeEntity;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.utils.BasicDataSource;
 import java.sql.Connection;
+import java.util.Calendar;
 import java.util.List;
 import org.junit.Test;
 
@@ -88,10 +91,19 @@ public class ProcedimentoBeanTest
         getEntityManager().getTransaction().commit();
         int exp = 4;
         int result = facade.findAll().size();
-         assertEquals("Quantidade PROCEDIMENTOS RCEITA E DESPESA não bate.", exp, result);
-         exp = 2;//Query de buscarCartaoStatusUsrTipoProcedimento roda sobre DespesaParceladaProcedimento ignorando as duas receitas.
-         result = facade.buscarPorUsuarioCartaoStatusTipo(receita1.getUsuario(), null, null, null).size();
-         assertEquals("Quantidade PROCEDIMENTOS DESPESA não bate.", exp, result);
+        assertEquals("Quantidade PROCEDIMENTOS RCEITA E DESPESA não bate.", exp, result);
+        exp = 2;//Query de buscarCartaoStatusUsrTipoProcedimento roda sobre DespesaParceladaProcedimento ignorando as duas receitas.
+        result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), null, null, null, null).size();
+        assertEquals("Quantidade PROCEDIMENTOS DESPESA não bate.", exp, result);
+        exp = 1;
+        result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), null, StatusPagamento.NAO_PAGA, null, null).size();
+        assertEquals("Quantidade PROCEDIMENTOS DESPESA NAO PAGA não bate.", exp, result);
+        result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), null, null,
+                DateUtils.incrementar(despesa.getDataVencimento(), 1, Calendar.DAY_OF_MONTH), null).size();
+        assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO DATAI não bate.", exp, result);
+        result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), null, null,
+                null, DateUtils.incrementar(despesa.getDataVencimento(), 1, Calendar.DAY_OF_MONTH)).size();
+        assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO DATAF não bate.", exp, result);
     }
 
     /**
