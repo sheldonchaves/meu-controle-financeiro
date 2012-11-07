@@ -7,6 +7,7 @@ package br.com.gbvbahia.financeiro.beans.facades;
 import br.com.gbvbahia.financeiro.beans.commons.InterfaceFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -52,4 +53,20 @@ public interface UsuarioFacade extends InterfaceFacade<Usuario, String> {
      */
     public void alterarSenha(final Usuario usuario,
             final String novaSenha) throws NegocioException;
+    /**
+     * Parametros são opcionais.
+     * @param nome
+     * @param login
+     * @return 
+     */
+     public Integer contarPorNomeLogin(final String nome, final String login);
+     /**
+      * Parametros são opcionais
+      * @param nome
+      * @param login
+      * @param range
+      * @return 
+      */
+     public List<Usuario> buscarUsuarioPorNomeLogin(final String nome,
+            final String login, final int[] range);
 }
