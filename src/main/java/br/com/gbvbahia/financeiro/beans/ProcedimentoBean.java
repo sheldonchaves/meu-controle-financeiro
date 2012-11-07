@@ -118,6 +118,7 @@ public class ProcedimentoBean
      * @param dataF Data Final do vendimento. Opcional
      * @return DespesasParceladas no perfil ou uma lista vazia se não encontrar.
      */
+    @Override
     public List<Procedimento> buscarPorUsuarioCartaoStatusData(
             final Usuario usuario, final CartaoCredito cartao,
             final StatusPagamento statusPagamento,
