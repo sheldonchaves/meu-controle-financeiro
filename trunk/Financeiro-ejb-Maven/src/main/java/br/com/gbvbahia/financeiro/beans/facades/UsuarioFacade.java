@@ -44,4 +44,12 @@ public interface UsuarioFacade extends InterfaceFacade<Usuario, String> {
      */
     void definirConjuge(Usuario usr1, Usuario usr2) throws NegocioException;
     
+    /**
+     * Alterar senha do usuário
+     * @param usuario
+     * @param novaSenha
+     * @throws NegocioException 
+     */
+    public void alterarSenha(final Usuario usuario,
+            final String novaSenha) throws NegocioException;
 }
