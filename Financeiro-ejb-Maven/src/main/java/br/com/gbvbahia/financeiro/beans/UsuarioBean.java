@@ -9,6 +9,7 @@ import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.utils.Base64Encoder;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
@@ -24,7 +25,9 @@ import javax.persistence.PersistenceContext;
  * e/ou em metodos, aplicada na classe tem valor em todos os métodos, menos os
  * que a sobrescreverem ou utilizar outra aotação, como:<br> PermitAll,
  * DenyAll e RolesAllowed.<br> Sendo que esta ultima pode ser menos ou mais
- * restringida:@RolesAllowed({"admins"})<br><br>
+ * restringida:
+ *
+ * @RolesAllowed({"admins"})<br><br>
  *
  * @author Guilherme
  * @since v.3 29/03/2012
@@ -102,5 +105,12 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
         usr2.setConjuge(usr1);
         super.update(usr2);
         super.update(usr1);
+    }
+
+    @Override
+    public void alterarSenha(final Usuario usuario,
+            final String novaSenha) throws NegocioException {
+        usuario.setPass(Base64Encoder.encryptPassword(novaSenha));
+        super.update(usuario);
     }
 }
