@@ -160,10 +160,10 @@ public class ProvisaoBean implements ProvisaoFacade {
             final AgendaProcedimentoFixo agenda)
             throws NegocioException {
         Procedimento toCreate = procedimento;
-        Date hojeMaisUmAno = DateUtils.addYears(new Date(),
+        Date HOJE_MAIS_PROVISAO_ANOS = DateUtils.addYears(new Date(),
                 PROVISAO_ANOS);
         Date dataControle = toCreate.getDataVencimento();
-        while (dataControle.before(hojeMaisUmAno)) {
+        while (dataControle.before(HOJE_MAIS_PROVISAO_ANOS)) {
             procedimentoBean.create(toCreate);
             dataControle = incrementarData(agenda, dataControle);
             toCreate = makeProcedimento(agenda, dataControle);
