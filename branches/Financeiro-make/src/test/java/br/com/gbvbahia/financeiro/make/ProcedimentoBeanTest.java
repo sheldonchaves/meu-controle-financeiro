@@ -12,7 +12,6 @@ import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.make.factories.PreparaProcedimentoWorkTest;
 import br.com.gbvbahia.financeiro.make.factories.PrepareDespesaProcedimentoWorkTest;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
-import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
@@ -22,7 +21,6 @@ import com.bm.testsuite.BaseSessionBeanFixture;
 import com.bm.utils.BasicDataSource;
 import java.sql.Connection;
 import java.util.Calendar;
-import java.util.List;
 import org.junit.Test;
 
 /**
@@ -87,7 +85,7 @@ public class ProcedimentoBeanTest
         facade.create(receita1);
         facade.create(receita2);
         //Cria duas por causa do parcelamento
-        facade.create(despesa, despesa.getParcelaTotal(), despesa.getParcelaAtual(), null);
+        facade.create(despesa, despesa.getParcelaTotal(), despesa.getParcelaAtual(), despesa.getCartaoCredito());
         getEntityManager().getTransaction().commit();
         int exp = 4;
         int result = facade.findAll().size();
@@ -104,6 +102,13 @@ public class ProcedimentoBeanTest
         result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), null, null,
                 null, DateUtils.incrementar(despesa.getDataVencimento(), 1, Calendar.DAY_OF_MONTH)).size();
         assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO DATAF não bate.", exp, result);
+        exp = 2;
+        result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), despesa.getCartaoCredito(), null, null, null).size();
+        assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO CARTAO não bate.", exp, result);
+        exp = 1;
+        result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), despesa.getCartaoCredito(), null, null,
+                DateUtils.incrementar(despesa.getDataVencimento(), 1, Calendar.DAY_OF_MONTH)).size();
+        assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO CARTAO E DATAF não bate.", exp, result);
     }
 
     /**
