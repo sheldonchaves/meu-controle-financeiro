@@ -8,6 +8,7 @@ import br.com.gbvbahia.financeiro.TestesMake;
 import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
+import br.com.gbvbahia.financeiro.constantes.Periodo;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
@@ -49,6 +50,7 @@ public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoFacade> {
     @Test
     public void testProvisionar() throws Exception {
         AgendaProcedimentoFixo agenda = MakeEntity.makeEntity("test_2", AgendaProcedimentoFixo.class);
+        agenda.setPeriodo(Periodo.MESES);
         agenda.setUsuario(TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false));
         DetalheProcedimento detalhe = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
         detalhe.setUsuario(agenda.getUsuario());
