@@ -40,7 +40,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     + " WHERE u.email = :email "),
     @NamedQuery(name = "Usuario.findByFirstName",
     query = " SELECT u FROM Usuario u "
-    + " WHERE u.firstName = :firstName ")
+    + " WHERE u.firstName = :firstName "),
+    @NamedQuery(name = "Usuario.findByNameOrLoginOrAll",
+    query = "SELECT distinct u FROM Usuario u "
+    + "WHERE (:firstName is null or upper(u.firstName)"
+    + " like upper(:firstName)) AND (:userId is null or upper(u.userId)"
+    + " like upper(:userId)) Order by u.firstName"),
+    @NamedQuery(name = "Usuario.countByNameOrLoginOrAll",
+    query = "SELECT count(distinct u) FROM Usuario u "
+    + "WHERE (:firstName is null or upper(u.firstName)"
+    + " like upper(:firstName)) AND (:userId is null"
+    + " or upper(u.userId) like upper(:userId))")
 })
 @XmlRootElement
 public class Usuario implements EntityInterface<Usuario>, Serializable {

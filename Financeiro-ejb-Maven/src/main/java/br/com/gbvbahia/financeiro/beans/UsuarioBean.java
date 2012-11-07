@@ -10,7 +10,10 @@ import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.utils.Base64Encoder;
+import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
@@ -112,5 +115,37 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
             final String novaSenha) throws NegocioException {
         usuario.setPass(Base64Encoder.encryptPassword(novaSenha));
         super.update(usuario);
+    }
+    
+        @Interceptors({LogTime.class})
+    public List<Usuario> buscarUsuarioPorNomeLogin(final String nome,
+            final String login, final int[] range) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("firstName", acertaNomeMeio(nome));
+        parans.put("userId", acertaNomeMeio(login));
+        return listPesqParam("Usuario.findByNameOrLoginOrAll",
+                parans, range[1] - range[0], range[0]);
+    }
+
+    @Interceptors({LogTime.class})
+    public Integer contarPorNomeLogin(final String nome, final String login) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("firstName", acertaNomeMeio(nome));
+        parans.put("userId", acertaNomeMeio(login));
+        return this.pesqCount("Usuario.countByNameOrLoginOrAll",
+                parans).intValue();
+    }
+    
+        /**
+     * Insere % no inicio e final, mas se for null ou vazio faz tratamento
+     * para buscar todos na consulta.
+     *
+     * @param nome java.lang.String com o valor a ser buscado, pode ser null
+     * ou vazio.
+     * @return java.lang.String tratada para SQL like.
+     */
+    private String acertaNomeMeio(final String nome) {
+        return StringBeanUtils.acertaNomeParaLike(nome,
+                StringBeanUtils.LIKE_MIDDLE);
     }
 }
