@@ -3,7 +3,7 @@ package br.com.gbvbahia.financeiro.utils;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Classe de Internacionalização para os EJB´s.

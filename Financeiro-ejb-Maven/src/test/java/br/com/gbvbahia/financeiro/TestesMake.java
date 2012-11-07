@@ -17,7 +17,7 @@ import java.sql.Connection;
 import java.util.List;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

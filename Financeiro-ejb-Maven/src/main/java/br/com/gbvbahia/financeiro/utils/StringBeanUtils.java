@@ -6,7 +6,7 @@ package br.com.gbvbahia.financeiro.utils;
 
 import java.util.Date;
 import java.util.UUID;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @since v.3 29/03/2012
