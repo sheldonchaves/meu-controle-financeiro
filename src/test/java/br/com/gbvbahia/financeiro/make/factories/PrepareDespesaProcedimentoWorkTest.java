@@ -5,11 +5,9 @@
 package br.com.gbvbahia.financeiro.make.factories;
 
 import br.com.gbvbahia.financeiro.TestesMake;
-import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
-import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.maker.MakeEntity;
 import br.com.gbvbahia.maker.types.complex.MakeBigDecimal;
