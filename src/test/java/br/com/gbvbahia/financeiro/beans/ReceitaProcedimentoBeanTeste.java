@@ -70,12 +70,12 @@ public class ReceitaProcedimentoBeanTeste
         assertEquals("Quantidade de Procedimentos não confere.",
                 13, todos.size());
         List<Procedimento> receitas =
-                instance.buscarCartaoStatusUsrTipoProcedimento(user1,null,StatusPagamento.PAGA,
+                instance.buscarPorUsuarioCartaoStatusTipo(user1,null,StatusPagamento.PAGA,
                 TipoProcedimento.RECEITA_FINANCEIRA);
         assertEquals("Quantidade de Receitas não confere.",
                 1, receitas.size());
         List<Procedimento> receitas2 =
-                instance.buscarCartaoStatusUsrTipoProcedimento(user1, null, StatusPagamento.NAO_PAGA,
+                instance.buscarPorUsuarioCartaoStatusTipo(user1, null, StatusPagamento.NAO_PAGA,
                 TipoProcedimento.RECEITA_FINANCEIRA);
         assertEquals("Quantidade de Receitas não confere.",
                 4, receitas2.size());

@@ -28,7 +28,8 @@ import javax.validation.constraints.Size;
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
     + "AND (:dataI2 = 'todos' OR d.dataVencimento >= :dataI) "
-    + "AND (:dataF2 = 'todos' OR d.dataVencimento <= :dataF) ")
+    + "AND (:dataF2 = 'todos' OR d.dataVencimento <= :dataF) "
+    + "AND d.tipoProcedimento = 'DESPESA_FINANCEIRA' ")
 })
 @DiscriminatorValue("DESPESA_PARCELADA")
 public class DespesaParceladaProcedimento extends Procedimento

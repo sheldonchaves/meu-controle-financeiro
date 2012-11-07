@@ -49,7 +49,7 @@ public interface ProcedimentoFacade
      * @return Lista com procedimentos no perfil, se não encontrar retorna
      * lista vazia.
      */
-    List<Procedimento> buscarCartaoStatusUsrTipoProcedimento(
+    List<Procedimento> buscarPorUsuarioCartaoStatusTipo(
             Usuario user, CartaoCredito cartao, StatusPagamento status,
             TipoProcedimento tipo);
     
@@ -59,7 +59,7 @@ public interface ProcedimentoFacade
      * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA, Obrigatorio
      * @return Lista com contas no padrao, lista vazia se nao achar.
      */
-    List<Procedimento> buscarPorTipoProcedimento(
+    List<Procedimento> buscarPorUsuarioTipoProcedimento(
             final Usuario user, final TipoProcedimento tipo);
     
         /**
