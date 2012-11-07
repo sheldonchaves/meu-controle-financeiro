@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="templates/loginLayout.xhtml">
+    <ui:param name="img_param" value="stop.png"/>
+    <ui:define name="conteudo">
+        <h3 style="margin-left: 50px;">#{msg.acessoNaoAutorizado}</h3>
+        <p:separator style="margin-top:-5px; _margin-top:23px; width: 400px; margin-left: -30px; visibility: hidden; height: 180px; _height: 100px;"/>
+    </ui:define>
+</ui:composition>

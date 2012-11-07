@@ -1,0 +1,71 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <f:subview id="formUserSubView" transient="true">
+        <div class="formedit">
+            <div class="formedit-head">
+                <h:outputText value="#{msg.cadastro} #{msg.usuario}"/>
+            </div>
+            <h:panelGroup id="userCadGroup">
+                <h:form id="userForm">
+                    <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
+                        <h:outputLabel value="#{msg.login}:" for="codigo" />
+                        <p:inputText id="codigo" value="#{usuarioController.current.userId}" title="#{msg.login}" 
+                                     required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                     size="50" readonly="#{usuarioController.current.userId != null}"/>
+                        <p:message for="codigo"/>
+
+                        <h:outputLabel value="#{msg.senha}:" for="pass" rendered="${usuarioController.current.pass == null}"/>
+                        <p:password id="pass" value="#{usuarioController.senha}" match="pass2" size="50" weakLabel="#{msg.fraca}"
+                                    goodLabel="#{msg.forte}" strongLabel="#{msg.muitoForte}" label="#{msg.senha}" feedback="true"
+                                    required="true" requiredMessage="#{msg.campoObrigatorio}" promptLabel="#{msg.digiteSenha}"
+                                    rendered="${usuarioController.current.pass == null}"/>
+                        <p:message for="pass" rendered="${usuarioController.current.pass == null}"/>
+
+                        <h:outputLabel value="#{msg.confirme}:" for="pass2" rendered="${usuarioController.current.pass == null}"/>
+                        <p:password id="pass2" value="#{usuarioController.senha}" size="50" required="true" weakLabel="#{msg.fraca}"
+                                    goodLabel="#{msg.forte}" strongLabel="#{msg.muitoForte}" label="#{msg.confirme}"
+                                    requiredMessage="#{msg.campoObrigatorio}"  promptLabel="#{msg.confirmeSuaSenha}"
+                                    rendered="${usuarioController.current.pass == null}"/>
+                        <p:message for="pass2" rendered="${usuarioController.current.pass == null}"/>
+
+                        <h:outputLabel value="#{msg.email}:" for="email" />
+                        <p:inputText id="email" value="#{usuarioController.current.email}" title="#{msg.email}" 
+                                     size="50" required="true" requiredMessage="#{msg.campoObrigatorio}"/>
+                        <p:message for="email"/>
+
+                        <h:outputLabel value="#{msg.nome}:" for="nome" />
+                        <p:inputText id="nome" value="#{usuarioController.current.firstName}" title="#{msg.nome}" 
+                                     size="50" required="true" requiredMessage="#{msg.campoObrigatorio}"/>
+                        <p:message for="nome"/>
+
+                        <h:outputLabel value="#{msg.sobreNome}:" for="sobreNome" />
+                        <p:inputText id="sobreNome" value="#{usuarioController.current.lastName}" title="#{msg.sobreNome}" 
+                                     size="50" required="true" requiredMessage="#{msg.campoObrigatorio}"/>
+                        <p:message for="sobreNome"/>
+
+                        <h:outputLabel value="#{msg.grupo}:" for="grupos" />
+                        <h:selectManyCheckbox value="#{usuarioController.gruposUserEdit}"
+                                              id="grupos" label="#{msg.grupo}" style="font-size: 0.9em;" >
+                            <f:selectItems value="#{usuarioController.gruposAvailableSelectMany}"/>
+                            <f:converter converterId="grupoConverter"/>
+                        </h:selectManyCheckbox>
+                        <p:message for="grupos"/>
+
+                        <h:outputText value=""/>
+                        <h:panelGroup id="buttons" styleClass="pagging">
+                            <h:commandLink action="#{usuarioController.createOrEdit}" value="#{msg.salvar}" id="saveButton" >
+                                
+                            </h:commandLink>
+                            <h:commandLink action="#{usuarioController.clean()}" value="#{msg.cancelar}" 
+                                           immediate="true" id="cancelButton" >
+                            </h:commandLink>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </f:subview>
+</ui:composition>
