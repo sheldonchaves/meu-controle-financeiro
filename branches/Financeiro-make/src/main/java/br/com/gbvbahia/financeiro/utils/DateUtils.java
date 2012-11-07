@@ -111,4 +111,21 @@ public final class DateUtils {
         }
         return data;
     }
+    
+    /**
+     * Incrementa campo solicitado com a quantidade solicitada.
+     * @param data Data a ser incrementada
+     * @param qtdade Quantidade a ser inserido.
+     * @param calendarField Campo a ser incrementado: Calendar.YEAR, Calendar.HOUR_OF_DAY
+     * @return Data incrementada, se data null retorna null.
+     */
+    public static Date incrementar(Date data, int qtdade, int calendarField){
+        if(data == null){
+            return null;
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        c.add(calendarField, qtdade);
+        return c.getTime();
+    }
 }

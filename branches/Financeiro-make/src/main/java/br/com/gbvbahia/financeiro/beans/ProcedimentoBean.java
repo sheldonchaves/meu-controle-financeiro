@@ -17,6 +17,7 @@ import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -69,10 +70,11 @@ public class ProcedimentoBean
         validarParcelas(parTotal, parAtual);
         int parcelaAtual = parAtual;
         String idU = idParcelamento(entity);
+        int incrementen = 0;
         while (parcelaAtual <= parTotal) {
             DespesaParceladaProcedimento dpp =
                     criarDespesaParcelada(entity, parcelaAtual,
-                    parTotal, cartao);
+                    parTotal, cartao, incrementen++);
             if (parcelaAtual++ > parAtual) {
                 dpp.setStatusPagamento(StatusPagamento.NAO_PAGA);
             }
@@ -178,7 +180,8 @@ public class ProcedimentoBean
      */
     private DespesaParceladaProcedimento criarDespesaParcelada(
             final Procedimento entity, final int parAtual,
-            final int parTotal, final CartaoCredito cartao) {
+            final int parTotal, final CartaoCredito cartao,
+            final int incrementData) {
         DespesaParceladaProcedimento dpp =
                 new DespesaParceladaProcedimento(entity);
         dpp.setParcelaAtual(parAtual);
@@ -186,6 +189,8 @@ public class ProcedimentoBean
         if (cartao != null) {
             dpp.setCartaoCredito(cartao);
         }
+        dpp.setDataVencimento(DateUtils.incrementar(dpp.getDataVencimento(),
+                incrementData, Calendar.MONTH));
         return dpp;
     }
 }

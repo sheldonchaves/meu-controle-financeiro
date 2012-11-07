@@ -28,7 +28,7 @@ public interface ProcedimentoFacade
 
     /**
      * Cria contas parceladas a partir de qualquer Procedimento passado.
-     *
+     * As contas terão as datas de vencimento incrementadas em um mês.
      * @param entity Procedimento.
      * @param parTotal Quantidade de parcelas do parcelamento. Obrigatório.
      * @param parAtual Parcela atual do parcelamento. Obrigatório.

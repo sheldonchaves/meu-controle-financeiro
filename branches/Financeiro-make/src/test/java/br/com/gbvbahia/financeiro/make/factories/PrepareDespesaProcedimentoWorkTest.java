@@ -5,6 +5,7 @@
 package br.com.gbvbahia.financeiro.make.factories;
 
 import br.com.gbvbahia.financeiro.TestesMake;
+import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
@@ -52,7 +53,7 @@ public class PrepareDespesaProcedimentoWorkTest implements ValueSpecializedFacto
             procedimento.setValorEstimado(new BigDecimal(MakeBigDecimal.getIntervalo(100d, 1000d).intValue()));
             procedimento.setValorReal(procedimento.getValorEstimado());
             procedimento.setObservacao(MakeString.getLoren(MakeInteger.getIntervalo(5, 150)));
-
+            procedimento.setStatusPagamento(StatusPagamento.PAGA);
             Usuario usr;
             if (TestesMake.getUsuarioFacade().findAll().isEmpty()) {
                 usr = MakeEntity.makeEntity("test_1", Usuario.class);
