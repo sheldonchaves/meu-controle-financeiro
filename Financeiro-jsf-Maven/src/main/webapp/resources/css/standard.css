@@ -41,6 +41,12 @@ a:visited {
     display: block;
 }
 
+.contentCentral{
+    min-height: 300px;
+    _height: auto !important;
+    height: 300px;
+}
+
 .menu {
     vertical-align: top;
     text-align: center;
