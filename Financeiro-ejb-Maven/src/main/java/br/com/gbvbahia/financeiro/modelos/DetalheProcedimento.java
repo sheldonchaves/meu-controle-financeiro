@@ -211,4 +211,9 @@ public class DetalheProcedimento
     public int compareTo(final DetalheProcedimento o) {
         return getDetalhe().compareTo(o.getDetalhe());
     }
+
+    @Override
+    public String toString() {
+        return "DetalheProcedimento{" + "id=" + id + ", detalhe=" + detalhe + '}';
+    }
 }
