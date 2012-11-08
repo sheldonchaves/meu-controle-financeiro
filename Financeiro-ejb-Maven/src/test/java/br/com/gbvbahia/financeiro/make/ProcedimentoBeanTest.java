@@ -63,8 +63,8 @@ public class ProcedimentoBeanTest
         facade.create(receita2);
         getEntityManager().getTransaction().commit();
         int exp = 1;
-        int result = facade.buscarPorUsuarioCartaoStatusTipo(receita1.getUsuario(),
-                null, null, TipoProcedimento.RECEITA_FINANCEIRA).size();
+        int result = facade.buscarStatusUsrTipo(receita1.getUsuario(),
+                null, TipoProcedimento.RECEITA_FINANCEIRA).size();
         assertEquals("Quantidade INDIVIDUAL RECEITA_FINANCEIRA não bate.", exp, result);
         exp = 2;
         result = facade.findAll().size();
