@@ -160,4 +160,9 @@ public class DespesaParceladaProcedimento extends Procedimento
     public void setParcelaTotal(final Integer parTotal) {
         this.parcelaTotal = parTotal;
     }
+
+    @Override
+    public String toString() {
+        return "DespesaParceladaProcedimento{" + "parcelaAtual=" + parcelaAtual + ", parcelaTotal=" + parcelaTotal + ", identificador=" + identificador + '}';
+    }
 }
