@@ -88,6 +88,19 @@ public class ProcedimentoBean
     }
 
     @Override
+    public List<Procedimento> buscarStatusUsrTipo(
+            Usuario user, StatusPagamento status,
+            TipoProcedimento tipo) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", user);
+        parans.put("status", status == null ? StatusPagamento.NAO_PAGA : status);
+        parans.put("status2", status == null ? "todos" : "filtro");
+        parans.put("tipoProcedimento2", tipo == null ? "todos" : "filtro");
+        parans.put("tipoProcedimento", tipo == null ? TipoProcedimento.DESPESA_FINANCEIRA : tipo);
+        return listPesqParam("Procedimento.buscarStatusUsrTipoProcedimento", parans);
+    }
+
+    @Override
     public List<Procedimento> buscarPorUsuarioCartaoStatusTipo(
             Usuario user, CartaoCredito cartao, StatusPagamento status,
             TipoProcedimento tipo) {
@@ -121,7 +134,8 @@ public class ProcedimentoBean
      * @param statusPagamento Status do pagamento. Opcional
      * @param dataI Data Inicial do vendimento. Opcional
      * @param dataF Data Final do vendimento. Opcional
-     * @return DespesasParceladas no perfil ou uma lista vazia se não encontrar.
+     * @return DespesasParceladas no perfil ou uma lista vazia se não
+     * encontrar.
      */
     @Override
     public List<Procedimento> buscarPorUsuarioCartaoStatusData(
