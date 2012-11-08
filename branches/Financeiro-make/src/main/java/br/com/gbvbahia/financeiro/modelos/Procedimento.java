@@ -37,13 +37,18 @@ discriminatorType = DiscriminatorType.STRING)
     query = " SELECT p From Procedimento p "
     + "WHERE (p.tipoProcedimento = :tipoProcedimento) "
     + "AND (p.usuario = :usuario OR p.usuario.conjuge = :usuario)"),
-    
-    @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento",
-    query = " SELECT d From Procedimento d "
-        + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
-        + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
-        + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
-        + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) ")
+    @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento_1",
+    query = " SELECT d From DespesaProcedimento d "
+    + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
+    + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
+    + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
+    + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) "),
+    @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento_2",
+    query = " SELECT d From DespesaParceladaProcedimento d "
+    + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
+    + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
+    + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
+    + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) ")
 })
 public class Procedimento
         implements EntityInterface<Procedimento>, Serializable {
@@ -112,7 +117,6 @@ public class Procedimento
     @Size(max = 150, min = 5)
     @Column(name = "observacao", nullable = false, length = 150)
     private String observacao;
-
     /**
      * Se essa conta for criada por uma agenda, a mesma deverá ser
      * cadastrada para fins de atualização.

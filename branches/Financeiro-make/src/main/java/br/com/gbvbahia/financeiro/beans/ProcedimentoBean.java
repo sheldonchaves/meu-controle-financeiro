@@ -17,6 +17,7 @@ import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -96,7 +97,10 @@ public class ProcedimentoBean
         parans.put("cartao2", cartao == null ? "todos" : "filtro");
         parans.put("tipoProcedimento2", tipo == null ? "todos" : "filtro");
         parans.put("tipoProcedimento", tipo == null ? TipoProcedimento.DESPESA_FINANCEIRA : tipo);
-        return listPesqParam("Procedimento.buscarCartaoStatusUsrTipoProcedimento", parans);
+        List<Procedimento> toReturn = new ArrayList<Procedimento>();
+        toReturn.addAll(listPesqParam("Procedimento.buscarCartaoStatusUsrTipoProcedimento_1", parans));
+        toReturn.addAll(listPesqParam("Procedimento.buscarCartaoStatusUsrTipoProcedimento_2", parans));
+        return toReturn;
     }
 
     @Override
