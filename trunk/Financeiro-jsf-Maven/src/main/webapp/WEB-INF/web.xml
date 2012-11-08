@@ -12,22 +12,6 @@
     </security-role>
     <security-role>
         <description/>
-        <role-name>conveniada</role-name>
-    </security-role>
-    <security-role>
-        <description/>
-        <role-name>credenciada</role-name>
-    </security-role>
-    <security-role>
-        <description/>
-        <role-name>financeiro</role-name>
-    </security-role>
-    <security-role>
-        <description/>
-        <role-name>fornecedor</role-name>
-    </security-role>
-    <security-role>
-        <description/>
         <role-name>user</role-name>
     </security-role>
     
@@ -45,63 +29,6 @@
             <role-name>admin</role-name>
         </auth-constraint>
     </security-constraint>
-    
-    <security-constraint>
-        <display-name>conveniada Constraints</display-name>
-        <web-resource-collection>
-            <web-resource-name>Conveniada</web-resource-name>
-            <description/>
-            <url-pattern>/conveniada/*</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>conveniada</role-name>
-        </auth-constraint>
-    </security-constraint>
-    
-    <security-constraint>
-        <display-name>credenciada Constraints</display-name>
-        <web-resource-collection>
-            <web-resource-name>Credenciada</web-resource-name>
-            <description/>
-            <url-pattern>/credenciada/*</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>credenciada</role-name>
-        </auth-constraint>
-    </security-constraint>
-    
-    <security-constraint>
-        <display-name>financeiro Constraints</display-name>
-        <web-resource-collection>
-            <web-resource-name>Financeiro</web-resource-name>
-            <description/>
-            <url-pattern>/financeiro/*</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>financeiro</role-name>
-        </auth-constraint>
-    </security-constraint>
-    
-    <security-constraint>
-        <display-name>Fornecedor Constraints</display-name>
-        <web-resource-collection>
-            <web-resource-name>Fornecedor</web-resource-name>
-            <description/>
-            <url-pattern>/fornecedor/*</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>fornecedor</role-name>
-        </auth-constraint>
-    </security-constraint>
-    
     <security-constraint>
         <display-name>Usuario Constraints</display-name>
         <web-resource-collection>
@@ -120,7 +47,7 @@
     <!-- solidaRealm deve ser defindo no container, GlassFish neste caso -->
     <login-config>
         <auth-method>FORM</auth-method>
-        <realm-name>hiperRealm</realm-name>
+        <realm-name>moneyRealm</realm-name>
         <form-login-config>
             <form-login-page>/login.xhtml</form-login-page>
             <form-error-page>/login_error.xhtml</form-error-page>
@@ -158,7 +85,7 @@
     </welcome-file-list>
     <session-config>
         <session-timeout>
-            30
+            10
         </session-timeout>
     </session-config>
     <context-param>  
