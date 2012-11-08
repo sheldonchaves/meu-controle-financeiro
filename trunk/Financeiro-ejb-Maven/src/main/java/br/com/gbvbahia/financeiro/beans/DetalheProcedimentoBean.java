@@ -52,6 +52,7 @@ public class DetalheProcedimentoBean
     }
 
     @Override
+    @Interceptors({LogTime.class})
     public List<DetalheProcedimento> findAllDetalhe(
             final Usuario user, final Boolean ativo, TipoProcedimento tipo) {
         Map<String, Object> parans = getMapParans();
@@ -66,4 +67,20 @@ public class DetalheProcedimentoBean
         parans.put("tipo2", tipo == null ? "todos" : "filtro");
         return listPesqParam("DetalheProcedimento.findAllProcedimento", parans);
     }
+    
+    @Override
+    @Interceptors({LogTime.class})
+    public Long countarDetalhePorUsuario(final Usuario user){
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", user);
+        return pesqCount("DetalheProcedimento.countUser", parans);
+    }
+    
+    @Override
+    @Interceptors({LogTime.class})
+    public List<DetalheProcedimento> buscarDetalhePorUserPaginado(final Usuario user, int[] range){
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", user);
+        return listPesqParam("DetalheProcedimento.selectUser", parans, range[1] - range[0], range[0]);
+    }    
 }

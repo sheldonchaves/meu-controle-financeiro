@@ -26,5 +26,17 @@ public interface DetalheProcedimentoFacade
          */
       public List<DetalheProcedimento> findAllDetalhe(
             final Usuario user, final Boolean ativo, TipoProcedimento tipo);
-
+ /**
+  * Realiza uma busca de detalhe por usuário paginada.
+  * @param user Usuario proprietario. Obrigatorio
+  * @param range deve conter posicao inicial [0] e final [1]. Obrigatorio
+  * @return Lista com detalhe no intervalo da pesquisa do usuario ou conjuge.
+  */     
+ List<DetalheProcedimento> buscarDetalhePorUserPaginado(final Usuario user, int[] range);
+ /**
+  * Conta os detalhes por usuario.
+  * @param user
+  * @return Quantidade de detalhes do usuario ou conjuge.
+  */
+ Long countarDetalhePorUsuario(final Usuario user);
 }

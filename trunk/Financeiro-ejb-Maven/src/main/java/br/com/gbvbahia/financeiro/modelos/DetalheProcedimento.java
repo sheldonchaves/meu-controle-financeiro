@@ -13,11 +13,13 @@ import org.apache.commons.lang3.StringUtils;
 /**
  *
  * Representa o motivo de uma conta ou receita financeira. Não utilizei
- * @MappedSuperclass porque iria obrigar a escrever um bean para despesa e
- * um para receita.<br> Por ser uma Entidade, @Entity, existe uma critica
- * pela IDE do construtor, <strong>desconsidere</strong>, já que a classe é
- * abstrata e nunca poderá ser instânciada diretamente. Cabe a sub-classes
- * ter esse construtor e informar seu tipo a superclasse.
+ *
+ * @MappedSuperclass porque iria obrigar a escrever um bean para despesa e um
+ * para receita.<br> Por ser uma Entidade,
+ * @Entity, existe uma critica pela IDE do construtor,
+ * <strong>desconsidere</strong>, já que a classe é abstrata e nunca poderá
+ * ser instânciada diretamente. Cabe a sub-classes ter esse construtor e
+ * informar seu tipo a superclasse.
  *
  * @author Guilherme
  * @since v.3 01/04/2012
@@ -29,7 +31,13 @@ import org.apache.commons.lang3.StringUtils;
     query = "SELECT distinct a FROM DetalheProcedimento a "
     + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
     + " AND (:ativo2 = 'todos' OR a.ativo = :ativo) "
-    + " AND (:tipo2 = 'todos' OR a.tipo = :tipo) ")
+    + " AND (:tipo2 = 'todos' OR a.tipo = :tipo) "),
+    @NamedQuery(name = "DetalheProcedimento.countUser",
+    query = "SELECT count(a) FROM DetalheProcedimento a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "),
+    @NamedQuery(name = "DetalheProcedimento.selectUser",
+    query = "SELECT a FROM DetalheProcedimento a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) ")
 })
 public class DetalheProcedimento
         implements EntityInterface<DetalheProcedimento>, Serializable {
@@ -60,8 +68,8 @@ public class DetalheProcedimento
     min = QUANTIDADE_MIN_CARACTERES_DETALHE)
     private String detalhe;
     /**
-     * Usuário que cria o detalhe, seu conjuge também verá o detalhe e
-     * poderá alterar o mesmo.
+     * Usuário que cria o detalhe, seu conjuge também verá o detalhe e poderá
+     * alterar o mesmo.
      */
     @ManyToOne(optional = false)
     @JoinColumn(name = "fk_usuario", referencedColumnName = "user_id")
@@ -158,8 +166,8 @@ public class DetalheProcedimento
     }
 
     /**
-     * Usuário que cria o detalhe, seu conjuge também verá o detalhe e
-     * poderá alterar o mesmo.
+     * Usuário que cria o detalhe, seu conjuge também verá o detalhe e poderá
+     * alterar o mesmo.
      *
      * @return Usuario responsável.
      */
@@ -188,8 +196,8 @@ public class DetalheProcedimento
     }
 
     /**
-     * Usuário que cria o detalhe, seu conjuge também verá o detalhe e
-     * poderá alterar o mesmo.
+     * Usuário que cria o detalhe, seu conjuge também verá o detalhe e poderá
+     * alterar o mesmo.
      *
      * @param user Usuario responsável.
      */
