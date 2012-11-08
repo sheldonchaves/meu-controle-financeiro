@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE glassfish-web-app PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN" "http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd">
+<glassfish-web-app error-url="">
+  <parameter-encoding default-charset="UTF-8"/>
+  <class-loader delegate="true"/>
+  <jsp-config>
+    <property name="keepgenerated" value="true">
+      <description>Keep a copy of the generated servlet class' java code.</description>
+    </property>
+  </jsp-config>
+  <context-root>/hipercash</context-root>
+  <security-role-mapping>
+    <role-name>admin</role-name>
+    <group-name>admins</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>conveniada</role-name>
+    <group-name>conveniadas</group-name>
+    <group-name>admins</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>credenciada</role-name>
+    <group-name>credenciadas</group-name>
+    <group-name>admins</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>financeiro</role-name>
+    <group-name>financeiro</group-name>
+    <group-name>admins</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>fornecedor</role-name>
+    <group-name>fornecedores</group-name>
+    <group-name>admins</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>user</role-name>
+    <group-name>users</group-name>
+    <group-name>admins</group-name>
+    <group-name>fornecedores</group-name>
+    <group-name>financeiro</group-name>
+    <group-name>credenciadas</group-name>
+    <group-name>conveniadas</group-name>
+  </security-role-mapping>
+</glassfish-web-app>
