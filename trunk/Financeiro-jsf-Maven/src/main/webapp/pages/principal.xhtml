@@ -5,21 +5,8 @@
                 template="../templates/layout.xhtml">
 
     <ui:define name="content">
-        <br />
-        <h:outputText value="Principal Usuários." />
-        <br />
         <h:form>
-            <h:commandLink value="Área Admin" action="admin_principal"
-                           id="AdminLink"/>
-            <br />
-            <h:outputText value="Você não tem acesso a área do administrador"/>
-            <br />
-            <h:outputText value="Você é administrador e usuário do sistema."/>
-            <br />
-            <ui:repeat value="#{themaController.themes}" var="thema" >
-                <h:outputText value="#{thema.temaNome} - #{thema.tema}" />
-                    <br />
-            </ui:repeat>
+  
         </h:form>
     </ui:define>
 </ui:composition>
