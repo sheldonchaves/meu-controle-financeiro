@@ -67,29 +67,12 @@ public abstract class MovimentacaoFinanceira
     referencedColumnName = "id", nullable = false)
     @NotNull
     private ContaBancaria contaBancariaDebitada;
-    /**
-     * A classe que estende Movimentação deverá passar uma string para
-     * identificação.
-     */
-    @Transient
-    private final String tipoMovimentacao;
 
-    /**
-     * Somente pode ser instânciada se o tipo que a extende se identificar.
-     *
-     * @param vTipoMovimentacao String que representa o tipo de
-     * movimentação.
-     */
-    public MovimentacaoFinanceira(final String vTipoMovimentacao) {
-        this.tipoMovimentacao = vTipoMovimentacao;
-    }
 
     /**
      * Construtor nunca executado, se for uma runtime será lançada.
      */
     public MovimentacaoFinanceira() {
-        throw new IllegalArgumentException(
-                I18N.getMsg("MovimentacaoConstrutorErro"));
     }
 
     @Override
@@ -182,13 +165,5 @@ public abstract class MovimentacaoFinanceira
      */
     public void setSaldoPosterior(final BigDecimal vSaldoPosterior) {
         this.saldoPosterior = vSaldoPosterior;
-    }
-
-    /**
-     * Uma String que representa a classe que implementa.
-     * @return TIPO
-     */
-    public String getTipoMovimentacao() {
-        return tipoMovimentacao;
     }
 }
