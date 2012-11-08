@@ -37,18 +37,20 @@ discriminatorType = DiscriminatorType.STRING)
     query = " SELECT p From Procedimento p "
     + "WHERE (p.tipoProcedimento = :tipoProcedimento) "
     + "AND (p.usuario = :usuario OR p.usuario.conjuge = :usuario)"),
-    @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento",
+    
+    @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento_1",
     query = " SELECT d From DespesaProcedimento d "
     + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
-    + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) "
-    + " UNION ALL "
-    + " SELECT d From DespesaParceladaProcedimento d "
+    + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) "),
+    @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento_2",
+    query = " SELECT d From DespesaParceladaProcedimento d "
     + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
     + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) "),
+    
     @NamedQuery(name = "Procedimento.buscarStatusUsrTipoProcedimento",
     query = " SELECT d From Procedimento d "
     + "WHERE (:status2 = 'todos' OR d.statusPagamento = :status) "
