@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="templates/loginLayout.xhtml">
+    <ui:param name="img_param" value="smal_logo.jpg"/>
+    <ui:define name="conteudo">
+        <table border="0" cellspacing="0" cellpadding="0" style="font-size: 1em; margin: 1px; _margin: 10px 0 -15px 0;">
+            <TR>
+                <TD align="left" valign="top">
+                    <form method="post" action="j_security_check">
+                        <h:panelGrid columns="3" style="font-size: 0.9em;" headerClass="headerLogin">
+                            <f:facet name="header">
+                                <h:outputText value="#{msg.headerLogin}"/>
+                            </f:facet>
+
+                            <h:outputLabel value="#{msg.login}:" style="color: white" id="login-box-name"/>
+                            <input type="text" name="j_username" id="j_username" class="form-login"/>
+                            <h:outputText value=" "/>
+
+                            <h:outputLabel value="#{msg.senha}:" style="color: white" id="login-box-pass" />
+                            <input type="password" name="j_password" id="j_password" class="form-login"/>
+                            <h:outputText value=" "/>
+                            
+                             <h:outputText value=" "/>
+                            <h:panelGroup>
+                                <input type="image"  value="#{msg.entrar}"
+                                       src="#{resource['images:login-btn.png']}"
+                                       style="margin-left: 105px;" id="comandLogin" onsubmit="submit-form();"/>
+                            </h:panelGroup>
+
+                        </h:panelGrid>
+                    </form>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <p:spacer width="100%" height="10" />
+                </TD>
+            </TR>
+        </table>
+    </ui:define>
+</ui:composition>
