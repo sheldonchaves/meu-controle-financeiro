@@ -27,8 +27,9 @@ public interface ProcedimentoFacade
         extends InterfaceFacade<Procedimento, Long> {
 
     /**
-     * Cria contas parceladas a partir de qualquer Procedimento passado.
-     * As contas terão as datas de vencimento incrementadas em um mês.
+     * Cria contas parceladas a partir de qualquer Procedimento passado. As
+     * contas terão as datas de vencimento incrementadas em um mês.
+     *
      * @param entity Procedimento.
      * @param parTotal Quantidade de parcelas do parcelamento. Obrigatório.
      * @param parAtual Parcela atual do parcelamento. Obrigatório.
@@ -52,29 +53,43 @@ public interface ProcedimentoFacade
     List<Procedimento> buscarPorUsuarioCartaoStatusTipo(
             Usuario user, CartaoCredito cartao, StatusPagamento status,
             TipoProcedimento tipo);
-    
+
     /**
      * Busca contas/receitas por tipo e usuario
+     *
      * @param user Usuario obrigatorio Obrigatorio
-     * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA, Obrigatorio
+     * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA,
+     * Obrigatorio
      * @return Lista com contas no padrao, lista vazia se nao achar.
      */
     List<Procedimento> buscarPorUsuarioTipoProcedimento(
             final Usuario user, final TipoProcedimento tipo);
-    
-        /**
-     * Retorna uma lista com Procedimento que são DespesaParceladaProcedimento
-     * pode ser feito cast sem problemas.
+
+    /**
+     * Retorna uma lista com Procedimento que são
+     * DespesaParceladaProcedimento pode ser feito cast sem problemas.
      *
      * @param usuario Proprietário ou conjuge do proprietario. Obrigatório
      * @param cartao Cartao onde foi feito pagamento. Opcional.
      * @param statusPagamento Status do pagamento. Opcional
      * @param dataI Data Inicial do vendimento. Opcional
      * @param dataF Data Final do vendimento. Opcional
-     * @return DespesasParceladas no perfil ou uma lista vazia se não encontrar.
+     * @return DespesasParceladas no perfil ou uma lista vazia se não
+     * encontrar.
      */
     List<Procedimento> buscarPorUsuarioCartaoStatusData(
             final Usuario usuario, final CartaoCredito cartao,
             final StatusPagamento statusPagamento,
             final Date dataI, final Date dataF);
+
+    /**
+     *
+     * @param user Usuario responsável. Obrigatorio
+     * @param status Status Paga ou Nao Paga Opcional
+     * @param tipo Receita ou Despesa. Opcional.
+     * @return Lista de procedimentos, vazia se não encontrar.
+     */
+    public List<Procedimento> buscarPorUsuarioStatusTipo(
+            Usuario user, StatusPagamento status,
+            TipoProcedimento tipo);
 }

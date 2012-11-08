@@ -103,6 +103,21 @@ public class ProcedimentoBean
         return toReturn;
     }
 
+     @Override
+    public List<Procedimento> buscarPorUsuarioStatusTipo(
+            Usuario user, StatusPagamento status,
+            TipoProcedimento tipo) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", user);
+        parans.put("status", status == null ? StatusPagamento.NAO_PAGA : status);
+        parans.put("status2", status == null ? "todos" : "filtro");
+        parans.put("tipoProcedimento2", tipo == null ? "todos" : "filtro");
+        parans.put("tipoProcedimento", tipo == null ? TipoProcedimento.DESPESA_FINANCEIRA : tipo);
+        List<Procedimento> toReturn = new ArrayList<Procedimento>();
+        toReturn.addAll(listPesqParam("Procedimento.buscarStatusUsrTipoProcedimento", parans));
+        return toReturn;
+    }
+    
     @Override
     public List<Procedimento> buscarPorUsuarioTipoProcedimento(
             final Usuario user, final TipoProcedimento tipo) {

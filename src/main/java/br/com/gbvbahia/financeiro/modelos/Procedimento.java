@@ -48,6 +48,11 @@ discriminatorType = DiscriminatorType.STRING)
     + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
+    + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) "),
+    @NamedQuery(name = "Procedimento.buscarStatusUsrTipoProcedimento",
+    query = " SELECT d From Procedimento d "
+    + "WHERE (:status2 = 'todos' OR d.statusPagamento = :status) "
+    + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
     + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) ")
 })
 public class Procedimento
