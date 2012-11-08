@@ -1,0 +1,56 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:arq="http://java.sun.com/jsf/composite/ezcomp"
+                template="../../../templates/layout.xhtml"
+                >
+
+    <ui:define name="content">
+        <h:form id="formDetalheTable">
+            <h:panelGroup >
+                <table class="referencesmall" width="100%">
+                    <thead style="font-size: 0.9em;"><tr>
+                            <th align='center'>
+                                <h:outputText value="#{msg.detalhePagamento}" /><br></br>
+                            </th>
+                            <th align='center'><h:outputText value="#{msg.tipo}"/></th>
+                            <th align='center'>
+                                <h:outputText value="#{msg.responsavel}"/><br></br>
+                            </th>
+                            <th align='center'>
+                                <h:outputText value="#{msg.status}"/>
+                            </th>
+                            <th width="150" class="ac"></th>
+                        </tr></thead>
+                    <tbody>
+                        <ui:repeat value="#{detalheController.items}" var="item" varStatus="x">
+                            <tr >
+                                <td align='left'><h:outputText value="#{item.detalhe}"/></td>
+                                <td align='left'><h:outputText value="#{msg[item.tipo]}"/></td>
+                                <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
+                                <td align='center'><h:outputText value="#{item.ativo == true ? msg.ativo : msg.desativado}"/></td>
+                                <td><h:commandLink action="#{detalheController.destroy}" styleClass="ico del" value="#{msg.remover}" 
+                                                   onclick="return confirm('#{msg.desejaRemover} #{item.detalhe}?');" 
+                                                   id="removeLink"/>
+                                    <h:outputText value=" "/>
+                                    <p:spacer width="15px" height="5px"/>
+                                    <h:commandLink styleClass="ico edit" action="#{detalheController.prepareEdit}" value="#{msg.editar}"
+                                                   id="editLink"/>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </h:panelGroup>
+            <arq:paginator entityBean="#{detalheController}"/>
+            <p:spacer width="100%" height="20"/>
+        </h:form>
+        <h:form id="formDetalhe" rendered="#{detalheController.current != null}">
+                Form Detalhe
+                <!--ui:include src="form.xhtml"/-->
+        </h:form>
+    </ui:define>
+</ui:composition>
+
