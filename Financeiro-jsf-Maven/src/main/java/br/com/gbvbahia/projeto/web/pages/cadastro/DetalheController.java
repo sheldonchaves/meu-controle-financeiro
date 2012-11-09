@@ -28,7 +28,7 @@ import javax.faces.model.SelectItem;
 import org.apache.log4j.Logger;
 
 /**
- * CRUD Usuário.
+ * CRUD Detalhe.
  *
  * @author Guilherme
  * @since 2012/02/22
