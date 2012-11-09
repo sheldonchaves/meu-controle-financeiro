@@ -11,12 +11,14 @@ import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.constantes.Periodo;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
+import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.common.EntityController;
 import br.com.gbvbahia.projeto.web.common.EntityPagination;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
+import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
@@ -49,6 +51,7 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     @EJB
     private AgendaProcedimentoFixoFacade agendaFacade;
     private AgendaProcedimentoFixo current;
+    private TipoProcedimento tipo;
 
     /**
      * Padrão
@@ -81,6 +84,7 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     @Override
     public String clean() {
         super.clean();
+        this.tipo = null;
         return JsfUtil.MANTEM;
     }
 
@@ -164,12 +168,15 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     @Override
     public void setEntity(final AgendaProcedimentoFixo t) {
         this.current = t;
+        if (current != null && current.getDetalhe() != null) {
+            this.tipo = current.getDetalhe().getTipo();
+        }
     }
 
     @Override
     protected AgendaProcedimentoFixo getNewEntity() {
         AgendaProcedimentoFixo det = new AgendaProcedimentoFixo();
-        det.setUsuario(usuarioFacade.getUsuario());;
+        det.setUsuario(usuarioFacade.getUsuario());
         return det;
     }
 
@@ -183,13 +190,13 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
         return JsfUtil.getEnumSelectItems(TipoProcedimento.class, false,
                 FacesContext.getCurrentInstance());
     }
-    
-    public SelectItem[] getDetalhes(){
-        return JsfUtil.getSelectItems(this.detalheFacade.findAllDetalhe(usuarioFacade.getUsuario(),
-                Boolean.TRUE, null), true, FacesContext.getCurrentInstance());
+
+    public SelectItem[] getDetalhes() {
+        return JsfUtil.getSelectItems(new TreeSet<EntityInterface>(this.detalheFacade.findAllDetalhe(usuarioFacade.getUsuario(),
+                Boolean.TRUE, tipo)), true, FacesContext.getCurrentInstance());
     }
-    
-    public SelectItem[] getPeriodos(){
+
+    public SelectItem[] getPeriodos() {
         return JsfUtil.getEnumSelectItems(Periodo.class, false,
                 FacesContext.getCurrentInstance());
     }
@@ -213,5 +220,13 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
      */
     public AgendaProcedimentoFixo getCurrent() {
         return current;
+    }
+
+    public TipoProcedimento getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoProcedimento tipo) {
+        this.tipo = tipo;
     }
 }

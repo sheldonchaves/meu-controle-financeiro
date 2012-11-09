@@ -1,0 +1,79 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:arq="http://java.sun.com/jsf/composite/ezcomp">
+
+    <f:subview id="formAgendaSubView" transient="true">
+        <div class="formedit">
+            <div class="formedit-head">
+                <h:outputText value="#{msg.cadastro} #{msg.agenda}"/>
+            </div>
+            <h:panelGroup id="agendaCadGroup">
+                <h:form id="ageForm">
+                    <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
+                        <h:outputLabel value="#{msg.dataInicial}:" for="data" />
+                        <arq:calendar id="data" valor="#{agendaController.current.dataPrimeiroVencimento}" title="#{msg.dataInicial}"/>
+                        <p:message for="detalhe"/>
+
+                        <h:outputLabel value="#{msg.valor}:" for="valor" />
+                        <p:inputText id="valor" value="#{agendaController.current.valorFixo}" title="#{msg.valorAgenda}" 
+                                     size="30" onkeypress="return(MascaraMoeda(this,'.',',',event))">
+                            <f:converter converterId="moneyBigConverter"/>
+                        </p:inputText>
+                        <p:message for="valor" />
+
+                        <h:outputLabel value="#{msg.tipo}:" for="tipo" />
+                        <p:selectOneRadio value="#{agendaController.tipo}"
+                                          required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                          id="tipo" label="#{msg.tipo}" style="font-size: 0.9em;" >
+                            <f:selectItems value="#{agendaController.tipos}"/>
+                            <p:ajax update="detalhe"/>
+                        </p:selectOneRadio>
+                        <p:message for="tipo"/>
+
+                        <h:outputLabel value="#{msg.detalhe}:" for="detalhe" />
+                        <p:selectOneMenu value="#{agendaController.current.detalhe}" disabled="#{agendaController.tipo == null}"
+                                         required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         id="detalhe" label="#{msg.detalhe}" style="font-size: 0.9em;" >
+                            <f:selectItems value="#{agendaController.detalhes}"/>
+                            <f:converter converterId="detalheConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="detalhe"/>
+
+                        <h:outputLabel value="#{msg.observacao}:" for="obs" />
+                        <p:inputTextarea rows="3" cols="50" value="#{agendaController.current.observacao}"
+                                         required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         id="obs" maxlength="50" autoResize="true">
+                            <f:validateLength minimum="5" maximum="50"/>
+                        </p:inputTextarea>
+                        <p:message for="obs"/>
+
+                        <h:outputLabel value="#{msg.periodo}:" for="periodo" />
+                        <p:selectOneRadio value="#{agendaController.current.periodo}"
+                                          required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                          id="periodo" label="#{msg.periodo}" style="font-size: 0.9em;" >
+                            <f:selectItems value="#{agendaController.periodos}"/>
+                        </p:selectOneRadio>
+                        <p:message for="periodo"/>
+                        
+                        <h:outputLabel value="#{msg.intervalo}:" for="intervalo"/>
+                        <p:spinner id="intervalo" value="#{agendaController.current.quantidadePeriodo}"
+                                   required="true" requiredMessage="#{msg.campoObrigatorio}" size="10"/>
+                        <p:message for="intervalo"/>
+                        
+                        <h:outputText value=""/>
+                        <h:panelGroup id="buttons" styleClass="pagging">
+                            <h:commandLink action="#{agendaController.createOrEdit}" value="#{msg.salvar}" id="saveButton" >
+
+                            </h:commandLink>
+                            <h:commandLink action="#{agendaController.clean()}" value="#{msg.cancelar}" 
+                                           immediate="true" id="cancelButton" >
+                            </h:commandLink>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </f:subview>
+</ui:composition>

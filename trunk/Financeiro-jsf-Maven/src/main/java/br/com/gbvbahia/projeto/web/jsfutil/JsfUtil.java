@@ -6,6 +6,7 @@ import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -103,7 +104,7 @@ public final class JsfUtil {
      * f:selectItems
      */
     public static SelectItem[] getSelectItems(
-            final List<? extends EntityInterface> entities,
+            final Collection<? extends EntityInterface> entities,
             final boolean selectOne, final FacesContext contex) {
         int size = selectOne ? entities.size() + 1 : entities.size();
         SelectItem[] items = new SelectItem[size];
