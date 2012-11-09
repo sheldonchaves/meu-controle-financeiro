@@ -15,8 +15,6 @@ import br.com.gbvbahia.projeto.web.common.EntityPagination;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
