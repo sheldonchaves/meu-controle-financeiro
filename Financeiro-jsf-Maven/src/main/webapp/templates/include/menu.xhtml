@@ -12,6 +12,8 @@
                     <p:menuitem value="#{msg.usuario}" url="/admin/usuario/page.xhtml" icon="addUserIco" id="menu1_1"
                                 rendered="#{loginController.admin}"/>
                     <p:menuitem value="#{msg.detalhePagamento}" url="/pages/cadastro/detalhe/page.xhtml" icon="addDetIco" id="menu1_2"
+                                rendered="#{loginController.user}"/> 
+                    <p:menuitem value="#{msg.agenda}" url="/pages/cadastro/agenda/page.xhtml" icon="addAgendaIco" id="menu1_3"
                                 rendered="#{loginController.user}"/>  
                 </p:submenu>  
 
