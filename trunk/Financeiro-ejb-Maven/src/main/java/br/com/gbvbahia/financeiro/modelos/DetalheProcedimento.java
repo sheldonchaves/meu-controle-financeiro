@@ -37,7 +37,8 @@ import org.apache.commons.lang3.StringUtils;
     + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "),
     @NamedQuery(name = "DetalheProcedimento.selectUser",
     query = "SELECT a FROM DetalheProcedimento a "
-    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) ")
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario)"
+    + " ORDER BY a.tipo, a.detalhe ")
 })
 public class DetalheProcedimento
         implements EntityInterface<DetalheProcedimento>, Serializable {
