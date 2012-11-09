@@ -13,15 +13,14 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 /**
- * Reresenta um gaso ou receita fixa, sempre será cadastrado num
- * periodo de um ano.<br> Utiliza DetalheProcedimento para saber se é
- * uma receita ou gasto.<br> O valorFixo representa o valor
- * previsto.<br> A data primeiro vencimento representa a data de
- * inicio do procedimento fixo, a partir dela que as proximas serão
- * considerada. <br> Perido diz que campo quantidade deve acrescentar,
- * em dias, mes ou anos.<br>
- * Para receitas deve ser utilizado ReceitaProcedimento<br>
- * Para despesas deve ser utilizado DespesasProcedimento.<br>
+ * Reresenta um gaso ou receita fixa, sempre será cadastrado num periodo de um
+ * ano.<br> Utiliza DetalheProcedimento para saber se é uma receita ou
+ * gasto.<br> O valorFixo representa o valor previsto.<br> A data primeiro
+ * vencimento representa a data de inicio do procedimento fixo, a partir dela
+ * que as proximas serão considerada. <br> Perido diz que campo quantidade
+ * deve acrescentar, em dias, mes ou anos.<br> Para receitas deve ser
+ * utilizado ReceitaProcedimento<br> Para despesas deve ser utilizado
+ * DespesasProcedimento.<br>
  *
  * @author Guilherme
  * @since v.3 01/04/2012
@@ -31,7 +30,20 @@ import javax.validation.constraints.*;
 @NamedQueries({
     @NamedQuery(name = "AgendaProcedimentoFixo.UltimaData",
     query = " SELECT MAX(p.dataVencimento) From Procedimento p "
-    + "WHERE (p.agenda = :agenda) ")
+    + "WHERE (p.agenda = :agenda) "),
+    @NamedQuery(name = "AgendaProcedimentoFixo.countDetalhePeriodoTipo",
+    query = " SELECT count(a) From AgendaProcedimentoFixo a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
+    + " AND (:detalhe2 = 'todos' OR a.detalhe = :detalhe) "
+    + " AND (:periodo2 = 'todos' OR a.periodo = :periodo) "
+    + " AND (:tipo2 = 'todos' OR a.detalhe.tipo = :tipo) "),
+    @NamedQuery(name = "AgendaProcedimentoFixo.selectDetalhePeriodoTipo",
+    query = " SELECT a From AgendaProcedimentoFixo a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
+    + " AND (:detalhe2 = 'todos' OR a.detalhe = :detalhe) "
+    + " AND (:periodo2 = 'todos' OR a.periodo = :periodo) "
+    + " AND (:tipo2 = 'todos' OR a.detalhe.tipo = :tipo) "
+    + " ORDER BY a.dataPrimeiroVencimento DESC, a.periodo ")
 })
 public class AgendaProcedimentoFixo
         implements EntityInterface<AgendaProcedimentoFixo>, Serializable {
@@ -44,26 +56,25 @@ public class AgendaProcedimentoFixo
     @Column(name = "id")
     private Long codigo;
     /**
-     * Valor que será definido na conta a pagar/receber quando for
-     * criada. Esse valor é referente ao <b>previsto</b>.
+     * Valor que será definido na conta a pagar/receber quando for criada.
+     * Esse valor é referente ao <b>previsto</b>.
      */
     @Column(name = "vl_fixo", nullable = false)
     @NotNull
     @Digits(fraction = 2, integer = 12)
-    @DecimalMin(value="0.01")
+    @DecimalMin(value = "0.01")
     private BigDecimal valorFixo = BigDecimal.ZERO;
     /**
-     * Data que será considerada como 1º vencimento da conta. A partir
-     * desta data é realizado todo calculo para as contas serem
-     * criadas.
+     * Data que será considerada como 1º vencimento da conta. A partir desta
+     * data é realizado todo calculo para as contas serem criadas.
      */
     @Temporal(TemporalType.DATE)
     @Column(name = "dt_vencimento", nullable = false)
     @NotNull
     private Date dataPrimeiroVencimento;
     /**
-     * Observção do procedimento fixo, essa mesma observação será
-     * colocado na conta.
+     * Observção do procedimento fixo, essa mesma observação será colocado na
+     * conta.
      */
     @Column(name = "ds_observacao", nullable = false, length = 50)
     @NotNull
@@ -80,8 +91,8 @@ public class AgendaProcedimentoFixo
     @NotNull
     private Usuario usuario;
     /**
-     * Detalhe do Procedimento, este define se é uma Receita,
-     * DetalheReceita ou Despesa DetalheDespesa.
+     * Detalhe do Procedimento, este define se é uma Receita, DetalheReceita
+     * ou Despesa DetalheDespesa.
      */
     @ManyToOne
     @JoinColumn(name = "fk_detalhe_id",
@@ -111,7 +122,7 @@ public class AgendaProcedimentoFixo
 
     @Override
     public String getLabel() {
-        return toString();
+        return observacao;
     }
 
     @Override
@@ -179,9 +190,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Data que será considerada como 1º vencimento da conta. A partir
-     * desta data é realizado todo calculo para as contas serem
-     * criadas.
+     * Data que será considerada como 1º vencimento da conta. A partir desta
+     * data é realizado todo calculo para as contas serem criadas.
      *
      * @return Date
      */
@@ -190,9 +200,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Data que será considerada como 1º vencimento da conta. A partir
-     * desta data é realizado todo calculo para as contas serem
-     * criadas.
+     * Data que será considerada como 1º vencimento da conta. A partir desta
+     * data é realizado todo calculo para as contas serem criadas.
      *
      * @param data Date
      */
@@ -201,8 +210,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Detalhe do Procedimento, este define se é uma Receita,
-     * DetalheReceita ou Despesa DetalheDespesa.
+     * Detalhe do Procedimento, este define se é uma Receita, DetalheReceita
+     * ou Despesa DetalheDespesa.
      *
      * @return Detalhe do Procedimento
      */
@@ -211,8 +220,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Detalhe do Procedimento, este define se é uma Receita,
-     * DetalheReceita ou Despesa DetalheDespesa.
+     * Detalhe do Procedimento, este define se é uma Receita, DetalheReceita
+     * ou Despesa DetalheDespesa.
      *
      * @param detalheProced Detalhe do Procedimento
      */
@@ -221,8 +230,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Observção do procedimento fixo, essa mesma observação será
-     * colocado na conta.
+     * Observção do procedimento fixo, essa mesma observação será colocado na
+     * conta.
      *
      * @return String
      */
@@ -231,8 +240,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Observção do procedimento fixo, essa mesma observação será
-     * colocado na conta.
+     * Observção do procedimento fixo, essa mesma observação será colocado na
+     * conta.
      *
      * @param obs String
      */
@@ -297,8 +306,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Valor que será definido na conta a pagar/receber quando for
-     * criada. Esse valor é referente ao <b>previsto</b>.
+     * Valor que será definido na conta a pagar/receber quando for criada.
+     * Esse valor é referente ao <b>previsto</b>.
      *
      * @return Double.
      */
@@ -307,8 +316,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Valor que será definido na conta a pagar/receber quando for
-     * criada. Esse valor é referente ao <b>previsto</b>.
+     * Valor que será definido na conta a pagar/receber quando for criada.
+     * Esse valor é referente ao <b>previsto</b>.
      *
      * @param valor Double
      */
