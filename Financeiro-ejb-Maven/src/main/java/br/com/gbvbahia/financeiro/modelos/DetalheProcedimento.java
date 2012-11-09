@@ -1,9 +1,7 @@
 package br.com.gbvbahia.financeiro.modelos;
 
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
-import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
-import br.com.gbvbahia.financeiro.utils.I18N;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
