@@ -28,7 +28,7 @@
                         <ui:repeat value="#{detalheController.items}" var="item" varStatus="x">
                             <tr >
                                 <td align='left'><h:outputText value="#{item.detalhe}"/></td>
-                                <td align='left'><h:outputText value="#{msg[item.tipo]}"/></td>
+                                <td align='center'><h:outputText value="#{msg[item.tipo]}"/></td>
                                 <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
                                 <td align='center'><h:outputText value="#{item.ativo == true ? msg.ativo : msg.desativado}"/></td>
                                 <td><h:commandLink action="#{detalheController.destroy}" styleClass="ico del" value="#{msg.remover}" 
@@ -47,10 +47,9 @@
             <arq:paginator entityBean="#{detalheController}"/>
             <p:spacer width="100%" height="20"/>
         </h:form>
-        <h:form id="formDetalhe" rendered="#{detalheController.current != null}">
-                Form Detalhe
-                <!--ui:include src="form.xhtml"/-->
-        </h:form>
+        <h:panelGroup id="groupDetalhe" rendered="#{detalheController.current != null}">
+                <ui:include src="form.xhtml"/>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>
 

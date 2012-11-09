@@ -1,0 +1,47 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <f:subview id="formDetSubView" transient="true">
+        <div class="formedit">
+            <div class="formedit-head">
+                <h:outputText value="#{msg.cadastro} #{msg.detalhe}"/>
+            </div>
+            <h:panelGroup id="detalheCadGroup">
+                <h:form id="detForm">
+                    <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
+                        <h:outputLabel value="#{msg.detalhe}:" for="detalhe" />
+                        <p:inputText id="detalhe" value="#{detalheController.current.detalhe}" title="#{msg.detalhe}" 
+                                     required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="100"
+                                     size="50" />
+                        <p:message for="detalhe"/>
+
+                        <h:outputLabel value="#{msg.ativo}:" for="status" />
+                        <p:selectBooleanCheckbox id="status" value="#{detalheController.current.ativo}" 
+                                                 label="#{msg.ativo}" />
+                        <p:message for="status" />
+
+                        <h:outputLabel value="#{msg.tipo}:" for="tipo" />
+                        <p:selectOneRadio value="#{detalheController.current.tipo}"
+                                         required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         id="tipo" label="#{msg.tipo}" style="font-size: 0.9em;" >
+                            <f:selectItems value="#{detalheController.tipos}"/>
+                        </p:selectOneRadio>
+                        <p:message for="tipo"/>
+
+                        <h:outputText value=""/>
+                        <h:panelGroup id="buttons" styleClass="pagging">
+                            <h:commandLink action="#{detalheController.createOrEdit}" value="#{msg.salvar}" id="saveButton" >
+
+                            </h:commandLink>
+                            <h:commandLink action="#{detalheController.clean()}" value="#{msg.cancelar}" 
+                                           immediate="true" id="cancelButton" >
+                            </h:commandLink>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </f:subview>
+</ui:composition>
