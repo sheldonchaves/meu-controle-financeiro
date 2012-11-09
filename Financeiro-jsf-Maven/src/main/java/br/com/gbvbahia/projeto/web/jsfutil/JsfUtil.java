@@ -5,6 +5,7 @@ import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -118,6 +119,29 @@ public final class JsfUtil {
         return items;
     }
 
+    /**
+     * Converte a Enum em um selectItem para ser inserido em um campo de selecao.
+     * @param enumm
+     * @param selectOne
+     * @param contex
+     * @return SelectItem[] bem bunitim.
+     */
+    public static SelectItem[] getEnumSelectItems(final Class<? extends Enum> enumm,
+            final boolean selectOne, final FacesContext contex){
+        List<SelectItem> items = new ArrayList<SelectItem>();
+        int i = 0;
+        if (selectOne) {
+            items.add(new SelectItem(null,
+                    MensagemUtils.getResourceBundle("selecione", contex)));
+            i++;
+        }
+        for(Object o : enumm.getEnumConstants()){
+            items.add(new SelectItem(o.toString(),
+                    MensagemUtils.getResourceBundle(o.toString(), contex)));
+        }
+        return items.toArray(new SelectItem[items.size()]);
+    }
+    
     /**
      * Passe o nome do Controller (Manager, Bean, varios nomes) JSF
      * juntamente com o Contexto JSF e receba o Controller necessário.

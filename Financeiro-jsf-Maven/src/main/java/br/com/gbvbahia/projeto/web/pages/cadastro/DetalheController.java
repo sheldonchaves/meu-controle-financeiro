@@ -7,6 +7,7 @@ package br.com.gbvbahia.projeto.web.pages.cadastro;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.common.EntityController;
@@ -14,6 +15,8 @@ import br.com.gbvbahia.projeto.web.common.EntityPagination;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
@@ -23,6 +26,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
+import javax.faces.model.SelectItem;
 import org.apache.log4j.Logger;
 
 /**
@@ -47,7 +51,6 @@ public class DetalheController extends EntityController<DetalheProcedimento>
     private UsuarioFacade usuarioFacade;
     @EJB
     private DetalheProcedimentoFacade detalheFacade;
-    
     private DetalheProcedimento current;
 
     /**
@@ -88,7 +91,6 @@ public class DetalheController extends EntityController<DetalheProcedimento>
     public EntityPagination getPagination() {
         if (pagination == null) {
             pagination = new EntityPagination() {
-
                 @Override
                 public int getItemsCount() {
                     return getFacade().countarDetalhePorUsuario(usuarioFacade.getUsuario()).intValue();
@@ -97,7 +99,7 @@ public class DetalheController extends EntityController<DetalheProcedimento>
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().
-                            buscarDetalhePorUserPaginado(usuarioFacade.getUsuario(), 
+                            buscarDetalhePorUserPaginado(usuarioFacade.getUsuario(),
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }
@@ -173,20 +175,20 @@ public class DetalheController extends EntityController<DetalheProcedimento>
         return det;
     }
 
-
     //====================
     //Métodos Filtros Paginação
     //====================
-
-
     //====================
     // Select Itens
     //====================
-   
+    public SelectItem[] getTipos() {
+        return JsfUtil.getEnumSelectItems(TipoProcedimento.class, false,
+                FacesContext.getCurrentInstance());
+    }
+
     //====================
     //Getters AND Setters
     //====================
-
     /**
      * O Facade que representa a entidade current.
      *
@@ -196,7 +198,6 @@ public class DetalheController extends EntityController<DetalheProcedimento>
         return detalheFacade;
     }
 
-
     /**
      * Usuário atual, pode ser null, pode ser um novo ou um já existente.
      *
@@ -205,6 +206,4 @@ public class DetalheController extends EntityController<DetalheProcedimento>
     public DetalheProcedimento getCurrent() {
         return current;
     }
-
-  
 }
