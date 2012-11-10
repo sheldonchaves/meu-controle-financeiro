@@ -32,11 +32,11 @@ public interface DetalheProcedimentoFacade
   * @param range deve conter posicao inicial [0] e final [1]. Obrigatorio
   * @return Lista com detalhe no intervalo da pesquisa do usuario ou conjuge.
   */     
- List<DetalheProcedimento> buscarDetalhePorUserPaginado(final Usuario user, int[] range);
+ List<DetalheProcedimento> buscarDetalhePorUserPaginado(final Usuario user, String detalhe, int[] range);
  /**
   * Conta os detalhes por usuario.
   * @param user
   * @return Quantidade de detalhes do usuario ou conjuge.
   */
- Long countarDetalhePorUsuario(final Usuario user);
+ Long countarDetalhePorUsuario(final Usuario user, String detalhe);
 }
