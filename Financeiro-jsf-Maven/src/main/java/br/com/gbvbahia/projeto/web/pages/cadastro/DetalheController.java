@@ -50,7 +50,7 @@ public class DetalheController extends EntityController<DetalheProcedimento>
     @EJB
     private DetalheProcedimentoFacade detalheFacade;
     private DetalheProcedimento current;
-
+    private String detalhe;
     /**
      * Construtor padrão.
      */
@@ -91,13 +91,13 @@ public class DetalheController extends EntityController<DetalheProcedimento>
             pagination = new EntityPagination() {
                 @Override
                 public int getItemsCount() {
-                    return getFacade().countarDetalhePorUsuario(usuarioFacade.getUsuario()).intValue();
+                    return getFacade().countarDetalhePorUsuario(usuarioFacade.getUsuario(), detalhe).intValue();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().
-                            buscarDetalhePorUserPaginado(usuarioFacade.getUsuario(),
+                            buscarDetalhePorUserPaginado(usuarioFacade.getUsuario(),detalhe,
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }
@@ -203,5 +203,13 @@ public class DetalheController extends EntityController<DetalheProcedimento>
      */
     public DetalheProcedimento getCurrent() {
         return current;
+    }
+
+    public String getDetalhe() {
+        return detalhe;
+    }
+
+    public void setDetalhe(String detalhe) {
+        this.detalhe = detalhe;
     }
 }
