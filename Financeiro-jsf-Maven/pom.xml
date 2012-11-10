@@ -29,11 +29,6 @@
             <version>1.0.5</version>
         </dependency>
         <dependency>
-            <groupId>br.com.convergeti</groupId>
-            <artifactId>TemasArquitetura</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.7</version>
