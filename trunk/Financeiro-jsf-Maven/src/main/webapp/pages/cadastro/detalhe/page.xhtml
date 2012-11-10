@@ -13,7 +13,11 @@
                 <table class="referencesmall" width="100%">
                     <thead style="font-size: 0.9em;"><tr>
                             <th align='center'>
-                                <h:outputText value="#{msg.detalhePagamento}" /><br></br>
+                                <h:outputText value="#{msg.detalhePagamento}" /><br></br><br></br>
+                                <h:inputText value="#{detalheController.detalhe}" styleClass="selectTableFilter" id="search"
+                                             title="#{msg.tipoBuscaInicia}">
+                                    <p:ajax event="blur" listener="#{detalheController.recreateTable()}" update="formDetalheTable"/>
+                                </h:inputText>
                             </th>
                             <th align='center'><h:outputText value="#{msg.tipo}"/></th>
                             <th align='center'>
