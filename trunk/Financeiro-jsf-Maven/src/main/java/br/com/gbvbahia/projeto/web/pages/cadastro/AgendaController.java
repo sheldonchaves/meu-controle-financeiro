@@ -4,7 +4,6 @@
  */
 package br.com.gbvbahia.projeto.web.pages.cadastro;
 
-import br.com.gbvbahia.financeiro.beans.business.ProvisaoBean;
 import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
