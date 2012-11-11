@@ -75,6 +75,7 @@ public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoFacade> {
     @Test
     public void testCriarProvisoesEProvisionar() throws Exception {
         AgendaProcedimentoFixo agenda = MakeEntity.makeEntity("test_2", AgendaProcedimentoFixo.class);
+        agenda.setAtiva(true);
         agenda.setPeriodo(Periodo.MESES);
         agenda.setUsuario(TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false));
         DetalheProcedimento detalhe = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
