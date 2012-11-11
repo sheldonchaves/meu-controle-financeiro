@@ -73,6 +73,17 @@ public class ProvisaoBean implements ProvisaoFacade {
     }
 
     @Override
+    public void alterarStatusProvisao(AgendaProcedimentoFixo agenda) throws NegocioException {
+        agenda.setAtiva(!agenda.isAtiva());
+        agendaBean.update(agenda);
+        if(!agenda.isAtiva()){
+            procedimentoBean.removerProcedimentos(agenda);
+        }else {
+            provisionar(agenda);
+        }
+    }
+    
+    @Override
     public void provisionar(final AgendaProcedimentoFixo agenda) {
         UtilBeans.checkNull(agenda);
         Date lastDate = agendaBean.buscarUltimaData(agenda);

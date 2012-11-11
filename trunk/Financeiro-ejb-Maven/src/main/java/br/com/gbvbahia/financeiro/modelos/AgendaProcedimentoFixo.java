@@ -38,7 +38,7 @@ import javax.validation.constraints.*;
     + " AND (:observacao2 = 'todos' OR a.observacao LIKE :observacao) "
     + " AND (:tipo2 = 'todos' OR a.detalhe.tipo = :tipo) "),
     @NamedQuery(name = "AgendaProcedimentoFixo.selectDetalhePeriodoTipo",
-    query = " SELECT a From AgendaProcedimentoFixo a "
+    query = " SELECT distinct a From AgendaProcedimentoFixo a "
     + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
     + " AND (:detalhe2 = 'todos' OR a.detalhe = :detalhe) "
     + " AND (:observacao2 = 'todos' OR a.observacao LIKE :observacao) "
