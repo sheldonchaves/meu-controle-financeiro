@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.modelos;
 
+import br.com.gbvbahia.financeiro.constantes.DetalheTipoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import java.io.Serializable;
 import javax.persistence.*;
@@ -39,6 +40,7 @@ public class DespesaParceladaProcedimento extends DespesaProcedimento
      * Despesa.
      */
     public DespesaParceladaProcedimento() {
+        super(DetalheTipoProcedimento.DESPESA_PARCELADA);
     }
 
     /**
