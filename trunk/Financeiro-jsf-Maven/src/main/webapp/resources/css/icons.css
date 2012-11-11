@@ -15,6 +15,11 @@
     height:16px !important;
     width:16px !important;
 }
+.adminIco{
+    background: url("#{resource['images:star_13.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
 
 .addUserIco {
     background: url("#{resource['images:user_add_16.png']}") no-repeat !important;
@@ -33,7 +38,16 @@
     height:16px !important;
     width:16px !important;
 }
-
+.contasIco{
+    background: url("#{resource['images:conta_gr.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
+.receitaIco{
+    background: url("#{resource['images:conta_green.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
 .pessoalIcon {
     background: url("#{resource['images:pessoal_16.png']}") no-repeat !important;
     height:16px !important;
