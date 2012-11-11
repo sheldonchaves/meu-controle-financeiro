@@ -6,6 +6,7 @@ package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
+import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.constantes.Periodo;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
@@ -14,6 +15,7 @@ import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

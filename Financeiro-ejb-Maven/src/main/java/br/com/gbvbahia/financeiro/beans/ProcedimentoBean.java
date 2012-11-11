@@ -10,14 +10,17 @@ import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
+import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -130,8 +133,8 @@ public class ProcedimentoBean
     }
 
     /**
-     * Retorna uma lista com Procedimento que são DespesaParceladaProcedimento
-     * pode ser feito cast sem problemas.
+     * Retorna uma lista com Procedimento que são
+     * DespesaParceladaProcedimento pode ser feito cast sem problemas.
      *
      * @param usuario Proprietário ou conjuge do proprietario. Obrigatório
      * @param cartao Cartao onde foi feito pagamento. Opcional.
@@ -159,14 +162,26 @@ public class ProcedimentoBean
         return listPesqParam("DespesaParcelada.cartaoStatusUsuarioData", parans);
     }
 
+    @Override
+    public void atualizarProcedimento(final AgendaProcedimentoFixo agenda) throws NegocioException {
+        Map<String, Object> parans = getMapParans();
+        parans.put("estimado", agenda.getValorFixo());
+        parans.put("detalhe", agenda.getDetalhe());
+        parans.put("observacao", agenda.getObservacao());
+        parans.put("agenda", agenda);
+        parans.put("status", StatusPagamento.NAO_PAGA);
+        update("Procedimento.atualizarProcedimentoAgenda", parans);
+    }
+
     /**
-     * Valida as parcelas:<br> Total de parcelas não pode ser menor que 2.<br>
-     * A parcela atual não pode ser menor que 1.<br> O total de parcelas não
-     * pode ser menor que a parcela atual.<br>
+     * Valida as parcelas:<br> Total de parcelas não pode ser menor que
+     * 2.<br> A parcela atual não pode ser menor que 1.<br> O total de
+     * parcelas não pode ser menor que a parcela atual.<br>
      *
      * @param parAtual Parcela atual.
      * @param parTotal Parcela total.
-     * @throws NegocioException se as parcelas não estiverem em conformidade.
+     * @throws NegocioException se as parcelas não estiverem em
+     * conformidade.
      */
     private void validarParcelas(final int parTotal,
             final int parAtual) throws NegocioException {

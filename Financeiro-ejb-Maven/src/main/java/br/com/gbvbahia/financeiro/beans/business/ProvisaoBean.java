@@ -11,7 +11,9 @@ import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
+import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
@@ -24,12 +26,12 @@ import javax.interceptor.Interceptors;
 import org.apache.commons.lang3.time.DateUtils;
 
 /**
- * Privisão bean é um bean responsavel pelo privisionamento das
- * despesas fixas. Ele é o encarregago de chamar a
- * AgendaProcedimentoFixo e criar as Contas/Receitas para
- * pagamento/recebimento.<br> Todo o trabalho deve ser realizado com
- * associação de beans de entidas por ser um bean de negócio, provisão
- * bean não pode ter um EntityManager, conceitualmente falando.<br>
+ * Privisão bean é um bean responsavel pelo privisionamento das despesas
+ * fixas. Ele é o encarregago de chamar a AgendaProcedimentoFixo e criar as
+ * Contas/Receitas para pagamento/recebimento.<br> Todo o trabalho deve ser
+ * realizado com associação de beans de entidas por ser um bean de negócio,
+ * provisão bean não pode ter um EntityManager, conceitualmente
+ * falando.<br>
  *
  * @since 2012/04/14
  * @author Guilherme
@@ -52,6 +54,18 @@ public class ProvisaoBean implements ProvisaoFacade {
      */
     @EJB
     private AgendaProcedimentoFixoFacade agendaBean;
+
+    @Override
+    public void criarAgendaEProvisionar(AgendaProcedimentoFixo agenda) throws NegocioException {
+        agendaBean.create(agenda);
+        provisionar(agenda);
+    }
+    
+    @Override
+    public void atualizarProvisao(AgendaProcedimentoFixo agenda) throws NegocioException {
+        agendaBean.update(agenda);
+        procedimentoBean.atualizarProcedimento(agenda);
+    }
 
     @Override
     public void provisionar(final AgendaProcedimentoFixo agenda) {
@@ -96,11 +110,11 @@ public class ProvisaoBean implements ProvisaoFacade {
      * Incrementa a dataControle de acordo com a agenda.
      *
      * @param agenda Agenda que sabe o quanto incrementar.
-     * @param dataControle Data que será incrementada. Um novo objeto
-     * será retornado.
+     * @param dataControle Data que será incrementada. Um novo objeto será
+     * retornado.
      * @return Nova data incrementada.
-     * @throws IllegalArgumentException Se agenda não tiver
-     * informações corretas sobre o Periodo.
+     * @throws IllegalArgumentException Se agenda não tiver informações
+     * corretas sobre o Periodo.
      */
     private Date incrementarData(final AgendaProcedimentoFixo agenda,
             final Date dataControle) throws IllegalArgumentException {
@@ -127,8 +141,7 @@ public class ProvisaoBean implements ProvisaoFacade {
     }
 
     /**
-     * Cria o Procedimento, Receita ou Despesa com base na agenda
-     * criada.
+     * Cria o Procedimento, Receita ou Despesa com base na agenda criada.
      *
      * @param agenda Agenda que está gerando o procedimento.
      * @param dataVencimento Data do vencimento do procedimento.
@@ -136,7 +149,12 @@ public class ProvisaoBean implements ProvisaoFacade {
      */
     private Procedimento makeProcedimento(AgendaProcedimentoFixo agenda,
             Date dataVencimento) {
-        Procedimento toReturn = new Procedimento(agenda.getDetalhe().getTipo());
+        Procedimento toReturn;
+        if (agenda.getDetalhe().getTipo().equals(TipoProcedimento.DESPESA_FINANCEIRA)) {
+            toReturn = new DespesaProcedimento();
+        } else {
+            toReturn = new Procedimento();
+        }
         toReturn.setAgenda(agenda);
         toReturn.setClassificacaoProcedimento(ClassificacaoProcedimento.FIXA);
         toReturn.setDataVencimento(dataVencimento);
@@ -150,9 +168,9 @@ public class ProvisaoBean implements ProvisaoFacade {
 
     /**
      * Responsável por criar os procedimentos, ele não realiza nenhuma
-     * validação, ou checagem de pré-existência, somente cria.<br>
-     * Antes de realizar a solicitação de criação todos os checks
-     * devem ser realizado.s
+     * validação, ou checagem de pré-existência, somente cria.<br> Antes de
+     * realizar a solicitação de criação todos os checks devem ser
+     * realizado.s
      *
      * @param procedimento O primeiro Procedimento a ser gravado.
      * @param agenda A agenda que contém a periodicidade.
