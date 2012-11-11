@@ -12,6 +12,7 @@ import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Bean de entidade a AgendaProcedimentoFixo.
@@ -64,34 +66,35 @@ public class AgendaProcedimentoFixoBean
 
     @Override
     @Interceptors({LogTime.class})
-    public Long countarAgendaPorUserDetalhePeriodoTipo(final Usuario user,
-            final DetalheProcedimento detalhe,
-            final Periodo periodo, final TipoProcedimento tipo) {
+    public Long countarAgendaPorUserDetalheObservacaoTipo(final Usuario user,
+            final DetalheProcedimento detalhe, final String observacao,
+            final TipoProcedimento tipo) {
         Map<String, Object> parans = getMapParans();
-        populateParans(parans, user, detalhe, periodo, tipo);
+        populateParans(parans, user, detalhe, observacao,tipo);
         return pesqCount("AgendaProcedimentoFixo.countDetalhePeriodoTipo", parans);
     }
 
     @Override
     @Interceptors({LogTime.class})
-    public List<AgendaProcedimentoFixo> buscarAgendaPorUserDetalhePeriodoTipoPaginado(
+    public List<AgendaProcedimentoFixo> buscarAgendaPorUserDetalheObservacaoTipoPaginado(
             final Usuario user, final DetalheProcedimento detalhe,
-            final Periodo periodo, final TipoProcedimento tipo,
+            final String observacao, final TipoProcedimento tipo,
             final int[] range) {
         Map<String, Object> parans = getMapParans();
-        populateParans(parans, user, detalhe, periodo, tipo);
+        populateParans(parans, user, detalhe, observacao, tipo);
         return listPesqParam("AgendaProcedimentoFixo.selectDetalhePeriodoTipo",
                 parans, range[1] - range[0], range[0]);
     }
 
     private void populateParans(Map<String, Object> parans, final Usuario user,
-            final DetalheProcedimento detalhe, final Periodo periodo,
+            final DetalheProcedimento detalhe,
+            final String observacao,
             final TipoProcedimento tipo) {
         parans.put("usuario", user);
         parans.put("detalhe", detalhe);
         parans.put("detalhe2", detalhe == null ? "todos" : "filtro");
-        parans.put("periodo", periodo);
-        parans.put("periodo2", periodo == null ? "todos" : "filtro");
+        parans.put("observacao2", StringUtils.isBlank(observacao) ? "todos" : "filtro");
+        parans.put("observacao", StringBeanUtils.acertaNomeParaLike(observacao, StringBeanUtils.LIKE_END));
         parans.put("tipo", tipo);
         parans.put("tipo2", tipo == null ? "todos" : "filtro");
     }

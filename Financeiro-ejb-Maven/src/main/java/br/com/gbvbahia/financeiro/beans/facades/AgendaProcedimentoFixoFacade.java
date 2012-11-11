@@ -37,25 +37,25 @@ public interface AgendaProcedimentoFixoFacade
      *
      * @param user proprietário. Obrigatório
      * @param detalhe Detalhe da agenda. Opcional.
-     * @param periodo Periodo, MESES, DIA, ANO. Opcional.
+     * @param observacao Inicia com. Opcional.
      * @param tipo DESPESA RECEITA. Opcional.
      * @return Quantidade de agenda dentro do perfil.
      */
-    Long countarAgendaPorUserDetalhePeriodoTipo(final Usuario user,
+    Long countarAgendaPorUserDetalheObservacaoTipo(final Usuario user,
             final DetalheProcedimento detalhe,
-            final Periodo periodo, final TipoProcedimento tipo);
+            final String observacao, final TipoProcedimento tipo);
 
     /**
      *
      * @param user proprietário. Obrigatório
      * @param detalhe Detalhe da agenda. Opcional.
-     * @param periodo Periodo, MESES, DIA, ANO. Opcional.
+     * @param observacao Inicia com. Opcional.
      * @param tipo DESPESA RECEITA. Opcional.
      * @param range Intervalo de pesquisa.
      * @return Agendas no perfil. Lista vazia se não achar.
      */
-    List<AgendaProcedimentoFixo> buscarAgendaPorUserDetalhePeriodoTipoPaginado(
+    List<AgendaProcedimentoFixo> buscarAgendaPorUserDetalheObservacaoTipoPaginado(
             final Usuario user, final DetalheProcedimento detalhe,
-            final Periodo periodo, final TipoProcedimento tipo,
+            final String observacao, final TipoProcedimento tipo,
             final int[] range);
 }
