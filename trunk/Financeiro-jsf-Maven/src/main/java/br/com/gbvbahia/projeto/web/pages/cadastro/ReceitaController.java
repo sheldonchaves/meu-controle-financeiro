@@ -26,6 +26,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
+import javax.faces.model.SelectItem;
 import org.apache.log4j.Logger;
 
 /**
@@ -48,6 +49,9 @@ public class ReceitaController extends EntityController<Procedimento>
     @EJB
     private DetalheProcedimentoFacade detalheFacade;
     private Procedimento current;
+    //Filtros
+    private StatusPagamento statusFiltro;
+    private String observacaoFiltro;
 
     /**
      * Padrão
@@ -77,7 +81,6 @@ public class ReceitaController extends EntityController<Procedimento>
     //====================
     //Métodos Sobrescritos
     //====================
-    
     @Override
     public EntityPagination getPagination() {
         if (pagination == null) {
@@ -85,13 +88,13 @@ public class ReceitaController extends EntityController<Procedimento>
                 @Override
                 public int getItemsCount() {
                     return getFacade().contarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.RECEITA_UNICA, StatusPagamento.NAO_PAGA).intValue();
+                            DetalheTipoProcedimento.RECEITA_UNICA, statusFiltro, observacaoFiltro).intValue();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().buscarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.RECEITA_UNICA, StatusPagamento.NAO_PAGA,
+                            DetalheTipoProcedimento.RECEITA_UNICA, statusFiltro, observacaoFiltro,
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }
@@ -99,7 +102,7 @@ public class ReceitaController extends EntityController<Procedimento>
         }
         return pagination;
     }
-    
+
     @Override
     public String clean() {
         super.clean();
@@ -174,6 +177,14 @@ public class ReceitaController extends EntityController<Procedimento>
     }
 
     //====================
+    // Select Itens
+    //====================
+    public SelectItem[] getStatus() {
+        return JsfUtil.getEnumSelectItems(StatusPagamento.class, false,
+                FacesContext.getCurrentInstance());
+    }
+
+    //====================
     //Getters AND Setters
     //====================
     /**
@@ -187,5 +198,21 @@ public class ReceitaController extends EntityController<Procedimento>
 
     public Procedimento getCurrent() {
         return current;
+    }
+
+    public StatusPagamento getStatusFiltro() {
+        return statusFiltro;
+    }
+
+    public void setStatusFiltro(StatusPagamento statusFiltro) {
+        this.statusFiltro = statusFiltro;
+    }
+
+    public String getObservacaoFiltro() {
+        return observacaoFiltro;
+    }
+
+    public void setObservacaoFiltro(String observacaoFiltro) {
+        this.observacaoFiltro = observacaoFiltro;
     }
 }
