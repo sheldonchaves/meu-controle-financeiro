@@ -62,7 +62,9 @@
                                 <td align='center'><h:outputText value="#{msg[item.periodo]}"/></td>
                                 <td align='center'><h:outputText value="#{item.detalhe.detalhe}"/></td>
                                 <td align='center'><h:outputText value="#{msg[item.detalhe.tipo]}"/></td>
-                                <td align='center'><h:outputText value="#{item.ativa == true ? msg.ativo : msg.desativado}"/></td>
+                                <td align='center'>
+                                    <h:graphicImage name="tag_blq.png" library="images" rendered="#{!item.ativa}"/>
+                                    <h:graphicImage name="tag_ok.png" library="images" rendered="#{item.ativa}"/></td>
                                 <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
                                 <td>
                                     <h:commandLink action="#{agendaController.destroy}" styleClass="ico desat" value="#{msg.desativar}" 

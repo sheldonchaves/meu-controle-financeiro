@@ -164,8 +164,8 @@ table.referencesmall td {
 
 a.ico { color:#B2D1FF; font-size:1.0em; text-decoration: none; padding:0 0 0 14px; background-repeat:no-repeat; background-position:0 0; }
 a.ico:hover { color:#333;}
-a.del { background-image:url("#{resource['images:bullet_delete_16.png']}"); }
-a.edit { background-image:url("#{resource['images:pencil_14.png']}");}
+a.del { background-image:url("#{resource['images:tag_del.png']}"); }
+a.edit { background-image:url("#{resource['images:tag_edit.png']}");}
 a.ativo { background-image:url("#{resource['images:tag_ok.png']}");}
 a.desat { background-image:url("#{resource['images:tag_blq.png']}");}
 

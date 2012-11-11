@@ -147,8 +147,9 @@ public class DetalheController extends EntityController<DetalheProcedimento>
     @Override
     protected void performDestroy() {
         try {
-            getFacade().remove(current);
-            MensagemUtils.messageFactoringFull("DetalheDeleted",
+            current.setAtivo(!current.isAtivo());
+            getFacade().update(current);
+            MensagemUtils.messageFactoringFull(current.isAtivo() ? "DetalheAtivada" : "DetalheDestivada",
                     new Object[]{current.getDetalhe()},
                     FacesMessage.SEVERITY_INFO,
                     FacesContext.getCurrentInstance());
