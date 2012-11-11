@@ -34,4 +34,13 @@ public interface ProvisaoFacade {
      * @throws NegocioException 
      */
     void atualizarProvisao(AgendaProcedimentoFixo agenda) throws NegocioException;
+    
+    /**
+     * Altera o status da agenda.
+     * Se false: remove todas as provisões não pagas
+     * Se true: realiza o provisionamento.
+     * @param agenda
+     * @throws NegocioException 
+     */
+    void alterarStatusProvisao(AgendaProcedimentoFixo agenda) throws NegocioException;
 }

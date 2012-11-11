@@ -35,7 +35,7 @@ import org.apache.commons.lang3.StringUtils;
     + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
     + " AND (:detalhe2 = 'todos' OR a.detalhe like :detalhe)"),
     @NamedQuery(name = "DetalheProcedimento.selectUser",
-    query = "SELECT a FROM DetalheProcedimento a "
+    query = "SELECT distinct a FROM DetalheProcedimento a "
     + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario)"
     + " AND (:detalhe2 = 'todos' OR a.detalhe like :detalhe)"
     + " ORDER BY a.tipo, a.detalhe ")
