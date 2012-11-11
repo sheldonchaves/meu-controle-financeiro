@@ -14,6 +14,10 @@
                     <thead style="font-size: 0.9em;"><tr>
                             <th align='center'>
                                 <h:outputText value="#{msg.observacao}" /><br></br>
+                                <h:inputText value="#{agendaController.observacaoFiltro}" styleClass="selectTableFilter" id="search"
+                                             title="#{msg.tipoBuscaInicia}">
+                                    <p:ajax event="blur" listener="#{agendaController.recreateTable()}" update="formAgendaTable"/>
+                                </h:inputText>
                             </th>
                             <th align='center'><h:outputText value="#{msg.valor}"/></th>
                             <th align='center'>
