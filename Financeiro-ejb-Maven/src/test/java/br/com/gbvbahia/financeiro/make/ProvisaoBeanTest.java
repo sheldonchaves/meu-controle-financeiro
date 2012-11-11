@@ -99,8 +99,7 @@ public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoFacade> {
         getEntityManager().getTransaction().commit();
         for(Procedimento p : TestesMake.getProcedimentoFacade().findAll()){
             if(!p.getDetalhe().equals(detalhe2)){
-                //Como está funciona, aqui não :(
-                //fail("Detalhe de provisão é diferente de detalhe2");
+                fail("Detalhe de provisão é diferente de detalhe2");
             }
         }
     }
