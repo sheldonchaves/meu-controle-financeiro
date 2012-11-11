@@ -4,6 +4,8 @@
  */
 package br.com.gbvbahia.projeto.web.pages.cadastro;
 
+import br.com.gbvbahia.financeiro.beans.business.ProvisaoBean;
+import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
@@ -50,6 +52,9 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     private DetalheProcedimentoFacade detalheFacade;
     @EJB
     private AgendaProcedimentoFixoFacade agendaFacade;
+    @EJB
+    private ProvisaoFacade provisaoFacade;
+    
     private AgendaProcedimentoFixo current;
     private TipoProcedimento tipo;
     //Filtros Tabela
@@ -115,7 +120,7 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     @Override
     protected String create() {
         try {
-            getFacade().create(current);
+            provisaoFacade.criarAgendaEProvisionar(current);
             MensagemUtils.messageFactoringFull("AgendaCreated",
                     new Object[]{current.getLabel()},
                     FacesMessage.SEVERITY_INFO,
@@ -134,7 +139,7 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     @Override
     protected String update() {
         try {
-            getFacade().update(current);
+            provisaoFacade.atualizarProvisao(current);
             MensagemUtils.messageFactoringFull("AgendaUpdated",
                     new Object[]{current.getLabel()},
                     FacesMessage.SEVERITY_INFO,
