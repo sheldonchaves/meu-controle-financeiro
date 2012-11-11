@@ -166,6 +166,8 @@ a.ico { color:#B2D1FF; font-size:1.0em; text-decoration: none; padding:0 0 0 14p
 a.ico:hover { color:#333;}
 a.del { background-image:url("#{resource['images:bullet_delete_16.png']}"); }
 a.edit { background-image:url("#{resource['images:pencil_14.png']}");}
+a.ativo { background-image:url("#{resource['images:tag_ok.png']}");}
+a.desat { background-image:url("#{resource['images:tag_blq.png']}");}
 
 .pagging { height:20px; padding:8px 10px; line-height:19px; color:#949494; }
 .pagging a{ background:url("#{resource['images:pagging.gif']}") repeat-x 0 0; height:20px; float:left; padding:0 8px; border:solid 1px #d5d5d5; text-decoration: none; color:#949494; margin-left: 5px; }
