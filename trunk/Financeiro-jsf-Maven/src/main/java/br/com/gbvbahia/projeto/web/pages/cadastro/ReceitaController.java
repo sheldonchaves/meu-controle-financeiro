@@ -8,15 +8,20 @@ import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
+import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.DetalheTipoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
+import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
+import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.common.EntityController;
 import br.com.gbvbahia.projeto.web.common.EntityPagination;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
@@ -50,7 +55,7 @@ public class ReceitaController extends EntityController<Procedimento>
     private DetalheProcedimentoFacade detalheFacade;
     private Procedimento current;
     //Filtros
-    private StatusPagamento statusFiltro;
+    private StatusPagamento statusFiltro = StatusPagamento.NAO_PAGA;
     private String observacaoFiltro;
 
     /**
@@ -167,12 +172,19 @@ public class ReceitaController extends EntityController<Procedimento>
     @Override
     public void setEntity(final Procedimento t) {
         this.current = t;
+        if(this.current != null 
+                && this.current.getValorReal() == null){
+            this.current.setValorReal(current.getValorEstimado());
+        }
     }
 
     @Override
     protected Procedimento getNewEntity() {
         Procedimento det = new Procedimento();
+        det.setClassificacaoProcedimento(ClassificacaoProcedimento.VARIAVEL);
+        det.setStatusPagamento(StatusPagamento.NAO_PAGA);
         det.setUsuario(usuarioFacade.getUsuario());
+        det.setValorEstimado(BigDecimal.ZERO);
         return det;
     }
 
@@ -183,7 +195,11 @@ public class ReceitaController extends EntityController<Procedimento>
         return JsfUtil.getEnumSelectItems(StatusPagamento.class, false,
                 FacesContext.getCurrentInstance());
     }
-
+    
+    public SelectItem[] getDetalhes() {
+        return JsfUtil.getSelectItems(new TreeSet<EntityInterface>(this.detalheFacade.findAllDetalhe(usuarioFacade.getUsuario(),
+                Boolean.TRUE, TipoProcedimento.RECEITA_FINANCEIRA)), true, FacesContext.getCurrentInstance());
+    }
     //====================
     //Getters AND Setters
     //====================
