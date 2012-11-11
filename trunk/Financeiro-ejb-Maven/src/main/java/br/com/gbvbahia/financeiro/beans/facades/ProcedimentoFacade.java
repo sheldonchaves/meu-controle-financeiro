@@ -8,9 +8,12 @@ import br.com.gbvbahia.financeiro.beans.commons.InterfaceFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
+import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
+import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -58,15 +61,16 @@ public interface ProcedimentoFacade
      * Busca contas/receitas por tipo e usuario
      *
      * @param user Usuario obrigatorio Obrigatorio
-     * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA, Obrigatorio
+     * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA,
+     * Obrigatorio
      * @return Lista com contas no padrao, lista vazia se nao achar.
      */
     List<Procedimento> buscarPorUsuarioTipoProcedimento(
             final Usuario user, final TipoProcedimento tipo);
 
     /**
-     * Retorna uma lista com Procedimento que são DespesaParceladaProcedimento
-     * pode ser feito cast sem problemas.
+     * Retorna uma lista com Procedimento que são
+     * DespesaParceladaProcedimento pode ser feito cast sem problemas.
      *
      * @param usuario Proprietário ou conjuge do proprietario. Obrigatório
      * @param cartao Cartao onde foi feito pagamento. Opcional.
@@ -92,4 +96,14 @@ public interface ProcedimentoFacade
      */
     List<Procedimento> buscarStatusUsrTipo(Usuario user, StatusPagamento status,
             TipoProcedimento tipo);
+
+    /**
+     * Atualiza o procedimento que tenha sido criado pela agenda informada.
+     * Somente procedimento não pagos serão atualizados. Todos os campos
+     * serão utilizados.
+     *
+     * @param agenda Filtro
+     * @throws NegocioException
+     */
+    void atualizarProcedimento(final AgendaProcedimentoFixo agenda) throws NegocioException;
 }

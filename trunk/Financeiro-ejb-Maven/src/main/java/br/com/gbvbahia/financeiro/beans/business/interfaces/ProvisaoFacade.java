@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans.business.interfaces;
 
+import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import javax.ejb.Local;
 
@@ -21,4 +22,16 @@ public interface ProvisaoFacade {
      * @param agenda Agenda a ser provisionada.
      */
     void provisionar(AgendaProcedimentoFixo agenda);
+    /**
+     * Cria a agenda e realiza a provisão das contas.
+     * @param agenda
+     * @throws NegocioException 
+     */
+    void criarAgendaEProvisionar(AgendaProcedimentoFixo agenda) throws NegocioException;
+    /**
+     * Atauliza a agenda e as provisão não pagas geradas com a mesma.
+     * @param agenda
+     * @throws NegocioException 
+     */
+    void atualizarProvisao(AgendaProcedimentoFixo agenda) throws NegocioException;
 }

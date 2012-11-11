@@ -37,7 +37,6 @@ discriminatorType = DiscriminatorType.STRING)
     query = " SELECT p From Procedimento p "
     + "WHERE (p.tipoProcedimento = :tipoProcedimento) "
     + "AND (p.usuario = :usuario OR p.usuario.conjuge = :usuario)"),
-    
     @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento_1",
     query = " SELECT d From DespesaProcedimento d "
     + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
@@ -50,12 +49,18 @@ discriminatorType = DiscriminatorType.STRING)
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
     + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) "),
-    
     @NamedQuery(name = "Procedimento.buscarStatusUsrTipoProcedimento",
     query = " SELECT d From Procedimento d "
     + "WHERE (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
-    + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) ")
+    + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) "),
+    @NamedQuery(name = "Procedimento.atualizarProcedimentoAgenda",
+    query = " UPDATE Procedimento p "
+    + " SET p.valorEstimado = :estimado, "
+    + " p.detalhe = :detalhe, "
+    + " p.observacao = :observacao "
+    + " WHERE p.agenda = :agenda "
+    + " AND p.statusPagamento = :status ")
 })
 public class Procedimento
         implements EntityInterface<Procedimento>, Serializable {
@@ -77,8 +82,8 @@ public class Procedimento
     /**
      * Valor estimado a pagar/receber do procedimento, este valor sempre
      * deverá ser informado. Caso não se tenha o valor real este será
-     * considerado em calculos de estimativas.<br> Em contas Variaveis, em que
-     * o valor real já existe, setar este igual ao real.
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
+     * que o valor real já existe, setar este igual ao real.
      */
     @NotNull
     @Column(name = "valor_estimado", nullable = false)
@@ -87,8 +92,8 @@ public class Procedimento
     /**
      * Valor real pago na conta, utilizado nas receitas fixas, em que
      * estimativas futuras são realizadas. Não é obrigatório nas
-     * despesas/receitas fixas, nas variaveis sempre deverá ser informado.<br>
-     * <b>PODE SER NULO</b>
+     * despesas/receitas fixas, nas variaveis sempre deverá ser
+     * informado.<br> <b>PODE SER NULO</b>
      */
     @Column(name = "valor_real")
     @Digits(fraction = 2, integer = 12)
@@ -125,8 +130,8 @@ public class Procedimento
     @Column(name = "observacao", nullable = false, length = 150)
     private String observacao;
     /**
-     * Se essa conta for criada por uma agenda, a mesma deverá ser cadastrada
-     * para fins de atualização.
+     * Se essa conta for criada por uma agenda, a mesma deverá ser
+     * cadastrada para fins de atualização.
      */
     @ManyToOne
     @JoinColumn(name = "fk_agenda_procedimento_fixo")
@@ -158,8 +163,8 @@ public class Procedimento
     }
 
     /**
-     * Obrigatório informar o tipo de procedimento.<br> Retirada determina uma
-     * DESPESA.<br> Deposito determina uma RECEITA.
+     * Obrigatório informar o tipo de procedimento.<br> Retirada determina
+     * uma DESPESA.<br> Deposito determina uma RECEITA.
      *
      * @param tipoEnum Tipo de Procedimento.
      */
@@ -334,8 +339,8 @@ public class Procedimento
     /**
      * Valor estimado a pagar/receber do procedimento, este valor sempre
      * deverá ser informado. Caso não se tenha o valor real este será
-     * considerado em calculos de estimativas.<br> Em contas Variaveis, em que
-     * o valor real já existe, setar este igual ao real.
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
+     * que o valor real já existe, setar este igual ao real.
      *
      * @return Valor.
      */
@@ -346,8 +351,8 @@ public class Procedimento
     /**
      * Valor estimado a pagar/receber do procedimento, este valor sempre
      * deverá ser informado. Caso não se tenha o valor real este será
-     * considerado em calculos de estimativas.<br> Em contas Variaveis, em que
-     * o valor real já existe, setar este igual ao real.
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
+     * que o valor real já existe, setar este igual ao real.
      *
      * @param valor Valor
      */
@@ -358,8 +363,8 @@ public class Procedimento
     /**
      * Valor real pago na conta, utilizado nas receitas fixas, em que
      * estimativas futuras são realizadas. Não é obrigatório nas
-     * despesas/receitas fixas, nas variaveis sempre deverá ser informado.<br>
-     * <b>PODE SER NULO</b>
+     * despesas/receitas fixas, nas variaveis sempre deverá ser
+     * informado.<br> <b>PODE SER NULO</b>
      *
      * @return Valor <b>PODE SER NULO</b>
      */
@@ -379,8 +384,8 @@ public class Procedimento
     }
 
     /**
-     * Define se o Procedimento é uma receita, entra dinheiro ou uma despesa,
-     * saída de dinheiro.
+     * Define se o Procedimento é uma receita, entra dinheiro ou uma
+     * despesa, saída de dinheiro.
      *
      * @return TipoProcedimento.DESPESA_FINANCEIRA para gasto e
      * TipoProcedimento.RECEITA_FINANCEIRA para receita.
@@ -419,8 +424,8 @@ public class Procedimento
     }
 
     /**
-     * Retorna o valor real se o mesmo não for nulo, se for, retorna o valor
-     * estimado.
+     * Retorna o valor real se o mesmo não for nulo, se for, retorna o
+     * valor estimado.
      *
      * @return Real se houver ou estimado.
      */
@@ -432,8 +437,8 @@ public class Procedimento
     }
 
     /**
-     * Retorna o valor, real ou estimado e negativo se for despesa e positivo
-     * se for receita.
+     * Retorna o valor, real ou estimado e negativo se for despesa e
+     * positivo se for receita.
      *
      * @see getValor()
      * @return Positivo de receita negativo se despesa.
