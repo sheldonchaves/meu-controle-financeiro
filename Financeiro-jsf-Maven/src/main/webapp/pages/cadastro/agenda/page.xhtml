@@ -26,7 +26,12 @@
                                 <h:outputText value="#{msg.detalhe}"/>
                             </th>
                             <th align='center'>
-                                <h:outputText value="#{msg.tipo}"/>
+                                <h:outputText value="#{msg.tipo}"/><br></br>
+                                <p:selectOneMenu value="#{agendaController.tipoFiltro}" id="tipoFiltro" style="font-size: 0.9em;">
+                                    <p:ajax listener="#{agendaController.recreateTable()}" update="formAgendaTable"/>
+                                    <f:selectItem itemLabel="#{msg.todos}" itemValue="#{null}"/>
+                                    <f:selectItems value="#{agendaController.tipos}"/>
+                                </p:selectOneMenu>
                             </th>
                             <th align='center'>
                                 <h:outputText value="#{msg.responsavel}"/>
@@ -39,12 +44,12 @@
                                 <td align='left'><h:outputText value="#{item.observacao}"/></td>
                                 <td align='center'>
                                     <h:outputText value="#{item.valorFixo}">
-                                        <f:convertNumber locale="pt_BR" type="currency"/> 
+                                        <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
                                     </h:outputText>
                                 </td>
                                 <td align='center'>
                                     <h:outputText value="#{item.dataPrimeiroVencimento}">
-                                        <f:convertDateTime locale="pt_BR" timeZone="#{initParam['timezone']}" type="date" />
+                                        <f:convertDateTime locale="#{localeController.localeUI}" timeZone="#{initParam['timezone']}" type="date" />
                                     </h:outputText>
                                 </td>
                                 <td align='center'><h:outputText value="#{msg[item.periodo]}"/></td>

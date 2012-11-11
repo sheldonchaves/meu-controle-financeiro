@@ -8,6 +8,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * Manager Bean jsf responsável por gerenciar a internacionalização
@@ -18,10 +20,16 @@ import javax.faces.model.SelectItem;
 @ManagedBean
 @SessionScoped
 public class LocaleController {
+    
+        /**
+     * Registra os eventos para debug em desenvolvimento.
+     */
+    private Logger logger = Logger.getLogger(LocaleController.class);
     /**
      * Referente ao idioma do usuário.
      */
     private Locale locale;
+    private Locale localeUI;
 
     /**
      * Após ser construído o bean recupera o Locale atual do usuário.
@@ -30,6 +38,7 @@ public class LocaleController {
     public void init() {
         FacesContext jsf = FacesContext.getCurrentInstance();
         locale = jsf.getExternalContext().getRequestLocale();
+        localeUI = locale;
     }
 
     /**
@@ -45,6 +54,7 @@ public class LocaleController {
      * @param localeDefinido Locale a ser definido.
      */
     public void setLocale(final Locale localeDefinido) {
+        logger.info("Locale: " + localeDefinido.toString());
         this.locale = localeDefinido;
     }
 
@@ -98,5 +108,18 @@ public class LocaleController {
                 break;
             }
         }
+        if(StringUtils.equalsIgnoreCase("en", localeString)){
+            localeUI = new Locale("en", "US");
+        }else {
+            localeUI = new Locale("pt", "BR");
+        }
+    }
+
+    public Locale getLocaleUI() {
+        return localeUI;
+    }
+
+    public void setLocaleUI(Locale localeUI) {
+        this.localeUI = localeUI;
     }
 }
