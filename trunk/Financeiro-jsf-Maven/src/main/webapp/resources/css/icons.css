@@ -11,7 +11,7 @@
 }
 
 .addIco {
-    background: url("#{resource['images:book_add_16.png']}") no-repeat !important;
+    background: url("#{resource['images:crud_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
@@ -29,19 +29,19 @@
 }
 
 .addAgendaIco {
-    background: url("#{resource['images:agenda_16.png']}") no-repeat !important;
+    background: url("#{resource['images:date_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
 
 .pessoalIcon {
-    background: url("#{resource['images:folder_user_16.png']}") no-repeat !important;
+    background: url("#{resource['images:pessoal_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
 
 .pessoalPasswordIco {
-    background: url("#{resource['images:lock_edit_16.png']}") no-repeat !important;
+    background: url("#{resource['images:key_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
