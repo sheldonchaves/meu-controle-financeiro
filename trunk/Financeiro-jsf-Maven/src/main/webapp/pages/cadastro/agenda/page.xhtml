@@ -49,7 +49,7 @@
                         <ui:repeat value="#{agendaController.items}" var="item" varStatus="x">
                             <tr >
                                 <td align='left'><h:outputText value="#{item.observacao}"/></td>
-                                <td align='center'>
+                                <td align='right'>
                                     <h:outputText value="#{item.valorFixo}">
                                         <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
                                     </h:outputText>
@@ -68,7 +68,7 @@
                                 <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
                                 <td>
                                     <h:commandLink action="#{agendaController.destroy}" styleClass="ico desat" value="#{msg.desativar}" 
-                                                   id="ativaLink" rendered="#{item.ativa}"/>
+                                                   id="ativaLink" rendered="#{item.ativa}" onclick="return confirm('#{msg.desejaBroquear}: #{item.observacao}?');" />
                                     <h:commandLink action="#{agendaController.destroy}" styleClass="ico ativo" value="#{msg.ativar}" 
                                                    id="desativaLink" rendered="#{!item.ativa}"/>
                                     <h:outputText value=" "/>

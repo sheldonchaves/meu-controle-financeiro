@@ -158,8 +158,7 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     @Override
     protected void performDestroy() {
         try {
-            current.setAtiva(!current.isAtiva());
-            getFacade().update(current);
+            provisaoFacade.alterarStatusProvisao(current);
             MensagemUtils.messageFactoringFull(current.isAtiva() ? "AgendaAtivada" : "AgendaDestivada",
                     new Object[]{current.getLabel()},
                     FacesMessage.SEVERITY_INFO,
