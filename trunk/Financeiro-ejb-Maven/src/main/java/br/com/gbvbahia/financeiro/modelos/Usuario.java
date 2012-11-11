@@ -149,10 +149,10 @@ public class Usuario implements EntityInterface<Usuario>, Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "fin_usuario_grupo",
     joinColumns = {
-        @JoinColumn(name = "fk_user_id",
+        @JoinColumn(name = "user_id",
         referencedColumnName = "user_id")},
     inverseJoinColumns =
-    @JoinColumn(name = "fk_grupo_id",
+    @JoinColumn(name = "grupo_id",
     referencedColumnName = "grupo_id"))
     private Set<Grupo> grupos;
     /**
