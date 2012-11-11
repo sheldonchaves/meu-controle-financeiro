@@ -74,9 +74,4 @@ public enum TipoConta  {
         this.abreviacao = abr;
         this.ordem = o;
     }
-
-    @Override
-    public String toString() {
-        return this.getTipoContaString();
-    }
 }
