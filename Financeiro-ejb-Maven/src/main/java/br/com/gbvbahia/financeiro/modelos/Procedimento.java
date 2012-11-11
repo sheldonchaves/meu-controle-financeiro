@@ -54,11 +54,8 @@ discriminatorType = DiscriminatorType.STRING)
     + "WHERE (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
     + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) "),
-    @NamedQuery(name = "Procedimento.atualizarProcedimentoAgenda",
-    query = " UPDATE Procedimento p "
-    + " SET p.valorEstimado = :estimado, "
-    + " p.detalhe = :detalhe, "
-    + " p.observacao = :observacao "
+    @NamedQuery(name = "Procedimento.removerProcedimentoAgenda",
+    query = " Delete From Procedimento p "
     + " WHERE p.agenda = :agenda "
     + " AND p.statusPagamento = :status ")
 })

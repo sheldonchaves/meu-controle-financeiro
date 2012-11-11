@@ -67,7 +67,8 @@ public class ProvisaoBean implements ProvisaoFacade {
     public void atualizarProvisao(AgendaProcedimentoFixo agenda) throws NegocioException {
         agendaBean.update(agenda);
         if (agenda.isAtiva()) {
-            procedimentoBean.atualizarProcedimento(agenda);
+            procedimentoBean.removerProcedimentos(agenda);
+            provisionar(agenda);
         }
     }
 
