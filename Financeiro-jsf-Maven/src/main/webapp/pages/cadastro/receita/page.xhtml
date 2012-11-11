@@ -16,10 +16,23 @@
                                 <h:outputText value="#{msg.vencimento}" />
                             </th>
                             <th align='center'><h:outputText value="#{msg.valor}"/></th>
-                            <th align='center'><h:outputText value="#{msg.observacao}"/></th>
+                            <th align='center'>
+                                <h:outputText value="#{msg.observacao}"/><br></br>
+                                <h:inputText value="#{receitaController.observacaoFiltro}" styleClass="selectTableFilter" id="search"
+                                             title="#{msg.tipoBuscaInicia}">
+                                    <p:ajax event="blur" listener="#{receitaController.recreateTable()}" update="formReceitaTable"/>
+                                </h:inputText>
+                            </th>
                             <th align='center'><h:outputText value="#{msg.detalhe}"/></th>
                             <th align='center'><h:outputText value="#{msg.classificacao}"/></th>
-                            <th align='center'><h:outputText value="#{msg.status}"/></th>
+                            <th align='center'>
+                                <h:outputText value="#{msg.status}"/><br></br>
+                                <p:selectOneMenu value="#{receitaController.statusFiltro}" id="statusFiltro" style="font-size: 0.9em;">
+                                    <p:ajax listener="#{receitaController.recreateTable()}" update="formReceitaTable"/>
+                                    <f:selectItem itemLabel="#{msg.todos}" itemValue="#{null}"/>
+                                    <f:selectItems value="#{receitaController.status}"/>
+                                </p:selectOneMenu>
+                            </th>
                             <th align='center'>
                                 <h:outputText value="#{msg.responsavel}"/><br></br>
                             </th>
@@ -44,12 +57,13 @@
                                 <td align='center'><h:outputText value="#{msg[item.classificacaoProcedimento]}"/></td>
                                 <td align='center'><h:outputText value="#{msg[item.statusPagamento]}"/></td>
                                 <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
-                                <td><h:commandLink action="#{receitaController.destroy}" styleClass="ico del" value="#{msg.remover}" 
+                                <td><h:commandLink action="#{receitaController.destroy}" styleClass="ico del" value="#{msg.remover}"
+                                                   rendered="#{item.statusPagamento ne 'PAGA'}"
                                                    id="removeLink" onclick="return confirm('#{msg.desejaRemover}: #{item.observacao}?');"/>
                                     <h:outputText value=" "/>
                                     <p:spacer width="15px" height="5px"/>
                                     <h:commandLink styleClass="ico edit" action="#{receitaController.prepareEdit}" value="#{msg.editar}"
-                                                   id="editLink"/>
+                                                   id="editLink" rendered="#{item.statusPagamento ne 'PAGA'}"/>
                                 </td>
                             </tr>
                         </ui:repeat>
