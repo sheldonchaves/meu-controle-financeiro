@@ -31,7 +31,7 @@ import javax.validation.constraints.Size;
     + "AND (:dataF2 = 'todos' OR d.dataVencimento <= :dataF) ")
 })
 @DiscriminatorValue("DESPESA_PARCELADA")
-public class DespesaParceladaProcedimento extends Procedimento
+public class DespesaParceladaProcedimento extends DespesaProcedimento
         implements Serializable {
 
     /**
@@ -39,7 +39,6 @@ public class DespesaParceladaProcedimento extends Procedimento
      * Despesa.
      */
     public DespesaParceladaProcedimento() {
-        super(TipoProcedimento.DESPESA_FINANCEIRA);
     }
 
     /**
@@ -48,7 +47,6 @@ public class DespesaParceladaProcedimento extends Procedimento
      * @param procedimento Procedimento de origem.
      */
     public DespesaParceladaProcedimento(final Procedimento procedimento) {
-        super(TipoProcedimento.DESPESA_FINANCEIRA);
         setClassificacaoProcedimento(
                 procedimento.getClassificacaoProcedimento());
         setDataVencimento(procedimento.getDataVencimento());
@@ -81,32 +79,7 @@ public class DespesaParceladaProcedimento extends Procedimento
     @NotNull
     @Size(max = 100)
     private String identificador;
-    /**
-     * Não obrigatório, se a conta for em um cartão o mesmo deve ser
-     * informado.
-     */
-    @ManyToOne
-    @JoinColumn(name = "cartao_credito_id", nullable = true)
-    private CartaoCredito cartaoCredito;
-
-    /**
-     * Recupera o cartão de crédito.
-     *
-     * @return Se não for em cartão devolve null.
-     */
-    public CartaoCredito getCartaoCredito() {
-        return cartaoCredito;
-    }
-
-    /**
-     * Determina o cartão que será cobrado.
-     *
-     * @param cartao Cartão gasto.
-     */
-    public void setCartaoCredito(final CartaoCredito cartao) {
-        this.cartaoCredito = cartao;
-    }
-
+ 
     /**
      * O Identificador deste parcelamento.
      *
