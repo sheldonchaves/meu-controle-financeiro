@@ -44,6 +44,7 @@
                         <h:outputLabel value="#{msg.observacao}:" for="obs" />
                         <p:inputTextarea rows="3" cols="50" value="#{agendaController.current.observacao}"
                                          required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         label="#{msg.observacao}"
                                          id="obs" maxlength="50" autoResize="true">
                             <f:validateLength minimum="5" maximum="50"/>
                         </p:inputTextarea>
@@ -59,6 +60,7 @@
 
                         <h:outputLabel value="#{msg.intervalo}:" for="intervalo"/>
                         <p:spinner id="intervalo" value="#{agendaController.current.quantidadePeriodo}"
+                                   label="#{msg.intervalo}"
                                    required="true" requiredMessage="#{msg.campoObrigatorio}" size="10"/>
                         <p:message for="intervalo"/>
 
