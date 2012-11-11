@@ -6,14 +6,13 @@ package br.com.gbvbahia.financeiro.beans.facades;
 
 import br.com.gbvbahia.financeiro.beans.commons.InterfaceFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
+import br.com.gbvbahia.financeiro.constantes.DetalheTipoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
-import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
-import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
-import java.math.BigDecimal;
+import br.com.gbvbahia.financeiro.modelos.Usuario;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -106,4 +105,25 @@ public interface ProcedimentoFacade
      * @throws NegocioException
      */
     void removerProcedimentos(final AgendaProcedimentoFixo agenda) throws NegocioException;
+    /**
+     * Conta procedimetos de acordo com filtros.
+     * @param usr Obrigatório.
+     * @param detalhe Obrigatório.
+     * @param status Opcional
+     * @return 
+     */
+    Long contarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status);
+    
+    /**
+     * Busca procedimentos de acordo com pefil, paginado.
+     * @param usr obrigatorio.
+     * @param detalhe obrigatorio.
+     * @param status Opcional
+     * @param range obrigatorio.
+     * @return Lista com procedimentos, vazia se não achar.
+     */
+    List<Procedimento> buscarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status, int[] range);
+    
 }
