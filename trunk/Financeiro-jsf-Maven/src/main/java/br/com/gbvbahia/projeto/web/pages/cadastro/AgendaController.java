@@ -52,6 +52,8 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     private AgendaProcedimentoFixoFacade agendaFacade;
     private AgendaProcedimentoFixo current;
     private TipoProcedimento tipo;
+    //Filtros Tabela
+    private TipoProcedimento tipoFiltro;
 
     /**
      * Padrão
@@ -94,14 +96,14 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
             pagination = new EntityPagination() {
                 @Override
                 public int getItemsCount() {
-                    return getFacade().countarAgendaPorUserDetalhePeriodoTipo(usuarioFacade.getUsuario(), null, null, null).intValue();
+                    return getFacade().countarAgendaPorUserDetalhePeriodoTipo(usuarioFacade.getUsuario(), null, null, tipoFiltro).intValue();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().
                             buscarAgendaPorUserDetalhePeriodoTipoPaginado(usuarioFacade.getUsuario(),
-                            null, null, null,
+                            null, null, tipoFiltro,
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }
@@ -228,5 +230,13 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
 
     public void setTipo(TipoProcedimento tipo) {
         this.tipo = tipo;
+    }
+
+    public TipoProcedimento getTipoFiltro() {
+        return tipoFiltro;
+    }
+
+    public void setTipoFiltro(TipoProcedimento tipoFiltro) {
+        this.tipoFiltro = tipoFiltro;
     }
 }

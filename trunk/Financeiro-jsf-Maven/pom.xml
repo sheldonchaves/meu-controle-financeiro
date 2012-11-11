@@ -154,6 +154,7 @@
             <id>prime-repo</id>
             <url>http://repository.primefaces.org</url>
             <name>PrimeFaces Maven Repository</name>
+            <layout>default</layout> 
         </repository>
 		<repository>
             <id>Glassfish</id>
