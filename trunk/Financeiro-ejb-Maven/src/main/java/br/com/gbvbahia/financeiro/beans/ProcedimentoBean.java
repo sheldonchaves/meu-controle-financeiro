@@ -117,8 +117,7 @@ public class ProcedimentoBean
         parans.put("tipoProcedimento2", tipo == null ? "todos" : "filtro");
         parans.put("tipoProcedimento", tipo == null ? TipoProcedimento.DESPESA_FINANCEIRA : tipo);
         List<Procedimento> toReturn = new ArrayList<Procedimento>();
-        toReturn.addAll(listPesqParam("Procedimento.buscarCartaoStatusUsrTipoProcedimento_1", parans));
-        toReturn.addAll(listPesqParam("Procedimento.buscarCartaoStatusUsrTipoProcedimento_2", parans));
+        toReturn.addAll(listPesqParam("Procedimento.buscarCartaoStatusUsrTipoProcedimento", parans));
         return toReturn;
     }
 

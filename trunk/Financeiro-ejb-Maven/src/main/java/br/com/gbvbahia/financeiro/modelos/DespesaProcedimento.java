@@ -24,7 +24,13 @@ import javax.persistence.*;
     query = " SELECT d From DespesaProcedimento d "
     + "WHERE (:cartao is null OR d.cartaoCredito = :cartao) "
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
-    + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario)")
+    + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario)"),
+    @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento",
+    query = " SELECT d From DespesaProcedimento d "
+    + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
+    + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
+    + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
+    + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) ")
 })
 @DiscriminatorValue("DESPESA_UNICA")
 public class DespesaProcedimento extends Procedimento
@@ -40,7 +46,8 @@ public class DespesaProcedimento extends Procedimento
 
     /**
      * Utilizado para definir outro tipo de detalhe por subclasses.
-     * @param detalheProcedimento 
+     *
+     * @param detalheProcedimento
      */
     protected DespesaProcedimento(DetalheTipoProcedimento detalheProcedimento) {
         super(TipoProcedimento.DESPESA_FINANCEIRA, detalheProcedimento);
