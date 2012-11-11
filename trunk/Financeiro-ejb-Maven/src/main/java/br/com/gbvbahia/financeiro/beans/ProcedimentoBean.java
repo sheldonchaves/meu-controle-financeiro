@@ -29,6 +29,7 @@ import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Bean de entidade para Procedimento e todas suas subclasses.
@@ -170,17 +171,17 @@ public class ProcedimentoBean
 
     @Override
     public Long contarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status) {
+            final StatusPagamento status, String observacao) {
         Map<String, Object> parans = getMapParans();
-        paransPaginacao(parans, usr, detalhe, status);
+        paransPaginacao(parans, usr, detalhe, status, observacao);
         return pesqCount("Procedimento.countProcedimento", parans);
     }
 
     @Override
     public List<Procedimento> buscarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, int[] range) {
+            final StatusPagamento status, String observacao, int[] range) {
         Map<String, Object> parans = getMapParans();
-        paransPaginacao(parans, usr, detalhe, status);
+        paransPaginacao(parans, usr, detalhe, status, observacao);
         return listPesqParam("Procedimento.selectProcedimento",
                 parans, range[1] - range[0], range[0]);
     }
@@ -194,11 +195,13 @@ public class ProcedimentoBean
      */
     private void paransPaginacao(Map<String, Object> parans,
             final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status) {
+            final StatusPagamento status, String observacao) {
         parans.put("usuario", usr);
         parans.put("detalheProcedimento", detalhe);
         parans.put("statusPagamento", status);
         parans.put("statusPagamento2", status == null ? "todos" : "filtro");
+        parans.put("observacao2", StringUtils.isBlank(observacao) ? "todos" : "filtro");
+        parans.put("observacao", StringBeanUtils.acertaNomeParaLike(observacao, StringBeanUtils.LIKE_END));
     }
     /**
      * Valida as parcelas:<br> Total de parcelas não pode ser menor que

@@ -51,12 +51,14 @@ discriminatorType = DiscriminatorType.STRING)
     query = " SELECT count(p) From Procedimento p "
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
     + " AND p.detalheProcedimento = :detalheProcedimento "
-    + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento)"),
+    + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento)"
+    + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao)"),
     @NamedQuery(name = "Procedimento.selectProcedimento",
     query = " SELECT distinct p From Procedimento p "
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
     + " AND p.detalheProcedimento = :detalheProcedimento "
     + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento) "
+    + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao)"
     + " ORDER BY p.dataVencimento, p.valorReal DESC, p.valorEstimado DESC")
 })
 public class Procedimento
