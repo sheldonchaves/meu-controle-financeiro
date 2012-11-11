@@ -56,12 +56,17 @@
                             <f:selectItems value="#{agendaController.periodos}"/>
                         </p:selectOneRadio>
                         <p:message for="periodo"/>
-                        
+
                         <h:outputLabel value="#{msg.intervalo}:" for="intervalo"/>
                         <p:spinner id="intervalo" value="#{agendaController.current.quantidadePeriodo}"
                                    required="true" requiredMessage="#{msg.campoObrigatorio}" size="10"/>
                         <p:message for="intervalo"/>
-                        
+
+                        <h:outputLabel value="#{msg.ativo}:" for="status" />
+                        <p:selectBooleanCheckbox id="status" value="#{agendaController.current.ativa}" 
+                                                 label="#{msg.ativo}" />
+                        <p:message for="status" />
+
                         <h:outputText value=""/>
                         <h:panelGroup id="buttons" styleClass="pagging">
                             <h:commandLink action="#{agendaController.createOrEdit}" value="#{msg.salvar}" id="saveButton" >
