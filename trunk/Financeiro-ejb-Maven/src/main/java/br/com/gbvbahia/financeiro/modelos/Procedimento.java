@@ -5,6 +5,7 @@
 package br.com.gbvbahia.financeiro.modelos;
 
 import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
+import br.com.gbvbahia.financeiro.constantes.DetalheTipoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
@@ -152,6 +153,15 @@ public class Procedimento
     @NotNull
     @Column(name = "tipo_procedimento", nullable = false)
     private TipoProcedimento tipoProcedimento = TipoProcedimento.RECEITA_FINANCEIRA;
+    /**
+     * Deve ser informado no construtor de quem implementa.<br> Define se o
+     * Procedimento é uma receita, entra dinheiro ou uma despesa unica ou parcelada, saída de
+     * dinheiro.
+     */
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Column(name = "detalhe_procedimento", nullable = false)
+    private DetalheTipoProcedimento detalheProcedimento = DetalheTipoProcedimento.RECEITA_UNICA;
 
     /**
      * Padrão, nunca deve ser utilizado, lança RuntimeException.
@@ -165,8 +175,10 @@ public class Procedimento
      *
      * @param tipoEnum Tipo de Procedimento.
      */
-    public Procedimento(final TipoProcedimento tipoEnum) {
+    protected Procedimento(final TipoProcedimento tipoEnum,
+            DetalheTipoProcedimento detalheEnum) {
         this.tipoProcedimento = tipoEnum;
+        this.detalheProcedimento = detalheEnum;
     }
 
     @Override
@@ -464,5 +476,9 @@ public class Procedimento
             i = this.valorEstimado.compareTo(o.valorEstimado);
         }
         return i;
+    }
+
+    public DetalheTipoProcedimento getDetalheProcedimento() {
+        return detalheProcedimento;
     }
 }
