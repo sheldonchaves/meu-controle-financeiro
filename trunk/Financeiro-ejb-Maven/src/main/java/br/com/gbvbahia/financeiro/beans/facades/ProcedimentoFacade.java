@@ -105,5 +105,5 @@ public interface ProcedimentoFacade
      * @param agenda Filtro
      * @throws NegocioException
      */
-    void atualizarProcedimento(final AgendaProcedimentoFixo agenda) throws NegocioException;
+    void removerProcedimentos(final AgendaProcedimentoFixo agenda) throws NegocioException;
 }

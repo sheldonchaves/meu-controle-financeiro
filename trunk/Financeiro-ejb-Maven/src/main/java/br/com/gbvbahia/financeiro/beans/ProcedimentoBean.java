@@ -163,14 +163,11 @@ public class ProcedimentoBean
     }
 
     @Override
-    public void atualizarProcedimento(final AgendaProcedimentoFixo agenda) throws NegocioException {
+    public void removerProcedimentos(final AgendaProcedimentoFixo agenda) throws NegocioException {
         Map<String, Object> parans = getMapParans();
-        parans.put("estimado", agenda.getValorFixo());
-        parans.put("detalhe", agenda.getDetalhe());
-        parans.put("observacao", agenda.getObservacao());
         parans.put("agenda", agenda);
         parans.put("status", StatusPagamento.NAO_PAGA);
-        update("Procedimento.atualizarProcedimentoAgenda", parans);
+        update("Procedimento.removerProcedimentoAgenda", parans);
     }
 
     /**
