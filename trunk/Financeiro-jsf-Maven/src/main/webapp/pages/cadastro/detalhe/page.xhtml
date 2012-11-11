@@ -34,10 +34,14 @@
                                 <td align='left'><h:outputText value="#{item.detalhe}"/></td>
                                 <td align='center'><h:outputText value="#{msg[item.tipo]}"/></td>
                                 <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
-                                <td align='center'><h:outputText value="#{item.ativo == true ? msg.ativo : msg.desativado}"/></td>
-                                <td><h:commandLink action="#{detalheController.destroy}" styleClass="ico del" value="#{msg.remover}" 
-                                                   onclick="return confirm('#{msg.desejaRemover} #{item.detalhe}?');" 
-                                                   id="removeLink"/>
+                                <td align='center'>
+                                    <h:graphicImage name="tag_blq.png" library="images" rendered="#{!item.ativo}"/>
+                                    <h:graphicImage name="tag_ok.png" library="images" rendered="#{item.ativo}"/>
+                                </td>
+                                <td><h:commandLink action="#{detalheController.destroy}" styleClass="ico desat" value="#{msg.desativar}" 
+                                                   id="ativaLink" rendered="#{item.ativo}"/>
+                                    <h:commandLink action="#{detalheController.destroy}" styleClass="ico ativo" value="#{msg.ativar}" 
+                                                   id="desativaLink" rendered="#{!item.ativo}"/>
                                     <h:outputText value=" "/>
                                     <p:spacer width="15px" height="5px"/>
                                     <h:commandLink styleClass="ico edit" action="#{detalheController.prepareEdit}" value="#{msg.editar}"
