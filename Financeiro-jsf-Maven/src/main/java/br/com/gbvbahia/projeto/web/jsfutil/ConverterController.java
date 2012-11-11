@@ -197,7 +197,7 @@ public class ConverterController {
                 throw new IllegalArgumentException("object " + object
                         + " is of type " + object.getClass().getName()
                         + "; expected type: "
-                        + ConverterController.class.getName());
+                        + DetalheProcedimento.class.getName());
             }
         }
     }
