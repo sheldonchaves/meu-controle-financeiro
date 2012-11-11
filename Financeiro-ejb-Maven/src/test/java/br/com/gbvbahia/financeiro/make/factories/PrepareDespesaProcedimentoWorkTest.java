@@ -32,7 +32,7 @@ public class PrepareDespesaProcedimentoWorkTest implements ValueSpecializedFacto
 
     @Override
     public <T> boolean isWorkWith(Field f, T entity) {
-        return f.getType().equals(CartaoCredito.class);
+        return f.getType().equals(String.class);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class PrepareDespesaProcedimentoWorkTest implements ValueSpecializedFacto
             TestesMake.getCartaoFacade().create(cartao);
             manager.getTransaction().commit();
             procedimento.setDetalhe(detalhe);
-            f.set(entity, cartao);
+            procedimento.setCartaoCredito(cartao);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

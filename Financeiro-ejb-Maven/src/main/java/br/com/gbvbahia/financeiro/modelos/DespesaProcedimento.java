@@ -42,7 +42,7 @@ public class DespesaProcedimento extends Procedimento
      * informado.
      */
     @ManyToOne
-    @JoinColumn(name = "cartao_credito_id", nullable = true)
+    @JoinColumn(name = "fk_cartao_credito_id", nullable = true)
     private CartaoCredito cartaoCredito;
 
     /**

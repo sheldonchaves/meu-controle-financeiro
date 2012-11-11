@@ -100,7 +100,7 @@ public class Procedimento
      */
     @ManyToOne
     @NotNull
-    @JoinColumn(name = "detalhe_procedimento", nullable = false)
+    @JoinColumn(name = "fk_detalhe_procedimento", nullable = false)
     private DetalheProcedimento detalhe;
     /**
      * Para receitas/despesas sem ser por agentamento, cadastradas pelo
