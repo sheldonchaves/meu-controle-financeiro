@@ -43,11 +43,4 @@ public enum StatusPagamento {
     private StatusPagamento(final String status) {
         this.statusString = status;
     }
-
-    @Override
-    public String toString() {
-        return this.getStatusString();
-    }
-
-
 }
