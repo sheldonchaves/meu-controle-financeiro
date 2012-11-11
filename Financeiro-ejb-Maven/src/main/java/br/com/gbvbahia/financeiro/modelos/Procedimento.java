@@ -46,7 +46,18 @@ discriminatorType = DiscriminatorType.STRING)
     @NamedQuery(name = "Procedimento.removerProcedimentoAgenda",
     query = " Delete From Procedimento p "
     + " WHERE p.agenda = :agenda "
-    + " AND p.statusPagamento = :status ")
+    + " AND p.statusPagamento = :status "),
+    @NamedQuery(name = "Procedimento.countProcedimento",
+    query = " SELECT count(p) From Procedimento p "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND p.detalheProcedimento = :detalheProcedimento "
+    + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento)"),
+    @NamedQuery(name = "Procedimento.selectProcedimento",
+    query = " SELECT distinct p From Procedimento p "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND p.detalheProcedimento = :detalheProcedimento "
+    + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento) "
+    + " ORDER BY p.dataVencimento, p.valorReal DESC, p.valorEstimado DESC")
 })
 public class Procedimento
         implements EntityInterface<Procedimento>, Serializable {
@@ -143,8 +154,8 @@ public class Procedimento
     private TipoProcedimento tipoProcedimento = TipoProcedimento.RECEITA_FINANCEIRA;
     /**
      * Deve ser informado no construtor de quem implementa.<br> Define se o
-     * Procedimento é uma receita, entra dinheiro ou uma despesa unica ou parcelada, saída de
-     * dinheiro.
+     * Procedimento é uma receita, entra dinheiro ou uma despesa unica ou
+     * parcelada, saída de dinheiro.
      */
     @Enumerated(EnumType.STRING)
     @NotNull

@@ -8,19 +8,18 @@ import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
+import br.com.gbvbahia.financeiro.constantes.DetalheTipoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
-import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -169,6 +168,38 @@ public class ProcedimentoBean
         update("Procedimento.removerProcedimentoAgenda", parans);
     }
 
+    @Override
+    public Long contarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status) {
+        Map<String, Object> parans = getMapParans();
+        paransPaginacao(parans, usr, detalhe, status);
+        return pesqCount("Procedimento.countProcedimento", parans);
+    }
+
+    @Override
+    public List<Procedimento> buscarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status, int[] range) {
+        Map<String, Object> parans = getMapParans();
+        paransPaginacao(parans, usr, detalhe, status);
+        return listPesqParam("Procedimento.selectProcedimento",
+                parans, range[1] - range[0], range[0]);
+    }
+    
+    /**
+     * Popula map para paginacao de Procedimentos
+     * @param parans
+     * @param usr
+     * @param detalhe
+     * @param status 
+     */
+    private void paransPaginacao(Map<String, Object> parans,
+            final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status) {
+        parans.put("usuario", usr);
+        parans.put("detalheProcedimento", detalhe);
+        parans.put("statusPagamento", status);
+        parans.put("statusPagamento2", status == null ? "todos" : "filtro");
+    }
     /**
      * Valida as parcelas:<br> Total de parcelas não pode ser menor que
      * 2.<br> A parcela atual não pode ser menor que 1.<br> O total de
