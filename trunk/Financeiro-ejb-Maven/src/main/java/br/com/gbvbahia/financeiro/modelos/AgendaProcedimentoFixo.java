@@ -13,14 +13,14 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 /**
- * Reresenta um gaso ou receita fixa, sempre será cadastrado num periodo de um
- * ano.<br> Utiliza DetalheProcedimento para saber se é uma receita ou
+ * Reresenta um gaso ou receita fixa, sempre será cadastrado num periodo de
+ * um ano.<br> Utiliza DetalheProcedimento para saber se é uma receita ou
  * gasto.<br> O valorFixo representa o valor previsto.<br> A data primeiro
- * vencimento representa a data de inicio do procedimento fixo, a partir dela
- * que as proximas serão considerada. <br> Perido diz que campo quantidade
- * deve acrescentar, em dias, mes ou anos.<br> Para receitas deve ser
- * utilizado ReceitaProcedimento<br> Para despesas deve ser utilizado
- * DespesasProcedimento.<br>
+ * vencimento representa a data de inicio do procedimento fixo, a partir
+ * dela que as proximas serão considerada. <br> Perido diz que campo
+ * quantidade deve acrescentar, em dias, mes ou anos.<br> Para receitas
+ * deve ser utilizado ReceitaProcedimento<br> Para despesas deve ser
+ * utilizado DespesasProcedimento.<br>
  *
  * @author Guilherme
  * @since v.3 01/04/2012
@@ -65,16 +65,16 @@ public class AgendaProcedimentoFixo
     @DecimalMin(value = "0.01")
     private BigDecimal valorFixo = BigDecimal.ZERO;
     /**
-     * Data que será considerada como 1º vencimento da conta. A partir desta
-     * data é realizado todo calculo para as contas serem criadas.
+     * Data que será considerada como 1º vencimento da conta. A partir
+     * desta data é realizado todo calculo para as contas serem criadas.
      */
     @Temporal(TemporalType.DATE)
     @Column(name = "dt_vencimento", nullable = false)
     @NotNull
     private Date dataPrimeiroVencimento;
     /**
-     * Observção do procedimento fixo, essa mesma observação será colocado na
-     * conta.
+     * Observção do procedimento fixo, essa mesma observação será colocado
+     * na conta.
      */
     @Column(name = "ds_observacao", nullable = false, length = 50)
     @NotNull
@@ -91,8 +91,8 @@ public class AgendaProcedimentoFixo
     @NotNull
     private Usuario usuario;
     /**
-     * Detalhe do Procedimento, este define se é uma Receita, DetalheReceita
-     * ou Despesa DetalheDespesa.
+     * Detalhe do Procedimento, este define se é uma Receita,
+     * DetalheReceita ou Despesa DetalheDespesa.
      */
     @ManyToOne
     @JoinColumn(name = "fk_detalhe_id",
@@ -114,6 +114,13 @@ public class AgendaProcedimentoFixo
     @Column(name = "nm_quantidade", nullable = false)
     @Min(value = 1)
     private int quantidadePeriodo = 1;
+    /**
+     * Determina se é para criar provisões futuras, contas a pagar ou
+     * receber com esta agenda. Se false não ira criar.
+     */
+    @NotNull
+    @Column(name = "status", nullable = false)
+    private boolean ativa = true;
 
     @Override
     public Serializable getId() {
@@ -190,8 +197,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Data que será considerada como 1º vencimento da conta. A partir desta
-     * data é realizado todo calculo para as contas serem criadas.
+     * Data que será considerada como 1º vencimento da conta. A partir
+     * desta data é realizado todo calculo para as contas serem criadas.
      *
      * @return Date
      */
@@ -200,8 +207,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Data que será considerada como 1º vencimento da conta. A partir desta
-     * data é realizado todo calculo para as contas serem criadas.
+     * Data que será considerada como 1º vencimento da conta. A partir
+     * desta data é realizado todo calculo para as contas serem criadas.
      *
      * @param data Date
      */
@@ -210,8 +217,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Detalhe do Procedimento, este define se é uma Receita, DetalheReceita
-     * ou Despesa DetalheDespesa.
+     * Detalhe do Procedimento, este define se é uma Receita,
+     * DetalheReceita ou Despesa DetalheDespesa.
      *
      * @return Detalhe do Procedimento
      */
@@ -220,8 +227,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Detalhe do Procedimento, este define se é uma Receita, DetalheReceita
-     * ou Despesa DetalheDespesa.
+     * Detalhe do Procedimento, este define se é uma Receita,
+     * DetalheReceita ou Despesa DetalheDespesa.
      *
      * @param detalheProced Detalhe do Procedimento
      */
@@ -230,8 +237,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Observção do procedimento fixo, essa mesma observação será colocado na
-     * conta.
+     * Observção do procedimento fixo, essa mesma observação será colocado
+     * na conta.
      *
      * @return String
      */
@@ -240,8 +247,8 @@ public class AgendaProcedimentoFixo
     }
 
     /**
-     * Observção do procedimento fixo, essa mesma observação será colocado na
-     * conta.
+     * Observção do procedimento fixo, essa mesma observação será colocado
+     * na conta.
      *
      * @param obs String
      */
@@ -323,5 +330,13 @@ public class AgendaProcedimentoFixo
      */
     public void setValorFixo(final BigDecimal valor) {
         this.valorFixo = valor;
+    }
+
+    public boolean isAtiva() {
+        return ativa;
+    }
+
+    public void setAtiva(boolean ativa) {
+        this.ativa = ativa;
     }
 }
