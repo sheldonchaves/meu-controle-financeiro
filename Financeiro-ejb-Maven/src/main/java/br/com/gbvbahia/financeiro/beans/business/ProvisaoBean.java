@@ -58,13 +58,17 @@ public class ProvisaoBean implements ProvisaoFacade {
     @Override
     public void criarAgendaEProvisionar(AgendaProcedimentoFixo agenda) throws NegocioException {
         agendaBean.create(agenda);
-        provisionar(agenda);
+        if (agenda.isAtiva()) {
+            provisionar(agenda);
+        }
     }
-    
+
     @Override
     public void atualizarProvisao(AgendaProcedimentoFixo agenda) throws NegocioException {
         agendaBean.update(agenda);
-        procedimentoBean.atualizarProcedimento(agenda);
+        if (agenda.isAtiva()) {
+            procedimentoBean.atualizarProcedimento(agenda);
+        }
     }
 
     @Override
