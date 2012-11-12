@@ -1,0 +1,79 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:arq="http://java.sun.com/jsf/composite/ezcomp">
+
+    <f:subview id="formReceitaSubView" transient="true">
+        <div class="formedit">
+            <div class="formedit-head">
+                <h:outputText value="#{msg.cadastro} #{msg.despesaParcelada}"/>
+            </div>
+            <h:panelGroup id="receitaCadGroup">
+                <h:form id="recForm">
+                    <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
+                        <h:outputLabel value="#{msg.cartaoCredito}:" for="cartao" />
+                        <p:selectOneMenu value="#{despesaParceladaController.current.cartaoCredito}"
+                                         id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
+                            <p:ajax event="change" update="recForm" listener="#{despesaParceladaController.dataListener}"/> 
+                            <f:selectItems value="#{despesaParceladaController.cartoes}"/>
+                            <f:converter converterId="cartaoConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="cartao"/>
+
+                        <h:outputLabel value="#{msg.vencimento}:" for="data" />
+                        <arq:calendar id="data" valor="#{despesaParceladaController.current.dataVencimento}" title="#{msg.data}"/>
+                        <p:message for="data"/>
+
+                        <h:outputLabel value="#{msg.valor}:" for="valor" />
+                        <p:inputText id="valor" value="#{despesaParceladaController.current.valorReal}" title="#{msg.valorPagar}" 
+                                     size="30" onkeypress="return(MascaraMoeda(this,'.',',',event))">
+                            <f:converter converterId="moneyBigConverter"/>
+                        </p:inputText>
+                        <p:message for="valor" />
+
+                        <h:outputLabel value="#{msg.parcelaAtual}:" for="atualP"/>
+                        <p:spinner id="atualP" value="#{despesaParceladaController.current.parcelaAtual}"
+                                   label="#{msg.parcelaAtual}" min="1"
+                                   required="true" requiredMessage="#{msg.campoObrigatorio}" size="10"/>
+                        <p:message for="atualP"/>
+                        
+                        <h:outputLabel value="#{msg.parcelaTotal}:" for="atualT"/>
+                        <p:spinner id="atualT" value="#{despesaParceladaController.current.parcelaTotal}"
+                                   label="#{msg.parcelaAtual}" min="2"
+                                   required="true" requiredMessage="#{msg.campoObrigatorio}" size="10"/>
+                        <p:message for="atualT"/>
+
+                        <h:outputLabel value="#{msg.detalhe}:" for="tipo" />
+                        <p:selectOneMenu value="#{despesaParceladaController.current.detalhe}"
+                                         required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         id="tipo" label="#{msg.detalhe}" style="font-size: 0.9em;" >
+                            <f:selectItems value="#{despesaParceladaController.detalhes}"/>
+                            <f:converter converterId="detalheConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="tipo"/>
+
+                        <h:outputLabel value="#{msg.observacao}:" for="obs" />
+                        <p:inputTextarea rows="3" cols="50" value="#{despesaParceladaController.current.observacao}"
+                                         required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         label="#{msg.observacao}"
+                                         id="obs" maxlength="50" autoResize="true">
+                            <f:validateLength minimum="5" maximum="50"/>
+                        </p:inputTextarea>
+                        <p:message for="obs"/>
+
+                        <h:outputText value=""/>
+                        <h:panelGroup id="buttons" styleClass="pagging">
+                            <h:commandLink action="#{despesaParceladaController.createOrEdit}" value="#{msg.salvar}" id="saveButton" >
+
+                            </h:commandLink>
+                            <h:commandLink action="#{despesaParceladaController.clean()}" value="#{msg.cancelar}" 
+                                           immediate="true" id="cancelButton" >
+                            </h:commandLink>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </f:subview>
+</ui:composition>
