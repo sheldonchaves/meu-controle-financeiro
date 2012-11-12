@@ -45,6 +45,17 @@ public class DespesaProcedimento extends Procedimento
     }
 
     /**
+     * Facilitando a construção polimorfica.
+     * @param cartaoCredito 
+     */
+    public DespesaProcedimento(CartaoCredito cartaoCredito) {
+        this(DetalheTipoProcedimento.DESPESA_UNICA);
+        this.cartaoCredito = cartaoCredito;
+    }
+
+    
+    
+    /**
      * Utilizado para definir outro tipo de detalhe por subclasses.
      *
      * @param detalheProcedimento
