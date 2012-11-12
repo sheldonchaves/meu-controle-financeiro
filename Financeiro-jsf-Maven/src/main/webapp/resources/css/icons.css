@@ -27,6 +27,12 @@
     width:16px !important;
 }
 
+.addCartaoIco {
+    background: url("#{resource['images:cc_16.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
+
 .addDetIco {
     background: url("#{resource['images:detalhe_16.png']}") no-repeat !important;
     height:16px !important;
