@@ -54,6 +54,17 @@
     height:16px !important;
     width:16px !important;
 }
+
+.despesaUnicaIco{
+    background: url("#{resource['images:conta_orange.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
+.despesaParceladaIco{
+    background: url("#{resource['images:conta_red.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
 .pessoalIcon {
     background: url("#{resource['images:pessoal_16.png']}") no-repeat !important;
     height:16px !important;

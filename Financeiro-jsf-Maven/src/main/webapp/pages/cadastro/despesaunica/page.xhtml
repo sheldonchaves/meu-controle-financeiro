@@ -8,7 +8,7 @@
                 >
 
     <ui:define name="content">
-        <h:form id="formReceitaTable">
+        <h:form id="formDespesaTable">
             <h:panelGroup >
                 <table class="referencesmall" width="100%">
                     <thead style="font-size: 0.9em;"><tr>
@@ -18,19 +18,19 @@
                             <th align='center'><h:outputText value="#{msg.valor}"/></th>
                             <th align='center'>
                                 <h:outputText value="#{msg.observacao}"/><br></br>
-                                <h:inputText value="#{receitaController.observacaoFiltro}" styleClass="selectTableFilter" id="search"
+                                <h:inputText value="#{despesaUnicaController.observacaoFiltro}" styleClass="selectTableFilter" id="search"
                                              title="#{msg.tipoBuscaInicia}">
-                                    <p:ajax event="blur" listener="#{receitaController.recreateTable()}" update="formReceitaTable"/>
+                                    <p:ajax event="blur" listener="#{despesaUnicaController.recreateTable()}" update="formDespesaTable"/>
                                 </h:inputText>
                             </th>
                             <th align='center'><h:outputText value="#{msg.detalhe}"/></th>
                             <th align='center'><h:outputText value="#{msg.classificacao}"/></th>
                             <th align='center'>
                                 <h:outputText value="#{msg.status}"/><br></br>
-                                <p:selectOneMenu value="#{receitaController.statusFiltro}" id="statusFiltro" style="font-size: 0.9em;">
-                                    <p:ajax listener="#{receitaController.recreateTable()}" update="formReceitaTable"/>
+                                <p:selectOneMenu value="#{despesaUnicaController.statusFiltro}" id="statusFiltro" style="font-size: 0.9em;">
+                                    <p:ajax listener="#{despesaUnicaController.recreateTable()}" update="formDespesaTable"/>
                                     <f:selectItem itemLabel="#{msg.todos}" itemValue="#{null}"/>
-                                    <f:selectItems value="#{receitaController.status}"/>
+                                    <f:selectItems value="#{despesaUnicaController.status}"/>
                                 </p:selectOneMenu>
                             </th>
                             <th align='center'>
@@ -39,7 +39,7 @@
                             <th width="150" class="ac"></th>
                         </tr></thead>
                     <tbody>
-                        <ui:repeat value="#{receitaController.items}" var="item" varStatus="x">
+                        <ui:repeat value="#{despesaUnicaController.items}" var="item" varStatus="x">
                             <tr >
                                 <td align='center'>
                                     <h:outputText value="#{item.dataVencimento}">
@@ -57,12 +57,12 @@
                                 <td align='center'><h:outputText value="#{msg[item.classificacaoProcedimento]}"/></td>
                                 <td align='center'><h:outputText value="#{msg[item.statusPagamento]}"/></td>
                                 <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
-                                <td><h:commandLink action="#{receitaController.destroy}" styleClass="ico del" value="#{msg.remover}"
+                                <td><h:commandLink action="#{despesaUnicaController.destroy}" styleClass="ico del" value="#{msg.remover}"
                                                    rendered="#{item.statusPagamento ne 'PAGA'}"
                                                    id="removeLink" onclick="return confirm('#{msg.desejaRemover}: #{item.observacao}?');"/>
                                     <h:outputText value=" "/>
                                     <p:spacer width="15px" height="5px"/>
-                                    <h:commandLink styleClass="ico edit" action="#{receitaController.prepareEdit}" value="#{msg.editar}"
+                                    <h:commandLink styleClass="ico edit" action="#{despesaUnicaController.prepareEdit}" value="#{msg.editar}"
                                                    id="editLink" rendered="#{item.statusPagamento ne 'PAGA'}"/>
                                 </td>
                             </tr>
@@ -70,11 +70,11 @@
                     </tbody>
                 </table>
             </h:panelGroup>
-            <arq:paginator entityBean="#{receitaController}"/>
+            <arq:paginator entityBean="#{despesaUnicaController}"/>
             <p:spacer width="100%" height="20"/>
         </h:form>
-        <h:panelGroup id="groupDetalhe" rendered="#{receitaController.current != null}">
-            <ui:include src="form.xhtml"/>
+        <h:panelGroup id="groupDetalhe" rendered="#{despesaUnicaController.current != null}">
+            <!--ui:include src="form.xhtml"/-->
         </h:panelGroup>
     </ui:define>
 </ui:composition>
