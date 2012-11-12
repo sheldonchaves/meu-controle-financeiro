@@ -60,16 +60,15 @@ public interface ProcedimentoFacade
      * Busca contas/receitas por tipo e usuario
      *
      * @param user Usuario obrigatorio Obrigatorio
-     * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA,
-     * Obrigatorio
+     * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA, Obrigatorio
      * @return Lista com contas no padrao, lista vazia se nao achar.
      */
     List<Procedimento> buscarPorUsuarioTipoProcedimento(
             final Usuario user, final TipoProcedimento tipo);
 
     /**
-     * Retorna uma lista com Procedimento que são
-     * DespesaParceladaProcedimento pode ser feito cast sem problemas.
+     * Retorna uma lista com Procedimento que são DespesaParceladaProcedimento
+     * pode ser feito cast sem problemas.
      *
      * @param usuario Proprietário ou conjuge do proprietario. Obrigatório
      * @param cartao Cartao onde foi feito pagamento. Opcional.
@@ -98,26 +97,29 @@ public interface ProcedimentoFacade
 
     /**
      * Atualiza o procedimento que tenha sido criado pela agenda informada.
-     * Somente procedimento não pagos serão atualizados. Todos os campos
-     * serão utilizados.
+     * Somente procedimento não pagos serão atualizados. Todos os campos serão
+     * utilizados.
      *
      * @param agenda Filtro
      * @throws NegocioException
      */
     void removerProcedimentos(final AgendaProcedimentoFixo agenda) throws NegocioException;
+
     /**
      * Conta procedimetos de acordo com filtros.
+     *
      * @param usr Obrigatório.
      * @param detalhe Obrigatório.
      * @param status Opcional
      * @param observacao Opcional.
-     * @return 
+     * @return
      */
     Long contarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
             final StatusPagamento status, String observacao);
-    
+
     /**
      * Busca procedimentos de acordo com pefil, paginado.
+     *
      * @param usr obrigatorio.
      * @param detalhe obrigatorio.
      * @param status Opcional.
@@ -127,5 +129,12 @@ public interface ProcedimentoFacade
      */
     List<Procedimento> buscarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
             final StatusPagamento status, String observacao, int[] range);
-    
+
+    /**
+     * Remove todos os parcelamentos com ID informado.
+     *
+     * @param idParcelamento Obrigatorio.
+     * @throws NegocioException
+     */
+    void removerParcelamento(String idParcelamento) throws NegocioException;
 }

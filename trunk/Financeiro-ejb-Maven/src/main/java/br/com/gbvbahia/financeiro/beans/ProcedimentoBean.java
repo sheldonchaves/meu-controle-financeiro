@@ -186,6 +186,13 @@ public class ProcedimentoBean
                 parans, range[1] - range[0], range[0]);
     }
     
+    @Override
+    public void removerParcelamento(String idParcelamento) throws NegocioException{
+        Map<String, Object> parans = getMapParans();
+        parans.put("identificador", idParcelamento);
+        super.update("DespesaParcelada.apagarParcelamento", parans);
+    }
+    
     /**
      * Popula map para paginacao de Procedimentos
      * @param parans

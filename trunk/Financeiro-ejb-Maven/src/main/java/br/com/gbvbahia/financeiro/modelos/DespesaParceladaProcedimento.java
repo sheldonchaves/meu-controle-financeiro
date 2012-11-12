@@ -28,7 +28,10 @@ import javax.validation.constraints.Size;
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
     + "AND (:dataI2 = 'todos' OR d.dataVencimento >= :dataI) "
-    + "AND (:dataF2 = 'todos' OR d.dataVencimento <= :dataF) ")
+    + "AND (:dataF2 = 'todos' OR d.dataVencimento <= :dataF) "),
+    @NamedQuery(name = "DespesaParcelada.apagarParcelamento",
+    query = " DELETE From DespesaParceladaProcedimento d "
+    + "WHERE (d.identificador = :identificador) ")
 })
 @DiscriminatorValue("DESPESA_PARCELADA")
 public class DespesaParceladaProcedimento extends DespesaProcedimento
@@ -48,6 +51,7 @@ public class DespesaParceladaProcedimento extends DespesaProcedimento
      * @param procedimento Procedimento de origem.
      */
     public DespesaParceladaProcedimento(final Procedimento procedimento) {
+        super(DetalheTipoProcedimento.DESPESA_PARCELADA);
         setClassificacaoProcedimento(
                 procedimento.getClassificacaoProcedimento());
         setDataVencimento(procedimento.getDataVencimento());
