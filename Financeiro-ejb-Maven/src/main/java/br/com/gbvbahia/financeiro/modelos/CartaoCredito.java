@@ -13,6 +13,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -245,7 +246,7 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
 
     @Override
     public String getLabel() {
-        return this.cartao;
+        return StringUtils.substring(cartao, 0, CARACTERES_LABEL);
     }
 
     @Override
