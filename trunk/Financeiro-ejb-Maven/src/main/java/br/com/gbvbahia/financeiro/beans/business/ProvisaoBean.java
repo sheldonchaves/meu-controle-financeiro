@@ -168,7 +168,7 @@ public class ProvisaoBean implements ProvisaoFacade {
             Date dataVencimento) {
         Procedimento toReturn;
         if (agenda.getDetalhe().getTipo().equals(TipoProcedimento.DESPESA_FINANCEIRA)) {
-            toReturn = new DespesaProcedimento();
+            toReturn = new DespesaProcedimento(agenda.getCartaoCredito());
         } else {
             toReturn = new Procedimento();
         }
