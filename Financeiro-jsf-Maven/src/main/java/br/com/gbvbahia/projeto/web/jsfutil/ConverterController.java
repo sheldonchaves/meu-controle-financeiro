@@ -19,6 +19,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -233,6 +234,9 @@ public class ConverterController {
             }
             ConverterController controller =
                     JsfUtil.getController("converterController", facesContext);
+            if(StringUtils.isBlank(value) || !StringUtils.isNumeric(value)){
+                return null;
+            }
             return controller.cartaoFacade.find(Long.parseLong(value));
         }
 
