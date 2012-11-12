@@ -33,6 +33,7 @@
                                     <f:selectItems value="#{despesaUnicaController.status}"/>
                                 </p:selectOneMenu>
                             </th>
+                            <th align='center'><h:outputText value="#{msg.cartaoCredito}"/></th>
                             <th align='center'>
                                 <h:outputText value="#{msg.responsavel}"/><br></br>
                             </th>
@@ -56,6 +57,7 @@
                                 <td align='center'><h:outputText value="#{item.detalhe.detalhe}"/></td>
                                 <td align='center'><h:outputText value="#{msg[item.classificacaoProcedimento]}"/></td>
                                 <td align='center'><h:outputText value="#{msg[item.statusPagamento]}"/></td>
+                                <td align='center'><h:outputText value="#{item.cartaoCredito.cartao}"/></td>
                                 <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
                                 <td><h:commandLink action="#{despesaUnicaController.destroy}" styleClass="ico del" value="#{msg.remover}"
                                                    rendered="#{item.statusPagamento ne 'PAGA'}"
