@@ -11,16 +11,19 @@
                 <p:submenu label="#{msg.cadastro}" icon="addIco" id="menu1"> 
                     <p:submenu label="#{msg.contas}" icon="contasIco" id="menu1_0_0">
                         <p:menuitem value="#{msg.agenda}" url="/pages/cadastro/agenda/page.xhtml" icon="addAgendaIco" id="menu1_0_1"
-                                rendered="#{loginController.user or loginController.admin}"/> 
-                        <p:menuitem value="#{msg.receita}" url="/pages/cadastro/receita/page.xhtml" icon="receitaIco" id="menu1_0_2"
                                     rendered="#{loginController.user or loginController.admin}"/> 
+                        <p:menuitem value="#{msg.despesa}" url="/pages/cadastro/despesaunica/page.xhtml" icon="despesaUnicaIco" id="menu1_0_2"
+                                    rendered="#{loginController.user or loginController.admin}"/> 
+                        <p:menuitem value="#{msg.receita}" url="/pages/cadastro/receita/page.xhtml" icon="receitaIco" id="menu1_0_4"
+                                    rendered="#{loginController.user or loginController.admin}"/> 
+
                     </p:submenu>
                     <p:menuitem value="#{msg.cartaoCredito}" url="/pages/cadastro/cartao/page.xhtml" icon="addCartaoIco" id="menu1_2"
                                 rendered="#{loginController.user or loginController.admin}"/>  
-                    
+
                     <p:menuitem value="#{msg.detalhePagamento}" url="/pages/cadastro/detalhe/page.xhtml" icon="addDetIco" id="menu1_3"
                                 rendered="#{loginController.user or loginController.admin}"/> 
-                   
+
                     <p:submenu label="#{msg.administracao}" icon="adminIco" id="menu1_1_0" rendered="#{loginController.admin}">
                         <p:menuitem value="#{msg.usuario}" url="/admin/usuario/page.xhtml" icon="addUserIco" id="menu1_1_1"
                                     rendered="#{loginController.admin}"/>
