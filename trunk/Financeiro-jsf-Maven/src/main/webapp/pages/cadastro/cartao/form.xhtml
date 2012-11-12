@@ -1,0 +1,52 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:arq="http://java.sun.com/jsf/composite/ezcomp">
+
+    <f:subview id="formCartaoSubView" transient="true">
+        <div class="formedit">
+            <div class="formedit-head">
+                <h:outputText value="#{msg.cadastro} #{msg.cartaoCredito}"/>
+            </div>
+            <h:panelGroup id="receitaCadGroup">
+                <h:form id="recForm">
+                    <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
+                        <h:outputLabel value="#{msg.nome}:" for="nome" />
+                        <p:inputText id="nome" value="#{cartaoController.current.cartao}" 
+                                     size="30" maxlength="30" label="#{msg.nome}">
+                        </p:inputText>
+                        <p:message for="nome" />
+
+                        <h:outputLabel value="#{msg.diaVencimento}:" for="diav"/>
+                        <p:spinner id="diav" value="#{cartaoController.current.diaVencimento}"
+                                   label="#{msg.diaVencimento}" min="1" max="31"
+                                   required="true" requiredMessage="#{msg.campoObrigatorio}" size="10"/>
+                        <p:message for="diav"/>
+
+                        <h:outputLabel value="#{msg.mesmoMes}:" for="diam" title="#{msg.mesmoMesTitle}"/>
+                        <p:spinner id="diam" value="#{cartaoController.current.diaMesmoMes}"
+                                   label="#{msg.diaVencimento}" min="0" max="15" title="#{msg.mesmoMesTitle}"
+                                   required="true" requiredMessage="#{msg.campoObrigatorio}" size="10"/>
+                        <p:message for="diam"/>
+                        
+                        <h:outputLabel value="#{msg.ativo}:" for="status" />
+                        <p:selectBooleanCheckbox id="status" value="#{cartaoController.current.ativo}" 
+                                                 label="#{msg.ativo}" />
+                        <p:message for="status" />
+                        
+                        <h:outputText value=""/>
+                        <h:panelGroup id="buttons" styleClass="pagging">
+                            <h:commandLink action="#{cartaoController.createOrEdit}" value="#{msg.salvar}" id="saveButton" >
+
+                            </h:commandLink>
+                            <h:commandLink action="#{cartaoController.clean()}" value="#{msg.cancelar}" 
+                                           immediate="true" id="cancelButton" >
+                            </h:commandLink>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </f:subview>
+</ui:composition>
