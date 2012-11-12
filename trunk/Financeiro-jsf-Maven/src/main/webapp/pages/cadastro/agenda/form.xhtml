@@ -60,7 +60,7 @@
 
                         <h:outputLabel value="#{msg.intervalo}:" for="intervalo"/>
                         <p:spinner id="intervalo" value="#{agendaController.current.quantidadePeriodo}"
-                                   label="#{msg.intervalo}"
+                                   label="#{msg.intervalo}" min="1"
                                    required="true" requiredMessage="#{msg.campoObrigatorio}" size="10"/>
                         <p:message for="intervalo"/>
 
