@@ -7,6 +7,7 @@ package br.com.gbvbahia.projeto.web.pages.cadastro;
 import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoFacade;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
+import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.constantes.Periodo;
@@ -53,12 +54,15 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     private AgendaProcedimentoFixoFacade agendaFacade;
     @EJB
     private ProvisaoFacade provisaoFacade;
+    @EJB
+    private CartaoCreditoFacade cartaoFacade;
     
     private AgendaProcedimentoFixo current;
     private TipoProcedimento tipo;
     //Filtros Tabela
     private TipoProcedimento tipoFiltro;
     private String observacaoFiltro;
+
     /**
      * Padrão
      */
@@ -186,12 +190,18 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
         return det;
     }
 
+    public void dataListener() {
+        if (current != null && current.getCartaoCredito() != null) {
+            current.setDataPrimeiroVencimento(current.getCartaoCredito().getProximoVencimento());
+        }
+    }
     //====================
     //Métodos Filtros Paginação
     //====================
     //====================
     // Select Itens
     //====================
+
     public SelectItem[] getTipos() {
         return JsfUtil.getEnumSelectItems(TipoProcedimento.class, false,
                 FacesContext.getCurrentInstance());
@@ -207,9 +217,14 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
                 FacesContext.getCurrentInstance());
     }
 
+    public SelectItem[] getCartoes() {
+        return JsfUtil.getSelectItems(new TreeSet<EntityInterface>(this.cartaoFacade.buscarCartoesAtivos(usuarioFacade.getUsuario())),
+                true, FacesContext.getCurrentInstance());
+    }
     //====================
     //Getters AND Setters
     //====================
+
     /**
      * O Facade que representa a entidade current.
      *
