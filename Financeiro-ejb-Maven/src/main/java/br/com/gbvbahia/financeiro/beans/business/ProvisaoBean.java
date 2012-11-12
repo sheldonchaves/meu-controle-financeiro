@@ -115,6 +115,7 @@ public class ProvisaoBean implements ProvisaoFacade {
     private Date garanteDataFutura(final Date dataVencimento,
             final AgendaProcedimentoFixo agenda) {
         Date agora = new Date();
+        agora = br.com.gbvbahia.financeiro.utils.DateUtils.zerarHora(agora);
         Date toReturn = dataVencimento;
         while (toReturn.before(agora)) {
             toReturn = incrementarData(agenda, toReturn);
