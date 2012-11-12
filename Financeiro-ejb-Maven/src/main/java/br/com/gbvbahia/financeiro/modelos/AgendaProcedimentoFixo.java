@@ -43,7 +43,7 @@ import javax.validation.constraints.*;
     + " AND (:detalhe2 = 'todos' OR a.detalhe = :detalhe) "
     + " AND (:observacao2 = 'todos' OR a.observacao LIKE :observacao) "
     + " AND (:tipo2 = 'todos' OR a.detalhe.tipo = :tipo) "
-    + " ORDER BY a.dataPrimeiroVencimento DESC, a.periodo ")
+    + " ORDER BY a.dataPrimeiroVencimento DESC, a.periodo, a.observacao ")
 })
 public class AgendaProcedimentoFixo
         implements EntityInterface<AgendaProcedimentoFixo>, Serializable {
