@@ -14,7 +14,7 @@
                     <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
                         <h:outputLabel value="#{msg.cartaoCredito}:" for="cartao" />
                         <p:selectOneMenu value="#{despesaUnicaController.current.cartaoCredito}"
-                                         id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em;" >
+                                         id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
                             <p:ajax event="change" update="recForm" listener="#{despesaUnicaController.dataListener}"/> 
                             <f:selectItems value="#{despesaUnicaController.cartoes}"/>
                             <f:converter converterId="cartaoConverter"/>
