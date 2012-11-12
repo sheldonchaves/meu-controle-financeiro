@@ -21,12 +21,12 @@ import javax.persistence.*;
 @Table(name = "fin_procedimento_despesa_unica")
 @NamedQueries({
     @NamedQuery(name = "Despesa.CartaoStatusUsuario",
-    query = " SELECT d From DespesaProcedimento d "
+    query = " SELECT distinct d From DespesaProcedimento d "
     + "WHERE (:cartao is null OR d.cartaoCredito = :cartao) "
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario)"),
     @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento",
-    query = " SELECT d From DespesaProcedimento d "
+    query = " SELECT distinct d From DespesaProcedimento d "
     + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
