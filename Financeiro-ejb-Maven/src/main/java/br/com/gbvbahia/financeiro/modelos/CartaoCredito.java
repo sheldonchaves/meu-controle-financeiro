@@ -35,7 +35,16 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CartaoCredito.Ativos",
     query = "Select c From CartaoCredito c "
     + "Where c.ativo = true "
-    + "AND (c.usuario = :usuario OR c.usuario.conjuge = :usuario) ")
+    + "AND (c.usuario = :usuario OR c.usuario.conjuge = :usuario) "),
+    @NamedQuery(name = "Cartao.countUser",
+    query = "SELECT count(a) FROM CartaoCredito a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario)"
+    + " AND (:cartao2 = 'todos' OR a.cartao like :cartao)"),
+    @NamedQuery(name = "Cartao.selectUser",
+    query = "SELECT distinct a FROM CartaoCredito a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario)"
+    + " AND (:cartao2 = 'todos' OR a.cartao like :cartao)"
+    + " ORDER BY a.cartao ")
 })
 public class CartaoCredito implements EntityInterface<CartaoCredito>,
         Serializable {

@@ -24,4 +24,22 @@ public interface CartaoCreditoFacade extends
      * @return List&lt;CartaoCredito&gt;
      */
     List<CartaoCredito> buscarCartoesAtivos(Usuario usuario);
+    
+    /**
+     * Busca os cartões com o perfil solicitado.
+     * @param usr obrigatorio.
+     * @param cartao opcional.
+     * @param range obrigatorio.
+     * @return 
+     */
+    List<CartaoCredito> buscarCartoesUsuarioCartaoPaginado(final Usuario usr,
+            final String cartao, int[] range);
+    
+    /**
+     * Conta os cartões no perfil solicitado.
+     * @param usr obrigatório.
+     * @param cartao opcional.
+     * @return 
+     */
+    Long contarCartoesUsuarioCartao(final Usuario usr, final String cartao);
 }
