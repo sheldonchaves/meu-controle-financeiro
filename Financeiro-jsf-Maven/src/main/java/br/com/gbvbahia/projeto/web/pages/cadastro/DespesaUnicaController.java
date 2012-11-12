@@ -192,6 +192,12 @@ public class DespesaUnicaController extends EntityController<DespesaProcedimento
         det.setValorEstimado(BigDecimal.ZERO);
         return det;
     }
+    
+    public void dataListener(){
+        if(current != null && current.getCartaoCredito() != null){
+            current.setDataVencimento(current.getCartaoCredito().getProximoVencimento());
+        }
+    }
     //====================
     // Select Itens
     //====================
@@ -203,7 +209,7 @@ public class DespesaUnicaController extends EntityController<DespesaProcedimento
 
     public SelectItem[] getDetalhes() {
         return JsfUtil.getSelectItems(new TreeSet<EntityInterface>(this.detalheFacade.findAllDetalhe(usuarioFacade.getUsuario(),
-                Boolean.TRUE, TipoProcedimento.RECEITA_FINANCEIRA)), true, FacesContext.getCurrentInstance());
+                Boolean.TRUE, TipoProcedimento.DESPESA_FINANCEIRA)), true, FacesContext.getCurrentInstance());
     }
     
     public SelectItem[] getCartoes() {

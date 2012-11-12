@@ -1,0 +1,67 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:arq="http://java.sun.com/jsf/composite/ezcomp">
+
+    <f:subview id="formReceitaSubView" transient="true">
+        <div class="formedit">
+            <div class="formedit-head">
+                <h:outputText value="#{msg.cadastro} #{msg.despesa}"/>
+            </div>
+            <h:panelGroup id="receitaCadGroup">
+                <h:form id="recForm">
+                    <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
+                        <h:outputLabel value="#{msg.cartaoCredito}:" for="cartao" />
+                        <p:selectOneMenu value="#{despesaUnicaController.current.cartaoCredito}"
+                                         id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em;" >
+                            <p:ajax event="change" update="recForm" listener="#{despesaUnicaController.dataListener}"/> 
+                            <f:selectItems value="#{despesaUnicaController.cartoes}"/>
+                            <f:converter converterId="cartaoConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="cartao"/>
+
+                        <h:outputLabel value="#{msg.vencimento}:" for="data" />
+                        <arq:calendar id="data" valor="#{despesaUnicaController.current.dataVencimento}" title="#{msg.data}"/>
+                        <p:message for="data"/>
+
+                        <h:outputLabel value="#{msg.valor}:" for="valor" />
+                        <p:inputText id="valor" value="#{despesaUnicaController.current.valorReal}" title="#{msg.valorPagar}" 
+                                     size="30" onkeypress="return(MascaraMoeda(this,'.',',',event))">
+                            <f:converter converterId="moneyBigConverter"/>
+                        </p:inputText>
+                        <p:message for="valor" />
+
+                        <h:outputLabel value="#{msg.detalhe}:" for="tipo" />
+                        <p:selectOneMenu value="#{despesaUnicaController.current.detalhe}"
+                                         required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         id="tipo" label="#{msg.detalhe}" style="font-size: 0.9em;" >
+                            <f:selectItems value="#{despesaUnicaController.detalhes}"/>
+                            <f:converter converterId="detalheConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="tipo"/>
+
+                        <h:outputLabel value="#{msg.observacao}:" for="obs" />
+                        <p:inputTextarea rows="3" cols="50" value="#{despesaUnicaController.current.observacao}"
+                                         required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         label="#{msg.observacao}"
+                                         id="obs" maxlength="50" autoResize="true">
+                            <f:validateLength minimum="5" maximum="50"/>
+                        </p:inputTextarea>
+                        <p:message for="obs"/>
+
+                        <h:outputText value=""/>
+                        <h:panelGroup id="buttons" styleClass="pagging">
+                            <h:commandLink action="#{despesaUnicaController.createOrEdit}" value="#{msg.salvar}" id="saveButton" >
+
+                            </h:commandLink>
+                            <h:commandLink action="#{despesaUnicaController.clean()}" value="#{msg.cancelar}" 
+                                           immediate="true" id="cancelButton" >
+                            </h:commandLink>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </f:subview>
+</ui:composition>
