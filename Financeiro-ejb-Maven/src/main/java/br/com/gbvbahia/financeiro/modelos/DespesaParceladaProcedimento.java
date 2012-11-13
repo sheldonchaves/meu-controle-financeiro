@@ -31,7 +31,8 @@ import javax.validation.constraints.Size;
     + "AND (:dataF2 = 'todos' OR d.dataVencimento <= :dataF) "),
     @NamedQuery(name = "DespesaParcelada.apagarParcelamento",
     query = " DELETE From DespesaParceladaProcedimento d "
-    + "WHERE (d.identificador = :identificador) ")
+    + "WHERE (d.identificador = :identificador) "
+    + " AND d.statusPagamento = br.com.gbvbahia.financeiro.constantes.StatusPagamento.NAO_PAGA ")
 })
 @DiscriminatorValue("DESPESA_PARCELADA")
 public class DespesaParceladaProcedimento extends DespesaProcedimento
@@ -84,7 +85,7 @@ public class DespesaParceladaProcedimento extends DespesaProcedimento
     @NotNull
     @Size(max = 100)
     private String identificador;
- 
+
     /**
      * O Identificador deste parcelamento.
      *
