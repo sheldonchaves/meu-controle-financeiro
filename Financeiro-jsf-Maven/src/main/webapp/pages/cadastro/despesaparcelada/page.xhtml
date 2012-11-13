@@ -38,7 +38,7 @@
                             <th align='center'>
                                 <h:outputText value="#{msg.responsavel}"/><br></br>
                             </th>
-                            <th width="150" class="ac"></th>
+                            <th width="250" class="ac"></th>
                         </tr></thead>
                     <tbody>
                         <ui:repeat value="#{despesaParceladaController.items}" var="item" varStatus="x">
@@ -64,6 +64,11 @@
                                 <td><h:commandLink action="#{despesaParceladaController.destroy}" styleClass="ico del" value="#{msg.remover}"
                                                    rendered="#{item.statusPagamento ne 'PAGA'}"
                                                    id="removeLink" onclick="return confirm('#{msg.desejaRemover}: #{item.observacao}?');"/>
+                                    <h:outputText value=" "/>
+                                    <p:spacer width="15px" height="5px"/>
+                                    <h:commandLink action="#{despesaParceladaController.removerParcelamento}" styleClass="ico delpar" value="#{msg.parcelamento}"
+                                                   rendered="#{item.statusPagamento ne 'PAGA'}"
+                                                   id="removeParLink" onclick="return confirm('#{msg.desejaRemoverParcelamento}: #{item.observacao}?');"/>
                                     <h:outputText value=" "/>
                                     <p:spacer width="15px" height="5px"/>
                                     <h:commandLink styleClass="ico edit" action="#{despesaParceladaController.prepareEdit}" value="#{msg.editar}"

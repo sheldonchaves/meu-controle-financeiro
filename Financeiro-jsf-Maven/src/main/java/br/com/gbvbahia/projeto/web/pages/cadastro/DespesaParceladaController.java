@@ -173,6 +173,27 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
         }
     }
 
+    /**
+     * Remove todos os parcelamentos não pagos.
+     */
+    public void removerParcelamento() {
+        try {
+            setEntity(getItems().getRowData());
+            getFacade().removerParcelamento(current.getIdentificador());
+            MensagemUtils.messageFactoringFull("DespesasDeleted",
+                    new Object[]{current.getObservacao()},
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            clean();
+            recreateTable();
+        } catch (NegocioException ex) {
+            MensagemUtils.messageFactoringFull(ex.getMessage(),
+                    ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            logger.info(I18nLogger.getMsg("removeError", current.toString()));
+        }
+    }
+
     @Override
     public void setEntity(final DespesaParceladaProcedimento t) {
         this.current = t;
