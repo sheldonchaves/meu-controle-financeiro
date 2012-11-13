@@ -169,6 +169,7 @@ a.edit { background-image:url("#{resource['images:tag_edit.png']}");}
 a.ativo { background-image:url("#{resource['images:tag_ok.png']}");}
 a.desat { background-image:url("#{resource['images:tag_blq.png']}");}
 a.erase { background-image:url("#{resource['images:tag_del_1.png']}");}
+a.delpar { background-image:url("#{resource['images:tag_del_2.png']}");}
 
 .pagging { height:20px; padding:8px 10px; line-height:19px; color:#949494; }
 .pagging a{ background:url("#{resource['images:pagging.gif']}") repeat-x 0 0; height:20px; float:left; padding:0 8px; border:solid 1px #d5d5d5; text-decoration: none; color:#949494; margin-left: 5px; }
