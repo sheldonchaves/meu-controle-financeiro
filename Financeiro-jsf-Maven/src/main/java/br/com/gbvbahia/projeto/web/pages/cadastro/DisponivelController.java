@@ -116,9 +116,8 @@ public class DisponivelController extends EntityController<ContaBancaria>
     @Override
     protected void performDestroy() {
         try {
-            current.setStatus(!current.isStatus());
-            getFacade().update(current);
-            MensagemUtils.messageFactoringFull(current.isStatus() ? "ContaAtivada" : "ContaDestivada",
+            getFacade().remove(current);
+            MensagemUtils.messageFactoringFull("ContaDeleted",
                     new Object[]{current.getNomeConta()},
                     FacesMessage.SEVERITY_INFO,
                     FacesContext.getCurrentInstance());
