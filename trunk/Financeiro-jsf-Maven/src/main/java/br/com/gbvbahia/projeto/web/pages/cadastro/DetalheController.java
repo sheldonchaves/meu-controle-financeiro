@@ -170,7 +170,7 @@ public class DetalheController extends EntityController<DetalheProcedimento>
     @Override
     protected DetalheProcedimento getNewEntity() {
         DetalheProcedimento det = new DetalheProcedimento();
-        det.setUsuario(usuarioFacade.getUsuario());;
+        det.setUsuario(usuarioFacade.getUsuario());
         return det;
     }
 
