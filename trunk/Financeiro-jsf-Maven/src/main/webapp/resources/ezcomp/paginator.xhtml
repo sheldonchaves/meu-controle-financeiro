@@ -8,6 +8,7 @@
     <!-- INTERFACE -->
     <cc:interface>
         <cc:attribute name="entityBean" required="true" />
+        <cc:attribute name="renderedNew" required="false" default="#{true}" />
     </cc:interface>
     <!-- Update Keyword Description
     @this Component that triggers the PPR is updated
@@ -38,7 +39,7 @@
                                 <f:ajax render="@form"/>
                             </h:commandLink>
                             <h:commandLink action="#{cc.attrs.entityBean.prepareCreate}" value="#{msg.novo}" 
-                                           id="novoLink">
+                                           id="novoLink" rendered="#{cc.attrs.renderedNew}">
 
                             </h:commandLink>
                         </h:panelGrid>

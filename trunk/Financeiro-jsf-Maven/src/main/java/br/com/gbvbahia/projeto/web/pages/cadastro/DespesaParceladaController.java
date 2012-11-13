@@ -96,13 +96,13 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
                 @Override
                 public int getItemsCount() {
                     return getFacade().contarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro, observacaoFiltro).intValue();
+                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro, observacaoFiltro, null).intValue();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().buscarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro, observacaoFiltro,
+                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro, observacaoFiltro, null,
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }

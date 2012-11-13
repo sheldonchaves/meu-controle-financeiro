@@ -93,13 +93,13 @@ public class ReceitaController extends EntityController<Procedimento>
                 @Override
                 public int getItemsCount() {
                     return getFacade().contarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.RECEITA_UNICA, statusFiltro, observacaoFiltro).intValue();
+                            DetalheTipoProcedimento.RECEITA_UNICA, statusFiltro, observacaoFiltro, null).intValue();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().buscarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.RECEITA_UNICA, statusFiltro, observacaoFiltro,
+                            DetalheTipoProcedimento.RECEITA_UNICA, statusFiltro, observacaoFiltro, null,
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }
