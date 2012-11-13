@@ -8,6 +8,7 @@ import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
@@ -186,7 +187,7 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
      * @param saldoConta Double.
      */
     public void setSaldo(final BigDecimal saldoConta) {
-        this.saldo = saldoConta;
+        this.saldo = saldoConta.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     /**
