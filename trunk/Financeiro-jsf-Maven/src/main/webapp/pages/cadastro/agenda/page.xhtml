@@ -67,14 +67,14 @@
                                     <h:graphicImage name="tag_ok.png" library="images" rendered="#{item.ativa}"/></td>
                                 <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
                                 <td>
+                                    <h:commandLink styleClass="ico edit" action="#{agendaController.prepareEdit}" value="#{msg.editar}"
+                                                   id="editLink"/>
+                                    <h:outputText value=" "/>
+                                    <p:spacer width="15px" height="5px"/>
                                     <h:commandLink action="#{agendaController.destroy}" styleClass="ico desat" value="#{msg.desativar}" 
                                                    id="ativaLink" rendered="#{item.ativa}" onclick="return confirm('#{msg.desejaBroquear}: #{item.observacao}?');" />
                                     <h:commandLink action="#{agendaController.destroy}" styleClass="ico ativo" value="#{msg.ativar}" 
                                                    id="desativaLink" rendered="#{!item.ativa}"/>
-                                    <h:outputText value=" "/>
-                                    <p:spacer width="15px" height="5px"/>
-                                    <h:commandLink styleClass="ico edit" action="#{agendaController.prepareEdit}" value="#{msg.editar}"
-                                                   id="editLink"/>
                                 </td>
                             </tr>
                         </ui:repeat>

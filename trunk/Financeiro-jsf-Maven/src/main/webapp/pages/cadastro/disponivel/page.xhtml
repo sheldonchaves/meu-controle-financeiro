@@ -34,19 +34,21 @@
                                     <h:graphicImage name="tag_ok.png" library="images" rendered="#{item.status}"/>
                                 </td>
                                 <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
-                                
-                                <td><h:commandLink action="#{disponivelController.performBlock}" styleClass="ico desat" value="#{msg.desativar}" 
-                                                   id="ativaLink" rendered="#{item.status}"/>
-                                    <h:commandLink action="#{disponivelController.performBlock}" styleClass="ico ativo" value="#{msg.ativar}" 
-                                                   id="desativaLink" rendered="#{!item.status}"/>
-                                    <h:outputText value=" "/>
-                                    <p:spacer width="15px" height="5px"/>
+
+                                <td>
                                     <h:commandLink action="#{disponivelController.destroy}" styleClass="ico del" value="#{msg.remover}"
                                                    id="removeLink" onclick="return confirm('#{msg.desejaRemover}: #{item.nomeConta}?');"/>
                                     <h:outputText value=" "/>
                                     <p:spacer width="15px" height="5px"/>
                                     <h:commandLink styleClass="ico edit" action="#{disponivelController.prepareEdit}" value="#{msg.editar}"
                                                    id="editLink"/>
+                                    <h:outputText value=" "/>
+                                    <p:spacer width="15px" height="5px"/>
+                                    <h:commandLink action="#{disponivelController.performBlock}" styleClass="ico desat" value="#{msg.desativar}" 
+                                                   id="ativaLink" rendered="#{item.status}"/>
+                                    <h:commandLink action="#{disponivelController.performBlock}" styleClass="ico ativo" value="#{msg.ativar}" 
+                                                   id="desativaLink" rendered="#{!item.status}"/>
+
                                 </td>
                             </tr>
                         </ui:repeat>
@@ -57,7 +59,7 @@
             <p:spacer width="100%" height="20"/>
         </h:form>
         <h:panelGroup id="groupDetalhe" rendered="#{disponivelController.current != null}">
-                <ui:include src="form.xhtml"/>
+            <ui:include src="form.xhtml"/>
         </h:panelGroup>
     </ui:define>
 </ui:composition>
