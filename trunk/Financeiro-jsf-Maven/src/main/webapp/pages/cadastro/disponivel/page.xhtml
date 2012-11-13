@@ -17,7 +17,7 @@
                             <th align='center'><h:outputText value="#{msg.saldo}"/></th>
                             <th align='center'><h:outputText value="#{msg.status}"/></th>
                             <th align='center'><h:outputText value="#{msg.responsavel}"/></th>
-                            <th width="150" class="ac"></th>
+                            <th width="200" class="ac"></th>
                         </tr></thead>
                     <tbody>
                         <ui:repeat value="#{disponivelController.items}" var="item" varStatus="x">
@@ -39,6 +39,10 @@
                                                    id="ativaLink" rendered="#{item.status}"/>
                                     <h:commandLink action="#{disponivelController.performBlock}" styleClass="ico ativo" value="#{msg.ativar}" 
                                                    id="desativaLink" rendered="#{!item.status}"/>
+                                    <h:outputText value=" "/>
+                                    <p:spacer width="15px" height="5px"/>
+                                    <h:commandLink action="#{disponivelController.destroy}" styleClass="ico del" value="#{msg.remover}"
+                                                   id="removeLink" onclick="return confirm('#{msg.desejaRemover}: #{item.nomeConta}?');"/>
                                     <h:outputText value=" "/>
                                     <p:spacer width="15px" height="5px"/>
                                     <h:commandLink styleClass="ico edit" action="#{disponivelController.prepareEdit}" value="#{msg.editar}"

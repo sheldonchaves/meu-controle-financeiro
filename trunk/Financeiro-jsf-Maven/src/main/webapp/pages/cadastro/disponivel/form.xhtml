@@ -27,7 +27,8 @@
 
                         <h:outputLabel value="#{msg.saldo}:" for="saldo" />
                         <p:inputText id="saldo" value="#{disponivelController.current.saldo}" title="#{msg.valorPagar}" 
-                                     size="30" onkeypress="return(MascaraMoeda(this,'.',',',event))">
+                                     size="30" onkeypress="return(MascaraMoeda(this,'.',',',event))"
+                                     disabled="#{disponivelController.current.id ne null}" >
                             <f:converter converterId="moneyBigConverter"/>
                         </p:inputText>
                         <p:message for="saldo" />
