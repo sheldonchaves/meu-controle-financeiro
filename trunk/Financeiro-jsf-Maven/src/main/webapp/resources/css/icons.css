@@ -16,7 +16,7 @@
     width:16px !important;
 }
 .adminIco{
-    background: url("#{resource['images:star_13.png']}") no-repeat !important;
+    background: url("#{resource['images:star_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
@@ -48,6 +48,17 @@
     background: url("#{resource['images:conta_gr.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
+}
+
+.addDisponivelIco{
+    background: url("#{resource['images:logo_16.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;    
+}
+.disponiveisIco{
+    background: url("#{resource['images:conta_16.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;    
 }
 .receitaIco{
     background: url("#{resource['images:conta_green.png']}") no-repeat !important;
