@@ -54,4 +54,18 @@ public interface ContaBancariaFacade extends
      */
     List<ContaBancaria> buscarTipoConta(final TipoConta tipo,
             final Usuario proprietario, final Boolean status);
+    
+    /**
+     * Retorna os disponiveis paginados.
+     * @param usr Obrigatorio.
+     * @param range Obrigatorio.
+     * @return 
+     */
+    List<ContaBancaria> buscarContasUsuarioPaginado(Usuario usr, int[] range);
+    /**
+     * Conta a quantidade de disponiveis de um usuario.
+     * @param usr obrigatorio.
+     * @return 
+     */
+    Long contarContasUsuario(Usuario usr);
 }

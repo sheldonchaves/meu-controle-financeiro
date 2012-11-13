@@ -16,9 +16,9 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Representa uma conta bancária ou qualquer tipo de local onde deseja
- * armazenar e controlar dinheiro/saldo.<br> Não pode existir um conta para
- * o mesmo usuário, com mesmo tipo e mesmo nome, existe uma restrição a
- * nível de BD.
+ * armazenar e controlar dinheiro/saldo.<br> Não pode existir um conta para o
+ * mesmo usuário, com mesmo tipo e mesmo nome, existe uma restrição a nível de
+ * BD. TAMBEM CONHECIDO COMO DISPONIVEL
  *
  * @since v.1 31/03/2012
  * @author Guilherme
@@ -36,7 +36,14 @@ columnNames = {"id", "ds_conta", "en_tipo"}))
     query = "SELECT distinct a FROM ContaBancaria a "
     + " WHERE a.tipoConta = :tipoConta "
     + " AND (:status2 = 'todos' OR a.status = :status) "
-    + " AND (a.usuario = :usuario OR a.usuario.conjuge = :usuario) ")
+    + " AND (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "),
+    @NamedQuery(name = "ContaBancaria.selecUser",
+    query = "SELECT distinct a FROM ContaBancaria a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) "
+    + " ORDER BY a.nomeConta "),
+    @NamedQuery(name = "ContaBancaria.countUser",
+    query = "SELECT count(a) FROM ContaBancaria a "
+    + " WHERE (a.usuario = :usuario OR a.usuario.conjuge = :usuario) ")
 })
 public class ContaBancaria implements EntityInterface<ContaBancaria>,
         Serializable {
@@ -57,9 +64,9 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     @Column(name = "id")
     private Long codigo;
     /**
-     * Nome de identificação da conta bancária.<br> Não pode existir um
-     * conta para o mesmo usuário, com mesmo tipo e mesmo nome, existe uma
-     * restrição a nível de BD.
+     * Nome de identificação da conta bancária.<br> Não pode existir um conta
+     * para o mesmo usuário, com mesmo tipo e mesmo nome, existe uma restrição
+     * a nível de BD.
      */
     @Column(name = "ds_conta", nullable = false,
     length = CARACTERES_MAX_NOME_CONTA)
@@ -69,8 +76,8 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     private String nomeConta;
     /**
      * Tipo da conta bancária.<br> Não pode existir um conta para o mesmo
-     * usuário, com mesmo tipo e mesmo nome, existe uma restrição a nível
-     * de BD.
+     * usuário, com mesmo tipo e mesmo nome, existe uma restrição a nível de
+     * BD.
      */
     @Column(name = "en_tipo", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -90,9 +97,9 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     @Column(name = "fl_status", nullable = false)
     private boolean status = true;
     /**
-     * Usuario responsavel pela conta bancária.<br> Não pode existir um
-     * conta para o mesmo usuário, com mesmo tipo e mesmo nome, existe uma
-     * restrição a nível de BD.
+     * Usuario responsavel pela conta bancária.<br> Não pode existir um conta
+     * para o mesmo usuário, com mesmo tipo e mesmo nome, existe uma restrição
+     * a nível de BD.
      */
     @ManyToOne
     @JoinColumn(name = "fk_user_id",
@@ -202,10 +209,9 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
 
     /**
      * Conta de movimentação financeira. CORRENTE<br> Conta onde o dinheiro
-     * deve ficar parado recebendo rendimentos. POUPANCA<br> Conta fixa,
-     * onde o dinehrio não deve ou não pode ser resgatado a qualquer hora,
-     * como um titulo de capitalização ou aponsetadoria privada.
-     * INVESTIMENTO;<br>
+     * deve ficar parado recebendo rendimentos. POUPANCA<br> Conta fixa, onde
+     * o dinehrio não deve ou não pode ser resgatado a qualquer hora, como um
+     * titulo de capitalização ou aponsetadoria privada. INVESTIMENTO;<br>
      *
      * @return TipoConta
      */
@@ -214,12 +220,11 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     }
 
     /**
-     * Conta de movimentação financeira. CORRENTE("Conta Corrente", "CC",
-     * 1), Conta onde o dinheiro deve ficar parado recebendo rendimentos.
-     * POUPANCA("Poupança", "POU", 2), Conta fixa, onde o dinehrio não deve
-     * ou não pode ser resgatado a qualquer hora, como um titulo de
-     * capitalização ou aponsetadoria privada. INVESTIMENTO("Investimento",
-     * "INV", 3);
+     * Conta de movimentação financeira. CORRENTE("Conta Corrente", "CC", 1),
+     * Conta onde o dinheiro deve ficar parado recebendo rendimentos.
+     * POUPANCA("Poupança", "POU", 2), Conta fixa, onde o dinehrio não deve ou
+     * não pode ser resgatado a qualquer hora, como um titulo de capitalização
+     * ou aponsetadoria privada. INVESTIMENTO("Investimento", "INV", 3);
      *
      * @param tipoConta
      */
