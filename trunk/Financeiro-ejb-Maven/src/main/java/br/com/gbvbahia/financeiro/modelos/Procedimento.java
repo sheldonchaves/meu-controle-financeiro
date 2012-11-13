@@ -50,15 +50,34 @@ discriminatorType = DiscriminatorType.STRING)
     @NamedQuery(name = "Procedimento.countProcedimento",
     query = " SELECT count(p) From Procedimento p "
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
-    + " AND p.detalheProcedimento = :detalheProcedimento "
+    + " AND (:detalheProcedimento2 = 'todos' OR p.detalheProcedimento = :detalheProcedimento) "
     + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento)"
-    + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao)"),
+    + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao)"
+    + " AND (:dataVencimento2 = 'todos' OR p.dataVencimento = :dataVencimento)"),
     @NamedQuery(name = "Procedimento.selectProcedimento",
     query = " SELECT distinct p From Procedimento p "
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
-    + " AND p.detalheProcedimento = :detalheProcedimento "
+    + " AND (:detalheProcedimento2 = 'todos' OR p.detalheProcedimento = :detalheProcedimento) "
     + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento) "
     + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao)"
+    + " AND (:dataVencimento2 = 'todos' OR p.dataVencimento = :dataVencimento)"
+    + " ORDER BY p.dataVencimento, p.valorReal DESC, p.valorEstimado DESC"),
+    @NamedQuery(name = "Procedimento.countProcedimentoSemCartao",
+    query = " SELECT count(p) From Procedimento p "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND (:detalheProcedimento2 = 'todos' OR p.detalheProcedimento = :detalheProcedimento) "
+    + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento) "
+    + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao) "
+    + " AND (:dataVencimento2 = 'todos' OR p.dataVencimento = :dataVencimento) "
+    + " AND p.id NOT IN (Select d.id From DespesaProcedimento d Join d.cartaoCredito c) "),
+    @NamedQuery(name = "Procedimento.selectProcedimentoSemCartao",
+    query = " SELECT distinct p From Procedimento p "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND (:detalheProcedimento2 = 'todos' OR p.detalheProcedimento = :detalheProcedimento) "
+    + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento) "
+    + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao) "
+    + " AND (:dataVencimento2 = 'todos' OR p.dataVencimento = :dataVencimento) "
+    + " AND p.id NOT IN (Select d.id From DespesaProcedimento d Join d.cartaoCredito c) "
     + " ORDER BY p.dataVencimento, p.valorReal DESC, p.valorEstimado DESC")
 })
 public class Procedimento
@@ -81,8 +100,8 @@ public class Procedimento
     /**
      * Valor estimado a pagar/receber do procedimento, este valor sempre
      * deverá ser informado. Caso não se tenha o valor real este será
-     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
-     * que o valor real já existe, setar este igual ao real.
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em que
+     * o valor real já existe, setar este igual ao real.
      */
     @NotNull
     @Column(name = "valor_estimado", nullable = false)
@@ -91,8 +110,8 @@ public class Procedimento
     /**
      * Valor real pago na conta, utilizado nas receitas fixas, em que
      * estimativas futuras são realizadas. Não é obrigatório nas
-     * despesas/receitas fixas, nas variaveis sempre deverá ser
-     * informado.<br> <b>PODE SER NULO</b>
+     * despesas/receitas fixas, nas variaveis sempre deverá ser informado.<br>
+     * <b>PODE SER NULO</b>
      */
     @Column(name = "valor_real")
     @Digits(fraction = 2, integer = 12)
@@ -129,8 +148,8 @@ public class Procedimento
     @Column(name = "observacao", nullable = false, length = 150)
     private String observacao;
     /**
-     * Se essa conta for criada por uma agenda, a mesma deverá ser
-     * cadastrada para fins de atualização.
+     * Se essa conta for criada por uma agenda, a mesma deverá ser cadastrada
+     * para fins de atualização.
      */
     @ManyToOne
     @JoinColumn(name = "fk_agenda_procedimento_fixo")
@@ -163,6 +182,8 @@ public class Procedimento
     @NotNull
     @Column(name = "detalhe_procedimento", nullable = false)
     private DetalheTipoProcedimento detalheProcedimento = DetalheTipoProcedimento.RECEITA_UNICA;
+    @Transient
+    private ContaBancaria contaBancariaTransient;
 
     /**
      * Padrão, nunca deve ser utilizado, lança RuntimeException.
@@ -171,8 +192,8 @@ public class Procedimento
     }
 
     /**
-     * Obrigatório informar o tipo de procedimento.<br> Retirada determina
-     * uma DESPESA.<br> Deposito determina uma RECEITA.
+     * Obrigatório informar o tipo de procedimento.<br> Retirada determina uma
+     * DESPESA.<br> Deposito determina uma RECEITA.
      *
      * @param tipoEnum Tipo de Procedimento.
      */
@@ -248,7 +269,7 @@ public class Procedimento
      * @return java.util.Date
      */
     public Date getDataVencimento() {
-        return dataVencimento;
+        return DateUtils.zerarHora(dataVencimento);
     }
 
     /**
@@ -257,7 +278,7 @@ public class Procedimento
      * @param dataVen data
      */
     public void setDataVencimento(final Date dataVen) {
-        this.dataVencimento = dataVen;
+        this.dataVencimento = DateUtils.zerarHora(dataVen);
     }
 
     /**
@@ -349,8 +370,8 @@ public class Procedimento
     /**
      * Valor estimado a pagar/receber do procedimento, este valor sempre
      * deverá ser informado. Caso não se tenha o valor real este será
-     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
-     * que o valor real já existe, setar este igual ao real.
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em que
+     * o valor real já existe, setar este igual ao real.
      *
      * @return Valor.
      */
@@ -361,8 +382,8 @@ public class Procedimento
     /**
      * Valor estimado a pagar/receber do procedimento, este valor sempre
      * deverá ser informado. Caso não se tenha o valor real este será
-     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
-     * que o valor real já existe, setar este igual ao real.
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em que
+     * o valor real já existe, setar este igual ao real.
      *
      * @param valor Valor
      */
@@ -373,8 +394,8 @@ public class Procedimento
     /**
      * Valor real pago na conta, utilizado nas receitas fixas, em que
      * estimativas futuras são realizadas. Não é obrigatório nas
-     * despesas/receitas fixas, nas variaveis sempre deverá ser
-     * informado.<br> <b>PODE SER NULO</b>
+     * despesas/receitas fixas, nas variaveis sempre deverá ser informado.<br>
+     * <b>PODE SER NULO</b>
      *
      * @return Valor <b>PODE SER NULO</b>
      */
@@ -394,8 +415,8 @@ public class Procedimento
     }
 
     /**
-     * Define se o Procedimento é uma receita, entra dinheiro ou uma
-     * despesa, saída de dinheiro.
+     * Define se o Procedimento é uma receita, entra dinheiro ou uma despesa,
+     * saída de dinheiro.
      *
      * @return TipoProcedimento.DESPESA_FINANCEIRA para gasto e
      * TipoProcedimento.RECEITA_FINANCEIRA para receita.
@@ -434,8 +455,8 @@ public class Procedimento
     }
 
     /**
-     * Retorna o valor real se o mesmo não for nulo, se for, retorna o
-     * valor estimado.
+     * Retorna o valor real se o mesmo não for nulo, se for, retorna o valor
+     * estimado.
      *
      * @return Real se houver ou estimado.
      */
@@ -447,8 +468,8 @@ public class Procedimento
     }
 
     /**
-     * Retorna o valor, real ou estimado e negativo se for despesa e
-     * positivo se for receita.
+     * Retorna o valor, real ou estimado e negativo se for despesa e positivo
+     * se for receita.
      *
      * @see getValor()
      * @return Positivo de receita negativo se despesa.
@@ -481,5 +502,23 @@ public class Procedimento
 
     public DetalheTipoProcedimento getDetalheProcedimento() {
         return detalheProcedimento;
+    }
+
+    /**
+     * Transient
+     *
+     * @return
+     */
+    public ContaBancaria getContaBancariaTransient() {
+        return contaBancariaTransient;
+    }
+
+    /**
+     * Transient
+     *
+     * @param contaBancariaTransient
+     */
+    public void setContaBancariaTransient(ContaBancaria contaBancariaTransient) {
+        this.contaBancariaTransient = contaBancariaTransient;
     }
 }

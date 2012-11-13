@@ -171,17 +171,17 @@ public class ProcedimentoBean
 
     @Override
     public Long contarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao) {
+            final StatusPagamento status, String observacao, Date dataVencimento) {
         Map<String, Object> parans = getMapParans();
-        paransPaginacao(parans, usr, detalhe, status, observacao);
+        paransPaginacao(parans, usr, detalhe, status, observacao, dataVencimento);
         return pesqCount("Procedimento.countProcedimento", parans);
     }
 
     @Override
     public List<Procedimento> buscarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao, int[] range) {
+            final StatusPagamento status, String observacao, Date dataVencimento, int[] range) {
         Map<String, Object> parans = getMapParans();
-        paransPaginacao(parans, usr, detalhe, status, observacao);
+        paransPaginacao(parans, usr, detalhe, status, observacao, dataVencimento);
         return listPesqParam("Procedimento.selectProcedimento",
                 parans, range[1] - range[0], range[0]);
     }
@@ -193,6 +193,23 @@ public class ProcedimentoBean
         super.update("DespesaParcelada.apagarParcelamento", parans);
     }
     
+    @Override
+    public Long contarProcedimentosSemCartao(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status, String observacao, Date dataVencimento) {
+        Map<String, Object> parans = getMapParans();
+        paransPaginacao(parans, usr, detalhe, status, observacao, dataVencimento);
+        return pesqCount("Procedimento.countProcedimentoSemCartao", parans);
+    }
+
+    @Override
+    public List<Procedimento> buscarProcedimentosSemCartao(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status, String observacao, Date dataVencimento, int[] range) {
+        Map<String, Object> parans = getMapParans();
+        paransPaginacao(parans, usr, detalhe, status, observacao, dataVencimento);
+        return listPesqParam("Procedimento.selectProcedimentoSemCartao",
+                parans, range[1] - range[0], range[0]);
+    }
+    
     /**
      * Popula map para paginacao de Procedimentos
      * @param parans
@@ -202,11 +219,14 @@ public class ProcedimentoBean
      */
     private void paransPaginacao(Map<String, Object> parans,
             final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao) {
+            final StatusPagamento status, String observacao, Date dataVencimento) {
         parans.put("usuario", usr);
         parans.put("detalheProcedimento", detalhe);
+        parans.put("detalheProcedimento2", detalhe  == null ? "todos" : "filtro");
         parans.put("statusPagamento", status);
         parans.put("statusPagamento2", status == null ? "todos" : "filtro");
+        parans.put("dataVencimento2", dataVencimento == null ? "todos" : "filtro");
+        parans.put("dataVencimento", DateUtils.zerarHora(dataVencimento));
         parans.put("observacao2", StringUtils.isBlank(observacao) ? "todos" : "filtro");
         parans.put("observacao", StringBeanUtils.acertaNomeParaLike(observacao, StringBeanUtils.LIKE_END));
     }

@@ -109,26 +109,28 @@ public interface ProcedimentoFacade
      * Conta procedimetos de acordo com filtros.
      *
      * @param usr Obrigatório.
-     * @param detalhe Obrigatório.
+     * @param detalhe Opcional.
      * @param status Opcional
      * @param observacao Opcional.
+     * @param dataVencimento Opcional.
      * @return
      */
     Long contarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao);
+            final StatusPagamento status, String observacao, Date dataVencimento);
 
     /**
      * Busca procedimentos de acordo com pefil, paginado.
      *
      * @param usr obrigatorio.
-     * @param detalhe obrigatorio.
+     * @param detalhe Opcional.
      * @param status Opcional.
      * @param observacao Opcional.
+     * @param dataVencimento Opcional.
      * @param range obrigatorio.
      * @return Lista com procedimentos, vazia se não achar.
      */
     List<Procedimento> buscarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao, int[] range);
+            final StatusPagamento status, String observacao, Date dataVencimento, int[] range);
 
     /**
      * Remove todos os parcelamentos com ID informado.
@@ -137,4 +139,31 @@ public interface ProcedimentoFacade
      * @throws NegocioException
      */
     void removerParcelamento(String idParcelamento) throws NegocioException;
+
+    /**
+     * Conta procedimetos de acordo com filtros.
+     * Sem o que for vinculado a um cartão de crédito.
+     * @param usr Obrigatório.
+     * @param detalhe Opcional.
+     * @param status Opcional
+     * @param observacao Opcional.
+     * @param dataVencimento Opcional.
+     * @return
+     */
+    Long contarProcedimentosSemCartao(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status, String observacao, Date dataVencimento);
+
+    /**
+     * Busca procedimentos de acordo com pefil, paginado.
+     * Sem o que for vinculado a um cartão de crédito.
+     * @param usr obrigatorio.
+     * @param detalhe Opcional.
+     * @param status Opcional.
+     * @param observacao Opcional.
+     * @param dataVencimento Opcional.
+     * @param range obrigatorio.
+     * @return Lista com procedimentos, vazia se não achar.
+     */
+    List<Procedimento> buscarProcedimentosSemCartao(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status, String observacao, Date dataVencimento, int[] range);
 }
