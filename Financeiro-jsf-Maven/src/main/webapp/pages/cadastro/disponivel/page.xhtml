@@ -1,0 +1,60 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:arq="http://java.sun.com/jsf/composite/ezcomp"
+                template="../../../templates/layout.xhtml"
+                >
+
+    <ui:define name="content">
+        <h:form id="formDisponivelTable">
+            <h:panelGroup >
+                <table class="referencesmall" width="100%">
+                    <thead style="font-size: 0.9em;"><tr>
+                            <th align='center'><h:outputText value="#{msg.nome}" /></th>
+                            <th align='center'><h:outputText value="#{msg.tipo}"/></th>
+                            <th align='center'><h:outputText value="#{msg.saldo}"/></th>
+                            <th align='center'><h:outputText value="#{msg.status}"/></th>
+                            <th align='center'><h:outputText value="#{msg.responsavel}"/></th>
+                            <th width="150" class="ac"></th>
+                        </tr></thead>
+                    <tbody>
+                        <ui:repeat value="#{disponivelController.items}" var="item" varStatus="x">
+                            <tr >
+                                <td align='left'><h:outputText value="#{item.nomeConta}"/></td>
+                                <td align='center'><h:outputText value="#{msg[item.tipoConta]}"/></td>
+                                <td align='right'>
+                                    <h:outputText value="#{item.saldo}">
+                                        <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                    </h:outputText>
+                                </td>
+                                <td align='center'>
+                                    <h:graphicImage name="tag_blq.png" library="images" rendered="#{!item.status}"/>
+                                    <h:graphicImage name="tag_ok.png" library="images" rendered="#{item.status}"/>
+                                </td>
+                                <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
+                                
+                                <td><h:commandLink action="#{disponivelController.performBlock}" styleClass="ico desat" value="#{msg.desativar}" 
+                                                   id="ativaLink" rendered="#{item.status}"/>
+                                    <h:commandLink action="#{disponivelController.performBlock}" styleClass="ico ativo" value="#{msg.ativar}" 
+                                                   id="desativaLink" rendered="#{!item.status}"/>
+                                    <h:outputText value=" "/>
+                                    <p:spacer width="15px" height="5px"/>
+                                    <h:commandLink styleClass="ico edit" action="#{disponivelController.prepareEdit}" value="#{msg.editar}"
+                                                   id="editLink"/>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </h:panelGroup>
+            <arq:paginator entityBean="#{disponivelController}"/>
+            <p:spacer width="100%" height="20"/>
+        </h:form>
+        <h:panelGroup id="groupDetalhe" rendered="#{disponivelController.current != null}">
+                <ui:include src="form.xhtml"/>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>
+

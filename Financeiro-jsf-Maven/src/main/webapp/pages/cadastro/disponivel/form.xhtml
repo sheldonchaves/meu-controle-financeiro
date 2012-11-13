@@ -1,0 +1,54 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <f:subview id="formDisponivelSubView" transient="true">
+        <div class="formedit">
+            <div class="formedit-head">
+                <h:outputText value="#{msg.cadastro} #{msg.detalhe}"/>
+            </div>
+            <h:panelGroup id="diponivelCadGroup">
+                <h:form id="disForm">
+                    <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
+                        <h:outputLabel value="#{msg.nome}:" for="nome" />
+                        <p:inputText id="nome" value="#{disponivelController.current.nomeConta}" title="#{msg.nomeContaTitle}" 
+                                     required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="100"
+                                     size="50" />
+                        <p:message for="nome"/>
+
+                        <h:outputLabel value="#{msg.tipo}:" for="tipo" />
+                        <p:selectOneMenu value="#{disponivelController.current.tipoConta}"
+                                          required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                          id="tipo" label="#{msg.tipo}" style="font-size: 0.9em;" >
+                            <f:selectItems value="#{disponivelController.tipos}"/>
+                        </p:selectOneMenu>
+                        <p:message for="tipo"/>
+
+                        <h:outputLabel value="#{msg.saldo}:" for="saldo" />
+                        <p:inputText id="saldo" value="#{disponivelController.current.saldo}" title="#{msg.valorPagar}" 
+                                     size="30" onkeypress="return(MascaraMoeda(this,'.',',',event))">
+                            <f:converter converterId="moneyBigConverter"/>
+                        </p:inputText>
+                        <p:message for="saldo" />
+
+                        <h:outputLabel value="#{msg.ativo}:" for="status" />
+                        <p:selectBooleanCheckbox id="status" value="#{disponivelController.current.status}" 
+                                                 label="#{msg.ativo}" />
+                        <p:message for="status" />
+
+                        <h:outputText value=""/>
+                        <h:panelGroup id="buttons" styleClass="pagging">
+                            <h:commandLink action="#{disponivelController.createOrEdit}" value="#{msg.salvar}" id="saveButton" >
+
+                            </h:commandLink>
+                            <h:commandLink action="#{disponivelController.clean()}" value="#{msg.cancelar}" 
+                                           immediate="true" id="cancelButton" >
+                            </h:commandLink>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </f:subview>
+</ui:composition>
