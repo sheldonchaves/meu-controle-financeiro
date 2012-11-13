@@ -14,7 +14,6 @@ import br.com.gbvbahia.financeiro.constantes.DetalheTipoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
-import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.common.EntityController;
@@ -98,13 +97,13 @@ public class DespesaUnicaController extends EntityController<DespesaProcedimento
                 @Override
                 public int getItemsCount() {
                     return getFacade().contarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.DESPESA_UNICA, statusFiltro, observacaoFiltro).intValue();
+                            DetalheTipoProcedimento.DESPESA_UNICA, statusFiltro, observacaoFiltro, null).intValue();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().buscarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.DESPESA_UNICA, statusFiltro, observacaoFiltro,
+                            DetalheTipoProcedimento.DESPESA_UNICA, statusFiltro, observacaoFiltro, null,
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }
