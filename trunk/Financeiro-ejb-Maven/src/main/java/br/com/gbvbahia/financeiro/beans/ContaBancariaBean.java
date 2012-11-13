@@ -80,4 +80,18 @@ public class ContaBancariaBean
         parans.put("status2", status == null ? "todos" : "filtro");
         return listPesqParam("ContaBancaria.findTipoConta", parans);
     }
+    
+    @Override
+    public List<ContaBancaria> buscarContasUsuarioPaginado(Usuario usr, int[] range){
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", usr);
+        return listPesqParam("ContaBancaria.selecUser", parans, range[1] - range[0], range[0]);
+    }
+    
+    @Override
+    public Long contarContasUsuario(Usuario usr){
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", usr);
+        return pesqCount("ContaBancaria.countUser", parans);
+    }
 }
