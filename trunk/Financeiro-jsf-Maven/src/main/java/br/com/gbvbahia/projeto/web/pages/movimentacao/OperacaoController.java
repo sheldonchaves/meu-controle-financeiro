@@ -4,6 +4,8 @@
  */
 package br.com.gbvbahia.projeto.web.pages.movimentacao;
 
+import br.com.gbvbahia.financeiro.beans.business.interfaces.TrabalharOperacaoBusiness;
+import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
@@ -11,14 +13,17 @@ import br.com.gbvbahia.financeiro.constantes.DetalheTipoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
+import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.common.EntityController;
 import br.com.gbvbahia.projeto.web.common.EntityPagination;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
+import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -46,6 +51,8 @@ public class OperacaoController extends EntityController<Procedimento> implement
     private UsuarioFacade usuarioFacade;
     @EJB
     private ContaBancariaFacade disponivelFacade;
+    @EJB
+    private TrabalharOperacaoBusiness operacaoBusiness;
     private Procedimento current;
     //Filtros
     private StatusPagamento statusFiltro = StatusPagamento.NAO_PAGA;
@@ -77,24 +84,55 @@ public class OperacaoController extends EntityController<Procedimento> implement
         this.current = t;
     }
 
-    @Override
-    protected Procedimento getNewEntity() {
-        throw new UnsupportedOperationException("Funcionalidade não implementada.");
+    /**
+     * Fecha a operação selecionada.
+     *
+     * @return
+     */
+    public String fecharOperacao() {
+        try {
+            setEntity(getItems().getRowData());
+            if (current.getContaBancariaTransient() == null) {
+                MensagemUtils.messageFactoringFull("MovimentacaoProcedimentoSemConta",
+                        new String[]{current.getObservacao()}, FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
+                return JsfUtil.MANTEM;
+            }
+            operacaoBusiness.fecharOperacao(current, current.getContaBancariaTransient());
+            MensagemUtils.messageFactoringFull("OperacaoFechada",
+                    new String[]{current.getObservacao()}, FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            recreateTable();
+            return clean();
+        } catch (NegocioException ex) {
+            MensagemUtils.messageFactoringFull(ex.getMessage(),
+                    ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            logger.info(I18nLogger.getMsg("createError", current.toString()));
+            return JsfUtil.MANTEM;
+        }
     }
 
-    @Override
-    protected void performDestroy() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected String create() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected String update() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    /**
+     * Abri uma operação fechada.
+     * @return 
+     */
+    public String abrirOperacao() {
+        try {
+            setEntity(getItems().getRowData());
+            operacaoBusiness.abrirOperacao(current);
+            MensagemUtils.messageFactoringFull("OperacaoAberta",
+                    new String[]{current.getObservacao()}, FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            recreateTable();
+            return clean();
+        } catch (NegocioException ex) {
+            MensagemUtils.messageFactoringFull(ex.getMessage(),
+                    ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            logger.info(I18nLogger.getMsg("createError", current.toString()));
+            return JsfUtil.MANTEM;
+        }
     }
 
     @Override
@@ -122,6 +160,26 @@ public class OperacaoController extends EntityController<Procedimento> implement
     public void cleanDate() {
         this.dataFiltro = null;
         recreateTable();
+    }
+
+    @Override
+    protected Procedimento getNewEntity() {
+        throw new UnsupportedOperationException("Funcionalidade não implementada.");
+    }
+
+    @Override
+    protected void performDestroy() {
+        throw new UnsupportedOperationException("Funcionalidade não implementada.");
+    }
+
+    @Override
+    protected String create() {
+        throw new UnsupportedOperationException("Funcionalidade não implementada.");
+    }
+
+    @Override
+    protected String update() {
+        throw new UnsupportedOperationException("Funcionalidade não implementada.");
     }
     //====================
     // Select Itens
