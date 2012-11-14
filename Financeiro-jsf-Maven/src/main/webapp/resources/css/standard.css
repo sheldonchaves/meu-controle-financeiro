@@ -126,7 +126,7 @@ table.referencesmall th {
     border:1px solid #c3c3c3;
     border-radius: 5px;
     padding:3px;
-    vertical-align:top; 
+    vertical-align:middle; 
     font-size: 1em;
     color: #fbfcfc;
     background: #B2D1FF url("#{resource['primefaces-redmond:images/ui-bg_gloss-wave_55_5c9ccc_500x100.png']}") 50% 50% repeat-x;

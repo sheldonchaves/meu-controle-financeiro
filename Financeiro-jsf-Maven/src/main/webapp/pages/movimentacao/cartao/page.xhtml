@@ -8,7 +8,7 @@
                 >
 
     <ui:define name="content">
-        <table  >
+        <table>
             <tbody>
                 <tr>
                     <td align='left' width="60%" style="vertical-align: top;">
@@ -18,15 +18,17 @@
                                 <p:selectOneMenu value="#{cartaoOperacaoController.cartaoOperacao}"
                                                  required="true" requiredMessage="#{msg.campoObrigatorio}"
                                                  id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
-                                    <p:ajax event="change" update="dataGroup" listener="#{cartaoOperacaoController.dataListener}"/> 
+                                    <p:ajax event="change" update="labelPeriodo dataGroup" listener="#{cartaoOperacaoController.dataListener}"/> 
                                     <f:selectItems value="#{cartaoOperacaoController.cartoes}"/>
                                     <f:converter converterId="cartaoConverter"/>
                                 </p:selectOneMenu>
                                 <p:message for="cartao"/>
 
-                                <h:outputLabel value="#{msg.periodo}:" />
+                                <h:panelGroup id="labelPeriodo">
+                                    <h:outputLabel value="#{msg.periodo}:" rendered="#{not empty cartaoOperacaoController.listAnosSelect}"/>
+                                </h:panelGroup>
                                 <h:panelGroup id="dataGroup">
-                                    <h:panelGrid columns="3" rendered="#{cartaoOperacaoController.cartaoOperacao != null}">
+                                    <h:panelGrid columns="3" rendered="#{not empty cartaoOperacaoController.listAnosSelect}">
                                         <p:selectOneMenu value="#{cartaoOperacaoController.mesOperacao}" required="true"
                                                          requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
                                                          style="font-size: 0.9em; width: 120px;">
@@ -38,64 +40,75 @@
                                                          style="font-size: 0.9em;">
                                             <f:selectItems value="#{cartaoOperacaoController.anos}"/>
                                         </p:selectOneMenu>
-                                        <p:commandButton icon="lupaIco" actionListener="#{cartaoOperacaoController.buscarDespesas}" update="despCartoesGroup" />
+                                        <p:commandButton icon="lupaIco" actionListener="#{cartaoOperacaoController.buscarDespesas}" update="despCartoesGroup dataGroup" />
                                     </h:panelGrid>
                                 </h:panelGroup>
                             </h:panelGrid>
                             <p:spacer width="100%" height="10"/>
                             <h:panelGroup id="despCartoesGroup" >
-                                <table class="referencesmall" width="100%">
-                                    <thead style="font-size: 0.9em;"><tr>
-                                            <th align='center'>
-                                                <h:outputText value="#{msg.vencimento}" />
-                                            </th>
-                                            <th align='center'>
-                                                <h:outputText value="#{msg.valor}"/>
-                                            </th>
-                                            <th align='left'>
-                                                <h:outputText value="#{msg.observacao}"/>
-                                            </th>
-                                            <th align='center'>
-                                                <h:outputText value="#{msg.tipo}"/>
-                                            </th>
-                                            <th align='center'>
-                                                <h:outputText value="#{msg.responsavel}"/>
-                                            </th>
-                                        </tr></thead>
-                                    <tbody>
-                                        <ui:repeat value="#{cartaoOperacaoController.despesas}" var="item" varStatus="x">
-                                            <tr style="height: 30px;">
-                                                <td align='center'>
-                                                    <h:outputText value="#{item.dataVencimento}">
-                                                        <f:convertDateTime locale="#{localeController.localeUI}"
-                                                                           type="date" timeZone="#{initParam['timezone']}"/>
-                                                    </h:outputText>
-                                                </td>
-                                                <td align='center'>
-                                                    <h:outputText value="#{item.valor}">
-                                                        <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
-                                                    </h:outputText>
-                                                </td>
-                                                <td align='center'>
-                                                    <h:outputText value="#{item.observacao}"/>
-                                                </td>
-                                                <td align='center'>
-                                                    <h:outputText value="#{msg[item.classificacaoProcedimento]}"/>
-                                                </td>
-                                                <td align='center'>
-                                                    <h:outputText value="#{item.usuario.firstName}"/>
+                                <h:panelGroup id="despCartoesGroup2" rendered="#{not empty cartaoOperacaoController.despesas}">
+                                    <table class="referencesmall" width="100%">
+                                        <thead style="font-size: 0.9em;"><tr>
+                                                <th align='center'>
+                                                    <h:outputText value="#{msg.vencimento}" />
+                                                </th>
+                                                <th align='center'>
+                                                    <h:outputText value="#{msg.valor}"/>
+                                                </th>
+                                                <th align='center'>
+                                                    <h:outputText value="#{msg.observacao}"/>
+                                                </th>
+                                                <th align='center'>
+                                                    <h:outputText value="#{msg.tipo}"/>
+                                                </th>
+                                                <th align='center' >
+                                                    <h:outputText value="#{msg.responsavel}"/>
+                                                </th>
+                                                <th align='center'>
+                                                    <h:outputText value="#{msg.fechar}" /><br></br>
+                                                    <p:selectBooleanCheckbox value="#{cartaoOperacaoController.todosFiltro}">
+                                                         <p:ajax event="change" update="despCartoesGroup2" listener="#{cartaoOperacaoController.todosListener}"/>
+                                                    </p:selectBooleanCheckbox>
+                                                </th>
+                                            </tr></thead>
+                                        <tbody>
+                                            <ui:repeat value="#{cartaoOperacaoController.despesas}" var="item" varStatus="x">
+                                                <tr style="height: 30px;">
+                                                    <td align='center'>
+                                                        <h:outputText value="#{item.dataVencimento}">
+                                                            <f:convertDateTime locale="#{localeController.localeUI}"
+                                                                               type="date" timeZone="#{initParam['timezone']}"/>
+                                                        </h:outputText>
+                                                    </td>
+                                                    <td align='center'>
+                                                        <h:outputText value="#{item.valor}">
+                                                            <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                                        </h:outputText>
+                                                    </td>
+                                                    <td align='left'>
+                                                        <h:outputText value="#{item.observacao}"/>
+                                                    </td>
+                                                    <td align='center'>
+                                                        <h:outputText value="#{msg[item.classificacaoProcedimento]}"/>
+                                                    </td>
+                                                    <td align='center'>
+                                                        <h:outputText value="#{item.usuario.firstName}"/>
+                                                    </td>
+                                                    <td align='center'>
+                                                        <p:selectBooleanCheckbox value="#{item.marcadoTransient}"/>
+                                                    </td>
+                                                </tr>
+                                            </ui:repeat>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="6">
+                                                    FOOT
                                                 </td>
                                             </tr>
-                                        </ui:repeat>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="5">
-                                                FOOT
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                        </tfoot>
+                                    </table>
+                                </h:panelGroup>
                             </h:panelGroup>
                         </h:form>
                     </td>

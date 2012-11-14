@@ -27,8 +27,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
 /**
@@ -45,13 +43,15 @@ public class CartaoOperacaoController implements Serializable {
     private UsuarioFacade usuarioFacade;
     @EJB
     private CartaoCreditoFacade cartaoFacade;
-    private DataModel<DespesaProcedimento> despesas;
+    //Tabela
+    private List<DespesaProcedimento> despesas;
     //Filtros
     private CartaoCredito cartaoOperacao;
     private Meses mesOperacao;
     private Integer anoOperacao;
+    private boolean todosFiltro;
     //SelectItem
-    private List<Integer> listAnos = new ArrayList<Integer>();
+    private List<Integer> listAnosSelect = new ArrayList<Integer>();
 //====================
 // Acoes
 //====================    
@@ -60,6 +60,7 @@ public class CartaoOperacaoController implements Serializable {
      *
      */
     public void buscarDespesas() {
+        todosFiltro = false;
         if (cartaoOperacao == null
                 || mesOperacao == null
                 || anoOperacao == null) {
@@ -72,16 +73,19 @@ public class CartaoOperacaoController implements Serializable {
         c.set(Calendar.YEAR, anoOperacao);
         c.set(Calendar.MONTH, mesOperacao.getMes());
         final Date[] intervalo = DateUtils.getIntervalo(c.getTime());
-        List<DespesaProcedimento> desList =
-                procedimentoFacade.buscarDespesaIntervalo(usuarioFacade.getUsuario(),
+        despesas = procedimentoFacade.buscarDespesaIntervalo(usuarioFacade.getUsuario(),
                 cartaoOperacao, StatusPagamento.NAO_PAGA, intervalo);
-        despesas = new ListDataModel<DespesaProcedimento>(desList);
-        if (desList.isEmpty()) {
+        if (despesas.isEmpty()) {
             MensagemUtils.messageFactoringFull("CartaoSemComprasPeriodo",
                     new String[]{DateUtils.getDateToString(intervalo[0]),
                         DateUtils.getDateToString(intervalo[1]),
                         cartaoOperacao.getLabel()}, FacesMessage.SEVERITY_WARN,
                     FacesContext.getCurrentInstance());
+        } else {
+            for (DespesaProcedimento dp : despesas) {
+                dp.setMarcadoTransient(true);
+            }
+            todosFiltro = true;
         }
     }
 
@@ -91,11 +95,23 @@ public class CartaoOperacaoController implements Serializable {
     public void dataListener() {
         MinMaxDateDTO intervalodDatas = procedimentoFacade.buscarIntervalodDatas(cartaoOperacao,
                 StatusPagamento.NAO_PAGA, usuarioFacade.getUsuario());
-        listAnos = intervalodDatas.intervaloMinMaxAnos();
-        if (listAnos.isEmpty()) {
+        listAnosSelect = intervalodDatas.intervaloMinMaxAnos();
+        if (listAnosSelect.isEmpty()) {
             MensagemUtils.messageFactoringFull("CartaoSemCompras",
                     null, FacesMessage.SEVERITY_WARN,
                     FacesContext.getCurrentInstance());
+        }
+    }
+
+    public void todosListener() {
+        if (todosFiltro) {
+            for (DespesaProcedimento dp : getDespesas()) {
+                dp.setMarcadoTransient(true);
+            }
+        } else {
+            for (DespesaProcedimento dp : getDespesas()) {
+                dp.setMarcadoTransient(false);
+            }
         }
     }
 //====================
@@ -116,9 +132,9 @@ public class CartaoOperacaoController implements Serializable {
      * @return
      */
     public SelectItem[] getAnos() {
-        SelectItem[] anos = new SelectItem[listAnos.size()];
+        SelectItem[] anos = new SelectItem[listAnosSelect.size()];
         for (int i = 0; i < anos.length; i++) {
-            anos[i] = new SelectItem(listAnos.get(i), listAnos.get(i).toString());
+            anos[i] = new SelectItem(listAnosSelect.get(i), listAnosSelect.get(i).toString());
         }
         return anos;
     }
@@ -150,11 +166,29 @@ public class CartaoOperacaoController implements Serializable {
         this.anoOperacao = anoOperacao;
     }
 
-    public DataModel<DespesaProcedimento> getDespesas() {
+    public boolean isTodosFiltro() {
+        return todosFiltro;
+    }
+
+    public void setTodosFiltro(boolean todosFiltro) {
+        this.todosFiltro = todosFiltro;
+    }
+
+    public List<DespesaProcedimento> getDespesas() {
+        if (despesas == null) {
+            despesas = new ArrayList<DespesaProcedimento>();
+        }
         return despesas;
     }
 
-    public void setDespesas(DataModel<DespesaProcedimento> despesas) {
+    public void setDespesas(List<DespesaProcedimento> despesas) {
         this.despesas = despesas;
+    }
+
+    public List<Integer> getListAnosSelect() {
+        if (listAnosSelect == null) {
+            listAnosSelect = new ArrayList<Integer>();
+        }
+        return listAnosSelect;
     }
 }
