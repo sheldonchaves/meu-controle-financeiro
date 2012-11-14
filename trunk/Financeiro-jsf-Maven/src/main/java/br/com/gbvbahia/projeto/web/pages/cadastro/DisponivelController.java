@@ -121,13 +121,13 @@ public class DisponivelController extends EntityController<ContaBancaria>
                     new Object[]{current.getNomeConta()},
                     FacesMessage.SEVERITY_INFO,
                     FacesContext.getCurrentInstance());
-            clean();
         } catch (NegocioException ex) {
             MensagemUtils.messageFactoringFull(ex.getMessage(),
                     ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
                     FacesContext.getCurrentInstance());
             logger.info(I18nLogger.getMsg("removeError", current.toString()));
         }
+        clean();
     }
 
     public void performBlock() {
