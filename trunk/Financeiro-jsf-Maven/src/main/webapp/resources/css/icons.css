@@ -97,3 +97,8 @@
     height:16px !important;
     width:16px !important;
 }
+.lupaIco {
+    background: url("#{resource['images:lupa.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
