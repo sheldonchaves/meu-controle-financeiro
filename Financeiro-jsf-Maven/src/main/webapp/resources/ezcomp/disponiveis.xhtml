@@ -8,11 +8,15 @@
 
     <!-- INTERFACE -->
     <cc:interface>
+        <cc:attribute name="w1" required="false" default="40" />
+        <cc:attribute name="w2" required="false" default="110" />
+        <cc:attribute name="w3" required="false" default="200" />
+        <cc:attribute name="width" required="false" default="40%" />
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <div class="box">
+        <div class="box" style="width: #{cc.attrs.width}">
             <div class="box-head">
                 <h3>#{msg.disponiveis}</h3>
             </div>
@@ -20,13 +24,13 @@
                 <TABLE   id="contasTable">
                     <ui:repeat value="#{disponivelReport.disponiveis}" var="conta">
                         <tr >
-                            <TD align="left" valign="top"  width="40">
+                            <TD align="left" valign="top"  width="#{cc.attrs.w1}">
                                 <h:outputText value="#{conta.tipoConta.abreviacao}"/>
                             </TD>
-                            <TD align="left" valign="top"  width="110">
+                            <TD align="left" valign="top"  width="#{cc.attrs.w2}">
                                 <h:outputText value="#{conta.nomeConta}"/>
                             </TD>
-                            <TD align="right" valign="top" width="200">
+                            <TD align="right" valign="top" width="#{cc.attrs.w3}">
                                 <h:outputText value="#{conta.saldo}" styleClass="#{conta.saldo lt 0 ? 'red' : 'green'}">
                                     <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
                                 </h:outputText>

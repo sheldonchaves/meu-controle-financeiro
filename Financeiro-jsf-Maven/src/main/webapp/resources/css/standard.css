@@ -206,7 +206,6 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     background:#fbfcfc; 
     padding:1px; 
     margin-bottom:5px;
-    width: 40%;
     margin-left: 10px;
 }
 .box-head { 
@@ -217,6 +216,7 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     white-space:nowrap;
     border-bottom:solid 1px #fff; 
     border-radius: 5px;
+    text-align: left;
 }
 .box-head .right{ 
     padding-top:5px;

@@ -8,40 +8,50 @@
                 >
 
     <ui:define name="content">
-        <h:form id="formCartaoOperacaoTable">
-            <h:panelGrid columns="3">
-                <h:outputLabel value="#{msg.cartaoCredito}:" for="cartao" />
-                <p:selectOneMenu value="#{cartaoOperacaoController.cartaoOperacao}"
-                                 required="true" requiredMessage="#{msg.campoObrigatorio}"
-                                 id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
-                    <p:ajax event="change" update="dataGroup" listener="#{despesaUnicaController.dataListener}"/> 
-                    <f:selectItems value="#{cartaoOperacaoController.cartoes}"/>
-                    <f:converter converterId="cartaoConverter"/>
-                </p:selectOneMenu>
-                <p:message for="cartao"/>
+        <table  >
+            <tbody>
+                <tr>
+                    <td align='left' width="60%" style="vertical-align: top;">
+                        <h:form id="formCartaoOperacaoTable" style="margin-top: 12px;">
+                            <h:panelGrid columns="3">
+                                <h:outputLabel value="#{msg.cartaoCredito}:" for="cartao" />
+                                <p:selectOneMenu value="#{cartaoOperacaoController.cartaoOperacao}"
+                                                 required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                                 id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
+                                    <p:ajax event="change" update="dataGroup" listener="#{despesaUnicaController.dataListener}"/> 
+                                    <f:selectItems value="#{cartaoOperacaoController.cartoes}"/>
+                                    <f:converter converterId="cartaoConverter"/>
+                                </p:selectOneMenu>
+                                <p:message for="cartao"/>
 
-                <h:outputLabel value="#{msg.periodo}:" />
-                <h:panelGroup id="dataGroup">
-                    <h:panelGrid columns="3" rendered="#{cartaoOperacaoController.cartaoOperacao != null}">
-                        <p:selectOneMenu value="#{cartaoOperacaoController.mesOperacao}" required="true"
-                                         requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
-                                         style="font-size: 0.9em; width: 120px;">
-                            <f:selectItems value="#{cartaoOperacaoController.meses}"/>
-                        </p:selectOneMenu>
-                        <p:selectOneMenu value="#{cartaoOperacaoController.anoOperacao}" required="true"
-                                         requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
-                                         style="font-size: 0.9em;">
-                            <f:selectItems value="#{cartaoOperacaoController.anos}"/>
-                        </p:selectOneMenu>
-                        <p:commandButton icon="lupaIco"/>
-                    </h:panelGrid>
-                </h:panelGroup>
-            </h:panelGrid>
-            <p:spacer width="100%" height="20"/>
-        </h:form>
-        <h:panelGroup id="disponiveis">
-            <arq:disponiveis/>
-        </h:panelGroup>
+                                <h:outputLabel value="#{msg.periodo}:" />
+                                <h:panelGroup id="dataGroup">
+                                    <h:panelGrid columns="3" rendered="#{cartaoOperacaoController.cartaoOperacao != null}">
+                                        <p:selectOneMenu value="#{cartaoOperacaoController.mesOperacao}" required="true"
+                                                         requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
+                                                         style="font-size: 0.9em; width: 120px;">
+                                            <f:selectItems value="#{cartaoOperacaoController.meses}"/>
+                                        </p:selectOneMenu>
+                                        <p:selectOneMenu value="#{cartaoOperacaoController.anoOperacao}" required="true"
+                                                         requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
+                                                         style="font-size: 0.9em;">
+                                            <f:selectItems value="#{cartaoOperacaoController.anos}"/>
+                                        </p:selectOneMenu>
+                                        <p:commandButton icon="lupaIco"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            <p:spacer width="100%" height="20"/>
+                        </h:form>
+                    </td>
+                    <td align='left' style="vertical-align: top;">
+                        <h:panelGroup id="disponiveis">
+                            <arq:disponiveis width="90%"/>
+                        </h:panelGroup>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </ui:define>
 </ui:composition>
 
