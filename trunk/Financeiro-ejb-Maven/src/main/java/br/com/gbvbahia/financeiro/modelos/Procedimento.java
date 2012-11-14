@@ -184,7 +184,8 @@ public class Procedimento
     private DetalheTipoProcedimento detalheProcedimento = DetalheTipoProcedimento.RECEITA_UNICA;
     @Transient
     private ContaBancaria contaBancariaTransient;
-
+    @Transient
+    private boolean marcadoTransient;
     /**
      * Padrão, nunca deve ser utilizado, lança RuntimeException.
      */
@@ -520,5 +521,13 @@ public class Procedimento
      */
     public void setContaBancariaTransient(ContaBancaria contaBancariaTransient) {
         this.contaBancariaTransient = contaBancariaTransient;
+    }
+
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }
