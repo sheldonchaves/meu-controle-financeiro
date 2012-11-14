@@ -6,6 +6,7 @@ package br.com.gbvbahia.financeiro.beans;
 
 import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
+import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoConta;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
@@ -18,6 +19,7 @@ import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Bean de entidade para ContaBancaria.<br> <strong>SEGURANCA</strong>
@@ -93,5 +95,18 @@ public class ContaBancariaBean
         Map<String, Object> parans = getMapParans();
         parans.put("usuario", usr);
         return pesqCount("ContaBancaria.countUser", parans);
+    }
+
+    @Override
+    public void remove(ContaBancaria entity) throws NegocioException {
+        try{
+        super.remove(entity);
+        } catch(NegocioException e){
+            if(StringUtils.equals(e.getMessage(), "AbstractFacade.entityRemoveErro")){
+                throw new NegocioException("ContaRemoveMovimentacaoErro", new String[]{entity.getNomeConta()});
+            }else{
+                throw e;
+            }
+        }
     }
 }

@@ -138,7 +138,6 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
             Logger.getLogger(this.getClass().getName()).log(
                     Level.WARNING,
                     "Problema ao remover: " + entity.toString(), p);
-            p.printStackTrace();
             throw new NegocioException("AbstractFacade.entityRemoveErro",
                     new String[]{entity.getLabel(), p.getMessage()});
         } catch (javax.validation.ConstraintViolationException e) {
