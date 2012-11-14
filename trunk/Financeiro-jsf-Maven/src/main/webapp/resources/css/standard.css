@@ -180,6 +180,7 @@ a.delpar { background-image:url("#{resource['images:tag_del_2.png']}");}
 a.fecg { background-image:url("#{resource['images:cg_13.png']}");}
 a.feco { background-image:url("#{resource['images:co_13.png']}");}
 a.fecb { background-image:url("#{resource['images:cb_13.png']}");}
+a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
 
 .pagging { height:20px; padding:8px 10px; line-height:19px; color:#949494; }
 .pagging a{ background:url("#{resource['images:pagging.gif']}") repeat-x 0 0; height:20px; float:left; padding:0 8px; border:solid 1px #d5d5d5; text-decoration: none; color:#949494; margin-left: 5px; }
