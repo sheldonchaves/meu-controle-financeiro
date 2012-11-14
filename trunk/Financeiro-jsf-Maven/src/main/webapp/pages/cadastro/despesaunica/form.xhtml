@@ -15,14 +15,16 @@
                         <h:outputLabel value="#{msg.cartaoCredito}:" for="cartao" />
                         <p:selectOneMenu value="#{despesaUnicaController.current.cartaoCredito}"
                                          id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
-                            <p:ajax event="change" update="recForm" listener="#{despesaUnicaController.dataListener}"/> 
+                            <p:ajax event="change" update="dataGroup" listener="#{despesaUnicaController.dataListener}"/> 
                             <f:selectItems value="#{despesaUnicaController.cartoes}"/>
                             <f:converter converterId="cartaoConverter"/>
                         </p:selectOneMenu>
                         <p:message for="cartao"/>
 
                         <h:outputLabel value="#{msg.vencimento}:" for="data" />
+                        <h:panelGroup id="dataGroup">
                         <arq:calendar id="data" valor="#{despesaUnicaController.current.dataVencimento}" title="#{msg.data}"/>
+                        </h:panelGroup>
                         <p:message for="data"/>
 
                         <h:outputLabel value="#{msg.valor}:" for="valor" />

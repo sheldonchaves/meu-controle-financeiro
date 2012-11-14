@@ -15,15 +15,17 @@
                         <h:outputLabel value="#{msg.cartaoCredito}:" for="cartao" />
                         <p:selectOneMenu value="#{agendaController.current.cartaoCredito}"
                                          id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
-                            <p:ajax event="change" update="ageForm" listener="#{agendaController.dataListener}"/> 
+                            <p:ajax event="change" update="dataGroup" listener="#{agendaController.dataListener}"/> 
                             <f:selectItems value="#{agendaController.cartoes}"/>
                             <f:converter converterId="cartaoConverter"/>
                         </p:selectOneMenu>
                         <p:message for="cartao"/>
 
                         <h:outputLabel value="#{msg.dataInicial}:" for="data" />
+                        <h:panelGroup id="dataGroup">
                         <arq:calendar id="data" valor="#{agendaController.current.dataPrimeiroVencimento}" title="#{msg.dataInicial}"/>
-                        <p:message for="detalhe"/>
+                        </h:panelGroup>
+                        <p:message for="data"/>
 
                         <h:outputLabel value="#{msg.valor}:" for="valor" />
                         <p:inputText id="valor" value="#{agendaController.current.valorFixo}" title="#{msg.valorAgenda}" 
