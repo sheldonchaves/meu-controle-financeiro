@@ -36,7 +36,13 @@ import javax.persistence.*;
     + " From DespesaProcedimento d "
     + " WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
     + " AND (:status2 = 'todos' OR d.statusPagamento = :status) "
-    + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) ")
+    + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "),
+    @NamedQuery(name = "DespesaProcedimento.buscarDespesaUsuarioIntervalo",
+    query = " SELECT distinct d From DespesaProcedimento d "
+    + " WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
+    + " AND (:status2 = 'todos' OR d.statusPagamento = :status) "
+    + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
+    + " AND d.dataVencimento between :dataI and :dataF ")
 })
 @DiscriminatorValue("DESPESA_UNICA")
 public class DespesaProcedimento extends Procedimento

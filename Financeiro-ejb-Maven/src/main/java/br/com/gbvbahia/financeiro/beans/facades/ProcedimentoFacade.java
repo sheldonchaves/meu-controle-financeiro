@@ -11,6 +11,7 @@ import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
+import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
@@ -180,4 +181,16 @@ public interface ProcedimentoFacade
      */
     MinMaxDateDTO buscarIntervalodDatas(final CartaoCredito cartao,
             final StatusPagamento status, final Usuario usr);
+    
+    /**
+     * Busca Despesas por intervalo de datas.
+     * @param usr obrigatorio
+     * @param cartao opcional
+     * @param status opcional
+     * @param intervalo obrigatorio intervalo[0] inicial intervalo[1] final
+     * @return 
+     */
+    List<DespesaProcedimento> buscarDespesaIntervalo(final Usuario usr,
+            final CartaoCredito cartao, final StatusPagamento status,
+            final Date[] intervalo);
 }

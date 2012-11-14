@@ -114,6 +114,25 @@ public final class DateUtils {
     }
 
     /**
+     * Maximiza a hora, minuto e segunda de uma data.
+     *
+     * @param data
+     * @return Data 23 nas horas, 59 minutos e 59 segundos ou nulo se
+     * parametro for nulo.
+     */
+    public static Date maximizarHora(Date data) {
+        if (data != null) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(data);
+            c.set(Calendar.HOUR_OF_DAY, 23);
+            c.set(Calendar.MINUTE, 59);
+            c.set(Calendar.SECOND, 59);
+            return c.getTime();
+        }
+        return data;
+    }
+
+    /**
      * Incrementa campo solicitado com a quantidade solicitada.
      *
      * @param data Data a ser incrementada
@@ -134,16 +153,40 @@ public final class DateUtils {
 
     /**
      * Retorna o valor do field solicitado.
+     *
      * @param data
      * @param calendarField Calendar.YEAR, Calendar.MONTH...
-     * @return 
+     * @return
      */
     public static Integer getFieldDate(Date data, int calendarField) {
-        if(data == null){
+        if (data == null) {
             return null;
         }
         Calendar c = Calendar.getInstance();
         c.setTime(data);
         return c.get(calendarField);
+    }
+
+    /**
+     * Retorna um array com a menor data de um mês, 01/XX/XXXX 00:00:00 000
+     * posição 0 e maior data de um mês se Jan: 31/01/2012 23:59:59 posição 1.
+     * 30/03/2012 23:59:59
+     *
+     * @param date
+     * @return
+     */
+    public static Date[] getIntervalo(Date date) {
+        Date[] toReturn = new Date[2];
+        Calendar ini = Calendar.getInstance();
+        Calendar fim = Calendar.getInstance();
+        ini.setTime(date);
+        fim.setTime(date);
+        ini.set(Calendar.DAY_OF_MONTH, 1);
+        ini.setTime(zerarHora(ini.getTime()));
+        fim.set(Calendar.DAY_OF_MONTH, fim.getActualMaximum(Calendar.DAY_OF_MONTH));
+        fim.setTime(maximizarHora(fim.getTime()));
+        toReturn[0] = ini.getTime();
+        toReturn[1] = fim.getTime();
+        return toReturn;
     }
 }
