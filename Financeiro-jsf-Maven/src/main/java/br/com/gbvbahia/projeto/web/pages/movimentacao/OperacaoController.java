@@ -11,12 +11,12 @@ import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.constantes.DetalheTipoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
-import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.common.EntityController;
 import br.com.gbvbahia.projeto.web.common.EntityPagination;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
+import br.com.gbvbahia.projeto.web.pages.report.DisponivelReport;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.util.Date;
@@ -25,13 +25,13 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import org.apache.log4j.Logger;
-import org.primefaces.event.DateSelectEvent;
 
 /**
  *
@@ -53,6 +53,10 @@ public class OperacaoController extends EntityController<Procedimento> implement
     private ContaBancariaFacade disponivelFacade;
     @EJB
     private TrabalharOperacaoBusiness operacaoBusiness;
+
+    @ManagedProperty("#{disponivelReport}")
+    private DisponivelReport disponivelReport;
+    
     private Procedimento current;
     //Filtros
     private StatusPagamento statusFiltro = StatusPagamento.NAO_PAGA;
@@ -103,6 +107,7 @@ public class OperacaoController extends EntityController<Procedimento> implement
                     new String[]{current.getObservacao()}, FacesMessage.SEVERITY_INFO,
                     FacesContext.getCurrentInstance());
             recreateTable();
+            disponivelReport.atualizarContas();
             return clean();
         } catch (NegocioException ex) {
             MensagemUtils.messageFactoringFull(ex.getMessage(),
@@ -115,7 +120,8 @@ public class OperacaoController extends EntityController<Procedimento> implement
 
     /**
      * Abri uma operação fechada.
-     * @return 
+     *
+     * @return
      */
     public String abrirOperacao() {
         try {
@@ -125,6 +131,7 @@ public class OperacaoController extends EntityController<Procedimento> implement
                     new String[]{current.getObservacao()}, FacesMessage.SEVERITY_INFO,
                     FacesContext.getCurrentInstance());
             recreateTable();
+            disponivelReport.atualizarContas();
             return clean();
         } catch (NegocioException ex) {
             MensagemUtils.messageFactoringFull(ex.getMessage(),
@@ -246,5 +253,13 @@ public class OperacaoController extends EntityController<Procedimento> implement
 
     public void setDataFiltro(Date dataFiltro) {
         this.dataFiltro = dataFiltro;
+    }
+
+    public DisponivelReport getDisponivelReport() {
+        return disponivelReport;
+    }
+
+    public void setDisponivelReport(DisponivelReport disponivelReport) {
+        this.disponivelReport = disponivelReport;
     }
 }
