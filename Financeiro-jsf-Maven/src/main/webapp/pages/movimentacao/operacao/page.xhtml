@@ -80,11 +80,14 @@
                                 </td>
                                 <td align='center'>
                                     <h:commandLink action="#{operacaoController.fecharOperacao}" styleClass="ico fecg" value="#{msg.fechar}"
-                                                   rendered="#{item.statusPagamento ne 'PAGA' and item.tipoProcedimento eq 'RECEITA_FINANCEIRA'}"
+                                                   rendered="#{item.statusPagamento ne 'PAGA' and item.detalheProcedimento eq 'RECEITA_UNICA'}"
                                                    id="fechagLink" onclick="return confirm('#{msg.desejaFechar}: #{item.observacao}?');"/>
                                     <h:commandLink action="#{operacaoController.fecharOperacao}" styleClass="ico feco" value="#{msg.fechar}"
-                                                   rendered="#{item.statusPagamento ne 'PAGA' and item.tipoProcedimento ne 'RECEITA_FINANCEIRA'}"
+                                                   rendered="#{item.statusPagamento ne 'PAGA' and item.detalheProcedimento eq 'DESPESA_UNICA'}"
                                                    id="fechaoLink" onclick="return confirm('#{msg.desejaFechar}: #{item.observacao}?');"/>
+                                    <h:commandLink action="#{operacaoController.fecharOperacao}" styleClass="ico fecr" value="#{msg.fechar}"
+                                                   rendered="#{item.statusPagamento ne 'PAGA' and item.detalheProcedimento eq 'DESPESA_PARCELADA'}"
+                                                   id="fecharLink" onclick="return confirm('#{msg.desejaFechar}: #{item.observacao}?');"/>
                                     <h:commandLink action="#{operacaoController.abrirOperacao()}" styleClass="ico fecb" value="#{msg.abrir}"
                                                    rendered="#{item.statusPagamento eq 'PAGA'}"
                                                    id="fechabLink" onclick="return confirm('#{msg.desejaAbrir}: #{item.observacao}?');"/>
