@@ -11,8 +11,8 @@ import javax.persistence.*;
 
 /**
  *
- * Representa uma conta única de pagamento, como uma som comprado a vista
- * ou uma despesa fixa, como a conta de luz/água.<br> Não possui parcelas.
+ * Representa uma conta única de pagamento, como uma som comprado a vista ou
+ * uma despesa fixa, como a conta de luz/água.<br> Não possui parcelas.
  *
  * @since 12/04/2012
  * @author Guilherme
@@ -22,23 +22,29 @@ import javax.persistence.*;
 @NamedQueries({
     @NamedQuery(name = "Despesa.CartaoStatusUsuario",
     query = " SELECT distinct d From DespesaProcedimento d "
-    + "WHERE (:cartao is null OR d.cartaoCredito = :cartao) "
-    + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
-    + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario)"),
+    + " WHERE (:cartao is null OR d.cartaoCredito = :cartao) "
+    + " AND (:status2 = 'todos' OR d.statusPagamento = :status) "
+    + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario)"),
     @NamedQuery(name = "Procedimento.buscarCartaoStatusUsrTipoProcedimento",
     query = " SELECT distinct d From DespesaProcedimento d "
-    + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
-    + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
-    + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
-    + "AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) ")
+    + " WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
+    + " AND (:status2 = 'todos' OR d.statusPagamento = :status) "
+    + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
+    + " AND (:tipoProcedimento2 = 'todos' OR d.tipoProcedimento = :tipoProcedimento) "),
+    @NamedQuery(name = "DespesaProcedimento.intervaloDatas",
+    query = " SELECT new br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO(min(d.dataVencimento), max(d.dataVencimento)) "
+    + " From DespesaProcedimento d "
+    + " WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
+    + " AND (:status2 = 'todos' OR d.statusPagamento = :status) "
+    + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) ")
 })
 @DiscriminatorValue("DESPESA_UNICA")
 public class DespesaProcedimento extends Procedimento
         implements Serializable {
 
     /**
-     * Construtor padrão que informa ao Procedimento que está extensão é
-     * uma Despesa.
+     * Construtor padrão que informa ao Procedimento que está extensão é uma
+     * Despesa.
      */
     public DespesaProcedimento() {
         this(DetalheTipoProcedimento.DESPESA_UNICA);
@@ -46,15 +52,14 @@ public class DespesaProcedimento extends Procedimento
 
     /**
      * Facilitando a construção polimorfica.
-     * @param cartaoCredito 
+     *
+     * @param cartaoCredito
      */
     public DespesaProcedimento(CartaoCredito cartaoCredito) {
         this(DetalheTipoProcedimento.DESPESA_UNICA);
         this.cartaoCredito = cartaoCredito;
     }
 
-    
-    
     /**
      * Utilizado para definir outro tipo de detalhe por subclasses.
      *

@@ -16,6 +16,7 @@ import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.financeiro.utils.I18N;
 import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
@@ -28,7 +29,9 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -132,8 +135,8 @@ public class ProcedimentoBean
     }
 
     /**
-     * Retorna uma lista com Procedimento que são
-     * DespesaParceladaProcedimento pode ser feito cast sem problemas.
+     * Retorna uma lista com Procedimento que são DespesaParceladaProcedimento
+     * pode ser feito cast sem problemas.
      *
      * @param usuario Proprietário ou conjuge do proprietario. Obrigatório
      * @param cartao Cartao onde foi feito pagamento. Opcional.
@@ -185,14 +188,14 @@ public class ProcedimentoBean
         return listPesqParam("Procedimento.selectProcedimento",
                 parans, range[1] - range[0], range[0]);
     }
-    
+
     @Override
-    public void removerParcelamento(String idParcelamento) throws NegocioException{
+    public void removerParcelamento(String idParcelamento) throws NegocioException {
         Map<String, Object> parans = getMapParans();
         parans.put("identificador", idParcelamento);
         super.update("DespesaParcelada.apagarParcelamento", parans);
     }
-    
+
     @Override
     public Long contarProcedimentosSemCartao(final Usuario usr, final DetalheTipoProcedimento detalhe,
             final StatusPagamento status, String observacao, Date dataVencimento) {
@@ -209,20 +212,37 @@ public class ProcedimentoBean
         return listPesqParam("Procedimento.selectProcedimentoSemCartao",
                 parans, range[1] - range[0], range[0]);
     }
-    
+
+    @Override
+    public MinMaxDateDTO buscarIntervalodDatas(final CartaoCredito cartao,
+            final StatusPagamento status, final Usuario usr) {
+        Query q = getEntityManager().createNamedQuery("DespesaProcedimento.intervaloDatas");
+        q.setParameter("cartao", cartao);
+        q.setParameter("cartao2", cartao == null ? "todos" : "filtro");
+        q.setParameter("status", status);
+        q.setParameter("status2", status == null ? "todos" : "filtro");
+        q.setParameter("usuario", usr);
+        try {
+            return (MinMaxDateDTO) q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     /**
      * Popula map para paginacao de Procedimentos
+     *
      * @param parans
      * @param usr
      * @param detalhe
-     * @param status 
+     * @param status
      */
     private void paransPaginacao(Map<String, Object> parans,
             final Usuario usr, final DetalheTipoProcedimento detalhe,
             final StatusPagamento status, String observacao, Date dataVencimento) {
         parans.put("usuario", usr);
         parans.put("detalheProcedimento", detalhe);
-        parans.put("detalheProcedimento2", detalhe  == null ? "todos" : "filtro");
+        parans.put("detalheProcedimento2", detalhe == null ? "todos" : "filtro");
         parans.put("statusPagamento", status);
         parans.put("statusPagamento2", status == null ? "todos" : "filtro");
         parans.put("dataVencimento2", dataVencimento == null ? "todos" : "filtro");
@@ -230,15 +250,15 @@ public class ProcedimentoBean
         parans.put("observacao2", StringUtils.isBlank(observacao) ? "todos" : "filtro");
         parans.put("observacao", StringBeanUtils.acertaNomeParaLike(observacao, StringBeanUtils.LIKE_END));
     }
+
     /**
-     * Valida as parcelas:<br> Total de parcelas não pode ser menor que
-     * 2.<br> A parcela atual não pode ser menor que 1.<br> O total de
-     * parcelas não pode ser menor que a parcela atual.<br>
+     * Valida as parcelas:<br> Total de parcelas não pode ser menor que 2.<br>
+     * A parcela atual não pode ser menor que 1.<br> O total de parcelas não
+     * pode ser menor que a parcela atual.<br>
      *
      * @param parAtual Parcela atual.
      * @param parTotal Parcela total.
-     * @throws NegocioException se as parcelas não estiverem em
-     * conformidade.
+     * @throws NegocioException se as parcelas não estiverem em conformidade.
      */
     private void validarParcelas(final int parTotal,
             final int parAtual) throws NegocioException {

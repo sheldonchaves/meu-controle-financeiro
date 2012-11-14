@@ -13,6 +13,7 @@ import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -141,8 +142,9 @@ public interface ProcedimentoFacade
     void removerParcelamento(String idParcelamento) throws NegocioException;
 
     /**
-     * Conta procedimetos de acordo com filtros.
-     * Sem o que for vinculado a um cartão de crédito.
+     * Conta procedimetos de acordo com filtros. Sem o que for vinculado a um
+     * cartão de crédito.
+     *
      * @param usr Obrigatório.
      * @param detalhe Opcional.
      * @param status Opcional
@@ -154,8 +156,9 @@ public interface ProcedimentoFacade
             final StatusPagamento status, String observacao, Date dataVencimento);
 
     /**
-     * Busca procedimentos de acordo com pefil, paginado.
-     * Sem o que for vinculado a um cartão de crédito.
+     * Busca procedimentos de acordo com pefil, paginado. Sem o que for
+     * vinculado a um cartão de crédito.
+     *
      * @param usr obrigatorio.
      * @param detalhe Opcional.
      * @param status Opcional.
@@ -166,4 +169,15 @@ public interface ProcedimentoFacade
      */
     List<Procedimento> buscarProcedimentosSemCartao(final Usuario usr, final DetalheTipoProcedimento detalhe,
             final StatusPagamento status, String observacao, Date dataVencimento, int[] range);
+
+    /**
+     * Retorna um MinMaxDateDTO para intervalo de datas.
+     *
+     * @param cartao Opcional.
+     * @param status Opcional.
+     * @param usr Obrigatorio.
+     * @return
+     */
+    MinMaxDateDTO buscarIntervalodDatas(final CartaoCredito cartao,
+            final StatusPagamento status, final Usuario usr);
 }
