@@ -14,6 +14,7 @@ import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
@@ -213,6 +214,22 @@ public class ProcedimentoBean
                 parans, range[1] - range[0], range[0]);
     }
 
+    @Override
+    public List<DespesaProcedimento> buscarDespesaIntervalo(final Usuario usr,
+            final CartaoCredito cartao, final StatusPagamento status,
+            final Date[] intervalo){
+        Map<String, Object> parans = getMapParans();
+        parans.put("cartao", cartao);
+        parans.put("cartao2", cartao == null ? "todos" : "filtro");
+        parans.put("status", status);
+        parans.put("status2", status == null ? "todos" : "filtro");
+        parans.put("usuario", usr);
+        parans.put("dataI", intervalo[0]);
+        parans.put("dataF", intervalo[1]);
+        List toReturn = listPesqParam("DespesaProcedimento.buscarDespesaUsuarioIntervalo", parans);
+        return toReturn;
+    }
+    
     @Override
     public MinMaxDateDTO buscarIntervalodDatas(final CartaoCredito cartao,
             final StatusPagamento status, final Usuario usr) {
