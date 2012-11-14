@@ -18,7 +18,7 @@
                                 <p:selectOneMenu value="#{cartaoOperacaoController.cartaoOperacao}"
                                                  required="true" requiredMessage="#{msg.campoObrigatorio}"
                                                  id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
-                                    <p:ajax event="change" update="dataGroup" listener="#{despesaUnicaController.dataListener}"/> 
+                                    <p:ajax event="change" update="dataGroup" listener="#{cartaoOperacaoController.dataListener}"/> 
                                     <f:selectItems value="#{cartaoOperacaoController.cartoes}"/>
                                     <f:converter converterId="cartaoConverter"/>
                                 </p:selectOneMenu>
@@ -32,16 +32,71 @@
                                                          style="font-size: 0.9em; width: 120px;">
                                             <f:selectItems value="#{cartaoOperacaoController.meses}"/>
                                         </p:selectOneMenu>
+
                                         <p:selectOneMenu value="#{cartaoOperacaoController.anoOperacao}" required="true"
                                                          requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
                                                          style="font-size: 0.9em;">
                                             <f:selectItems value="#{cartaoOperacaoController.anos}"/>
                                         </p:selectOneMenu>
-                                        <p:commandButton icon="lupaIco"/>
+                                        <p:commandButton icon="lupaIco" actionListener="#{cartaoOperacaoController.buscarDespesas}" update="despCartoesGroup" />
                                     </h:panelGrid>
                                 </h:panelGroup>
                             </h:panelGrid>
-                            <p:spacer width="100%" height="20"/>
+                            <p:spacer width="100%" height="10"/>
+                            <h:panelGroup id="despCartoesGroup" >
+                                <table class="referencesmall" width="100%">
+                                    <thead style="font-size: 0.9em;"><tr>
+                                            <th align='center'>
+                                                <h:outputText value="#{msg.vencimento}" />
+                                            </th>
+                                            <th align='center'>
+                                                <h:outputText value="#{msg.valor}"/>
+                                            </th>
+                                            <th align='left'>
+                                                <h:outputText value="#{msg.observacao}"/>
+                                            </th>
+                                            <th align='center'>
+                                                <h:outputText value="#{msg.tipo}"/>
+                                            </th>
+                                            <th align='center'>
+                                                <h:outputText value="#{msg.responsavel}"/>
+                                            </th>
+                                        </tr></thead>
+                                    <tbody>
+                                        <ui:repeat value="#{cartaoOperacaoController.despesas}" var="item" varStatus="x">
+                                            <tr style="height: 30px;">
+                                                <td align='center'>
+                                                    <h:outputText value="#{item.dataVencimento}">
+                                                        <f:convertDateTime locale="#{localeController.localeUI}"
+                                                                           type="date" timeZone="#{initParam['timezone']}"/>
+                                                    </h:outputText>
+                                                </td>
+                                                <td align='center'>
+                                                    <h:outputText value="#{item.valor}">
+                                                        <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                                    </h:outputText>
+                                                </td>
+                                                <td align='center'>
+                                                    <h:outputText value="#{item.observacao}"/>
+                                                </td>
+                                                <td align='center'>
+                                                    <h:outputText value="#{msg[item.classificacaoProcedimento]}"/>
+                                                </td>
+                                                <td align='center'>
+                                                    <h:outputText value="#{item.usuario.firstName}"/>
+                                                </td>
+                                            </tr>
+                                        </ui:repeat>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="5">
+                                                FOOT
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </h:panelGroup>
                         </h:form>
                     </td>
                     <td align='left' style="vertical-align: top;">
