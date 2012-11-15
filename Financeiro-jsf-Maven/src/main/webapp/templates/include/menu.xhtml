@@ -33,14 +33,18 @@
                                     rendered="#{loginController.admin}"/>
                     </p:submenu>
                 </p:submenu>  
-                
+
                 <p:submenu label="#{msg.movimentacao}" icon="movimentacaoIco" id="menu5">
                     <p:menuitem value="#{msg.operacao}" url="/pages/movimentacao/operacao/page.xhtml"
                                 icon="contasIco" id="menu5_1"/>
-                    <p:menuitem value="#{msg.cartaoCredito}" url="/pages/movimentacao/cartao/fechar/page.xhtml"
-                                icon="movimentacaoCartaoIcon" id="menu5_2"/>
+                    <p:submenu label="#{msg.cartaoCredito}" icon="movimentacaoCartaoIcon" id="menu5_0_1">
+                        <p:menuitem value="#{msg.fechar}" url="/pages/movimentacao/cartao/fechar/page.xhtml"
+                                    icon="movimentacaoFecharCartaoIcon" id="menu5_0_2"/>
+                        <p:menuitem value="#{msg.abrir}" url="/pages/movimentacao/cartao/abrir/page.xhtml"
+                                    icon="movimentacaoAbrirCartaoIcon" id="menu5_0_3"/>
+                    </p:submenu>
                 </p:submenu>
-                
+
                 <p:submenu label="#{msg.pessoal}" icon="pessoalIcon" id="menu2">
                     <p:menuitem value="#{msg.alterarSenha}" url="/pages/pessoal/password.xhtml"
                                 icon="pessoalPasswordIco" id="menu2_1"/>

@@ -6,10 +6,10 @@
                 xmlns:arq="http://java.sun.com/jsf/composite/ezcomp"
                 template="../../../templates/layout.xhtml"
                 >
-<ui:param name="titulomenu" value="#{msg.operacaoMovimentacao}" />
+    <ui:param name="titulomenu" value="#{msg.operacaoMovimentacao}" />
     <ui:define name="content">
         <h:form id="formOperacaoTable">
-            <h:panelGroup >
+            <h:panelGroup id="groupOperacao">
                 <table class="referencesmall" width="100%">
                     <thead style="font-size: 0.9em;"><tr>
                             <th align='center' width="110">
@@ -50,7 +50,6 @@
                                     <f:selectItems value="#{operacaoController.status}"/>
                                 </p:selectOneMenu>
                             </th>
-                            <th align='center'> <h:outputText value="#{msg.debitarDe}"/></th>
                             <th width="70" class="ac"></th>
                         </tr></thead>
                     <tbody>
@@ -72,13 +71,6 @@
                                 <td align='center'><h:outputText value="#{msg[item.detalheProcedimento]}"/></td>
                                 <td align='center'><h:outputText value="#{msg[item.statusPagamento]}"/></td>
                                 <td align='center'>
-                                    <p:selectOneMenu value="#{item.contaBancariaTransient}" id="contaDeb" style="font-size: 0.9em; width: 155px;"
-                                                     rendered="#{item.statusPagamento ne 'PAGA'}">
-                                        <f:selectItems value="#{operacaoController.contas}"/>
-                                        <f:converter converterId="disponivelConverter"/>
-                                    </p:selectOneMenu>
-                                </td>
-                                <td align='center'>
                                     <h:commandLink action="#{operacaoController.fecharOperacao}" styleClass="ico fecg" value="#{msg.fechar}"
                                                    rendered="#{item.statusPagamento ne 'PAGA' and item.detalheProcedimento eq 'RECEITA_UNICA'}"
                                                    id="fechagLink" onclick="return confirm('#{msg.desejaFechar}: #{item.observacao}?');"/>
@@ -95,6 +87,28 @@
                             </tr>
                         </ui:repeat>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td align="right">
+                                <table style="border: none !important;">
+                                    <tr style="border: none !important;"><td style="border: none !important;">
+                                            <h:outputText value="#{msg.debitarDe}" style="font-weight: bold;"/>
+                                        </td><td style="border: none !important;">
+                                            <p:message for="contaDeb" display="icon"/>
+                                            
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td align='left' colspan="2">
+                                <p:selectOneMenu value="#{operacaoController.disponivel}" id="contaDeb"
+                                                 style="font-size: 0.9em; width: 155px;">
+                                    <f:selectItems value="#{operacaoController.contas}"/>
+                                    <f:converter converterId="disponivelConverter"/>
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </h:panelGroup>
             <arq:paginator entityBean="#{operacaoController}" renderedNew="#{false}"/>
