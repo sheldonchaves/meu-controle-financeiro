@@ -11,6 +11,7 @@ import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.constantes.DetalheTipoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
+import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.common.EntityController;
@@ -57,6 +58,7 @@ public class OperacaoController extends EntityController<Procedimento> implement
     @ManagedProperty("#{disponivelReport}")
     private DisponivelReport disponivelReport;
     
+    private ContaBancaria disponivel;
     private Procedimento current;
     //Filtros
     private StatusPagamento statusFiltro = StatusPagamento.NAO_PAGA;
@@ -96,13 +98,13 @@ public class OperacaoController extends EntityController<Procedimento> implement
     public String fecharOperacao() {
         try {
             setEntity(getItems().getRowData());
-            if (current.getContaBancariaTransient() == null) {
-                MensagemUtils.messageFactoringFull("MovimentacaoProcedimentoSemConta",
-                        new String[]{current.getObservacao()}, FacesMessage.SEVERITY_ERROR,
+            if (disponivel == null) {
+                MensagemUtils.messageFactoringFull("formOperacaoTable:contaDeb","MovimentacaoProcedimentoSemConta",
+                        new String[]{current.getObservacao()}, FacesMessage.SEVERITY_WARN,
                         FacesContext.getCurrentInstance());
                 return JsfUtil.MANTEM;
             }
-            operacaoBusiness.fecharOperacao(current, current.getContaBancariaTransient());
+            operacaoBusiness.fecharOperacao(current, disponivel);
             MensagemUtils.messageFactoringFull("OperacaoFechada",
                     new String[]{current.getObservacao()}, FacesMessage.SEVERITY_INFO,
                     FacesContext.getCurrentInstance());
@@ -261,5 +263,13 @@ public class OperacaoController extends EntityController<Procedimento> implement
 
     public void setDisponivelReport(DisponivelReport disponivelReport) {
         this.disponivelReport = disponivelReport;
+    }
+
+    public ContaBancaria getDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(ContaBancaria disponivel) {
+        this.disponivel = disponivel;
     }
 }
