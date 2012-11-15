@@ -110,37 +110,38 @@
                                                         <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
                                                     </h:outputText>
                                                 </td>
+                                                <td align="center" colspan="4">
+                                                    <table style="font-size: 0.9em;">
+                                                        <tr >
+                                                            <td style="border: none !important; font-size: 1.1em; font-weight: bold;">
+                                                                <h:outputLabel value="#{msg.disponivel}:" for="contaDeb"/>
+                                                            </td>
+                                                            <td style="border: none !important;">
+                                                                <p:selectOneMenu value="#{cartaoFecharOperacaoController.disponivel}" id="contaDeb"
+                                                                                 style="font-size: 1.1em; width: 135px;" label="#{msg.disponivel}">
+                                                                    <f:selectItems value="#{cartaoFecharOperacaoController.contas}"/>
+                                                                    <f:converter converterId="disponivelConverter"/>
+                                                                </p:selectOneMenu>
+                                                            </td>
+                                                            <td style="border: none !important; width: 30px">
+                                                                <p:message for="contaDeb" display="icon"/>
+                                                            </td>
+                                                            <td style="border: none !important;">
+                                                                <div class="pagging" style="float:right !important; padding-bottom: 3px;">
+                                                                    <h:commandLink action="#{cartaoFecharOperacaoController.efetuarPagamento}" value="#{msg.fechar}" 
+                                                                                   id="novoLink" styleClass="ico feco"
+                                                                                   onclick="return confirm('#{msg.desejaFecharSelecionadas}: #{cartaoFecharOperacaoController.cartaoOperacao.label}?');" >
+                                                                    </h:commandLink>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
                                             </tr>
                                         </tfoot>
                                     </table>
                                     <p:spacer width="100%" height="10"/>
-                                    <table style="font-size: 0.9em;">
-                                        <tr>
-                                            <td>
-                                                <h:outputLabel value="#{msg.disponivel}:" for="contaDeb"/>
-                                            </td>
-                                            <td>
-                                                <p:selectOneMenu value="#{cartaoFecharOperacaoController.disponivel}" id="contaDeb"
-                                                                 style="font-size: 0.9em; width: 155px;" label="#{msg.disponivel}">
-                                                    <f:selectItems value="#{cartaoFecharOperacaoController.contas}"/>
-                                                    <f:converter converterId="disponivelConverter"/>
-                                                </p:selectOneMenu>
-                                            </td>
-                                            <td>
-                                                <p:message for="contaDeb" display="icon"/>
-                                            </td>
-                                        </tr><tr>
-                                            <td></td>
-                                            <td>
-                                                <div class="pagging">
-                                                    <h:commandLink action="#{cartaoFecharOperacaoController.efetuarPagamento}" value="#{msg.fechar}" 
-                                                                   id="novoLink" styleClass="ico feco"
-                                                                   onclick="return confirm('#{msg.desejaFechar}: #{cartaoFecharOperacaoController.cartaoOperacao.label}?');" >
-                                                    </h:commandLink>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
+
                                 </h:panelGroup>
                             </h:panelGroup>
 
