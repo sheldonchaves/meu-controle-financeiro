@@ -14,7 +14,7 @@ import javax.ejb.Local;
  * @author Guilherme
  */
 @Local
-public interface ProvisaoFacade {
+public interface ProvisaoBusiness {
     /**
      * Cria provisões com base em uma agenda, não duplica, pois
      * verifica a ultima data provisionada e acrescenta somente
