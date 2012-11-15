@@ -14,6 +14,7 @@ import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.MovimentacaoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -25,6 +26,7 @@ import javax.ejb.TransactionAttributeType;
  */
 @Stateless
 public class TrabalharOperacaoBean implements TrabalharOperacaoBusiness {
+
     @EJB
     private ProcedimentoFacade procedimentoBean;
     @EJB
@@ -34,9 +36,18 @@ public class TrabalharOperacaoBean implements TrabalharOperacaoBusiness {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void fecharOperacoes(List<Procedimento> procedimentos, ContaBancaria disponivel) throws NegocioException {
+        UtilBeans.checkNull(procedimentos, disponivel);
+        for (Procedimento p : procedimentos) {
+            fecharOperacao(p, disponivel);
+        }
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void fecharOperacao(Procedimento procedimento, ContaBancaria disponivel) throws NegocioException {
         UtilBeans.checkNull(procedimento, disponivel);
-        if(StatusPagamento.PAGA.equals(procedimento.getStatusPagamento())){
+        if (StatusPagamento.PAGA.equals(procedimento.getStatusPagamento())) {
             throw new NegocioException("MovimentacaoProcedimentoPago", new String[]{procedimento.getObservacao()});
         }
         MovimentacaoProcedimento mp = new MovimentacaoProcedimento();
@@ -50,19 +61,28 @@ public class TrabalharOperacaoBean implements TrabalharOperacaoBusiness {
         procedimentoBean.update(procedimento);
         movimentacaoFinanceiraBean.create(mp);
     }
-    
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void abrirOperacoes(List<Procedimento> procedimentos) throws NegocioException {
+        UtilBeans.checkNull(procedimentos);
+        for (Procedimento p : procedimentos) {
+            abrirOperacao(p);
+        }
+    }
+
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void abrirOperacao(Procedimento procedimento) throws NegocioException {
         UtilBeans.checkNull(procedimento);
-        if(StatusPagamento.NAO_PAGA.equals(procedimento.getStatusPagamento())){
+        if (StatusPagamento.NAO_PAGA.equals(procedimento.getStatusPagamento())) {
             throw new NegocioException("MovimentacaoProcedimentoNaoPago", new String[]{procedimento.getObservacao()});
         }
         MovimentacaoProcedimento mp = movimentacaoFinanceiraBean.buscarPorProcedimento(procedimento);
-        if(mp == null){
+        if (mp == null) {
             procedimento.setStatusPagamento(StatusPagamento.NAO_PAGA);
             procedimentoBean.update(procedimento);
-        }else {
+        } else {
             ContaBancaria disponivel = mp.getContaBancariaDebitada();
             disponivel.setSaldo(disponivel.getSaldo().add(mp.getSaldoAnterior().subtract(mp.getSaldoPosterior())));
             procedimento.setStatusPagamento(StatusPagamento.NAO_PAGA);
