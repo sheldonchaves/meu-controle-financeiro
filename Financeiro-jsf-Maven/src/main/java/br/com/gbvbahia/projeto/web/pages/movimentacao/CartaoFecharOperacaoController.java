@@ -42,7 +42,7 @@ import javax.faces.model.SelectItem;
  */
 @ManagedBean
 @ViewScoped
-public class CartaoOperacaoController implements Serializable {
+public class CartaoFecharOperacaoController implements Serializable {
 
     @EJB
     private TrabalharOperacaoBusiness operacaoBusiness;
