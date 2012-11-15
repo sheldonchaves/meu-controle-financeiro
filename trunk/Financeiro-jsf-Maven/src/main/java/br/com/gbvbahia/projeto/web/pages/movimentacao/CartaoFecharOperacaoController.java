@@ -10,6 +10,7 @@ import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
+import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
@@ -26,7 +27,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -35,6 +39,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.primefaces.model.chart.PieChartModel;
 
 /**
  *
@@ -68,6 +73,8 @@ public class CartaoFecharOperacaoController implements Serializable {
     //Conta Debito
     private ContaBancaria disponivel;
     private double total;
+    //Gráfico
+    private PieChartModel pieClassModel;
 //====================
 // Acoes
 //====================    
@@ -122,6 +129,7 @@ public class CartaoFecharOperacaoController implements Serializable {
             MensagemUtils.messageFactoringFull("CartaoSemCompras",
                     null, FacesMessage.SEVERITY_WARN,
                     FacesContext.getCurrentInstance());
+            despesas = null;
         }
     }
 
@@ -275,5 +283,34 @@ public class CartaoFecharOperacaoController implements Serializable {
 
     public double getTotal() {
         return total;
+    }
+
+    public PieChartModel getPieClassModel() {
+        pieClassModel = makeClassPie();
+        return pieClassModel;
+    }
+
+    private PieChartModel makeClassPie() {
+        if (getDespesas().isEmpty()) {
+            pieClassModel = new PieChartModel();
+            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.FIXA.toString(),
+                    FacesContext.getCurrentInstance()), 50);
+            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.VARIAVEL.toString(),
+                    FacesContext.getCurrentInstance()), 50);
+        } else {
+            Map<ClassificacaoProcedimento, Double> map = new EnumMap<ClassificacaoProcedimento, Double>(ClassificacaoProcedimento.class);
+            for (DespesaProcedimento dp : getDespesas()) {
+                if (map.containsKey(dp.getClassificacaoProcedimento())) {
+                    map.put(dp.getClassificacaoProcedimento(), map.get(dp.getClassificacaoProcedimento()) + dp.getValor().doubleValue());
+                } else {
+                    map.put(dp.getClassificacaoProcedimento(), dp.getValor().doubleValue());
+                }
+            }
+            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.FIXA.toString(),
+                    FacesContext.getCurrentInstance()), map.get(ClassificacaoProcedimento.FIXA));
+            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.VARIAVEL.toString(),
+                    FacesContext.getCurrentInstance()), map.get(ClassificacaoProcedimento.VARIAVEL));
+        }
+        return pieClassModel;
     }
 }
