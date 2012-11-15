@@ -15,38 +15,38 @@
                         <h:form id="formCartaoOperacaoTable" style="margin-top: 12px;">
                             <h:panelGrid columns="3">
                                 <h:outputLabel value="#{msg.cartaoCredito}:" for="cartao" />
-                                <p:selectOneMenu value="#{cartaoFecharOperacaoController.cartaoOperacao}"
+                                <p:selectOneMenu value="#{cartaoAbrirOperacaoController.cartaoOperacao}"
                                                  required="true" requiredMessage="#{msg.campoObrigatorio}"
                                                  id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
-                                    <p:ajax event="change" update=":pieClassGroup labelPeriodo dataGroup despCartoesGroup" listener="#{cartaoFecharOperacaoController.dataListener}"/> 
-                                    <f:selectItems value="#{cartaoFecharOperacaoController.cartoes}"/>
+                                    <p:ajax event="change" update=":pieClassGroup labelPeriodo dataGroup despCartoesGroup" listener="#{cartaoAbrirOperacaoController.dataListener}"/> 
+                                    <f:selectItems value="#{cartaoAbrirOperacaoController.cartoes}"/>
                                     <f:converter converterId="cartaoConverter"/>
                                 </p:selectOneMenu>
                                 <p:message for="cartao"/>
 
                                 <h:panelGroup id="labelPeriodo">
-                                    <h:outputLabel value="#{msg.periodo}:" rendered="#{not empty cartaoFecharOperacaoController.listAnosSelect}"/>
+                                    <h:outputLabel value="#{msg.periodo}:" rendered="#{not empty cartaoAbrirOperacaoController.listAnosSelect}"/>
                                 </h:panelGroup>
                                 <h:panelGroup id="dataGroup">
-                                    <h:panelGrid columns="3" rendered="#{not empty cartaoFecharOperacaoController.listAnosSelect}">
-                                        <p:selectOneMenu value="#{cartaoFecharOperacaoController.mesOperacao}" required="true"
+                                    <h:panelGrid columns="3" rendered="#{not empty cartaoAbrirOperacaoController.listAnosSelect}">
+                                        <p:selectOneMenu value="#{cartaoAbrirOperacaoController.mesOperacao}" required="true"
                                                          requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
                                                          style="font-size: 0.9em; width: 120px;">
-                                            <f:selectItems value="#{cartaoFecharOperacaoController.meses}"/>
+                                            <f:selectItems value="#{cartaoAbrirOperacaoController.meses}"/>
                                         </p:selectOneMenu>
 
-                                        <p:selectOneMenu value="#{cartaoFecharOperacaoController.anoOperacao}" required="true"
+                                        <p:selectOneMenu value="#{cartaoAbrirOperacaoController.anoOperacao}" required="true"
                                                          requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
                                                          style="font-size: 0.9em;">
-                                            <f:selectItems value="#{cartaoFecharOperacaoController.anos}"/>
+                                            <f:selectItems value="#{cartaoAbrirOperacaoController.anos}"/>
                                         </p:selectOneMenu>
-                                        <p:commandButton icon="lupaIco" actionListener="#{cartaoFecharOperacaoController.buscarDespesas}" update=":pieClassGroup despCartoesGroup dataGroup " />
+                                        <p:commandButton icon="lupaIco" actionListener="#{cartaoAbrirOperacaoController.buscarDespesas}" update=":pieClassGroup despCartoesGroup dataGroup " />
                                     </h:panelGrid>
                                 </h:panelGroup>
                             </h:panelGrid>
                             <p:spacer width="100%" height="10"/>
                             <h:panelGroup id="despCartoesGroup" >
-                                <h:panelGroup id="despCartoesGroup2" rendered="#{not empty cartaoFecharOperacaoController.despesas}">
+                                <h:panelGroup id="despCartoesGroup2" rendered="#{not empty cartaoAbrirOperacaoController.despesas}">
                                     <table class="referencesmall" width="100%">
                                         <thead style="font-size: 0.9em;"><tr>
                                                 <th align='center'>
@@ -65,14 +65,14 @@
                                                     <h:outputText value="#{msg.responsavel}"/>
                                                 </th>
                                                 <th align='center'>
-                                                    <h:outputText value="#{msg.fechar}" /><br></br>
-                                                    <p:selectBooleanCheckbox value="#{cartaoFecharOperacaoController.todosFiltro}">
-                                                        <p:ajax event="change" update="despCartoesGroup2" listener="#{cartaoFecharOperacaoController.todosListener}"/>
+                                                    <h:outputText value="#{msg.abrir}" /><br></br>
+                                                    <p:selectBooleanCheckbox value="#{cartaoAbrirOperacaoController.todosFiltro}">
+                                                        <p:ajax event="change" update="despCartoesGroup2" listener="#{cartaoAbrirOperacaoController.todosListener}"/>
                                                     </p:selectBooleanCheckbox>
                                                 </th>
                                             </tr></thead>
                                         <tbody>
-                                            <ui:repeat value="#{cartaoFecharOperacaoController.despesas}" var="item" varStatus="x">
+                                            <ui:repeat value="#{cartaoAbrirOperacaoController.despesas}" var="item" varStatus="x">
                                                 <tr style="height: 30px;">
                                                     <td align='center'>
                                                         <h:outputText value="#{item.dataVencimento}">
@@ -106,40 +106,20 @@
                                                     <h:outputText value="#{msg.total}" style="font-weight: bold;"/>
                                                 </td>
                                                 <td align="right" style="font-weight: bold;">
-                                                    <h:outputText value="#{cartaoFecharOperacaoController.total}">
+                                                    <h:outputText value="#{cartaoAbrirOperacaoController.total}">
                                                         <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
                                                     </h:outputText>
                                                 </td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                    <p:spacer width="100%" height="10"/>
-                                    <table style="font-size: 0.9em;">
-                                        <tr>
-                                            <td>
-                                                <h:outputLabel value="#{msg.disponivel}:" for="contaDeb"/>
-                                            </td>
-                                            <td>
-                                                <p:selectOneMenu value="#{cartaoFecharOperacaoController.disponivel}" id="contaDeb"
-                                                                 style="font-size: 0.9em; width: 155px;" label="#{msg.disponivel}">
-                                                    <f:selectItems value="#{cartaoFecharOperacaoController.contas}"/>
-                                                    <f:converter converterId="disponivelConverter"/>
-                                                </p:selectOneMenu>
-                                            </td>
-                                            <td>
-                                                <p:message for="contaDeb" display="icon"/>
-                                            </td>
-                                        </tr><tr>
-                                            <td></td>
-                                            <td>
-                                                <div class="pagging">
-                                                    <h:commandLink action="#{cartaoFecharOperacaoController.efetuarPagamento}" value="#{msg.fechar}" 
+                                                <td aliing="right" colspan="4">
+                                                    <div class="pagging" style="float:right !important; padding-bottom: 3px;">
+                                                    <h:commandLink action="#{cartaoAbrirOperacaoController.efetuarPagamento}" value="#{msg.abrir}" 
                                                                    id="novoLink" styleClass="ico feco"
-                                                                   onclick="return confirm('#{msg.desejaFechar}: #{cartaoFecharOperacaoController.cartaoOperacao.label}?');" >
+                                                                   onclick="return confirm('#{msg.desejaAbrir}: #{cartaoAbrirOperacaoController.cartaoOperacao.label}?');" >
                                                     </h:commandLink>
                                                 </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </h:panelGroup>
                             </h:panelGroup>
@@ -151,7 +131,7 @@
                             <arq:disponiveis width="90%"/>
                         </h:panelGroup>
                         <h:panelGroup id="pieClassGroup">
-                            <p:pieChart id="pieClass" value="#{cartaoFecharOperacaoController.pieClassModel}" legendPosition="w"  
+                            <p:pieChart id="pieClass" value="#{cartaoAbrirOperacaoController.pieClassModel}" legendPosition="w"  
                                         title="#{msg.classificacaoMovimentação}" seriesColors="92b224, F00000"
                                         style="margin-top: 20px;" showDataLabels="true"/>  
                         </h:panelGroup>
