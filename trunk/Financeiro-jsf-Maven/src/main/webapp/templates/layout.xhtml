@@ -37,11 +37,11 @@
                                     </ui:insert>
                                 </td>
                                 <td  valign="middle" style="padding-top: 10px">
-                                                <h:outputText value="#{msg.ola},
-                                                              #{loginController.usuario.firstName}" 
-                                                              style="color: #92b224;"/>
-                                                <ui:param name="font_id_color" value="#92b224"/>
-                                                <ui:include src="include/idioma.xhtml" />
+                                    <h:outputText value="#{msg.ola},
+                                                  #{loginController.usuario.firstName}" 
+                                                  style="color: #92b224;"/>
+                                    <ui:param name="font_id_color" value="#92b224"/>
+                                    <ui:include src="include/idioma.xhtml" />
                                 </td>
                             </tr>
                             <tr>
@@ -51,7 +51,14 @@
                             </tr>
                             <tr>
                                 <td colspan="3" align="left" class="contentCentral" valign="top">
-                                    <ui:insert name="content" />
+                                    <div class="boxtitle" style="width: 98%">
+                                        <div class="boxtitle-head">
+                                            <h3>#{titulomenu}</h3>
+                                        </div>
+                                        <div class="boxtitle-content">
+                                            <ui:insert name="content" />
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </table>

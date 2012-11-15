@@ -160,8 +160,9 @@ public class CartaoOperacaoController implements Serializable {
         } else {
             try {
                 operacaoBusiness.fecharOperacoes(toClose, disponivel);
-                MensagemUtils.messageFactoringFull("OperacaoFechada",
-                        new String[]{cartaoOperacao.getLabel()}, FacesMessage.SEVERITY_INFO,
+                MensagemUtils.messageFactoringFull("OperacaoCartaoFechada",
+                        new String[]{cartaoOperacao.getLabel(),
+                            disponivel.getLabel()}, FacesMessage.SEVERITY_INFO,
                         FacesContext.getCurrentInstance());
                 disponivelReport.atualizarContas();
                 despesas = null;
