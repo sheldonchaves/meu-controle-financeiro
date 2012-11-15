@@ -182,8 +182,7 @@ public class Procedimento
     @NotNull
     @Column(name = "detalhe_procedimento", nullable = false)
     private DetalheTipoProcedimento detalheProcedimento = DetalheTipoProcedimento.RECEITA_UNICA;
-    @Transient
-    private ContaBancaria contaBancariaTransient;
+
     @Transient
     private boolean marcadoTransient;
     /**
@@ -503,24 +502,6 @@ public class Procedimento
 
     public DetalheTipoProcedimento getDetalheProcedimento() {
         return detalheProcedimento;
-    }
-
-    /**
-     * Transient
-     *
-     * @return
-     */
-    public ContaBancaria getContaBancariaTransient() {
-        return contaBancariaTransient;
-    }
-
-    /**
-     * Transient
-     *
-     * @param contaBancariaTransient
-     */
-    public void setContaBancariaTransient(ContaBancaria contaBancariaTransient) {
-        this.contaBancariaTransient = contaBancariaTransient;
     }
 
     public boolean isMarcadoTransient() {
