@@ -18,7 +18,7 @@
                                 <p:selectOneMenu value="#{cartaoFecharOperacaoController.cartaoOperacao}"
                                                  required="true" requiredMessage="#{msg.campoObrigatorio}"
                                                  id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
-                                    <p:ajax event="change" update="labelPeriodo dataGroup" listener="#{cartaoFecharOperacaoController.dataListener}"/> 
+                                    <p:ajax event="change" update=":pieClassGroup labelPeriodo dataGroup despCartoesGroup" listener="#{cartaoFecharOperacaoController.dataListener}"/> 
                                     <f:selectItems value="#{cartaoFecharOperacaoController.cartoes}"/>
                                     <f:converter converterId="cartaoConverter"/>
                                 </p:selectOneMenu>
@@ -40,7 +40,7 @@
                                                          style="font-size: 0.9em;">
                                             <f:selectItems value="#{cartaoFecharOperacaoController.anos}"/>
                                         </p:selectOneMenu>
-                                        <p:commandButton icon="lupaIco" actionListener="#{cartaoFecharOperacaoController.buscarDespesas}" update="despCartoesGroup dataGroup" />
+                                        <p:commandButton icon="lupaIco" actionListener="#{cartaoFecharOperacaoController.buscarDespesas}" update=":pieClassGroup despCartoesGroup dataGroup " />
                                     </h:panelGrid>
                                 </h:panelGroup>
                             </h:panelGrid>
@@ -149,6 +149,11 @@
                     <td align='left' style="vertical-align: top;">
                         <h:panelGroup id="disponiveis">
                             <arq:disponiveis width="90%"/>
+                        </h:panelGroup>
+                        <h:panelGroup id="pieClassGroup">
+                            <p:pieChart id="pieClass" value="#{cartaoFecharOperacaoController.pieClassModel}" legendPosition="w"  
+                                        title="#{msg.classificacaoMovimentação}" seriesColors="92b224, F00000"
+                                        style="margin-top: 20px;" showDataLabels="true"/>  
                         </h:panelGroup>
                     </td>
                 </tr>
