@@ -67,6 +67,7 @@ public class CartaoOperacaoController implements Serializable {
     private List<Integer> listAnosSelect = new ArrayList<Integer>();
     //Conta Debito
     private ContaBancaria disponivel;
+    private double total;
 //====================
 // Acoes
 //====================    
@@ -101,8 +102,10 @@ public class CartaoOperacaoController implements Serializable {
         final Date[] intervalo = DateUtils.getIntervalo(c.getTime());
         despesas = procedimentoFacade.buscarDespesaIntervalo(usuarioFacade.getUsuario(),
                 cartaoOperacao, StatusPagamento.NAO_PAGA, intervalo);
+        total = 0;
         for (DespesaProcedimento dp : despesas) {
             dp.setMarcadoTransient(true);
+            total += dp.getValor().doubleValue();
         }
         todosFiltro = true;
         return intervalo;
@@ -160,8 +163,8 @@ public class CartaoOperacaoController implements Serializable {
                 MensagemUtils.messageFactoringFull("OperacaoFechada",
                         new String[]{cartaoOperacao.getLabel()}, FacesMessage.SEVERITY_INFO,
                         FacesContext.getCurrentInstance());
-                despesasSearch();
                 disponivelReport.atualizarContas();
+                despesas = null;
                 disponivel = null;
             } catch (NegocioException ex) {
                 MensagemUtils.messageFactoringFull(ex.getMessage(),
@@ -180,7 +183,7 @@ public class CartaoOperacaoController implements Serializable {
     }
 
     public SelectItem[] getMeses() {
-        return JsfUtil.getEnumSelectItems(Meses.class, true, FacesContext.getCurrentInstance());
+        return JsfUtil.getEnumSelectItems(Meses.class, false, FacesContext.getCurrentInstance());
     }
 
     public SelectItem[] getContas() {
@@ -267,5 +270,9 @@ public class CartaoOperacaoController implements Serializable {
 
     public void setDisponivelReport(DisponivelReport disponivelReport) {
         this.disponivelReport = disponivelReport;
+    }
+
+    public double getTotal() {
+        return total;
     }
 }

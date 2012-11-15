@@ -80,7 +80,7 @@
                                                                                type="date" timeZone="#{initParam['timezone']}"/>
                                                         </h:outputText>
                                                     </td>
-                                                    <td align='center'>
+                                                    <td align='right'>
                                                         <h:outputText value="#{item.valor}">
                                                             <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
                                                         </h:outputText>
@@ -100,6 +100,18 @@
                                                 </tr>
                                             </ui:repeat>
                                         </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td align="center">
+                                                    <h:outputText value="#{msg.total}" style="font-weight: bold;"/>
+                                                </td>
+                                                <td align="right" style="font-weight: bold;">
+                                                    <h:outputText value="#{cartaoOperacaoController.total}">
+                                                        <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                                    </h:outputText>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                     <p:spacer width="100%" height="10"/>
                                     <table style="font-size: 0.9em;">
@@ -120,12 +132,12 @@
                                         </tr><tr>
                                             <td></td>
                                             <td>
-                                            <div class="pagging">
-                                                <h:commandLink action="#{cartaoOperacaoController.efetuarPagamento}" value="#{msg.fechar}" 
-                                                               id="novoLink" styleClass="ico feco"
-                                                               onclick="return confirm('#{msg.desejaFechar}: #{cartaoOperacaoController.cartaoOperacao.label}?');" >
-                                                </h:commandLink>
-                                            </div>
+                                                <div class="pagging">
+                                                    <h:commandLink action="#{cartaoOperacaoController.efetuarPagamento}" value="#{msg.fechar}" 
+                                                                   id="novoLink" styleClass="ico feco"
+                                                                   onclick="return confirm('#{msg.desejaFechar}: #{cartaoOperacaoController.cartaoOperacao.label}?');" >
+                                                    </h:commandLink>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>
