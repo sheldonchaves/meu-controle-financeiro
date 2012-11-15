@@ -4,17 +4,23 @@
  */
 package br.com.gbvbahia.projeto.web.pages.movimentacao;
 
+import br.com.gbvbahia.financeiro.beans.business.interfaces.TrabalharOperacaoBusiness;
+import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
+import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
+import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.projeto.web.constante.Meses;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
+import br.com.gbvbahia.projeto.web.pages.report.DisponivelReport;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +31,7 @@ import java.util.TreeSet;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -38,11 +45,17 @@ import javax.faces.model.SelectItem;
 public class CartaoOperacaoController implements Serializable {
 
     @EJB
+    private TrabalharOperacaoBusiness operacaoBusiness;
+    @EJB
     private ProcedimentoFacade procedimentoFacade;
     @EJB
     private UsuarioFacade usuarioFacade;
     @EJB
     private CartaoCreditoFacade cartaoFacade;
+    @EJB
+    private ContaBancariaFacade disponivelFacade;
+    @ManagedProperty("#{disponivelReport}")
+    private DisponivelReport disponivelReport;
     //Tabela
     private List<DespesaProcedimento> despesas;
     //Filtros
@@ -52,6 +65,8 @@ public class CartaoOperacaoController implements Serializable {
     private boolean todosFiltro;
     //SelectItem
     private List<Integer> listAnosSelect = new ArrayList<Integer>();
+    //Conta Debito
+    private ContaBancaria disponivel;
 //====================
 // Acoes
 //====================    
@@ -69,24 +84,28 @@ public class CartaoOperacaoController implements Serializable {
                     FacesContext.getCurrentInstance());
             return;
         }
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, anoOperacao);
-        c.set(Calendar.MONTH, mesOperacao.getMes());
-        final Date[] intervalo = DateUtils.getIntervalo(c.getTime());
-        despesas = procedimentoFacade.buscarDespesaIntervalo(usuarioFacade.getUsuario(),
-                cartaoOperacao, StatusPagamento.NAO_PAGA, intervalo);
+        Date[] intervalo = despesasSearch();
         if (despesas.isEmpty()) {
             MensagemUtils.messageFactoringFull("CartaoSemComprasPeriodo",
                     new String[]{DateUtils.getDateToString(intervalo[0]),
                         DateUtils.getDateToString(intervalo[1]),
                         cartaoOperacao.getLabel()}, FacesMessage.SEVERITY_WARN,
                     FacesContext.getCurrentInstance());
-        } else {
-            for (DespesaProcedimento dp : despesas) {
-                dp.setMarcadoTransient(true);
-            }
-            todosFiltro = true;
         }
+    }
+
+    private Date[] despesasSearch() {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, anoOperacao);
+        c.set(Calendar.MONTH, mesOperacao.getMes());
+        final Date[] intervalo = DateUtils.getIntervalo(c.getTime());
+        despesas = procedimentoFacade.buscarDespesaIntervalo(usuarioFacade.getUsuario(),
+                cartaoOperacao, StatusPagamento.NAO_PAGA, intervalo);
+        for (DespesaProcedimento dp : despesas) {
+            dp.setMarcadoTransient(true);
+        }
+        todosFiltro = true;
+        return intervalo;
     }
 
     /**
@@ -114,6 +133,43 @@ public class CartaoOperacaoController implements Serializable {
             }
         }
     }
+
+    /**
+     * Efetiva o fechamento das contas selecionadas.
+     */
+    public void efetuarPagamento() {
+        if (disponivel == null) {
+            MensagemUtils.messageFactoringFull("formCartaoOperacaoTable:contaDeb", "CartaoDisponivelEmpty",
+                    null, FacesMessage.SEVERITY_WARN,
+                    FacesContext.getCurrentInstance());
+            return;
+        }
+        List<Procedimento> toClose = new ArrayList<Procedimento>();
+        for (DespesaProcedimento dp : getDespesas()) {
+            if (dp.isMarcadoTransient()) {
+                toClose.add(dp);
+            }
+        }
+        if (toClose.isEmpty()) {
+            MensagemUtils.messageFactoringFull("CartaoSemMarcada",
+                    null, FacesMessage.SEVERITY_WARN,
+                    FacesContext.getCurrentInstance());
+        } else {
+            try {
+                operacaoBusiness.fecharOperacoes(toClose, disponivel);
+                MensagemUtils.messageFactoringFull("OperacaoFechada",
+                        new String[]{cartaoOperacao.getLabel()}, FacesMessage.SEVERITY_INFO,
+                        FacesContext.getCurrentInstance());
+                despesasSearch();
+                disponivelReport.atualizarContas();
+                disponivel = null;
+            } catch (NegocioException ex) {
+                MensagemUtils.messageFactoringFull(ex.getMessage(),
+                        ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                        FacesContext.getCurrentInstance());
+            }
+        }
+    }
 //====================
 // Select Itens
 //====================
@@ -125,6 +181,11 @@ public class CartaoOperacaoController implements Serializable {
 
     public SelectItem[] getMeses() {
         return JsfUtil.getEnumSelectItems(Meses.class, true, FacesContext.getCurrentInstance());
+    }
+
+    public SelectItem[] getContas() {
+        return JsfUtil.getSelectItems(disponivelFacade.findAll(usuarioFacade.getUsuario(),
+                Boolean.TRUE), true, FacesContext.getCurrentInstance());
     }
 
     /**
@@ -190,5 +251,21 @@ public class CartaoOperacaoController implements Serializable {
             listAnosSelect = new ArrayList<Integer>();
         }
         return listAnosSelect;
+    }
+
+    public ContaBancaria getDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(ContaBancaria disponivel) {
+        this.disponivel = disponivel;
+    }
+
+    public DisponivelReport getDisponivelReport() {
+        return disponivelReport;
+    }
+
+    public void setDisponivelReport(DisponivelReport disponivelReport) {
+        this.disponivelReport = disponivelReport;
     }
 }
