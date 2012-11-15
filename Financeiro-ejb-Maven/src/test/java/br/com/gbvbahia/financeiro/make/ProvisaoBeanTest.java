@@ -5,7 +5,7 @@
 package br.com.gbvbahia.financeiro.make;
 
 import br.com.gbvbahia.financeiro.TestesMake;
-import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoFacade;
+import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoBusiness;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.constantes.Periodo;
@@ -25,7 +25,7 @@ import org.junit.Test;
  *
  * @author Usuário do Windows
  */
-public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoFacade> {
+public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoBusiness> {
 
     /**
      * Define as classes que serão utilizadas durante o testes, menos o
@@ -39,7 +39,7 @@ public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoFacade> {
      * Padrão.
      */
     public ProvisaoBeanTest() {
-        super(ProvisaoFacade.class, USED_BEANS);
+        super(ProvisaoBusiness.class, USED_BEANS);
     }
 
     /**
@@ -109,8 +109,8 @@ public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoFacade> {
      *
      * @return
      */
-    private ProvisaoFacade getBean() {
-        ProvisaoFacade instance = this.getBeanToTest();
+    private ProvisaoBusiness getBean() {
+        ProvisaoBusiness instance = this.getBeanToTest();
         assertNotNull("EJB Não pode ser nulo!", instance);
         return instance;
     }

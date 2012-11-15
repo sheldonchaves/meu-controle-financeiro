@@ -5,7 +5,7 @@
 package br.com.gbvbahia.financeiro.beans.business;
 
 import br.com.gbvbahia.financeiro.beans.aop.LogTime;
-import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoFacade;
+import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoBusiness;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
@@ -38,7 +38,7 @@ import org.apache.commons.lang3.time.DateUtils;
  */
 @Stateless
 @Interceptors({LogTime.class})
-public class ProvisaoBean implements ProvisaoFacade {
+public class ProvisaoBean implements ProvisaoBusiness {
 
     /**
      * Define em anos o quanto de provisão deve ser realizado.
