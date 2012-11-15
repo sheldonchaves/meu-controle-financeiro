@@ -6,7 +6,6 @@ package br.com.gbvbahia.financeiro.modelos.superclass;
 
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
-import br.com.gbvbahia.financeiro.utils.I18N;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
