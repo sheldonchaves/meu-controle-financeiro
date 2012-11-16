@@ -181,16 +181,46 @@ public interface ProcedimentoFacade
      */
     MinMaxDateDTO buscarIntervalodDatas(final CartaoCredito cartao,
             final StatusPagamento status, final Usuario usr);
-    
+
     /**
      * Busca Despesas por intervalo de datas.
+     *
      * @param usr obrigatorio
      * @param cartao opcional
      * @param status opcional
      * @param intervalo obrigatorio intervalo[0] inicial intervalo[1] final
-     * @return 
+     * @return
      */
     List<DespesaProcedimento> buscarDespesaIntervalo(final Usuario usr,
             final CartaoCredito cartao, final StatusPagamento status,
             final Date[] intervalo);
+
+    /**
+     * Busca despesas por filtros paginado.
+     * @param usr Obrigatorio
+     * @param detalhe Opcional
+     * @param status Opcional
+     * @param observacao Opcional
+     * @param dataVencimento Opcional
+     * @param cartao Opcional
+     * @param range Obrigatorio.
+     * @return 
+     */
+    List<DespesaProcedimento> buscarDespesas(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status, String observacao, Date dataVencimento,
+            final CartaoCredito cartao, int[] range);
+
+    /**
+     * Conta as despesas por filtros.
+     * @param usr Obrigatorio
+     * @param detalhe Opcional
+     * @param status Opcional
+     * @param observacao Opcional
+     * @param dataVencimento Opcional
+     * @param cartao Opcional.
+     * @return 
+     */
+    Long contarDespesas(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status, String observacao, Date dataVencimento,
+            CartaoCredito cartao);
 }

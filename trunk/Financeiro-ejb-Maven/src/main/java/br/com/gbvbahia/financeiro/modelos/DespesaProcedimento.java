@@ -42,7 +42,24 @@ import javax.persistence.*;
     + " WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
     + " AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
-    + " AND d.dataVencimento between :dataI and :dataF ")
+    + " AND d.dataVencimento between :dataI and :dataF "),
+    @NamedQuery(name = "DespesaProcedimento.countProcedimento",
+    query = " SELECT count(p) From DespesaProcedimento p "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND (:cartao2 = 'todos' OR p.cartaoCredito = :cartao) "
+    + " AND (:detalheProcedimento2 = 'todos' OR p.detalheProcedimento = :detalheProcedimento) "
+    + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento)"
+    + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao)"
+    + " AND (:dataVencimento2 = 'todos' OR p.dataVencimento = :dataVencimento)"),
+    @NamedQuery(name = "DespesaProcedimento.selectProcedimento",
+    query = " SELECT distinct p From DespesaProcedimento p "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND (:cartao2 = 'todos' OR p.cartaoCredito = :cartao) "
+    + " AND (:detalheProcedimento2 = 'todos' OR p.detalheProcedimento = :detalheProcedimento) "
+    + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento) "
+    + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao)"
+    + " AND (:dataVencimento2 = 'todos' OR p.dataVencimento = :dataVencimento)"
+    + " ORDER BY p.dataVencimento, p.valorReal DESC, p.valorEstimado DESC")
 })
 @DiscriminatorValue("DESPESA_UNICA")
 public class DespesaProcedimento extends Procedimento
