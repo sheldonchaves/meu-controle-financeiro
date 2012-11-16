@@ -22,6 +22,7 @@ import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -56,11 +57,11 @@ public class DespesaUnicaController extends EntityController<DespesaProcedimento
     private DetalheProcedimentoFacade detalheFacade;
     @EJB
     private ProcedimentoFacade procedimentoFacade;
-    
     private DespesaProcedimento current;
     //Filtros
     private StatusPagamento statusFiltro = StatusPagamento.NAO_PAGA;
     private String observacaoFiltro;
+    private Date dataFiltro;
 
     /**
      * Padrão.
@@ -97,13 +98,13 @@ public class DespesaUnicaController extends EntityController<DespesaProcedimento
                 @Override
                 public int getItemsCount() {
                     return getFacade().contarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.DESPESA_UNICA, statusFiltro, observacaoFiltro, null).intValue();
+                            DetalheTipoProcedimento.DESPESA_UNICA, statusFiltro, observacaoFiltro, dataFiltro).intValue();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().buscarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.DESPESA_UNICA, statusFiltro, observacaoFiltro, null,
+                            DetalheTipoProcedimento.DESPESA_UNICA, statusFiltro, observacaoFiltro, dataFiltro,
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }
@@ -191,11 +192,16 @@ public class DespesaUnicaController extends EntityController<DespesaProcedimento
         det.setValorEstimado(BigDecimal.ZERO);
         return det;
     }
-    
-    public void dataListener(){
-        if(current != null && current.getCartaoCredito() != null){
+
+    public void dataListener() {
+        if (current != null && current.getCartaoCredito() != null) {
             current.setDataVencimento(current.getCartaoCredito().getProximoVencimento());
         }
+    }
+
+    public void cleanDate() {
+        this.dataFiltro = null;
+        recreateTable();
     }
     //====================
     // Select Itens
@@ -210,7 +216,7 @@ public class DespesaUnicaController extends EntityController<DespesaProcedimento
         return JsfUtil.getSelectItems(new TreeSet<EntityInterface>(this.detalheFacade.findAllDetalhe(usuarioFacade.getUsuario(),
                 Boolean.TRUE, TipoProcedimento.DESPESA_FINANCEIRA)), true, FacesContext.getCurrentInstance());
     }
-    
+
     public SelectItem[] getCartoes() {
         return JsfUtil.getSelectItems(new TreeSet<EntityInterface>(this.cartaoFacade.buscarCartoesAtivos(usuarioFacade.getUsuario())),
                 true, FacesContext.getCurrentInstance());
@@ -246,5 +252,13 @@ public class DespesaUnicaController extends EntityController<DespesaProcedimento
 
     public void setObservacaoFiltro(String observacaoFiltro) {
         this.observacaoFiltro = observacaoFiltro;
+    }
+
+    public Date getDataFiltro() {
+        return dataFiltro;
+    }
+
+    public void setDataFiltro(Date dataFiltro) {
+        this.dataFiltro = dataFiltro;
     }
 }
