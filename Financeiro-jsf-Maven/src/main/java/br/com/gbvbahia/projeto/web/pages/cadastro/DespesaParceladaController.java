@@ -22,6 +22,7 @@ import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -60,6 +61,7 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
     //Filtros
     private StatusPagamento statusFiltro = StatusPagamento.NAO_PAGA;
     private String observacaoFiltro;
+    private Date dataFiltro;
 
     /**
      * Padrão.
@@ -96,13 +98,13 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
                 @Override
                 public int getItemsCount() {
                     return getFacade().contarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro, observacaoFiltro, null).intValue();
+                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro, observacaoFiltro, dataFiltro).intValue();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().buscarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro, observacaoFiltro, null,
+                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro, observacaoFiltro, dataFiltro,
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }
@@ -218,6 +220,11 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
             current.setDataVencimento(current.getCartaoCredito().getProximoVencimento());
         }
     }
+
+    public void cleanDate() {
+        this.dataFiltro = null;
+        recreateTable();
+    }
     //====================
     // Select Itens
     //====================
@@ -267,5 +274,13 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
 
     public void setObservacaoFiltro(String observacaoFiltro) {
         this.observacaoFiltro = observacaoFiltro;
+    }
+
+    public Date getDataFiltro() {
+        return dataFiltro;
+    }
+
+    public void setDataFiltro(Date dataFiltro) {
+        this.dataFiltro = dataFiltro;
     }
 }
