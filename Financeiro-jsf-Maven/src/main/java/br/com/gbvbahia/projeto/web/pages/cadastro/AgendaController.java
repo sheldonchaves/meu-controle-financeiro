@@ -4,7 +4,7 @@
  */
 package br.com.gbvbahia.projeto.web.pages.cadastro;
 
-import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoFacade;
+import br.com.gbvbahia.financeiro.beans.business.interfaces.ProvisaoBusiness;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.AgendaProcedimentoFixoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
@@ -53,7 +53,7 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     @EJB
     private AgendaProcedimentoFixoFacade agendaFacade;
     @EJB
-    private ProvisaoFacade provisaoFacade;
+    private ProvisaoBusiness provisaoFacade;
     @EJB
     private CartaoCreditoFacade cartaoFacade;
     

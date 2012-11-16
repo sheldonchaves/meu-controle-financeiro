@@ -1,0 +1,54 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:arq="http://java.sun.com/jsf/composite/ezcomp">
+
+    <f:subview id="formReceitaSubView" transient="true">
+        <div class="formedit">
+            <div class="formedit-head">
+                <h:outputText value="#{msg.transferirEntreContas} "/>
+            </div>
+            <h:panelGroup id="receitaCadGroup">
+                <h:form id="recForm">
+                    <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
+                        <h:outputLabel value="#{msg.valor}:" for="valor" />
+                        <p:inputText id="valor" value="#{transferenciaFinanceiraController.valor}" title="#{msg.valor}" 
+                                     size="30" onkeypress="return(MascaraMoeda(this,'.',',',event))">
+                            <f:converter converterId="moneyBigConverter"/>
+                        </p:inputText>
+                        <p:message for="valor" />
+
+                        <h:outputLabel value="#{msg.debitada}:" for="debitada" />
+                        <p:selectOneMenu value="#{transferenciaFinanceiraController.debitada}"
+                                         required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         id="debitada" label="#{msg.debitada}" style="font-size: 0.9em;" >
+                            <f:selectItems value="#{transferenciaFinanceiraController.contas}"/>
+                            <f:converter converterId="disponivelConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="debitada"/>
+
+                        <h:outputLabel value="#{msg.creditada}:" for="creditada" />
+                        <p:selectOneMenu value="#{transferenciaFinanceiraController.creditada}"
+                                         required="true" requiredMessage="#{msg.campoObrigatorio}"
+                                         id="creditada" label="#{msg.creditada}" style="font-size: 0.9em;" >
+                            <f:selectItems value="#{transferenciaFinanceiraController.contas}"/>
+                            <f:converter converterId="disponivelConverter"/>
+                        </p:selectOneMenu>
+                        <p:message for="creditada"/>
+
+                        <h:outputText value=""/>
+                        <h:panelGroup id="buttons" styleClass="pagging">
+                            <h:commandLink action="#{transferenciaFinanceiraController.create()}" value="#{msg.salvar}" id="saveButton" >
+
+                            </h:commandLink>
+                            <h:commandLink action="#{receitaController.clean()}" value="#{msg.cancelar}" 
+                                           immediate="true" id="cancelButton" >
+                            </h:commandLink>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGroup>
+        </div>
+    </f:subview>
+</ui:composition>

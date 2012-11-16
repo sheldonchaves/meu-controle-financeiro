@@ -145,11 +145,7 @@ table.referencesmall td {
             margin-left: 10px;
             margin-top: 10px;
             _margin-bottom:30px; 
-            border-color: #c3c3c3;
-            border-width: 1px;
-            border-style: solid;
             width: 95%; 
-            border-radius: 5px;
 }
 .formedit-head { 
     height:32px; 
@@ -161,6 +157,8 @@ table.referencesmall td {
     border: 1px solid #aaaaaa; 
     background: #B2D1FF url("#{resource['primefaces-redmond:images/ui-bg_gloss-wave_55_5c9ccc_500x100.png']}") 50% 50% repeat-x;
     font-weight: bold;
+    border-bottom:solid 1px #fff; 
+    border-radius: 5px;
 }
 .formedit-head .right{ padding-top:5px; line-height:13px; }
 .formedit-head .right label,
@@ -169,6 +167,8 @@ table.referencesmall td {
 .formedit-head .right input { margin-left:5px;}
 .formedit form {
     padding: 3px;
+    border:1px solid #c3c3c3;
+    border-radius: 5px;
 }
 
 a.ico { color:#B2D1FF; font-size:1.0em; text-decoration: none; padding:0 0 0 14px; background-repeat:no-repeat; background-position:0 0; }
@@ -211,6 +211,9 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     margin-left: 10px;
 }
 .box-head { 
+    font-size: 1.0em; 
+    font-weight: bold;
+    color: #fff; 
     background: #B2D1FF url("#{resource['primefaces-redmond:images/ui-bg_gloss-wave_55_5c9ccc_500x100.png']}") 50% 50% repeat-x;
     height:32px; color:#fff;
     padding: 0 10px;
@@ -219,6 +222,7 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     border-bottom:solid 1px #fff; 
     border-radius: 5px;
     text-align: left;
+    margin-top: 10px;
 }
 .box-head .right{ 
     padding-top:5px;
