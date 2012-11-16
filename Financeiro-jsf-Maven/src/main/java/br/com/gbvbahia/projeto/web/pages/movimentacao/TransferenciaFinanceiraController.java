@@ -108,7 +108,7 @@ public class TransferenciaFinanceiraController extends EntityController<Moviment
             clean();
         } catch (NegocioException ex) {
             MensagemUtils.messageFactoringFull(ex.getMessage(),
-                    ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    ex.getVariacoes(), FacesMessage.SEVERITY_WARN,
                     FacesContext.getCurrentInstance());
         }
     }
@@ -127,7 +127,7 @@ public class TransferenciaFinanceiraController extends EntityController<Moviment
             return clean();
         } catch (NegocioException ex) {
             MensagemUtils.messageFactoringFull(ex.getMessage(),
-                    ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    ex.getVariacoes(), FacesMessage.SEVERITY_WARN,
                     FacesContext.getCurrentInstance());
             return JsfUtil.MANTEM;
         }
