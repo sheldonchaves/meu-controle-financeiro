@@ -41,7 +41,7 @@
                                             <f:selectItems value="#{cartaoAbrirOperacaoController.anos}"/>
                                         </p:selectOneMenu>
                                         <p:commandButton icon="lupaIco" actionListener="#{cartaoAbrirOperacaoController.buscarDespesas}"
-                                                          style="width: 23px; height: 23px;" update=":pieClassGroup despCartoesGroup dataGroup " />
+                                                         style="width: 23px; height: 23px;" update=":pieClassGroup despCartoesGroup dataGroup " />
                                     </h:panelGrid>
                                 </h:panelGroup>
                             </h:panelGrid>
@@ -113,11 +113,11 @@
                                                 </td>
                                                 <td aliing="right" colspan="4">
                                                     <div class="pagging" style="float:right !important; padding-bottom: 3px;">
-                                                    <h:commandLink action="#{cartaoAbrirOperacaoController.efetuarPagamento}" value="#{msg.abrir}" 
-                                                                   id="novoLink" styleClass="ico feco"
-                                                                   onclick="return confirm('#{msg.desejaAbrirSelecionadas}: #{cartaoAbrirOperacaoController.cartaoOperacao.label}?');" >
-                                                    </h:commandLink>
-                                                </div>
+                                                        <h:commandLink action="#{cartaoAbrirOperacaoController.efetuarPagamento}" value="#{msg.abrir}" 
+                                                                       id="novoLink" styleClass="ico feco"
+                                                                       onclick="return confirm('#{msg.desejaAbrirSelecionadas}: #{cartaoAbrirOperacaoController.cartaoOperacao.label}?');" >
+                                                        </h:commandLink>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -129,7 +129,9 @@
                     </td>
                     <td align='left' style="vertical-align: top;">
                         <h:panelGroup id="disponiveis">
-                            <arq:disponiveis width="90%"/>
+                            <div style="margin-left: 10px;">
+                                <arq:disponiveis width="90%"/>
+                            </div>
                         </h:panelGroup>
                         <h:panelGroup id="pieClassGroup">
                             <p:pieChart id="pieClass" value="#{cartaoAbrirOperacaoController.pieClassModel}" legendPosition="w"  

@@ -66,6 +66,9 @@ public class ChartsReport implements Serializable {
         MinMaxDateDTO intervalodDatas = procedimentoFacade.buscarIntervalodDatas(
                 null, null, usuarioFacade.getUsuario());
         listAnosSelect = intervalodDatas.intervaloMinMaxAnos();
+        Date agora = new Date();
+        anoOperacao = DateUtils.getFieldDate(agora, Calendar.YEAR);
+        mesOperacao = Meses.getByMonth(DateUtils.getFieldDate(agora, Calendar.MONTH));
     }
 
     //====================

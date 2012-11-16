@@ -95,7 +95,7 @@
                                             <h:outputText value="#{msg.debitarDe}" style="font-weight: bold;"/>
                                         </td><td style="border: none !important;">
                                             <p:message for="contaDeb" display="icon"/>
-                                            
+
                                         </td>
                                     </tr>
                                 </table>
@@ -114,9 +114,11 @@
             <arq:paginator entityBean="#{operacaoController}" renderedNew="#{false}"/>
             <p:spacer width="100%" height="20"/>
         </h:form>
-        <h:panelGroup id="disponiveis">
-            <arq:disponiveis/>
-        </h:panelGroup>
+        <div style="margin-left: 10px;">
+            <h:panelGroup id="disponiveis" >
+                <arq:disponiveis/>
+            </h:panelGroup>
+        </div>
     </ui:define>
 </ui:composition>
 

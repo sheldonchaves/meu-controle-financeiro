@@ -208,7 +208,6 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     background:#fbfcfc; 
     padding:1px; 
     margin-bottom:5px;
-    margin-left: 10px;
 }
 .box-head { 
     font-size: 1.0em; 
@@ -222,7 +221,6 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     border-bottom:solid 1px #fff; 
     border-radius: 5px;
     text-align: left;
-    margin-top: 10px;
 }
 .box-head .right{ 
     padding-top:5px;
