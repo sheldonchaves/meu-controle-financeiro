@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Classe auxiliar para trabalhar com Datas.
@@ -28,6 +29,22 @@ public final class DateUtils {
      *
      * @param date Se nulo retorna a data atual.
      * @param pattern O patter a ser formatado, não pode ser nulo.
+     * @param locale Obrigatorio, para criar o pattern.
+     * @return
+     */
+    public static String getDataFormatada(final Date date, final Locale locale, String pattern) {
+        SimpleDateFormat sd = new SimpleDateFormat(pattern, locale);
+        if (date == null) {
+            return sd.format(new Date());
+        }
+        return sd.format(date);
+    }
+
+        /**
+     * Formata a data para o pattern passado.
+     *
+     * @param date Se nulo retorna a data atual.
+     * @param pattern O patter a ser formatado, não pode ser nulo.
      * @return
      */
     public static String getDataFormatada(final Date date, String pattern) {
@@ -37,7 +54,7 @@ public final class DateUtils {
         }
         return sd.format(date);
     }
-
+    
     /**
      * Retorna uma data no formato de String DD/MM/AAAA HH:mm:ss.
      *
