@@ -273,12 +273,10 @@ public class CartaoAbrirOperacaoController implements Serializable {
     }
 
     private PieChartModel makeClassPie() {
+        pieClassModel = new PieChartModel();
         if (getDespesas().isEmpty()) {
-            pieClassModel = new PieChartModel();
-            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.FIXA.toString(),
-                    FacesContext.getCurrentInstance()), 50);
-            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.VARIAVEL.toString(),
-                    FacesContext.getCurrentInstance()), 50);
+            pieClassModel.set(MensagemUtils.getResourceBundle("semInformacao",
+                    FacesContext.getCurrentInstance()), 100);
         } else {
             Map<ClassificacaoProcedimento, Double> map = new EnumMap<ClassificacaoProcedimento, Double>(ClassificacaoProcedimento.class);
             for (DespesaProcedimento dp : getDespesas()) {
