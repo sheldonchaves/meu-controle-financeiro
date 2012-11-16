@@ -165,4 +165,11 @@ public abstract class MovimentacaoFinanceira
     public void setSaldoPosterior(final BigDecimal vSaldoPosterior) {
         this.saldoPosterior = vSaldoPosterior;
     }
+    /**
+     * Subtrai saldoAnterior de saldoPosterior.
+     * @return 
+     */
+    public BigDecimal getValorTransferencia(){
+        return saldoAnterior.subtract(saldoPosterior).abs();
+    }
 }

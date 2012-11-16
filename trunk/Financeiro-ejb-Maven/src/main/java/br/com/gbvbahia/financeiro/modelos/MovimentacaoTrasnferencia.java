@@ -18,6 +18,21 @@ import javax.persistence.*;
 @Entity
 @Table(name = "fin_movimentacao_financeira_trasnferencia")
 @DiscriminatorValue("TRANSFERENCIA")
+@NamedQueries({
+    @NamedQuery(name = "MovimentacaoTrasnferencia.selectMovimentacao",
+    query = "Select distinct m From MovimentacaoTrasnferencia m "
+    + " WHERE (:dataMovimentacao2 = 'todos' OR m.dataMovimentacao = :dataMovimentacao) "
+    + " AND (:contaBancariaDebitada2 = 'todos' OR m.contaBancariaDebitada = :contaBancariaDebitada) "
+    + " AND (:contaBancariaTransferida2 = 'todos' OR m.contaBancariaTransferida = :contaBancariaTransferida) "
+    + " AND (m.contaBancariaDebitada.usuario = :usuario OR m.contaBancariaDebitada.usuario.conjuge = :usuario) "
+    + " ORDER BY m.dataMovimentacao desc "),
+    @NamedQuery(name = "MovimentacaoTrasnferencia.countMovimentacao",
+    query = "Select count(distinct m) From MovimentacaoTrasnferencia m "
+    + " WHERE (:dataMovimentacao2 = 'todos' OR m.dataMovimentacao = :dataMovimentacao) "
+    + " AND (:contaBancariaDebitada2 = 'todos' OR m.contaBancariaDebitada = :contaBancariaDebitada) "
+    + " AND (:contaBancariaTransferida2 = 'todos' OR m.contaBancariaTransferida = :contaBancariaTransferida) "
+    + " AND (m.contaBancariaDebitada.usuario = :usuario OR m.contaBancariaDebitada.usuario.conjuge = :usuario) ")
+})
 public class MovimentacaoTrasnferencia extends MovimentacaoFinanceira {
 
     /**
@@ -83,6 +98,7 @@ public class MovimentacaoTrasnferencia extends MovimentacaoFinanceira {
 
     /**
      * O saldo posterior da conta que recebeu a trsnferência.
+     *
      * @return O saldo posterior da conta que recebeu a trsnferência.
      */
     public BigDecimal getSaldoTransferidaPosterior() {
