@@ -125,3 +125,8 @@
     height:16px !important;
     width:16px !important;
 }
+.transferenciaIcon{
+     background: url("#{resource['images:movimentacao_16.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
