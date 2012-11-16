@@ -159,6 +159,7 @@ table.referencesmall td {
     font-weight: bold;
     border-bottom:solid 1px #fff; 
     border-radius: 5px;
+    text-align: left;
 }
 .formedit-head .right{ padding-top:5px; line-height:13px; }
 .formedit-head .right label,
