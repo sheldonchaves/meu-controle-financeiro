@@ -6,44 +6,48 @@
                 template="../templates/layout.xhtml">
     <ui:param name="titulomenu" value="#{msg.principal}" />
     <ui:define name="content">
-        <h:form>
             <h:panelGroup id="disponiveis">
-                <table width="100%">
+                <table width="100%" >
                     <tbody><tr style="vertical-align: top;">
-                            <td>
-                                <arq:disponiveis width="70%"/>
+                             <td align='left'>
+                                <div style="margin-top: 8px;">
+                                    <arq:disponiveis width="70%"/>
+                                </div>
                             </td>
-                            <td>
-                                <h:form id="formPieClassPrincipal">
-                                    <h:panelGrid columns="1" style="margin-top: 10px;">
-                                        <h:panelGrid columns="4" >
-                                            <h:outputLabel value="#{msg.periodo}:"/>
-                                            <p:selectOneMenu value="#{chartsReport.mesOperacao}" required="true"
-                                                             requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
-                                                             style="font-size: 0.9em; width: 120px;">
-                                                <f:selectItems value="#{chartsReport.meses}"/>
-                                            </p:selectOneMenu>
+                            <td align='center'>
+                                <div class="formedit">
+                                    <div class="formedit-head">
+                                        <h:outputText value="#{msg.classificacaoMovimentacao} "/>
+                                    </div>
+                                    <h:form id="formPieClassPrincipal">
+                                        <h:panelGrid columns="1" style="margin-top: 10px;">
+                                            <h:panelGrid columns="4" >
+                                                <h:outputLabel value="#{msg.periodo}:"/>
+                                                <p:selectOneMenu value="#{chartsReport.mesOperacao}" required="true"
+                                                                 requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
+                                                                 style="font-size: 0.9em; width: 120px; text-align: left;">
+                                                    <f:selectItems value="#{chartsReport.meses}"/>
+                                                </p:selectOneMenu>
 
-                                            <p:selectOneMenu value="#{chartsReport.anoOperacao}" required="true"
-                                                             requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
-                                                             style="font-size: 0.9em;">
-                                                <f:selectItems value="#{chartsReport.anos}"/>
-                                            </p:selectOneMenu>
-                                            <p:commandButton icon="lupaIco" style="width: 23px; height: 23px;"
-                                                             actionListener="#{chartsReport.buscarDespesasPie()}" update="pieClassPrincipal" />
+                                                <p:selectOneMenu value="#{chartsReport.anoOperacao}" required="true"
+                                                                 requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
+                                                                 style="font-size: 0.9em; text-align: left;">
+                                                    <f:selectItems value="#{chartsReport.anos}"/>
+                                                </p:selectOneMenu>
+                                                <p:commandButton icon="lupaIco" style="width: 23px; height: 23px;"
+                                                                 actionListener="#{chartsReport.buscarDespesasPie()}" update="pieClassPrincipal" />
+                                            </h:panelGrid>
+                                            <p:pieChart id="pieClassPrincipal" value="#{chartsReport.pieClassModel}" legendPosition="w"  
+                                                        title="#{chartsReport.pieClassModelTitle}" seriesColors="92b224, F00000"
+                                                        style="margin-top: 5px; width: 280px; height: 240px;" showDataLabels="true"/> 
                                         </h:panelGrid>
-                                        <p:pieChart id="pieClassPrincipal" value="#{chartsReport.pieClassModel}" legendPosition="w"  
-                                                    title="#{chartsReport.pieClassModelTitle}" seriesColors="92b224, F00000"
-                                                    style="margin-top: 5px; width: 280px; height: 240px;" showDataLabels="true"/> 
-                                    </h:panelGrid>
-
-                                </h:form>
+                                    </h:form>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </h:panelGroup>
-        </h:form>
     </ui:define>
 </ui:composition>
 
