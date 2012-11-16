@@ -191,6 +191,30 @@ public class ProcedimentoBean
     }
 
     @Override
+    public Long contarDespesas(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status, String observacao, Date dataVencimento,
+            CartaoCredito cartao) {
+        Map<String, Object> parans = getMapParans();
+        paransPaginacao(parans, usr, detalhe, status, observacao, dataVencimento);
+        parans.put("cartao", cartao);
+        parans.put("cartao2", cartao == null ? "todos" : "filtro");
+        return pesqCount("DespesaProcedimento.countProcedimento", parans);
+    }
+
+    @Override
+    public List<DespesaProcedimento> buscarDespesas(final Usuario usr, final DetalheTipoProcedimento detalhe,
+            final StatusPagamento status, String observacao, Date dataVencimento,
+            final CartaoCredito cartao, int[] range) {
+        Map<String, Object> parans = getMapParans();
+        paransPaginacao(parans, usr, detalhe, status, observacao, dataVencimento);
+        parans.put("cartao", cartao);
+        parans.put("cartao2", cartao == null ? "todos" : "filtro");
+        List toRetrun = listPesqParam("DespesaProcedimento.selectProcedimento",
+                parans, range[1] - range[0], range[0]);
+        return toRetrun;
+    }
+
+    @Override
     public void removerParcelamento(String idParcelamento) throws NegocioException {
         Map<String, Object> parans = getMapParans();
         parans.put("identificador", idParcelamento);
@@ -217,7 +241,7 @@ public class ProcedimentoBean
     @Override
     public List<DespesaProcedimento> buscarDespesaIntervalo(final Usuario usr,
             final CartaoCredito cartao, final StatusPagamento status,
-            final Date[] intervalo){
+            final Date[] intervalo) {
         Map<String, Object> parans = getMapParans();
         parans.put("cartao", cartao);
         parans.put("cartao2", cartao == null ? "todos" : "filtro");
@@ -229,7 +253,7 @@ public class ProcedimentoBean
         List toReturn = listPesqParam("DespesaProcedimento.buscarDespesaUsuarioIntervalo", parans);
         return toReturn;
     }
-    
+
     @Override
     public MinMaxDateDTO buscarIntervalodDatas(final CartaoCredito cartao,
             final StatusPagamento status, final Usuario usr) {
