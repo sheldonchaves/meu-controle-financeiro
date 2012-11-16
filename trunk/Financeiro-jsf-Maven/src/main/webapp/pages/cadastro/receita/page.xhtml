@@ -12,8 +12,18 @@
             <h:panelGroup >
                 <table class="referencesmall" width="100%">
                     <thead style="font-size: 0.9em;"><tr>
-                            <th align='center'>
-                                <h:outputText value="#{msg.vencimento}" />
+                            <th align='center' style="min-width: 100px;">
+                                <h:outputText value="#{msg.vencimento}" /><br></br>
+                                <p:calendar value="#{receitaController.dataFiltro}"  size="11" maxlength="10"  id="searchData"
+                                            title="#{msg.tipoBuscaIgual}" pattern="dd/MM/yyyy" locale="pt" mode="popup"
+                                            navigator="true" readonlyInput="true" 
+                                            timeZone="#{initParam['timezone']}" >
+                                    <p:ajax event="dateSelect" listener="#{receitaController.recreateTable()}" update="formReceitaTable"/>
+                                </p:calendar>
+                                <p:spacer width="5" height="5"/>
+                                <p:commandLink styleClass="ico erase" id="eraseLink" actionListener="#{receitaController.cleanDate()}"
+                                               update="formReceitaTable">
+                                </p:commandLink>
                             </th>
                             <th align='center' width="60"><h:outputText value="#{msg.valor}"/></th>
                             <th align='center'>
@@ -36,7 +46,7 @@
                             <th align='center'>
                                 <h:outputText value="#{msg.responsavel}"/><br></br>
                             </th>
-                            <th width="150" class="ac"></th>
+                            <th style="min-width: 120px" class="ac"></th>
                         </tr></thead>
                     <tbody>
                         <ui:repeat value="#{receitaController.items}" var="item" varStatus="x">

@@ -21,6 +21,7 @@ import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -57,6 +58,7 @@ public class ReceitaController extends EntityController<Procedimento>
     //Filtros
     private StatusPagamento statusFiltro = StatusPagamento.NAO_PAGA;
     private String observacaoFiltro;
+    private Date dataFiltro;
 
     /**
      * Padrão
@@ -93,13 +95,13 @@ public class ReceitaController extends EntityController<Procedimento>
                 @Override
                 public int getItemsCount() {
                     return getFacade().contarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.RECEITA_UNICA, statusFiltro, observacaoFiltro, null).intValue();
+                            DetalheTipoProcedimento.RECEITA_UNICA, statusFiltro, observacaoFiltro, dataFiltro).intValue();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().buscarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.RECEITA_UNICA, statusFiltro, observacaoFiltro, null,
+                            DetalheTipoProcedimento.RECEITA_UNICA, statusFiltro, observacaoFiltro, dataFiltro,
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }
@@ -172,8 +174,8 @@ public class ReceitaController extends EntityController<Procedimento>
     @Override
     public void setEntity(final Procedimento t) {
         this.current = t;
-        if(this.current != null 
-                && this.current.getValorReal() == null){
+        if (this.current != null
+                && this.current.getValorReal() == null) {
             this.current.setValorReal(current.getValorEstimado());
         }
     }
@@ -188,14 +190,19 @@ public class ReceitaController extends EntityController<Procedimento>
         return det;
     }
 
+    public void cleanDate() {
+        this.dataFiltro = null;
+        recreateTable();
+    }
     //====================
     // Select Itens
     //====================
+
     public SelectItem[] getStatus() {
         return JsfUtil.getEnumSelectItems(StatusPagamento.class, false,
                 FacesContext.getCurrentInstance());
     }
-    
+
     public SelectItem[] getDetalhes() {
         return JsfUtil.getSelectItems(new TreeSet<EntityInterface>(this.detalheFacade.findAllDetalhe(usuarioFacade.getUsuario(),
                 Boolean.TRUE, TipoProcedimento.RECEITA_FINANCEIRA)), true, FacesContext.getCurrentInstance());
@@ -203,6 +210,7 @@ public class ReceitaController extends EntityController<Procedimento>
     //====================
     //Getters AND Setters
     //====================
+
     /**
      * O Facade que representa a entidade current.
      *
@@ -230,5 +238,13 @@ public class ReceitaController extends EntityController<Procedimento>
 
     public void setObservacaoFiltro(String observacaoFiltro) {
         this.observacaoFiltro = observacaoFiltro;
+    }
+
+    public Date getDataFiltro() {
+        return dataFiltro;
+    }
+
+    public void setDataFiltro(Date dataFiltro) {
+        this.dataFiltro = dataFiltro;
     }
 }
