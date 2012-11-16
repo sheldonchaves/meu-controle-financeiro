@@ -11,7 +11,32 @@
                 <table width="100%">
                     <tbody><tr style="vertical-align: top;">
                             <td>
-                                <arq:disponiveis width="35%"/>
+                                <arq:disponiveis width="70%"/>
+                            </td>
+                            <td>
+                                <h:form id="formPieClassPrincipal">
+                                    <h:panelGrid columns="3">
+                                        <h:outputLabel value="#{msg.periodo}:"/>
+                                        <h:panelGrid columns="3" >
+                                            <p:selectOneMenu value="#{chartsReport.mesOperacao}" required="true"
+                                                             requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
+                                                             style="font-size: 0.9em; width: 120px;">
+                                                <f:selectItems value="#{chartsReport.meses}"/>
+                                            </p:selectOneMenu>
+
+                                            <p:selectOneMenu value="#{chartsReport.anoOperacao}" required="true"
+                                                             requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
+                                                             style="font-size: 0.9em;">
+                                                <f:selectItems value="#{chartsReport.anos}"/>
+                                            </p:selectOneMenu>
+                                            <p:commandButton icon="lupaIco" style="width: 23px; height: 23px;"
+                                                             actionListener="#{chartsReport.buscarDespesasPie()}" update="pieClassPrincipal" />
+                                        </h:panelGrid>
+                                    </h:panelGrid>
+                                    <p:pieChart id="pieClassPrincipal" value="#{chartsReport.pieClassModel}" legendPosition="w"  
+                                                title="#{chartsReport.pieClassModelTitle}" seriesColors="92b224, F00000"
+                                                style="margin-top: 20px;" showDataLabels="true"/> 
+                                </h:form>
                             </td>
                         </tr>
                     </tbody>

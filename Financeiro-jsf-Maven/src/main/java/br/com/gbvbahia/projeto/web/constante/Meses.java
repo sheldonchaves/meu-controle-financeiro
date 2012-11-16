@@ -21,4 +21,20 @@ public enum Meses {
     public int getMes() {
         return mes;
     }
+
+    /**
+     * Realiza a comparação do valor passo com o mês e retorna a enum de valor
+     * equivalente.
+     * Jan = 0... Dez = 11.
+     * @param month
+     * @return
+     */
+    public static Meses getByMonth(int month) {
+        for (Meses m : Meses.values()) {
+            if (m.mes == month) {
+                return m;
+            }
+        }
+        return null;
+    }
 }

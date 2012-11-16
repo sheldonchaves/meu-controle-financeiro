@@ -1,0 +1,177 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.com.gbvbahia.projeto.web.pages.report;
+
+import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
+import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
+import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
+import br.com.gbvbahia.financeiro.utils.DateUtils;
+import br.com.gbvbahia.projeto.web.constante.Meses;
+import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
+import br.com.gbvbahia.projeto.web.jsfutil.LocaleController;
+import br.com.gbvbahia.utils.MensagemUtils;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import org.apache.log4j.Logger;
+import org.primefaces.model.chart.PieChartModel;
+
+/**
+ *
+ * @author Usuário do Windows
+ */
+@ManagedBean
+@ViewScoped
+public class ChartsReport implements Serializable {
+
+    /**
+     * Registra os eventos para debug em desenvolvimento.
+     */
+    private Logger logger = Logger.getLogger(ChartsReport.class);
+    @EJB
+    private UsuarioFacade usuarioFacade;
+    @EJB
+    private ProcedimentoFacade procedimentoFacade;
+    @ManagedProperty("#{localeController}")
+    private LocaleController localeController;
+    //SelectItem
+    private List<Integer> listAnosSelect;
+    private Meses mesOperacao;
+    private Integer anoOperacao;
+    //Chart Class
+    private Date dataClassModel;
+    private PieChartModel pieClassModel;
+
+    /**
+     * Executado após o bean JSF ser criado.
+     */
+    @PostConstruct
+    public void init() {
+        logger.info("init()...ChartsReport");
+        MinMaxDateDTO intervalodDatas = procedimentoFacade.buscarIntervalodDatas(
+                null, null, usuarioFacade.getUsuario());
+        listAnosSelect = intervalodDatas.intervaloMinMaxAnos();
+    }
+
+    //====================
+    // Select Itens
+    //====================
+    public SelectItem[] getMeses() {
+        return JsfUtil.getEnumSelectItems(Meses.class, false, FacesContext.getCurrentInstance());
+    }
+
+    public SelectItem[] getAnos() {
+        SelectItem[] anos = new SelectItem[listAnosSelect.size()];
+        for (int i = 0; i < anos.length; i++) {
+            anos[i] = new SelectItem(listAnosSelect.get(i), listAnosSelect.get(i).toString());
+        }
+        return anos;
+    }
+
+    public void buscarDespesasPie() {
+        makeClassPie();
+    }
+
+    /**
+     * Busca as despesas no periodo selecionado, se não houver periodo irá
+     * buscar na data atual.
+     *
+     * @return
+     */
+    private List<DespesaProcedimento> despesas() {
+        List<DespesaProcedimento> toReturn;
+        if (mesOperacao == null || anoOperacao == null) {
+            Date agora = new Date();
+            anoOperacao = DateUtils.getFieldDate(agora, Calendar.YEAR);
+            mesOperacao = Meses.getByMonth(DateUtils.getFieldDate(agora, Calendar.MONTH));
+        }
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, anoOperacao);
+        c.set(Calendar.MONTH, mesOperacao.getMes());
+        dataClassModel = c.getTime();
+        final Date[] intervalo = DateUtils.getIntervalo(c.getTime());
+        toReturn = procedimentoFacade.buscarDespesaIntervalo(usuarioFacade.getUsuario(), null, null, intervalo);
+        return toReturn;
+    }
+
+    private PieChartModel makeClassPie() {
+        List<DespesaProcedimento> lDesp = despesas();
+        pieClassModel = new PieChartModel();
+        if (lDesp.isEmpty()) {
+            pieClassModel.set(MensagemUtils.getResourceBundle("semInformacao",
+                    FacesContext.getCurrentInstance()), 100);
+        } else {
+            Map<ClassificacaoProcedimento, Double> map = new EnumMap<ClassificacaoProcedimento, Double>(ClassificacaoProcedimento.class);
+            for (DespesaProcedimento dp : lDesp) {
+                if (map.containsKey(dp.getClassificacaoProcedimento())) {
+                    map.put(dp.getClassificacaoProcedimento(), map.get(dp.getClassificacaoProcedimento()) + dp.getValor().doubleValue());
+                } else {
+                    map.put(dp.getClassificacaoProcedimento(), dp.getValor().doubleValue());
+                }
+            }
+            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.FIXA.toString(),
+                    FacesContext.getCurrentInstance()), map.get(ClassificacaoProcedimento.FIXA));
+            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.VARIAVEL.toString(),
+                    FacesContext.getCurrentInstance()), map.get(ClassificacaoProcedimento.VARIAVEL));
+        }
+        return pieClassModel;
+    }
+
+    public Meses getMesOperacao() {
+        return mesOperacao;
+    }
+
+    public void setMesOperacao(Meses mesOperacao) {
+        this.mesOperacao = mesOperacao;
+    }
+
+    public Integer getAnoOperacao() {
+        return anoOperacao;
+    }
+
+    public void setAnoOperacao(Integer anoOperacao) {
+        this.anoOperacao = anoOperacao;
+    }
+
+    public PieChartModel getPieClassModel() {
+        if (pieClassModel == null) {
+            makeClassPie();
+        }
+        return pieClassModel;
+    }
+
+    public void setPieClassModel(PieChartModel pieClassModel) {
+        this.pieClassModel = pieClassModel;
+    }
+
+    public LocaleController getLocaleController() {
+        return localeController;
+    }
+
+    public void setLocaleController(LocaleController localeController) {
+        this.localeController = localeController;
+    }
+
+    public String getPieClassModelTitle() {
+        if (dataClassModel == null) {
+            dataClassModel = new Date();
+        }
+        return DateUtils.getDataFormatada(dataClassModel,
+                localeController.getLocale(), "MMMM-yyyy");
+    }
+}
