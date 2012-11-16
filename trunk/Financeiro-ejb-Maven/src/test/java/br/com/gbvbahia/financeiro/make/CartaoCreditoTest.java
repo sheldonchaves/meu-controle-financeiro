@@ -5,18 +5,16 @@
 package br.com.gbvbahia.financeiro.make;
 
 import br.com.gbvbahia.financeiro.TestesMake;
-import br.com.gbvbahia.financeiro.beans.*;
 import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
-import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.maker.MakeEntity;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
-import com.bm.testsuite.dataloader.CSVInitialDataSet;
 import com.bm.utils.BasicDataSource;
 import java.sql.Connection;
-import javax.naming.InitialContext;
+import java.util.Calendar;
+import java.util.Date;
 import javax.persistence.EntityManager;
 import org.junit.Test;
 
@@ -28,8 +26,8 @@ public class CartaoCreditoTest
         extends BaseSessionBeanFixture<CartaoCreditoFacade> {
 
     /**
-     * Define as classes que serão utilizadas durante o testes, menos
-     * o Bean a ser testado.
+     * Define as classes que serão utilizadas durante o testes, menos o Bean a
+     * ser testado.
      */
     private static final Class[] USED_BEANS = TestesMake.getUseBeans();
 
@@ -67,9 +65,44 @@ public class CartaoCreditoTest
             manager.persist(cartaoCredito);
             manager.getTransaction().commit();
         }
-  
+
     }
-    
+
+    public void testProximoVencimento() throws Exception {
+        CartaoCredito cartao = new CartaoCredito();
+        cartao.setDiaMesmoMes(7);
+        cartao.setDiaVencimento(6);
+        Calendar c = Calendar.getInstance();
+        c.set(2010, 0, 9);
+        Date d = cartao.getProximoVencimento(c.getTime());
+        Calendar compare = Calendar.getInstance();
+        compare.setTime(d);
+        assertEquals(compare.get(Calendar.DAY_OF_MONTH), 6);
+        assertEquals(1, compare.get(Calendar.MONTH));
+        assertEquals(2010, compare.get(Calendar.YEAR));
+
+        c.set(2009, 11, 24);
+        d = cartao.getProximoVencimento(c.getTime());
+        compare.setTime(d);
+        assertEquals(compare.get(Calendar.DAY_OF_MONTH), 6);
+        assertEquals(0, compare.get(Calendar.MONTH));
+        assertEquals(2010, compare.get(Calendar.YEAR));
+
+        c.set(2009, 11, 30);
+        d = cartao.getProximoVencimento(c.getTime());
+        compare.setTime(d);
+        assertEquals(compare.get(Calendar.DAY_OF_MONTH), 6);
+        assertEquals(1, compare.get(Calendar.MONTH));
+        assertEquals(2010, compare.get(Calendar.YEAR));
+
+        c.set(2009, 11, 01);
+        d = cartao.getProximoVencimento(c.getTime());
+        compare.setTime(d);
+        assertEquals(compare.get(Calendar.DAY_OF_MONTH), 6);
+        assertEquals(0, compare.get(Calendar.MONTH));
+        assertEquals(2010, compare.get(Calendar.YEAR));
+    }
+
     /**
      * Se for uma base de dados a mesma deve ser limpa.
      *
