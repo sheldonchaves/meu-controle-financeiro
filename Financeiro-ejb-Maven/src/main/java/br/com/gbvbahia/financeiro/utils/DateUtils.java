@@ -24,17 +24,28 @@ public final class DateUtils {
     }
 
     /**
+     * Formata a data para o pattern passado.
+     *
+     * @param date Se nulo retorna a data atual.
+     * @param pattern O patter a ser formatado, não pode ser nulo.
+     * @return
+     */
+    public static String getDataFormatada(final Date date, String pattern) {
+        SimpleDateFormat sd = new SimpleDateFormat(pattern);
+        if (date == null) {
+            return sd.format(new Date());
+        }
+        return sd.format(date);
+    }
+
+    /**
      * Retorna uma data no formato de String DD/MM/AAAA HH:mm:ss.
      *
      * @param date java.util.Date
      * @return java.lang.String
      */
     public static String getDateDiaMesAno(final Date date) {
-        SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        if (date == null) {
-            return sd.format(new Date());
-        }
-        return sd.format(date);
+        return getDataFormatada(date, "dd/MM/yyyy HH:mm:ss");
     }
 
     /**
@@ -44,9 +55,7 @@ public final class DateUtils {
      * @return java.lang.String yyyMMdd
      */
     public static String getDateToNameFile() {
-        Date date = new Date();
-        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
-        return sd.format(date);
+        return getDataFormatada(null, "yyyyMMdd");
     }
 
     /**
@@ -56,11 +65,7 @@ public final class DateUtils {
      * @return java.lang.String yyyMMdd
      */
     public static String getDateDirect(Date date) {
-        SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
-        if (date == null) {
-            return sd.format(new Date());
-        }
-        return sd.format(date);
+        return getDataFormatada(date, "yyyyMMdd");
     }
 
     /**
@@ -73,8 +78,7 @@ public final class DateUtils {
         if (date == null) {
             return null;
         }
-        SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yy");
-        return sd.format(date);
+        return getDataFormatada(date, "dd/MM/yy");
     }
 
     /**
