@@ -6,7 +6,7 @@
                 xmlns:arq="http://java.sun.com/jsf/composite/ezcomp"
                 template="../../../templates/layout.xhtml"
                 >
-<ui:param name="titulomenu" value="#{msg.cadastroDespesa}" />
+    <ui:param name="titulomenu" value="#{msg.cadastroDespesa}" />
     <ui:define name="content">
         <h:form id="formDespesaTable">
             <h:panelGroup >
@@ -14,7 +14,7 @@
                     <thead style="font-size: 0.9em;"><tr>
                             <th align='center' style="min-width: 100px;">
                                 <h:outputText value="#{msg.vencimento}" /><br></br>
-                                 <p:calendar value="#{despesaUnicaController.dataFiltro}"  size="11" maxlength="10"  id="searchData"
+                                <p:calendar value="#{despesaUnicaController.dataFiltro}"  size="11" maxlength="10"  id="searchData"
                                             title="#{msg.tipoBuscaIgual}" pattern="dd/MM/yyyy" locale="pt" mode="popup"
                                             navigator="true" readonlyInput="true" 
                                             timeZone="#{initParam['timezone']}" >
@@ -25,11 +25,11 @@
                                                update="formDespesaTable">
                                 </p:commandLink>
                             </th>
-                            <th align='center' width="60"><h:outputText value="#{msg.valor}"/></th>
+                            <th align='center' style="min-width: 65px;"><h:outputText value="#{msg.valor}"/></th>
                             <th align='center'>
                                 <h:outputText value="#{msg.observacao}"/><br></br>
                                 <h:inputText value="#{despesaUnicaController.observacaoFiltro}" styleClass="selectTableFilter" id="search"
-                                             title="#{msg.tipoBuscaInicia}">
+                                             title="#{msg.tipoBuscaInicia}" size="10">
                                     <p:ajax event="blur" listener="#{despesaUnicaController.recreateTable()}" update="formDespesaTable"/>
                                 </h:inputText>
                             </th>
@@ -43,7 +43,15 @@
                                     <f:selectItems value="#{despesaUnicaController.status}"/>
                                 </p:selectOneMenu>
                             </th>
-                            <th align='center'><h:outputText value="#{msg.cartaoCredito}"/></th>
+                            <th align='center'>
+                                <h:outputText value="#{msg.cartaoCredito}"/><br></br>
+                                <p:selectOneMenu value="#{despesaUnicaController.cartaoFiltro}" id="cartaoFiltro" style="font-size: 0.9em; width: 90px;">
+                                    <p:ajax listener="#{despesaUnicaController.recreateTable()}" update="formDespesaTable"/>
+                                    <f:selectItem itemLabel="#{msg.todos}" itemValue="#{null}"/>
+                                    <f:selectItems value="#{despesaUnicaController.cartoesTabela}"/>
+                                    <f:converter converterId="cartaoConverter"/>
+                                </p:selectOneMenu>
+                            </th>
                             <th align='center'>
                                 <h:outputText value="#{msg.responsavel}"/><br></br>
                             </th>

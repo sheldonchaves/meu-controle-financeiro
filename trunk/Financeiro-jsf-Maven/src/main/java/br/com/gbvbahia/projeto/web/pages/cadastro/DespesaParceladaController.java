@@ -13,6 +13,7 @@ import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.DetalheTipoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
+import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
@@ -62,6 +63,7 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
     private StatusPagamento statusFiltro = StatusPagamento.NAO_PAGA;
     private String observacaoFiltro;
     private Date dataFiltro;
+    private CartaoCredito cartaoFiltro;
 
     /**
      * Padrão.
@@ -97,14 +99,16 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
             pagination = new EntityPagination() {
                 @Override
                 public int getItemsCount() {
-                    return getFacade().contarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro, observacaoFiltro, dataFiltro).intValue();
+                    return getFacade().contarDespesas(usuarioFacade.getUsuario(),
+                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro,
+                            observacaoFiltro, dataFiltro, cartaoFiltro).intValue();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().buscarProcedimentos(usuarioFacade.getUsuario(),
-                            DetalheTipoProcedimento.DESPESA_PARCELADA, statusFiltro, observacaoFiltro, dataFiltro,
+                    return new ListDataModel(getFacade().buscarDespesas(usuarioFacade.getUsuario(),
+                            DetalheTipoProcedimento.DESPESA_PARCELADA,
+                            statusFiltro, observacaoFiltro, dataFiltro, cartaoFiltro,
                             new int[]{getPageFirstItem(), getPageFirstItem()
                                 + getPageSize()}));
                 }
@@ -244,9 +248,14 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
                 true, FacesContext.getCurrentInstance());
     }
 
+    public SelectItem[] getCartoesTabela() {
+        return JsfUtil.getSelectItems(new TreeSet<EntityInterface>(this.cartaoFacade.buscarCartoesAtivos(usuarioFacade.getUsuario())),
+                false, FacesContext.getCurrentInstance());
+    }
     //====================
     //Getters AND Setters
     //====================
+
     /**
      * O Facade que representa a entidade current.
      *
@@ -282,5 +291,13 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
 
     public void setDataFiltro(Date dataFiltro) {
         this.dataFiltro = dataFiltro;
+    }
+
+    public CartaoCredito getCartaoFiltro() {
+        return cartaoFiltro;
+    }
+
+    public void setCartaoFiltro(CartaoCredito cartaoFiltro) {
+        this.cartaoFiltro = cartaoFiltro;
     }
 }

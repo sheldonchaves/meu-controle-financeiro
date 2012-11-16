@@ -25,13 +25,13 @@
                                                update="formDespesaParceladaTable">
                                 </p:commandLink>
                             </th>
-                            <th align='center' width="60"><h:outputText value="#{msg.valor}"/></th>
+                            <th align='center' style="min-width: 65px;"><h:outputText value="#{msg.valor}"/></th>
                             <th align='center'><h:outputText value="#{msg.atual}"/></th>
                             <th align='center'><h:outputText value="#{msg.total}"/></th>
                             <th align='center'>
                                 <h:outputText value="#{msg.observacao}"/><br></br>
                                 <h:inputText value="#{despesaParceladaController.observacaoFiltro}" styleClass="selectTableFilter" id="search"
-                                             title="#{msg.tipoBuscaInicia}">
+                                             title="#{msg.tipoBuscaInicia}" size="10">
                                     <p:ajax event="blur" listener="#{despesaParceladaController.recreateTable()}" update="formDespesaParceladaTable"/>
                                 </h:inputText>
                             </th>
@@ -44,7 +44,14 @@
                                     <f:selectItems value="#{despesaParceladaController.status}"/>
                                 </p:selectOneMenu>
                             </th>
-                            <th align='center'><h:outputText value="#{msg.cartaoCredito}"/></th>
+                            <th align='center'><h:outputText value="#{msg.cartaoCredito}"/><br></br>
+                            <p:selectOneMenu value="#{despesaParceladaController.cartaoFiltro}" id="cartaoFiltro" style="font-size: 0.9em; width: 90px;">
+                                    <p:ajax listener="#{despesaParceladaController.recreateTable()}" update="formDespesaParceladaTable"/>
+                                    <f:selectItem itemLabel="#{msg.todos}" itemValue="#{null}"/>
+                                    <f:selectItems value="#{despesaParceladaController.cartoesTabela}"/>
+                                    <f:converter converterId="cartaoConverter"/>
+                                </p:selectOneMenu>
+                            </th>
                             <th align='center'>
                                 <h:outputText value="#{msg.responsavel}"/><br></br>
                             </th>
