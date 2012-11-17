@@ -13,8 +13,8 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * Representa uma conta parcelada de pagamento, como uma som comprado em 12x
- * ou um carro em 7x prestações.<br> Possui parcelas.
+ * Representa uma conta parcelada de pagamento, como uma som comprado em
+ * 12x ou um carro em 7x prestações.<br> Possui parcelas.
  *
  * @since 14/04/2012
  * @author Guilherme
@@ -39,15 +39,16 @@ public class DespesaParceladaProcedimento extends DespesaProcedimento
         implements Serializable {
 
     /**
-     * Construtor padrão que informa ao Procedimento que está extensão é uma
-     * Despesa.
+     * Construtor padrão que informa ao Procedimento que está extensão é
+     * uma Despesa.
      */
     public DespesaParceladaProcedimento() {
         super(DetalheTipoProcedimento.DESPESA_PARCELADA);
     }
 
     /**
-     * Construtor que cria uma despesa carregando os dados de um procedimento.
+     * Construtor que cria uma despesa carregando os dados de um
+     * procedimento.
      *
      * @param procedimento Procedimento de origem.
      */
@@ -143,5 +144,10 @@ public class DespesaParceladaProcedimento extends DespesaProcedimento
     @Override
     public String toString() {
         return "DespesaParceladaProcedimento{" + "parcelaAtual=" + parcelaAtual + ", parcelaTotal=" + parcelaTotal + ", identificador=" + identificador + '}';
+    }
+
+    @Override
+    public String getLabel() {
+        return super.getLabel() + " | " + parcelaAtual + "/" + parcelaTotal;
     }
 }

@@ -452,9 +452,7 @@ public class Procedimento
                 + " | "
                 + DateUtils.getDateToString(dataMovimentacao)
                 + " | "
-                + NumberUtils.currencyFormat(getValor().doubleValue())
-                + " | "
-                + tipoProcedimento.name();
+                + NumberUtils.currencyFormat(getValor().doubleValue());
     }
 
     /**

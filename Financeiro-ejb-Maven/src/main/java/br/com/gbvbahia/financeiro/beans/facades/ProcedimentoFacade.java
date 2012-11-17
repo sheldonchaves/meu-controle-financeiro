@@ -186,7 +186,7 @@ public interface ProcedimentoFacade
      * Busca Despesas por intervalo de datas.
      *
      * @param usr obrigatorio
-     * @param cartao opcional
+     * @param cartao obrigatorio
      * @param status opcional
      * @param intervalo obrigatorio intervalo[0] inicial intervalo[1] final
      * @return
