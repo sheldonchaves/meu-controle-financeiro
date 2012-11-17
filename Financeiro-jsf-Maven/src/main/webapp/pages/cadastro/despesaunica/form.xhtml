@@ -12,7 +12,7 @@
             <h:panelGroup id="receitaCadGroup">
                 <h:form id="recForm">
                     <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
-                        <h:outputLabel value="#{msg.movimentacao}:" for="data" />
+                        <h:outputLabel value="#{msg.movimentacao}:" for="dataMovimentacao" />
                         <p:calendar value="#{despesaUnicaController.current.dataMovimentacao}"  maxlength="10"  id="dataMovimentacao"
                                     title="#{msg.data}" pattern="dd/MM/yyyy" locale="pt"  onkeyup="formatar(this, '##/##/####', event)"
                                     navigator="true" showOn="button" required="true" requiredMessage="#{msg.campoObrigatorio}" 
