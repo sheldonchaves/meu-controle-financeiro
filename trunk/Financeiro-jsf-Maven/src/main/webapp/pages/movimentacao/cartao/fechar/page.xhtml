@@ -51,7 +51,7 @@
                                     <table class="referencesmall" width="100%">
                                         <thead style="font-size: 0.9em;"><tr>
                                                 <th align='center'>
-                                                    <h:outputText value="#{msg.vencimento}" />
+                                                    <h:outputText value="#{msg.movimentacao}" />
                                                 </th>
                                                 <th align='center'>
                                                     <h:outputText value="#{msg.valor}"/>
@@ -76,7 +76,7 @@
                                             <ui:repeat value="#{cartaoFecharOperacaoController.despesas}" var="item" varStatus="x">
                                                 <tr style="height: 30px;">
                                                     <td align='center'>
-                                                        <h:outputText value="#{item.dataVencimento}">
+                                                        <h:outputText value="#{item.dataMovimentacao}">
                                                             <f:convertDateTime locale="#{localeController.localeUI}"
                                                                                type="date" timeZone="#{initParam['timezone']}"/>
                                                         </h:outputText>

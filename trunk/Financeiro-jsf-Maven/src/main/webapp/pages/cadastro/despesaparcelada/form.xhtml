@@ -21,9 +21,9 @@
                         </p:selectOneMenu>
                         <p:message for="cartao"/>
 
-                        <h:outputLabel value="#{msg.vencimento}:" for="data" />
+                        <h:outputLabel value="#{msg.movimentacao}:" for="data" />
                         <h:panelGroup id="dataGroup">
-                        <arq:calendar id="data" valor="#{despesaParceladaController.current.dataVencimento}" title="#{msg.data}"/>
+                            <arq:calendar id="data" valor="#{despesaParceladaController.current.dataMovimentacao}" title="#{msg.data}"/>
                         </h:panelGroup>
                         <p:message for="data"/>
 

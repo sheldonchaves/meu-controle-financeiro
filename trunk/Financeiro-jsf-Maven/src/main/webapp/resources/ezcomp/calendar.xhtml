@@ -13,6 +13,7 @@
                 <cc:attribute name="requerido" required="false" default="#{true}"/>
                 <cc:attribute name="readonly" required="false" default="#{false}"/>
                 <cc:attribute name="pattern" required="false" default="dd/MM/yyyy"/>
+                <cc:attribute name="disabled" required="false" default="#{false}"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
@@ -20,7 +21,7 @@
         <p:calendar id="#{cc.attrs.id}" readonly="#{cc.attrs.readonly}"  value="#{cc.attrs.valor}" title="#{cc.attrs.title}" 
                     size="#{cc.attrs.size}" locale="pt" timeZone="#{initParam['timezone']}" pattern="#{cc.attrs.pattern}" 
                     showOn="button" required="#{cc.attrs.requerido}" requiredMessage="#{msg.campoObrigatorio}" 
-                    onkeyup="formatar(this, '##/##/####', event)" maxlength="10" 
+                    onkeyup="formatar(this, '##/##/####', event)" maxlength="10" disabled="#{cc.attrs.disabled}" 
                     navigator="true">
 
         </p:calendar>

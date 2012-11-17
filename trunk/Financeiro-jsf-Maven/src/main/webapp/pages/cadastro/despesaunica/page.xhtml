@@ -13,7 +13,7 @@
                 <table class="referencesmall" width="100%">
                     <thead style="font-size: 0.9em;"><tr>
                             <th align='center' style="min-width: 100px;">
-                                <h:outputText value="#{msg.vencimento}" /><br></br>
+                                <h:outputText value="#{msg.movimentacao}" /><br></br>
                                 <p:calendar value="#{despesaUnicaController.dataFiltro}"  size="11" maxlength="10"  id="searchData"
                                             title="#{msg.tipoBuscaIgual}" pattern="dd/MM/yyyy" locale="pt" mode="popup"
                                             navigator="true" readonlyInput="true" 
@@ -24,6 +24,9 @@
                                 <p:commandLink styleClass="ico erase" id="eraseLink" actionListener="#{despesaUnicaController.cleanDate()}"
                                                update="formDespesaTable">
                                 </p:commandLink>
+                            </th>
+                            <th align='center' style="min-width: 100px;">
+                                <h:outputText value="#{msg.faturaCartao}" /><br></br>
                             </th>
                             <th align='center' style="min-width: 65px;"><h:outputText value="#{msg.valor}"/></th>
                             <th align='center'>
@@ -61,7 +64,13 @@
                         <ui:repeat value="#{despesaUnicaController.items}" var="item" varStatus="x">
                             <tr >
                                 <td align='center'>
-                                    <h:outputText value="#{item.dataVencimento}">
+                                    <h:outputText value="#{item.dataMovimentacao}">
+                                        <f:convertDateTime locale="#{localeController.localeUI}"
+                                                           type="date" timeZone="#{initParam['timezone']}"/>
+                                    </h:outputText>
+                                </td>
+                                <td align='center'>
+                                    <h:outputText value="#{item.dataCartao}">
                                         <f:convertDateTime locale="#{localeController.localeUI}"
                                                            type="date" timeZone="#{initParam['timezone']}"/>
                                     </h:outputText>
