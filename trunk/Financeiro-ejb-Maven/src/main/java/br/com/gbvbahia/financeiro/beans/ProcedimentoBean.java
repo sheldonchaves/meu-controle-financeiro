@@ -244,6 +244,7 @@ public class ProcedimentoBean
             final Date[] intervalo) {
         Map<String, Object> parans = getMapParans();
         parans.put("cartao", cartao);
+        parans.put("cartao2", cartao == null ? "todos" : "filtro");
         parans.put("status", status);
         parans.put("status2", status == null ? "todos" : "filtro");
         parans.put("usuario", usr);

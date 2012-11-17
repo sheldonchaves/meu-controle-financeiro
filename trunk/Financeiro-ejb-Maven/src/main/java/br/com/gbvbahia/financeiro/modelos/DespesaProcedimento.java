@@ -41,10 +41,11 @@ import javax.persistence.*;
     + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "),
     @NamedQuery(name = "DespesaProcedimento.buscarDespesaUsuarioIntervalo",
     query = " SELECT distinct d From DespesaProcedimento d "
-    + " WHERE (d.cartaoCredito = :cartao) "
+    + " WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
     + " AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
-    + " AND d.dataCartao between :dataI and :dataF "),
+    + " AND CASE WHEN d.dataCartao is null THEN d.dataMovimentacao "
+    + " ELSE d.dataCartao END between :dataI and :dataF "),
     @NamedQuery(name = "DespesaProcedimento.countProcedimento",
     query = " SELECT count(p) From DespesaProcedimento p "
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
