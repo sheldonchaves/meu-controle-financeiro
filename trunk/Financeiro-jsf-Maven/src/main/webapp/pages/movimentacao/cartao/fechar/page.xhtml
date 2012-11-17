@@ -54,6 +54,9 @@
                                                     <h:outputText value="#{msg.movimentacao}" />
                                                 </th>
                                                 <th align='center'>
+                                                    <h:outputText value="#{msg.faturaCartao}" />
+                                                </th>
+                                                <th align='center'>
                                                     <h:outputText value="#{msg.valor}"/>
                                                 </th>
                                                 <th align='center'>
@@ -81,13 +84,19 @@
                                                                                type="date" timeZone="#{initParam['timezone']}"/>
                                                         </h:outputText>
                                                     </td>
+                                                    <td align='center' style="font-weight: bold;">
+                                                        <h:outputText value="#{item.dataCartao}">
+                                                            <f:convertDateTime locale="#{localeController.localeUI}"
+                                                                               type="date" timeZone="#{initParam['timezone']}"/>
+                                                        </h:outputText>
+                                                    </td>
                                                     <td align='right'>
                                                         <h:outputText value="#{item.valor}">
                                                             <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
                                                         </h:outputText>
                                                     </td>
                                                     <td align='left'>
-                                                        <h:outputText value="#{item.observacao}"/>
+                                                        <h:outputText value="#{item.observacao}" title="#{item.label}"/>
                                                     </td>
                                                     <td align='center'>
                                                         <h:outputText value="#{msg[item.classificacaoProcedimento]}"/>
@@ -103,10 +112,10 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td align="center">
-                                                    <h:outputText value="#{msg.total}" style="font-weight: bold;"/>
+                                                <td align="right" colspan="2">
+                                                    <h:outputText value="#{msg.total}:" style="font-weight: bold;"/>
                                                 </td>
-                                                <td align="right" style="font-weight: bold;">
+                                                <td align="right" style="font-weight: bold; min-width: 80px;">
                                                     <h:outputText value="#{cartaoFecharOperacaoController.total}">
                                                         <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
                                                     </h:outputText>
