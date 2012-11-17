@@ -136,8 +136,8 @@ public class ProcedimentoBean
     }
 
     /**
-     * Retorna uma lista com Procedimento que são DespesaParceladaProcedimento
-     * pode ser feito cast sem problemas.
+     * Retorna uma lista com Procedimento que são
+     * DespesaParceladaProcedimento pode ser feito cast sem problemas.
      *
      * @param usuario Proprietário ou conjuge do proprietario. Obrigatório
      * @param cartao Cartao onde foi feito pagamento. Opcional.
@@ -293,13 +293,14 @@ public class ProcedimentoBean
     }
 
     /**
-     * Valida as parcelas:<br> Total de parcelas não pode ser menor que 2.<br>
-     * A parcela atual não pode ser menor que 1.<br> O total de parcelas não
-     * pode ser menor que a parcela atual.<br>
+     * Valida as parcelas:<br> Total de parcelas não pode ser menor que
+     * 2.<br> A parcela atual não pode ser menor que 1.<br> O total de
+     * parcelas não pode ser menor que a parcela atual.<br>
      *
      * @param parAtual Parcela atual.
      * @param parTotal Parcela total.
-     * @throws NegocioException se as parcelas não estiverem em conformidade.
+     * @throws NegocioException se as parcelas não estiverem em
+     * conformidade.
      */
     private void validarParcelas(final int parTotal,
             final int parAtual) throws NegocioException {
@@ -342,9 +343,13 @@ public class ProcedimentoBean
         dpp.setParcelaTotal(parTotal);
         if (cartao != null) {
             dpp.setCartaoCredito(cartao);
+            dpp.setDataCartao(cartao.getProximoVencimento(DateUtils.incrementar(dpp.getDataMovimentacao(),
+                    incrementData, Calendar.MONTH)));
+            dpp.setDataMovimentacao(dpp.getDataMovimentacao());
+        } else {
+            dpp.setDataMovimentacao(DateUtils.incrementar(dpp.getDataMovimentacao(),
+                    incrementData, Calendar.MONTH));
         }
-        dpp.setDataMovimentacao(DateUtils.incrementar(dpp.getDataMovimentacao(),
-                incrementData, Calendar.MONTH));
         return dpp;
     }
 }

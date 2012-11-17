@@ -27,8 +27,8 @@ import javax.validation.constraints.Size;
     + "WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
     + "AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + "AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
-    + "AND (:dataI2 = 'todos' OR d.dataMovimentacao >= :dataI) "
-    + "AND (:dataF2 = 'todos' OR d.dataMovimentacao <= :dataF) "),
+    + "AND (:dataI2 = 'todos' OR d.dataCartao >= :dataI) "
+    + "AND (:dataF2 = 'todos' OR d.dataCartao <= :dataF) "),
     @NamedQuery(name = "DespesaParcelada.apagarParcelamento",
     query = " DELETE From DespesaParceladaProcedimento d "
     + "WHERE (d.identificador = :identificador) "

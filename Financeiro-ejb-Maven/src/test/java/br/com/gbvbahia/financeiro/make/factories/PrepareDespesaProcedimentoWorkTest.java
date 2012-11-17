@@ -72,6 +72,7 @@ public class PrepareDespesaProcedimentoWorkTest implements ValueSpecializedFacto
             
             CartaoCredito cartao = MakeEntity.makeEntity("test_1", CartaoCredito.class);
             cartao.setUsuario(usr);
+            procedimento.setDataCartao(cartao.getProximoVencimento(procedimento.getDataMovimentacao()));
             manager.getTransaction().begin();
             TestesMake.getDetalheProcedimentoFacade().create(detalhe);
             TestesMake.getCartaoFacade().create(cartao);
