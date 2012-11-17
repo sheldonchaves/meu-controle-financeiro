@@ -6,6 +6,7 @@ package br.com.gbvbahia.financeiro.modelos;
 
 import br.com.gbvbahia.financeiro.constantes.Periodo;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
+import br.com.gbvbahia.financeiro.utils.DateUtils;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -29,7 +30,7 @@ import javax.validation.constraints.*;
 @Table(name = "fin_agenda_procedimento_fixo")
 @NamedQueries({
     @NamedQuery(name = "AgendaProcedimentoFixo.UltimaData",
-    query = " SELECT MAX(p.dataVencimento) From Procedimento p "
+    query = " SELECT MAX(p.dataMovimentacao) From Procedimento p "
     + "WHERE (p.agenda = :agenda) "),
     @NamedQuery(name = "AgendaProcedimentoFixo.countDetalhePeriodoTipo",
     query = " SELECT count(a) From AgendaProcedimentoFixo a "
@@ -210,7 +211,7 @@ public class AgendaProcedimentoFixo
      * @return Date
      */
     public Date getDataPrimeiroVencimento() {
-        return dataPrimeiroVencimento;
+        return DateUtils.zerarHora(dataPrimeiroVencimento);
     }
 
     /**
@@ -220,7 +221,7 @@ public class AgendaProcedimentoFixo
      * @param data Date
      */
     public void setDataPrimeiroVencimento(final Date data) {
-        this.dataPrimeiroVencimento = data;
+        this.dataPrimeiroVencimento = DateUtils.zerarHora(data);
     }
 
     /**

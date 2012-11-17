@@ -13,6 +13,7 @@ import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.maker.MakeEntity;
 import com.bm.cfg.Ejb3UnitCfg;
 import com.bm.testsuite.BaseSessionBeanFixture;
@@ -65,42 +66,51 @@ public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoBusiness> {
         getEntityManager().getTransaction().commit();
         int exp = 12;
         int result = TestesMake.getProcedimentoFacade().findAll().size();
-        assertEquals("Quantidade PROCEDIMENTOS Provisionados não bate.", exp, result);
+        assertEquals("Quantidade PROCEDIMENTOS Provisionados não bate,"
+                + " data agenda: "
+                + DateUtils.getDateDiaMesAno(agenda.getDataPrimeiroVencimento()),
+                exp, result);
         for (Procedimento pro : TestesMake.getProcedimentoFacade().findAll()) {
             Date hoje = new Date();
-            assertTrue("Data anterior criado em provisão", hoje.compareTo(pro.getDataVencimento()) < 0);
+            assertTrue("Data anterior criado em provisão", hoje.compareTo(pro.getDataMovimentacao()) < 0);
         }
     }
 
     @Test
     public void testCriarProvisoesEProvisionar() throws Exception {
-        AgendaProcedimentoFixo agenda = MakeEntity.makeEntity("test_2", AgendaProcedimentoFixo.class);
-        agenda.setAtiva(true);
-        agenda.setPeriodo(Periodo.MESES);
-        agenda.setUsuario(TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false));
-        DetalheProcedimento detalhe = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
-        DetalheProcedimento detalhe2 = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
-        detalhe.setUsuario(agenda.getUsuario());
-        detalhe2.setUsuario(agenda.getUsuario());
-        getEntityManager().getTransaction().begin();
-        TestesMake.getDetalheProcedimentoFacade().create(detalhe);
-        TestesMake.getDetalheProcedimentoFacade().create(detalhe2);
-        getEntityManager().getTransaction().commit();
-        agenda.setDetalhe(detalhe);
-        getEntityManager().getTransaction().begin();
-        getBean().criarAgendaEProvisionar(agenda);
-        getEntityManager().getTransaction().commit();
-        int exp = 12;
-        int result = TestesMake.getProcedimentoFacade().findAll().size();
-        assertEquals("Quantidade PROCEDIMENTOS Provisionados não bate.", exp, result);
-        agenda.setDetalhe(detalhe2);
-        getEntityManager().getTransaction().begin();
-        getBean().atualizarProvisao(agenda);
-        getEntityManager().getTransaction().commit();
-        for(Procedimento p : TestesMake.getProcedimentoFacade().findAll()){
-            if(!p.getDetalhe().equals(detalhe2)){
-                fail("Detalhe de provisão é diferente de detalhe2");
+        for (int i = 0; i < 20; i++) {
+            AgendaProcedimentoFixo agenda = MakeEntity.makeEntity("test_2", AgendaProcedimentoFixo.class);
+            agenda.setAtiva(true);
+            agenda.setPeriodo(Periodo.MESES);
+            agenda.setUsuario(TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false));
+            DetalheProcedimento detalhe = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
+            DetalheProcedimento detalhe2 = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
+            detalhe.setUsuario(agenda.getUsuario());
+            detalhe2.setUsuario(agenda.getUsuario());
+            getEntityManager().getTransaction().begin();
+            TestesMake.getDetalheProcedimentoFacade().create(detalhe);
+            TestesMake.getDetalheProcedimentoFacade().create(detalhe2);
+            getEntityManager().getTransaction().commit();
+            agenda.setDetalhe(detalhe);
+            getEntityManager().getTransaction().begin();
+            getBean().criarAgendaEProvisionar(agenda);
+            getEntityManager().getTransaction().commit();
+            int exp = 12;
+            int result = TestesMake.getProcedimentoFacade().findAll().size();
+            assertEquals("Quantidade PROCEDIMENTOS Provisionados não bate,"
+                    + " data agenda: "
+                    + DateUtils.getDateDiaMesAno(agenda.getDataPrimeiroVencimento()),
+                    exp, result);
+            agenda.setDetalhe(detalhe2);
+            getEntityManager().getTransaction().begin();
+            getBean().atualizarProvisao(agenda);
+            getEntityManager().getTransaction().commit();
+            for (Procedimento p : TestesMake.getProcedimentoFacade().findAll()) {
+                if (!p.getDetalhe().equals(detalhe2)) {
+                    fail("Detalhe de provisão é diferente de detalhe2");
+                }
             }
+            tearDown();
         }
     }
 

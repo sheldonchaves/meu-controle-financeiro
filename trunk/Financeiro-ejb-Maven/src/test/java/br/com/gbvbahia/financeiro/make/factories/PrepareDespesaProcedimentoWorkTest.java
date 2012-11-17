@@ -49,7 +49,7 @@ public class PrepareDespesaProcedimentoWorkTest implements ValueSpecializedFacto
         try {
             DespesaParceladaProcedimento procedimento = (DespesaParceladaProcedimento) entity;
             //De procedimento
-            procedimento.setDataVencimento(MakeDate.getInFuture());
+            procedimento.setDataMovimentacao(MakeDate.getInFuture());
             procedimento.setValorEstimado(new BigDecimal(MakeBigDecimal.getIntervalo(100d, 1000d).intValue()));
             procedimento.setValorReal(procedimento.getValorEstimado());
             procedimento.setObservacao(MakeString.getLoren(MakeInteger.getIntervalo(5, 150)));

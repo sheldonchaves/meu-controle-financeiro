@@ -108,15 +108,15 @@ public class ProvisaoBean implements ProvisaoBusiness {
      * Garante que a data de vencimento do primeiro procedimento será
      * futura.
      *
-     * @param dataVencimento Data vencimento da conta.
+     * @param dataMovimentacao Data vencimento da conta.
      * @param agenda Agenda Procedimento.
      * @return Data no futuro.
      */
-    private Date garanteDataFutura(final Date dataVencimento,
+    private Date garanteDataFutura(final Date dataMovimentacao,
             final AgendaProcedimentoFixo agenda) {
         Date agora = new Date();
         agora = br.com.gbvbahia.financeiro.utils.DateUtils.zerarHora(agora);
-        Date toReturn = dataVencimento;
+        Date toReturn = dataMovimentacao;
         while (toReturn.before(agora)) {
             toReturn = incrementarData(agenda, toReturn);
         }
@@ -161,20 +161,20 @@ public class ProvisaoBean implements ProvisaoBusiness {
      * Cria o Procedimento, Receita ou Despesa com base na agenda criada.
      *
      * @param agenda Agenda que está gerando o procedimento.
-     * @param dataVencimento Data do vencimento do procedimento.
+     * @param dataMovimentacao Data do vencimento do procedimento.
      * @return Procedimento pronto para ser gravado no BD.
      */
     private Procedimento makeProcedimento(AgendaProcedimentoFixo agenda,
-            Date dataVencimento) {
+            Date dataMovimentacao) {
         Procedimento toReturn;
         if (agenda.getDetalhe().getTipo().equals(TipoProcedimento.DESPESA_FINANCEIRA)) {
-            toReturn = new DespesaProcedimento(agenda.getCartaoCredito());
+            toReturn = new DespesaProcedimento(agenda.getCartaoCredito(), dataMovimentacao);
         } else {
             toReturn = new Procedimento();
         }
         toReturn.setAgenda(agenda);
         toReturn.setClassificacaoProcedimento(ClassificacaoProcedimento.FIXA);
-        toReturn.setDataVencimento(dataVencimento);
+        toReturn.setDataMovimentacao(dataMovimentacao);
         toReturn.setDetalhe(agenda.getDetalhe());
         toReturn.setObservacao(agenda.getObservacao());
         toReturn.setStatusPagamento(StatusPagamento.NAO_PAGA);
@@ -200,7 +200,7 @@ public class ProvisaoBean implements ProvisaoBusiness {
         Procedimento toCreate = procedimento;
         Date HOJE_MAIS_PROVISAO_ANOS = DateUtils.addYears(new Date(),
                 PROVISAO_ANOS);
-        Date dataControle = toCreate.getDataVencimento();
+        Date dataControle = toCreate.getDataMovimentacao();
         while (dataControle.before(HOJE_MAIS_PROVISAO_ANOS)) {
             procedimentoBean.create(toCreate);
             dataControle = incrementarData(agenda, dataControle);
