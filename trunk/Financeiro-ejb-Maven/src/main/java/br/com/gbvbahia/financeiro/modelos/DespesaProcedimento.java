@@ -61,7 +61,7 @@ import javax.persistence.*;
     + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento) "
     + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao)"
     + " AND (:dataMovimentacao2 = 'todos' OR p.dataMovimentacao = :dataMovimentacao)"
-    + " ORDER BY p.dataMovimentacao, p.valorReal DESC, p.valorEstimado DESC")
+    + " ORDER BY p.dataMovimentacao, p.dataCartao, p.valorReal DESC, p.valorEstimado DESC")
 })
 @DiscriminatorValue("DESPESA_UNICA")
 public class DespesaProcedimento extends Procedimento
