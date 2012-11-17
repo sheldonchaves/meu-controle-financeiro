@@ -97,17 +97,17 @@ public class ProcedimentoBeanTest
         result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), null, StatusPagamento.NAO_PAGA, null, null).size();
         assertEquals("Quantidade PROCEDIMENTOS DESPESA NAO PAGA não bate.", exp, result);
         result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), null, null,
-                DateUtils.incrementar(despesa.getDataVencimento(), 1, Calendar.DAY_OF_MONTH), null).size();
+                DateUtils.incrementar(despesa.getDataMovimentacao(), 1, Calendar.DAY_OF_MONTH), null).size();
         assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO DATAI não bate.", exp, result);
         result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), null, null,
-                null, DateUtils.incrementar(despesa.getDataVencimento(), 1, Calendar.DAY_OF_MONTH)).size();
+                null, DateUtils.incrementar(despesa.getDataMovimentacao(), 1, Calendar.DAY_OF_MONTH)).size();
         assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO DATAF não bate.", exp, result);
         exp = 2;
         result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), despesa.getCartaoCredito(), null, null, null).size();
         assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO CARTAO não bate.", exp, result);
         exp = 1;
         result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), despesa.getCartaoCredito(), null, null,
-                DateUtils.incrementar(despesa.getDataVencimento(), 1, Calendar.DAY_OF_MONTH)).size();
+                DateUtils.incrementar(despesa.getDataMovimentacao(), 1, Calendar.DAY_OF_MONTH)).size();
         assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO CARTAO E DATAF não bate.", exp, result);
     }
 

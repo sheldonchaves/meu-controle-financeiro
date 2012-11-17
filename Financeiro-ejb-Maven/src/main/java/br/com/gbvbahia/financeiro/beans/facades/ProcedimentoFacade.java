@@ -114,11 +114,11 @@ public interface ProcedimentoFacade
      * @param detalhe Opcional.
      * @param status Opcional
      * @param observacao Opcional.
-     * @param dataVencimento Opcional.
+     * @param dataMovimentacao Opcional.
      * @return
      */
     Long contarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao, Date dataVencimento);
+            final StatusPagamento status, String observacao, Date dataMovimentacao);
 
     /**
      * Busca procedimentos de acordo com pefil, paginado.
@@ -127,12 +127,12 @@ public interface ProcedimentoFacade
      * @param detalhe Opcional.
      * @param status Opcional.
      * @param observacao Opcional.
-     * @param dataVencimento Opcional.
+     * @param dataMovimentacao Opcional.
      * @param range obrigatorio.
      * @return Lista com procedimentos, vazia se não achar.
      */
     List<Procedimento> buscarProcedimentos(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao, Date dataVencimento, int[] range);
+            final StatusPagamento status, String observacao, Date dataMovimentacao, int[] range);
 
     /**
      * Remove todos os parcelamentos com ID informado.
@@ -150,11 +150,11 @@ public interface ProcedimentoFacade
      * @param detalhe Opcional.
      * @param status Opcional
      * @param observacao Opcional.
-     * @param dataVencimento Opcional.
+     * @param dataMovimentacao Opcional.
      * @return
      */
     Long contarProcedimentosSemCartao(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao, Date dataVencimento);
+            final StatusPagamento status, String observacao, Date dataMovimentacao);
 
     /**
      * Busca procedimentos de acordo com pefil, paginado. Sem o que for
@@ -164,12 +164,12 @@ public interface ProcedimentoFacade
      * @param detalhe Opcional.
      * @param status Opcional.
      * @param observacao Opcional.
-     * @param dataVencimento Opcional.
+     * @param dataMovimentacao Opcional.
      * @param range obrigatorio.
      * @return Lista com procedimentos, vazia se não achar.
      */
     List<Procedimento> buscarProcedimentosSemCartao(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao, Date dataVencimento, int[] range);
+            final StatusPagamento status, String observacao, Date dataMovimentacao, int[] range);
 
     /**
      * Retorna um MinMaxDateDTO para intervalo de datas.
@@ -201,13 +201,13 @@ public interface ProcedimentoFacade
      * @param detalhe Opcional
      * @param status Opcional
      * @param observacao Opcional
-     * @param dataVencimento Opcional
+     * @param dataMovimentacao Opcional
      * @param cartao Opcional
      * @param range Obrigatorio.
      * @return 
      */
     List<DespesaProcedimento> buscarDespesas(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao, Date dataVencimento,
+            final StatusPagamento status, String observacao, Date dataMovimentacao,
             final CartaoCredito cartao, int[] range);
 
     /**
@@ -216,11 +216,11 @@ public interface ProcedimentoFacade
      * @param detalhe Opcional
      * @param status Opcional
      * @param observacao Opcional
-     * @param dataVencimento Opcional
+     * @param dataMovimentacao Opcional
      * @param cartao Opcional.
      * @return 
      */
     Long contarDespesas(final Usuario usr, final DetalheTipoProcedimento detalhe,
-            final StatusPagamento status, String observacao, Date dataVencimento,
+            final StatusPagamento status, String observacao, Date dataMovimentacao,
             CartaoCredito cartao);
 }

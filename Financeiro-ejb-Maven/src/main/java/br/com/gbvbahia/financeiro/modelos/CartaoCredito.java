@@ -17,10 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  *
- * Um cartão de crédito repesenta o cartão utilizado para compras, no sistema
- * ele é utilizado para facilitar a definição de dadas de vencimento e buscas
- * de contas a pagar ou pagas com o mesmo.<br> Todas as contas pagas com o
- * cartão devem ter o mesmo dia de vencimento e referenciar o cartão.
+ * Um cartão de crédito repesenta o cartão utilizado para compras, no
+ * sistema ele é utilizado para facilitar a definição de dadas de
+ * vencimento e buscas de contas a pagar ou pagas com o mesmo.<br> Todas as
+ * contas pagas com o cartão devem ter o mesmo dia de vencimento e
+ * referenciar o cartão.
  *
  * @since 2012/04/12
  * @author Guilherme
@@ -76,8 +77,8 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
      * ainda dentro do mesmo mês.<br> Se diaVencimento for 10, diaMesmoMes
      * igual a 5 e o dia da compra for dia 02/03, então: dia 02/03 mais 5 é
      * dia 07/03, antes do dia 10/03 portanto a comta ainda seria mesmo
-     * mês.<br> Essa regra é para facilitar a seleção de data pelo usuário ao
-     * cadastrar a conta.<br> Ao selecionar o cartão o sistema tem a
+     * mês.<br> Essa regra é para facilitar a seleção de data pelo usuário
+     * ao cadastrar a conta.<br> Ao selecionar o cartão o sistema tem a
      * possibilidade de gerar a data de vencimento da conta.
      */
     @NotNull
@@ -102,8 +103,8 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
     private Usuario usuario;
 
     /**
-     * Realiza o calculo baseado na data do momento somando diaMesmoMes para
-     * determinar o mês de venimento da conta no cartão de crédito.
+     * Realiza o calculo baseado na data do momento somando diaMesmoMes
+     * para determinar o mês de venimento da conta no cartão de crédito.
      *
      * @return Data de vencimento da fatura que virá a conta.
      */
@@ -119,8 +120,8 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
     }
 
     /**
-     * Realiza o calculo baseado na data do momento somando diaMesmoMes para
-     * determinar o mês de venimento da conta no cartão de crédito.
+     * Realiza o calculo baseado na data do momento somando diaMesmoMes
+     * para determinar o mês de venimento da conta no cartão de crédito.
      *
      * @return Data de vencimento da fatura que virá a conta.
      */
@@ -132,22 +133,32 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
         proxMes.setTime(dataComparativa);
         proxMes.add(Calendar.MONTH, 1);
         proxMes.set(Calendar.DAY_OF_MONTH, diaVencimento);
-         while(c.before(proxMes)){
-             dias++;
-             c.add(Calendar.DAY_OF_MONTH, 1);
-         }
-         if(dias < diaMesmoMes){
-             c.setTime(dataComparativa);
-             c.set(Calendar.DAY_OF_MONTH, diaVencimento);
-             return c.getTime();
-         }else{
-              c.setTime(dataComparativa);
-              c.add(Calendar.DAY_OF_MONTH, diaMesmoMes);
-              if(c.get(Calendar.MONTH) == proxMes.get(Calendar.MONTH)){
-                  proxMes.add(Calendar.MONTH, 1);
-              }
-             return proxMes.getTime();
-         }
+        while (c.before(proxMes)) {
+            dias++;
+            c.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        if (dias < diaMesmoMes) {
+            c.setTime(dataComparativa);
+            c.set(Calendar.DAY_OF_MONTH, diaVencimento);
+            c.add(Calendar.MONTH, 2);
+            return c.getTime();
+        } else {
+            c.setTime(dataComparativa);
+            c.add(Calendar.DAY_OF_MONTH, diaMesmoMes);
+            if (c.get(Calendar.MONTH) == proxMes.get(Calendar.MONTH)
+                    && c.compareTo(proxMes) >= 0) {
+                proxMes.add(Calendar.MONTH, 1);
+            }
+            if (dias > diaMesmoMes
+                    && c.compareTo(proxMes) < 0) {
+                proxMes.add(Calendar.MONTH, -1);
+                if(c.compareTo(proxMes) > 0){
+                    proxMes.add(Calendar.MONTH, 1);
+                }
+                return proxMes.getTime();
+            }
+            return proxMes.getTime();
+        }
     }
 
     /**
@@ -173,8 +184,8 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
      * ainda dentro do mesmo mês.<br> Se diaVencimento for 10, diaMesmoMes
      * igual a 5 e o dia da compra for dia 02/03, então: dia 02/03 mais 5 é
      * dia 07/03, antes do dia 10/03 portanto a comta ainda seria mesmo
-     * mês.<br> Essa regra é para facilitar a seleção de data pelo usuário ao
-     * cadastrar a conta.<br> Ao selecionar o cartão o sistema tem a
+     * mês.<br> Essa regra é para facilitar a seleção de data pelo usuário
+     * ao cadastrar a conta.<br> Ao selecionar o cartão o sistema tem a
      * possibilidade de gerar a data de vencimento da conta.
      *
      * @return Dias para vencimento mesmo mês ou próximo.
@@ -188,8 +199,8 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
      * ainda dentro do mesmo mês.<br> Se diaVencimento for 10, diaMesmoMes
      * igual a 5 e o dia da compra for dia 02/03, então: dia 02/03 mais 5 é
      * dia 07/03, antes do dia 10/03 portanto a comta ainda seria mesmo
-     * mês.<br> Essa regra é para facilitar a seleção de data pelo usuário ao
-     * cadastrar a conta.<br> Ao selecionar o cartão o sistema tem a
+     * mês.<br> Essa regra é para facilitar a seleção de data pelo usuário
+     * ao cadastrar a conta.<br> Ao selecionar o cartão o sistema tem a
      * possibilidade de gerar a data de vencimento da conta.
      *
      * @param diaMesmo Dias para vencimento mesmo mês ou próximo.
