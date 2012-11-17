@@ -221,7 +221,7 @@ public class DespesaParceladaController extends EntityController<DespesaParcelad
 
     public void dataListener() {
         if (current != null && current.getCartaoCredito() != null) {
-            current.setDataVencimento(current.getCartaoCredito().getProximoVencimento());
+            current.setDataCartao(current.getDataMovimentacao());
         }
     }
 

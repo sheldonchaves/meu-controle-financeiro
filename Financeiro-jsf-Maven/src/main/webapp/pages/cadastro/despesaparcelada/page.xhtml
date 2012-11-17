@@ -13,7 +13,7 @@
                 <table class="referencesmall" width="100%">
                     <thead style="font-size: 0.9em;"><tr>
                             <th align='center' style="min-width: 100px;">
-                                <h:outputText value="#{msg.vencimento}" /><br></br>
+                                <h:outputText value="#{msg.movimentacao}" /><br></br>
                                 <p:calendar value="#{despesaParceladaController.dataFiltro}"  size="11" maxlength="10"  id="searchData"
                                             title="#{msg.tipoBuscaIgual}" pattern="dd/MM/yyyy" locale="pt" mode="popup"
                                             navigator="true" readonlyInput="true" 
@@ -61,7 +61,7 @@
                         <ui:repeat value="#{despesaParceladaController.items}" var="item" varStatus="x">
                             <tr >
                                 <td align='center'>
-                                    <h:outputText value="#{item.dataVencimento}">
+                                    <h:outputText value="#{item.dataMovimentacao}">
                                         <f:convertDateTime locale="#{localeController.localeUI}"
                                                            type="date" timeZone="#{initParam['timezone']}"/>
                                     </h:outputText>

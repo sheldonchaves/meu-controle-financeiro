@@ -199,7 +199,7 @@ public class DespesaUnicaController extends EntityController<DespesaProcedimento
 
     public void dataListener() {
         if (current != null && current.getCartaoCredito() != null) {
-            current.setDataVencimento(current.getCartaoCredito().getProximoVencimento());
+            current.setDataCartao(current.getCartaoCredito().getProximoVencimento(current.getDataMovimentacao()));
         }
     }
 

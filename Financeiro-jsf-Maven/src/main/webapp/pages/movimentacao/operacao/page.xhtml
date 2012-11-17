@@ -13,7 +13,7 @@
                 <table class="referencesmall" width="100%">
                     <thead style="font-size: 0.9em;"><tr>
                             <th align='center' width="110">
-                                <h:outputText value="#{msg.vencimento}" /><br></br>
+                                <h:outputText value="#{msg.movimentacao}" /><br></br>
                                 <p:calendar value="#{operacaoController.dataFiltro}"  size="13" maxlength="10"  id="searchData"
                                             title="#{msg.tipoBuscaIgual}" pattern="dd/MM/yyyy" locale="pt" mode="popup"
                                             navigator="true" readonlyInput="true" 
@@ -56,7 +56,7 @@
                         <ui:repeat value="#{operacaoController.items}" var="item" varStatus="x">
                             <tr style="height: 30px;">
                                 <td align='center'>
-                                    <h:outputText value="#{item.dataVencimento}">
+                                    <h:outputText value="#{item.dataMovimentacao}">
                                         <f:convertDateTime locale="#{localeController.localeUI}"
                                                            type="date" timeZone="#{initParam['timezone']}"/>
                                     </h:outputText>

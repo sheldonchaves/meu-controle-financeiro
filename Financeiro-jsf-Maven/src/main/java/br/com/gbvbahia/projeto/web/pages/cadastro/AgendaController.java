@@ -190,11 +190,6 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
         return det;
     }
 
-    public void dataListener() {
-        if (current != null && current.getCartaoCredito() != null) {
-            current.setDataPrimeiroVencimento(current.getCartaoCredito().getProximoVencimento());
-        }
-    }
     //====================
     //Métodos Filtros Paginação
     //====================

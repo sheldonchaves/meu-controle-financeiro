@@ -12,8 +12,8 @@
             <h:panelGroup id="receitaCadGroup">
                 <h:form id="recForm">
                     <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
-                        <h:outputLabel value="#{msg.vencimento}:" for="data" />
-                        <arq:calendar id="data" valor="#{receitaController.current.dataVencimento}" title="#{msg.data}"/>
+                        <h:outputLabel value="#{msg.movimentacao}:" for="data" />
+                        <arq:calendar id="data" valor="#{receitaController.current.dataMovimentacao}" title="#{msg.data}"/>
                         <p:message for="data"/>
 
                         <h:outputLabel value="#{msg.valor}:" for="valor" />

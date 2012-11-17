@@ -15,7 +15,6 @@
                         <h:outputLabel value="#{msg.cartaoCredito}:" for="cartao" />
                         <p:selectOneMenu value="#{agendaController.current.cartaoCredito}"
                                          id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
-                            <p:ajax event="change" update="dataGroup" listener="#{agendaController.dataListener}"/> 
                             <f:selectItems value="#{agendaController.cartoes}"/>
                             <f:converter converterId="cartaoConverter"/>
                         </p:selectOneMenu>
