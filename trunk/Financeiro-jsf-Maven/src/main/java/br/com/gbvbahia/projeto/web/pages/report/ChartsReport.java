@@ -15,7 +15,6 @@ import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.projeto.web.jsfutil.LocaleController;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumMap;
