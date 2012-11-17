@@ -25,6 +25,9 @@
                                                update="formDespesaParceladaTable">
                                 </p:commandLink>
                             </th>
+                            <th align='center' style="min-width: 100px;">
+                                <h:outputText value="#{msg.faturaCartao}" />
+                            </th>
                             <th align='center' style="min-width: 65px;"><h:outputText value="#{msg.valor}"/></th>
                             <th align='center'><h:outputText value="#{msg.atual}"/></th>
                             <th align='center'><h:outputText value="#{msg.total}"/></th>
@@ -35,7 +38,6 @@
                                     <p:ajax event="blur" listener="#{despesaParceladaController.recreateTable()}" update="formDespesaParceladaTable"/>
                                 </h:inputText>
                             </th>
-                            <th align='center'><h:outputText value="#{msg.detalhe}"/></th>
                             <th align='center'>
                                 <h:outputText value="#{msg.status}"/><br></br>
                                 <p:selectOneMenu value="#{despesaParceladaController.statusFiltro}" id="statusFiltro" style="font-size: 0.9em;">
@@ -45,15 +47,12 @@
                                 </p:selectOneMenu>
                             </th>
                             <th align='center'><h:outputText value="#{msg.cartaoCredito}"/><br></br>
-                            <p:selectOneMenu value="#{despesaParceladaController.cartaoFiltro}" id="cartaoFiltro" style="font-size: 0.9em; width: 90px;">
+                                <p:selectOneMenu value="#{despesaParceladaController.cartaoFiltro}" id="cartaoFiltro" style="font-size: 0.9em; width: 90px;">
                                     <p:ajax listener="#{despesaParceladaController.recreateTable()}" update="formDespesaParceladaTable"/>
                                     <f:selectItem itemLabel="#{msg.todos}" itemValue="#{null}"/>
                                     <f:selectItems value="#{despesaParceladaController.cartoesTabela}"/>
                                     <f:converter converterId="cartaoConverter"/>
                                 </p:selectOneMenu>
-                            </th>
-                            <th align='center'>
-                                <h:outputText value="#{msg.responsavel}"/><br></br>
                             </th>
                             <th style="min-width: 200px" class="ac"></th>
                         </tr></thead>
@@ -66,6 +65,12 @@
                                                            type="date" timeZone="#{initParam['timezone']}"/>
                                     </h:outputText>
                                 </td>
+                                <td align='center'>
+                                    <h:outputText value="#{item.dataCartao}">
+                                        <f:convertDateTime locale="#{localeController.localeUI}"
+                                                           type="date" timeZone="#{initParam['timezone']}"/>
+                                    </h:outputText>
+                                </td>
                                 <td align='right'>
                                     <h:outputText value="#{item.valor}">
                                         <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
@@ -73,11 +78,13 @@
                                 </td>
                                 <td align='center'><h:outputText value="#{item.parcelaAtual}"/></td>
                                 <td align='center'><h:outputText value="#{item.parcelaTotal}"/></td>
-                                <td align='left'><h:outputText value="#{item.observacao}"/></td>
-                                <td align='center'><h:outputText value="#{item.detalhe.detalhe}"/></td>
-                                <td align='center'><h:outputText value="#{msg[item.statusPagamento]}"/></td>
+                                <td align='left'><h:outputText value="#{item.observacao}" id="obsshow"/>
+                                    <p:tooltip for="obsshow" value="#{item.usuario.firstName}" showEffect="fade" hideEffect="fade" /> 
+                                </td>
+                                <td align='center'><h:outputText value="#{msg[item.statusPagamento]}" id="fade"/>
+                                    <p:tooltip for="fade" value="#{item.detalhe.detalhe}" showEffect="fade" hideEffect="fade" />  
+                                </td>
                                 <td align='center'><h:outputText value="#{item.cartaoCredito.cartao}"/></td>
-                                <td align='center'><h:outputText value="#{item.usuario.firstName}"/></td>
                                 <td><h:commandLink action="#{despesaParceladaController.destroy}" styleClass="ico del" value="#{msg.remover}"
                                                    rendered="#{item.statusPagamento ne 'PAGA'}" title="#{msg.parcelamentoUnicoTitle}"
                                                    id="removeLink" onclick="return confirm('#{msg.desejaRemover}: #{item.observacao}?');"/>
