@@ -25,7 +25,7 @@ public class I18nLogger {
 
     /**
      * Retira o valor do arquivo:
-     * br.com.convergeti.solida.utils.I18n.properties, onde todas as mensagens
+     * utils.I18n.properties, onde todas as mensagens
      * que são enviadas ao usuário ficam armazenadas.
      *
      * @param chave java.lang.String chave da mensagem que será enviada.
@@ -44,7 +44,7 @@ public class I18nLogger {
 
     /**
      * Retira o valor do arquivo:
-     * br.com.convergeti.solida.utils.I18n.properties, onde todas as mensagens
+     * utils.I18n.properties, onde todas as mensagens
      * que são enviadas ao usuário ficam armazenadas. Este substitui todos {*}
      * pela posição correspondente no vararg.
      *

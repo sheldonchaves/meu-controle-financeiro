@@ -54,7 +54,7 @@ public final class JsfUtil {
     /**
      * Passe o arquivo e co contexto para que o cliente realize o
      * download do arquivo.<br> Utiliza o Servlet:
-     * br.com.convergeti.solida.servlet.ServletFileDownload
+     * solida.servlet.ServletFileDownload
      *
      * @param file Arquivo a ser enviado ao usuário.
      * @param facesContext Contexto JSF
