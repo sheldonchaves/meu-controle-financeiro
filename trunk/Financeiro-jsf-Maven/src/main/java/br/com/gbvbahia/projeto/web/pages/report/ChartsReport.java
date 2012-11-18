@@ -15,6 +15,7 @@ import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.projeto.web.jsfutil.LocaleController;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumMap;
@@ -55,6 +56,8 @@ public class ChartsReport implements Serializable {
     //Chart Class
     private Date dataClassModel;
     private PieChartModel pieClassModel;
+    private List<DespesaProcedimento> listFinxa;
+    private List<DespesaProcedimento> listVariavel;
 
     /**
      * Executado após o bean JSF ser criado.
@@ -118,12 +121,19 @@ public class ChartsReport implements Serializable {
             pieClassModel.set(MensagemUtils.getResourceBundle("semInformacao",
                     FacesContext.getCurrentInstance()), 100);
         } else {
+            listFinxa = new ArrayList<DespesaProcedimento>();
+            listVariavel = new ArrayList<DespesaProcedimento>();
             Map<ClassificacaoProcedimento, Double> map = new EnumMap<ClassificacaoProcedimento, Double>(ClassificacaoProcedimento.class);
             for (DespesaProcedimento dp : lDesp) {
                 if (map.containsKey(dp.getClassificacaoProcedimento())) {
                     map.put(dp.getClassificacaoProcedimento(), map.get(dp.getClassificacaoProcedimento()) + dp.getValor().doubleValue());
                 } else {
                     map.put(dp.getClassificacaoProcedimento(), dp.getValor().doubleValue());
+                }
+                if (ClassificacaoProcedimento.FIXA.equals(dp.getClassificacaoProcedimento())) {
+                    listFinxa.add(dp);
+                } else {
+                    listVariavel.add(dp);
                 }
             }
             pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.FIXA.toString(),
@@ -175,5 +185,19 @@ public class ChartsReport implements Serializable {
         }
         return DateUtils.getDataFormatada(dataClassModel,
                 localeController.getLocale(), "MMMM-yyyy");
+    }
+
+    public List<DespesaProcedimento> getListFinxa() {
+        if (listFinxa == null) {
+            listFinxa = new ArrayList<DespesaProcedimento>();
+        }
+        return listFinxa;
+    }
+
+    public List<DespesaProcedimento> getListVariavel() {
+        if (listVariavel == null) {
+            listVariavel = new ArrayList<DespesaProcedimento>();
+        }
+        return listVariavel;
     }
 }
