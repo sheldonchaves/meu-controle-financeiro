@@ -255,7 +255,7 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     margin-left: 10px;
 }
 .boxtitle-head { 
-    background: #e78f08 url("#{resource['images/bg_gloss_wave.png']}") 50% 50% repeat-x;
+    background: #92b224 url("#{resource['images/bg_gloss_wave.png']}") 50% 50% repeat-x;
     height:32px; color:#fff;
     padding: 0 10px;
     line-height:32px;
@@ -269,4 +269,34 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     border: none;
     border-radius: 5px;
     padding-bottom: 10px;
+}
+
+
+table.grafprincipal
+{
+    background-color:#ffffff;
+    border:1px solid #c3c3c3;
+    border-collapse:collapse;
+    width:100%;
+}
+
+table.grafprincipal th
+{
+    background-color:#B2D1FF;
+    border:1px solid #c3c3c3;
+    padding:3px;
+    vertical-align:top;
+    text-align:left;
+}
+
+table.grafprincipal td 
+{
+    border:1px solid #c3c3c3;
+    padding:3px;
+    vertical-align:top;
+}
+
+table.grafprincipal td.example_code
+{
+    vertical-align:bottom;
 }
