@@ -58,6 +58,8 @@ public class ChartsReport implements Serializable {
     private PieChartModel pieClassModel;
     private List<DespesaProcedimento> listFinxa;
     private List<DespesaProcedimento> listVariavel;
+    private double totalVariavel;
+    private double totalFixa;
 
     /**
      * Executado após o bean JSF ser criado.
@@ -123,6 +125,8 @@ public class ChartsReport implements Serializable {
         } else {
             listFinxa = new ArrayList<DespesaProcedimento>();
             listVariavel = new ArrayList<DespesaProcedimento>();
+            totalFixa = 0;
+            totalVariavel = 0;
             Map<ClassificacaoProcedimento, Double> map = new EnumMap<ClassificacaoProcedimento, Double>(ClassificacaoProcedimento.class);
             for (DespesaProcedimento dp : lDesp) {
                 if (map.containsKey(dp.getClassificacaoProcedimento())) {
@@ -131,9 +135,11 @@ public class ChartsReport implements Serializable {
                     map.put(dp.getClassificacaoProcedimento(), dp.getValor().doubleValue());
                 }
                 if (ClassificacaoProcedimento.FIXA.equals(dp.getClassificacaoProcedimento())) {
+                    totalFixa += dp.getValor().doubleValue();
                     listFinxa.add(dp);
                 } else {
                     listVariavel.add(dp);
+                    totalVariavel += dp.getValor().doubleValue();
                 }
             }
             pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.FIXA.toString(),
@@ -199,5 +205,13 @@ public class ChartsReport implements Serializable {
             listVariavel = new ArrayList<DespesaProcedimento>();
         }
         return listVariavel;
+    }
+
+    public double getTotalVariavel() {
+        return totalVariavel;
+    }
+
+    public double getTotalFixa() {
+        return totalFixa;
     }
 }

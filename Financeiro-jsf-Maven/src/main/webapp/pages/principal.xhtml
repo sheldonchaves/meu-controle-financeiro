@@ -6,48 +6,167 @@
                 template="../templates/layout.xhtml">
     <ui:param name="titulomenu" value="#{msg.principal}" />
     <ui:define name="content">
-            <h:panelGroup id="disponiveis">
-                <table width="100%" >
-                    <tbody><tr style="vertical-align: top;">
-                             <td align='left'>
-                                <div style="margin-top: 8px;">
-                                    <arq:disponiveis width="70%"/>
+        <h:panelGroup id="disponiveis">
+            <table width="100%" >
+                <tbody><tr style="vertical-align: top;">
+                        <td align='left'>
+                            <div style="margin-top: 8px;">
+                                <arq:disponiveis width="70%"/>
+                            </div>
+                        </td>
+                        <td align='center'>
+                            <div class="formedit">
+                                <div class="formedit-head">
+                                    <h:outputText value="#{msg.classificacaoMovimentacao} "/>
                                 </div>
-                            </td>
-                            <td align='center'>
-                                <div class="formedit">
-                                    <div class="formedit-head">
-                                        <h:outputText value="#{msg.classificacaoMovimentacao} "/>
-                                    </div>
-                                    <h:form id="formPieClassPrincipal">
-                                        <h:panelGrid columns="1" style="margin-top: 10px;">
-                                            <h:panelGrid columns="4" >
-                                                <h:outputLabel value="#{msg.periodo}:"/>
-                                                <p:selectOneMenu value="#{chartsReport.mesOperacao}" required="true"
-                                                                 requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
-                                                                 style="font-size: 0.9em; width: 120px; text-align: left;">
-                                                    <f:selectItems value="#{chartsReport.meses}"/>
-                                                </p:selectOneMenu>
+                                <h:form id="formPieClassPrincipal">
+                                    <h:panelGrid columns="1" style="margin-top: 10px; width: 100%;">
+                                        <h:panelGrid columns="4" >
+                                            <h:outputLabel value="#{msg.periodo}:"/>
+                                            <p:selectOneMenu value="#{chartsReport.mesOperacao}" required="true"
+                                                             requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
+                                                             style="font-size: 0.9em; width: 120px; text-align: left;">
+                                                <f:selectItems value="#{chartsReport.meses}"/>
+                                            </p:selectOneMenu>
 
-                                                <p:selectOneMenu value="#{chartsReport.anoOperacao}" required="true"
-                                                                 requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
-                                                                 style="font-size: 0.9em; text-align: left;">
-                                                    <f:selectItems value="#{chartsReport.anos}"/>
-                                                </p:selectOneMenu>
-                                                <p:commandButton icon="lupaIco" style="width: 23px; height: 23px;"
-                                                                 actionListener="#{chartsReport.buscarDespesasPie()}" update="pieClassPrincipal" />
-                                            </h:panelGrid>
-                                            <p:pieChart id="pieClassPrincipal" value="#{chartsReport.pieClassModel}" legendPosition="w"  
-                                                        title="#{chartsReport.pieClassModelTitle}" seriesColors="92b224, F00000"
-                                                        style="margin-top: 5px; width: 280px; height: 240px;" showDataLabels="true"/> 
+                                            <p:selectOneMenu value="#{chartsReport.anoOperacao}" required="true"
+                                                             requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
+                                                             style="font-size: 0.9em; text-align: left;">
+                                                <f:selectItems value="#{chartsReport.anos}"/>
+                                            </p:selectOneMenu>
+                                            <p:commandButton icon="lupaIco" style="width: 23px; height: 23px;"
+                                                             actionListener="#{chartsReport.buscarDespesasPie()}" update="tabView tabView:pieClassPrincipal" />
                                         </h:panelGrid>
-                                    </h:form>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </h:panelGroup>
+                                        
+                                        <p:accordionPanel id="tabView" style="width: 100%;" dynamic="true" cache="true">
+                                            <p:tab id="tab1" title="#{msg.grafico}" >
+                                                <p:pieChart id="pieClassPrincipal" value="#{chartsReport.pieClassModel}" legendPosition="w"  
+                                                            title="#{chartsReport.pieClassModelTitle}" seriesColors="92b224, F00000"
+                                                            style="margin-top: 5px; width: 300px; height: 260px;" showDataLabels="true"/> 
+                                            </p:tab>
+                                            <p:tab id="tab2" title="#{msg.VARIAVEL}">
+                                                <table class="grafprincipal">
+                                                    <thead style="font-size: 0.9em;">
+                                                        <tr>
+                                                            <th>#{msg.observacao}</th>
+                                                            <th>#{msg.data}</th>
+                                                            <th>#{msg.valor}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ui:repeat value="#{chartsReport.listVariavel}" var="item" rendered="#{not empty chartsReport.listVariavel}">
+                                                            <tr>
+                                                                <td  align='left'>
+                                                                    <h:outputText value="#{item.observacao}" title="#{item.label}"/>
+                                                                </td>
+
+                                                                <td align='center'>
+                                                                    <h:outputText value="#{item.dataMovimentacao}" rendered="#{item.dataMovimentacao ne null}">
+                                                                        <f:convertDateTime locale="#{localeController.localeUI}"
+                                                                                           type="date" timeZone="#{initParam['timezone']}"/>
+                                                                    </h:outputText>
+                                                                    <h:outputText value="#{item.dataCartao}" rendered="#{item.dataMovimentacao eq null}">
+                                                                        <f:convertDateTime locale="#{localeController.localeUI}"
+                                                                                           type="date" timeZone="#{initParam['timezone']}"/>
+                                                                    </h:outputText>
+                                                                </td>
+                                                                <td align='right'>
+                                                                    <h:outputText value="#{item.valor}">
+                                                                        <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                                                    </h:outputText>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                        <h:panelGroup rendered="#{empty chartsReport.listVariavel}">
+                                                            <tr>
+                                                                <td colspan="3" align='left'>
+                                                                    <h:outputText value="#{msg.semInformacao}"/>
+                                                                </td>
+                                                            </tr>
+                                                        </h:panelGroup>
+                                                    </tbody>
+                                                    <h:panelGroup rendered="#{not empty chartsReport.listVariavel}">
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="2" align='right'>
+                                                                    <h:outputText value="#{msg.total}:" style="font-weight: bold;"/>
+                                                                </td>
+                                                                <td align="right" style="font-weight: bold; min-width: 80px;">
+                                                                    <h:outputText value="#{chartsReport.totalVariavel}">
+                                                                        <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                                                    </h:outputText>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </h:panelGroup>
+                                                </table>
+                                            </p:tab>
+                                            <p:tab id="tab3" title="#{msg.FIXA}">
+                                                <table class="grafprincipal">
+                                                    <thead style="font-size: 0.9em;">
+                                                        <tr>
+                                                            <th>#{msg.observacao}</th>
+                                                            <th>#{msg.data}</th>
+                                                            <th>#{msg.valor}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ui:repeat value="#{chartsReport.listFinxa}" var="item" rendered="#{not empty chartsReport.listFinxa}">
+                                                            <tr>
+                                                                <td  align='left'>
+                                                                    <h:outputText value="#{item.observacao}" title="#{item.label}"/>
+                                                                </td>
+
+                                                                <td align='center'>
+                                                                    <h:outputText value="#{item.dataCartao}" rendered="#{item.dataCartao ne null}">
+                                                                        <f:convertDateTime locale="#{localeController.localeUI}"
+                                                                                           type="date" timeZone="#{initParam['timezone']}"/>
+                                                                    </h:outputText>
+                                                                    <h:outputText value="#{item.dataMovimentacao}" rendered="#{item.dataCartao eq null}">
+                                                                        <f:convertDateTime locale="#{localeController.localeUI}"
+                                                                                           type="date" timeZone="#{initParam['timezone']}"/>
+                                                                    </h:outputText>
+                                                                </td>
+                                                                <td align='right'>
+                                                                    <h:outputText value="#{item.valor}">
+                                                                        <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                                                    </h:outputText>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                        <h:panelGroup rendered="#{empty chartsReport.listFinxa}">
+                                                            <tr>
+                                                                <td colspan="3" align='left'>
+                                                                    <h:outputText value="#{msg.semInformacao}"/>
+                                                                </td>
+                                                            </tr>
+                                                        </h:panelGroup>
+                                                    </tbody>
+                                                    <h:panelGroup rendered="#{not empty chartsReport.listFinxa}">
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="2" align='right'>
+                                                                    <h:outputText value="#{msg.total}:" style="font-weight: bold;"/>
+                                                                </td>
+                                                                <td align="right" style="font-weight: bold; min-width: 80px;">
+                                                                    <h:outputText value="#{chartsReport.totalFixa}">
+                                                                        <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                                                    </h:outputText>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </h:panelGroup>
+                                                </table>
+                                            </p:tab>
+                                        </p:accordionPanel>
+                                    </h:panelGrid>
+                                </h:form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>
 
