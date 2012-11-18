@@ -28,7 +28,7 @@ public interface AccessControlBusiness {
     /**
      * Retorna o Usuario logado no sistema.
      *
-     * @return br.com.convergeti.solida.modelos.Usuario
+     * @return Usuario
      */
     Usuario getUsuarioLogado();
 

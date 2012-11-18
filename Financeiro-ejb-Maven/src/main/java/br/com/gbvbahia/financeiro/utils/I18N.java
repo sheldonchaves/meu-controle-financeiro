@@ -20,7 +20,7 @@ public final class I18N {
 
     /**
      * Retira o valor do arquivo:
-     * br.com.convergeti.solida.utils.I18n.properties, onde todas as
+     * utils.I18n.properties, onde todas as
      * mensagens que são enviadas ao usuário ficam armazenadas.
      *
      * @param chave java.lang.String chave da mensagem que será
@@ -41,7 +41,7 @@ public final class I18N {
 
     /**
      * Retira o valor do arquivo:
-     * br.com.convergeti.solida.utils.I18n.properties, onde todas as
+     * utils.I18n.properties, onde todas as
      * mensagens que são enviadas ao usuário ficam armazenadas. Este
      * substitui todos {*} pela posição correspondente no vararg.
      *
