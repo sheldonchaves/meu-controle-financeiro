@@ -147,4 +147,12 @@ public class DespesaProcedimento extends Procedimento
     public void setDataCartao(Date dataCartao) {
         this.dataCartao = DateUtils.zerarHora(dataCartao);
     }
+
+    @Override
+    public String getLabel() {
+        if (cartaoCredito == null) {
+            return super.getLabel();
+        }
+        return super.getLabel() + " | " + cartaoCredito.getLabel();
+    }
 }
