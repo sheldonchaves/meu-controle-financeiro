@@ -135,3 +135,9 @@
     height:16px !important;
     width:16px !important;
 }
+
+.schedulerIco{
+     background: url("#{resource['images:scheduler_16.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
