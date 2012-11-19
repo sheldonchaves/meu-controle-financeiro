@@ -1,0 +1,71 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:arq="http://java.sun.com/jsf/composite/ezcomp"
+                template="../../templates/layout.xhtml"
+                >
+
+    <ui:define name="content">
+        <h:form id="formEmailTable">
+            <h:panelGroup >
+                <table class="referencesmall" width="100%">
+                    <thead style="font-size: 0.9em;"><tr>
+                            <th align='center'><h:outputText value="#{msg.fromEmail}"/></th>
+                            <th align='center'><h:outputText value="#{msg.hostName}" /></th>
+                            <th align='center'><h:outputText value="#{msg.loginEmail}"/></th>
+                            <th align='center' style="min-width: 70px;"><h:outputText value="#{msg.characterCoding}"/></th>
+                             <th align='center'><h:outputText value="#{msg.assuntoDefault}"/></th>
+                            <th align='center'><h:outputText value="#{msg.smtpPort}"/></th>
+                            <th align='center'><h:outputText value="#{msg.tls}"/></th>
+                            <th align='center'><h:outputText value="#{msg.ssl}"/></th>
+                            <th align='center'><h:outputText value="#{msg.sslPort}"/></th>
+                            <th align='center'><h:outputText value="#{msg.status}"/></th>
+                            <th style="min-width: 120px;" class="ac"></th>
+                        </tr></thead>
+                    <tbody>
+                        <ui:repeat value="#{emailPropertiesController.items}" var="item" varStatus="x">
+                            <tr >
+                                <td align='left'><h:outputText value="#{item.fromEmail}"/></td>
+                                <td align='left'><h:outputText value="#{item.hostName}"/></td>
+                                <td align='left'><h:outputText value="#{item.loginEmail}"/></td>
+                                <td align='center'><h:outputText value="#{item.characterCoding}"/></td>
+                                <td align='left'><h:outputText value="#{item.assuntoDefault}"/></td>
+                                <td align='center'><h:outputText value="#{item.smtpPort}"/></td>
+                                <td align='center'>
+                                    <h:graphicImage name="tag_blq.png" library="images" rendered="#{!item.tls}"/>
+                                    <h:graphicImage name="tag_ok.png" library="images" rendered="#{item.tls}"/>
+                                </td>
+                                <td align='center'>
+                                    <h:graphicImage name="tag_blq.png" library="images" rendered="#{!item.ssl}"/>
+                                    <h:graphicImage name="tag_ok.png" library="images" rendered="#{item.ssl}"/>
+                                </td>
+                                <td align='center'><h:outputText value="#{item.sslSmtpPort}"/></td>
+                                <td align='center'>
+                                    <h:graphicImage name="tag_blq.png" library="images" rendered="#{!item.contaAtiva}"/>
+                                    <h:graphicImage name="tag_ok.png" library="images" rendered="#{item.contaAtiva}"/>
+                                </td>
+
+                                <td><h:commandLink action="#{emailPropertiesController.destroy}" styleClass="ico del" value="#{msg.remover}" 
+                                                   onclick="return confirm('#{msg.desejaRemover} #{item.label}?');" 
+                                                   id="removeLink"/>
+                                    <h:outputText value=" "/>
+                                    <p:spacer width="10px" height="5px"/>
+                                    <h:commandLink styleClass="ico edit" action="#{emailPropertiesController.prepareEdit}" value="#{msg.editar}"
+                                                   id="editLink"/>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </h:panelGroup>
+            <arq:paginator entityBean="#{emailPropertiesController}"/>
+            <p:spacer width="100%" height="20"/>
+        </h:form>
+        <h:panelGroup id="groupDetalhe" rendered="#{emailPropertiesController.current != null}">
+            <ui:include src="form.xhtml"/>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>
+
