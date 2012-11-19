@@ -31,6 +31,8 @@
                     <p:submenu label="#{msg.administracao}" icon="adminIco" id="menu1_2_0" rendered="#{loginController.admin}">
                         <p:menuitem value="#{msg.usuario}" url="/admin/usuario/page.xhtml" icon="addUserIco" id="menu1_2_1"
                                     rendered="#{loginController.admin}"/>
+                        <p:menuitem value="#{msg.email}" url="/admin/email/page.xhtml" icon="emailIcon" id="menu1_2_2"
+                                    rendered="#{loginController.admin}"/>
                     </p:submenu>
                 </p:submenu>  
 
