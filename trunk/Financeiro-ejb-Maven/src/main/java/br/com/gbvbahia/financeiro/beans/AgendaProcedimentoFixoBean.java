@@ -31,7 +31,7 @@ import org.apache.commons.lang3.StringUtils;
  * @since 01/04/2012
  */
 @Stateless
-@RolesAllowed({"admin", "user"})
+@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class AgendaProcedimentoFixoBean
         extends AbstractFacade<AgendaProcedimentoFixo, Long>

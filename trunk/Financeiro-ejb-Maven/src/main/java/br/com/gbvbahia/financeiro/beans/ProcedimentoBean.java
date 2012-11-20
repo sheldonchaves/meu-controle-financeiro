@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
@@ -42,6 +43,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author Guilherme
  */
 @Stateless
+@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class ProcedimentoBean
         extends AbstractFacade<Procedimento, Long>

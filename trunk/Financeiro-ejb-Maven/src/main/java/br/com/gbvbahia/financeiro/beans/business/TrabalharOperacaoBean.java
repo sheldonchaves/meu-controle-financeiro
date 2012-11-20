@@ -15,6 +15,7 @@ import br.com.gbvbahia.financeiro.modelos.MovimentacaoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -25,6 +26,7 @@ import javax.ejb.TransactionAttributeType;
  * @author Usuário do Windows
  */
 @Stateless
+@RolesAllowed({"admin", "user","SYSTEM"})
 public class TrabalharOperacaoBean implements TrabalharOperacaoBusiness {
 
     @EJB

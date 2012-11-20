@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
  * @since 2012/04/13
  */
 @Stateless
-@RolesAllowed({"admin", "user"})
+@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class CartaoCreditoBean extends AbstractFacade<CartaoCredito, Long>
         implements CartaoCreditoFacade {

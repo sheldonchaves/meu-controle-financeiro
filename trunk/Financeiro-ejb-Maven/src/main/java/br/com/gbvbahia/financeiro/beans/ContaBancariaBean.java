@@ -33,7 +33,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author Guilherme
  */
 @Stateless
-@RolesAllowed({ "admin", "user" })
+@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class ContaBancariaBean
         extends AbstractFacade<ContaBancaria, Long>

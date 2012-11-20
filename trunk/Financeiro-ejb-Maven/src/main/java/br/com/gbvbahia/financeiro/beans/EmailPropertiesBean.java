@@ -8,6 +8,7 @@ import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.EmailPropertiesFacade;
 import br.com.gbvbahia.financeiro.modelos.EmailProperties;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,6 +18,7 @@ import javax.persistence.PersistenceContext;
  * @author Guilherme
  */
 @Stateless
+@RolesAllowed({"admin", "user","SYSTEM"})
 public class EmailPropertiesBean extends AbstractFacade<EmailProperties, Long>
         implements EmailPropertiesFacade {
 

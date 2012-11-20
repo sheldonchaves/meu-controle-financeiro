@@ -36,8 +36,8 @@ import javax.persistence.PersistenceContext;
  * @since v.3 29/03/2012
  */
 @Stateless
-@DeclareRoles({"admin", "user"})
-@RolesAllowed({"admin", "user"})
+@DeclareRoles({"admin", "user", "SYSTEM"})
+@RolesAllowed({"admin", "user", "SYSTEM"})
 @Interceptors({LogTime.class})
 public class UsuarioBean extends AbstractFacade<Usuario, String>
         implements UsuarioFacade {
