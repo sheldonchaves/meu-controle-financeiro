@@ -28,20 +28,20 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     ProximaDataCartaoTest.class,
-    UsuarioBeanCreateTest.class,
-    UsuarioBeanSearchTest.class,
-    UsuarioBeanUpdateTest.class,
-    UsuarioBeanRemoveTest.class,
-    ContaBancariaBeanCreateTest.class,
-    ContaBancariaBeanSearchTest.class,
-    ContaBancariaBeanUpdateTest.class,
-    DetalheProcedimentoBeanCreateTest.class,
-    DetalheProcedimentoBeanSearchTest.class,
-    AgendaProcedimentoFixoBeanCreateTest.class,
-    AgendaProcedimentoFixoBeanSearchTest.class,
-    CartaoCreditoTest.class,
-    ProcedimentoBeanTest.class,
-    ProvisaoBeanTest.class
+//    UsuarioBeanCreateTest.class,
+//    UsuarioBeanSearchTest.class,
+//    UsuarioBeanUpdateTest.class,
+//    UsuarioBeanRemoveTest.class,
+//    ContaBancariaBeanCreateTest.class,
+//    ContaBancariaBeanSearchTest.class,
+//    ContaBancariaBeanUpdateTest.class,
+//    DetalheProcedimentoBeanCreateTest.class,
+//    DetalheProcedimentoBeanSearchTest.class,
+//    AgendaProcedimentoFixoBeanCreateTest.class,
+//    AgendaProcedimentoFixoBeanSearchTest.class,
+//    CartaoCreditoTest.class,
+//    ProcedimentoBeanTest.class,
+//    ProvisaoBeanTest.class
 })
 public class TestesMake {
 

@@ -155,4 +155,16 @@ public class DespesaProcedimento extends Procedimento
         }
         return super.getLabel() + " | " + cartaoCredito.getLabel();
     }
+
+    /**
+     * Se data cartão nula retorna data movimentação, se não data cartão.
+     * @return 
+     */
+    public Date getDate() {
+        if (this.dataCartao == null) {
+            return super.getDataMovimentacao();
+        } else {
+            return dataCartao;
+        }
+    }
 }

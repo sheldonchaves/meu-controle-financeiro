@@ -42,22 +42,12 @@ public class EmailSendBean implements EmailSendBusiness {
     @Override
     @Asynchronous
     public void enviarEmailJMSAsynchronous(EmailSendInterface emailSendInterface) {
-        try {
-            sendEmailEmailInterface(emailSendInterface);
-        } catch (EmailException ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
-                    "Erro ao enviar E-MAIL para: " + emailSendInterface.getEmail(), ex);
-        }
+        sendEmail(emailSendInterface);
     }
 
     @Override
     public void enviarEmailJMS(EmailSendInterface emailSendInterface) {
-        try {
-            sendEmailEmailInterface(emailSendInterface);
-        } catch (EmailException ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
-                    "Erro ao enviar E-MAIL para: " + emailSendInterface.getEmail(), ex);
-        }
+            sendEmail(emailSendInterface);
     }
 
     private void sendEmail(EmailSendInterface emailSendInterface) {
