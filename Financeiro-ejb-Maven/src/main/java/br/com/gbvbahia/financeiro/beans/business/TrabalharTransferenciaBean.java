@@ -12,6 +12,7 @@ import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.MovimentacaoTrasnferencia;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.math.BigDecimal;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -22,6 +23,7 @@ import javax.ejb.TransactionAttributeType;
  * @author Guilherme
  */
 @Stateless
+@RolesAllowed({"admin", "user","SYSTEM"})
 public class TrabalharTransferenciaBean implements TrabalharTransferenciaBusiness {
 
     @EJB

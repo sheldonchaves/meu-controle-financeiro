@@ -12,6 +12,7 @@ import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +22,7 @@ import javax.persistence.PersistenceContext;
  * @author Usuário do Windows
  */
 @Stateless
+@RolesAllowed({"admin", "user","SYSTEM"})
 public class SchedulerBean extends AbstractFacade<Scheduler, Long> implements SchedulerFacade {
 
     /**

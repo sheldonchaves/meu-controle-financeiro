@@ -23,7 +23,7 @@ import javax.persistence.PersistenceContext;
  * @author Guilherme
  */
 @Stateless
-@RolesAllowed({"admin", "user"})
+@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class GrupoBean extends AbstractFacade<Grupo, String>
         implements GrupoFacade {

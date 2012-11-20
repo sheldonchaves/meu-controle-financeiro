@@ -20,6 +20,7 @@ import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
@@ -37,6 +38,7 @@ import org.apache.commons.lang3.time.DateUtils;
  * @author Guilherme
  */
 @Stateless
+@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class ProvisaoBean implements ProvisaoBusiness {
 
