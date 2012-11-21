@@ -223,4 +223,14 @@ public interface ProcedimentoFacade
     Long contarDespesas(final Usuario usr, final DetalheTipoProcedimento detalhe,
             final StatusPagamento status, String observacao, Date dataMovimentacao,
             CartaoCredito cartao);
+    
+    /**
+     * Busca as despesas de um usuário que foram realizadas em um cartão de crédito.
+     * @param usr Obrigatorio
+     * @param dataI Obrigatorio
+     * @param dataF Obrigatorio
+     * @return Lista de despesas realizas em cartões no periodo solicitado.
+     */
+    List<DespesaProcedimento> buscarDespesasCartao(final Usuario usr,
+            final Date dataI, final Date dataF);
 }

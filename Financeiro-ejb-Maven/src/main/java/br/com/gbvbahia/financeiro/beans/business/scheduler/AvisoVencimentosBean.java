@@ -226,7 +226,12 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
         return map;
     }
 
-    private String buscarTablePadrao(String body) {
+    /**
+     * Retorna o cabeçalho padrão de uma table html.
+     * @param body
+     * @return 
+     */
+    protected static String buscarTablePadrao(String body) {
         body += " <style type=\"text/css\">";
         body += " table.reference td.red {color: red; }"
                 + " table.reference td.green{color: #008200;}";

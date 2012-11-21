@@ -13,8 +13,8 @@ import javax.persistence.*;
 
 /**
  *
- * Representa uma conta única de pagamento, como uma som comprado a vista
- * ou uma despesa fixa, como a conta de luz/água.<br> Não possui parcelas.
+ * Representa uma conta única de pagamento, como uma som comprado a vista ou
+ * uma despesa fixa, como a conta de luz/água.<br> Não possui parcelas.
  *
  * @since 12/04/2012
  * @author Guilherme
@@ -62,7 +62,12 @@ import javax.persistence.*;
     + " AND (:statusPagamento2 = 'todos' OR p.statusPagamento = :statusPagamento) "
     + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao)"
     + " AND (:dataMovimentacao2 = 'todos' OR p.dataMovimentacao = :dataMovimentacao)"
-    + " ORDER BY p.dataMovimentacao, p.dataCartao, p.valorReal DESC, p.valorEstimado DESC")
+    + " ORDER BY p.dataMovimentacao, p.dataCartao, p.valorReal DESC, p.valorEstimado DESC"),
+    @NamedQuery(name = "DespesaProcedimento.buscarDespesasCartao",
+    query = " SELECT distinct p From DespesaProcedimento p JOIN p.cartaoCredito c "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND CASE WHEN p.dataCartao is null THEN p.dataMovimentacao "
+    + " ELSE p.dataCartao END between :dataI and :dataF ")
 })
 @DiscriminatorValue("DESPESA_UNICA")
 public class DespesaProcedimento extends Procedimento
@@ -85,8 +90,8 @@ public class DespesaProcedimento extends Procedimento
     private CartaoCredito cartaoCredito;
 
     /**
-     * Construtor padrão que informa ao Procedimento que está extensão é
-     * uma Despesa.
+     * Construtor padrão que informa ao Procedimento que está extensão é uma
+     * Despesa.
      */
     public DespesaProcedimento() {
         this(DetalheTipoProcedimento.DESPESA_UNICA);
@@ -94,11 +99,10 @@ public class DespesaProcedimento extends Procedimento
 
     /**
      * Facilitando a construção polimorfica. Cria a despesa com o cartão
-     * informado, determina a data do cartão com base na data de
-     * movimentação informada. Se a data movimentação não for informado irá
-     * considerar a mesma como sendo a data atual do sistema operacional.
-     * Data movimentação não é setado, utilizar setDataMovimentacao de
-     * Procedimento.
+     * informado, determina a data do cartão com base na data de movimentação
+     * informada. Se a data movimentação não for informado irá considerar a
+     * mesma como sendo a data atual do sistema operacional. Data movimentação
+     * não é setado, utilizar setDataMovimentacao de Procedimento.
      *
      * @param cartaoCredito pode ser null.
      * @param dataMovimentacao pode ser null.
@@ -158,7 +162,8 @@ public class DespesaProcedimento extends Procedimento
 
     /**
      * Se data cartão nula retorna data movimentação, se não data cartão.
-     * @return 
+     *
+     * @return
      */
     public Date getDate() {
         if (this.dataCartao == null) {
