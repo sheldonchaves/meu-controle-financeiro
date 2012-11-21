@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.financeiro.beans;
 
+import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.EmailPropertiesFacade;
 import br.com.gbvbahia.financeiro.modelos.EmailProperties;
@@ -11,6 +12,7 @@ import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.Map;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
@@ -22,6 +24,7 @@ import org.apache.log4j.Logger;
  */
 @Stateless
 @RolesAllowed({"admin", "user", "sys"})
+@Interceptors({LogTime.class})
 public class EmailPropertiesBean extends AbstractFacade<EmailProperties, Long>
         implements EmailPropertiesFacade {
 
