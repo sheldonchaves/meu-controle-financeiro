@@ -36,6 +36,11 @@ public class MovimentacaoProcedimento extends MovimentacaoFinanceira {
     @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "fk_procedimento_id", referencedColumnName = "id")
     private Procedimento procedimento;
+    /**
+     * 
+     */
+    @Transient
+    private boolean marcadoTransient;
 
     @Override
     public String getLabel() {
@@ -60,5 +65,15 @@ public class MovimentacaoProcedimento extends MovimentacaoFinanceira {
      */
     public void setProcedimento(final Procedimento vProcedimento) {
         this.procedimento = vProcedimento;
+    }
+
+    @Override
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+
+    @Override
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }

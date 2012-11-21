@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -101,12 +102,16 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     private String sslSmtpPort = "465";
     /**
      * Determina se e para utilizar esta conta de e-mail para envio de
-     * informacao. Havendo mais de uma conta ativa, a primeira será
-     * utilizada.
+     * informacao. Havendo mais de uma conta ativa, a primeira será utilizada.
      */
     @NotNull
     @Column(name = "status", nullable = false, length = 255)
     private boolean contaAtiva = true;
+    /**
+     *
+     */
+    @Transient
+    private boolean marcadoTransient;
 
     public EmailProperties() {
     }
@@ -243,5 +248,15 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     @Override
     public int compareTo(EmailProperties o) {
         return this.fromEmail.compareToIgnoreCase(o.fromEmail);
+    }
+
+    @Override
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+
+    @Override
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }

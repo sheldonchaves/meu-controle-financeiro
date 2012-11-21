@@ -89,7 +89,9 @@ public class DetalheProcedimento
     @NotNull
     @Column(name = "tipo")
     private TipoProcedimento tipo;
-
+    
+    @Transient
+    private boolean marcadoTransient;
     /**
      * Construtor nunca executado, se for uma runtime será lançada.
      */
@@ -246,5 +248,13 @@ public class DetalheProcedimento
             return false;
         }
         return true;
+    }
+    @Override
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+    @Override
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }

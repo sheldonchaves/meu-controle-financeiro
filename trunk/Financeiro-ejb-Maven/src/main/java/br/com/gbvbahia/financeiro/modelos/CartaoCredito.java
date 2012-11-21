@@ -101,7 +101,11 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
     nullable = false)
     @NotNull
     private Usuario usuario;
-
+    /**
+     * 
+     */
+    @Transient
+    private boolean marcadoTransient;
     /**
      * Realiza o calculo baseado na data do momento somando diaMesmoMes
      * para determinar o mês de venimento da conta no cartão de crédito.
@@ -327,5 +331,15 @@ public class CartaoCredito implements EntityInterface<CartaoCredito>,
         hash = 29 * hash + (this.cartao != null
                 ? this.cartao.hashCode() : 0);
         return hash;
+    }
+    
+    @Override
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+    
+    @Override
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }

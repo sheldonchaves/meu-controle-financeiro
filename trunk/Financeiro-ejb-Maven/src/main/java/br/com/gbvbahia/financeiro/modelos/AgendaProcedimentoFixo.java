@@ -129,7 +129,10 @@ public class AgendaProcedimentoFixo
     @ManyToOne
     @JoinColumn(name = "fk_cartao_credito_id", nullable = true)
     private CartaoCredito cartaoCredito;
-
+    
+    @Transient
+    private boolean marcadoTransient;
+    
     @Override
     public Serializable getId() {
         return this.codigo;
@@ -354,5 +357,13 @@ public class AgendaProcedimentoFixo
 
     public void setCartaoCredito(CartaoCredito cartaoCredito) {
         this.cartaoCredito = cartaoCredito;
+    }
+    @Override
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+    @Override
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }

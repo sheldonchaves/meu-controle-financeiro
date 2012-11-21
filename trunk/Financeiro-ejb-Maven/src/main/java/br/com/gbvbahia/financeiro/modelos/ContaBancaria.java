@@ -108,7 +108,10 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
     nullable = false)
     @NotNull
     private Usuario usuario;
-
+    
+    @Transient
+    private boolean marcadoTransient;
+    
     @Override
     public Serializable getId() {
         return this.codigo;
@@ -281,5 +284,13 @@ public class ContaBancaria implements EntityInterface<ContaBancaria>,
      */
     public void setUsuario(final Usuario user) {
         this.usuario = user;
+    }
+    @Override
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+    @Override
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }

@@ -505,10 +505,12 @@ public class Procedimento
         return detalheProcedimento;
     }
 
+    @Override
     public boolean isMarcadoTransient() {
         return marcadoTransient;
     }
 
+    @Override
     public void setMarcadoTransient(boolean marcadoTransient) {
         this.marcadoTransient = marcadoTransient;
     }

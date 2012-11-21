@@ -166,6 +166,9 @@ public class Usuario implements EntityInterface<Usuario>, Serializable {
     nullable = true)
     private Usuario conjuge;
 
+    @Transient
+    private boolean marcadoTransient;
+    
     /**
      * Construtor Padrão.
      */
@@ -424,5 +427,15 @@ public class Usuario implements EntityInterface<Usuario>, Serializable {
      */
     public void setConjuge(final Usuario usuarioConjuge) {
         this.conjuge = usuarioConjuge;
+    }
+
+    @Override
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+
+    @Override
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }
