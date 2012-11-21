@@ -21,7 +21,7 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
 /**
- * @RunAs("sys") Deve ser criado um usuario com grupo no filerealm do
+ * @RunAs("sys") Deve ser criado um usuario com grupo sys no filerealm do
  * servidor para que @RunAs funcione.
  * @author Guilherme
  */
