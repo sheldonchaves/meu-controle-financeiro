@@ -25,13 +25,14 @@ import javax.persistence.PersistenceContext;
 
 /**
  * <strong>SEGURANCA</strong> <br> RolesAllowed pode ser aplicada na classe
- * e/ou em metodos, aplicada na classe tem valor em todos os métodos, menos os
- * que a sobrescreverem ou utilizar outra aotação, como:<br> PermitAll,
+ * e/ou em metodos, aplicada na classe tem valor em todos os métodos, menos
+ * os que a sobrescreverem ou utilizar outra aotação, como:<br> PermitAll,
  * DenyAll e RolesAllowed.<br> Sendo que esta ultima pode ser menos ou mais
  * restringida:
  *
  * @RolesAllowed({"admins"})<br><br>
- *
+ * @RunAs("sys") Deve ser criado um usuario com grupo sys no filerealm do
+ * servidor para que RunAs funcione.
  * @author Guilherme
  * @since v.3 29/03/2012
  */
@@ -116,8 +117,8 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
         usuario.setPass(Base64Encoder.encryptPassword(novaSenha));
         super.update(usuario);
     }
-    
-        @Interceptors({LogTime.class})
+
+    @Interceptors({LogTime.class})
     public List<Usuario> buscarUsuarioPorNomeLogin(final String nome,
             final String login, final int[] range) {
         Map<String, Object> parans = getMapParans();
@@ -135,13 +136,13 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
         return this.pesqCount("Usuario.countByNameOrLoginOrAll",
                 parans).intValue();
     }
-    
-        /**
+
+    /**
      * Insere % no inicio e final, mas se for null ou vazio faz tratamento
      * para buscar todos na consulta.
      *
-     * @param nome java.lang.String com o valor a ser buscado, pode ser null
-     * ou vazio.
+     * @param nome java.lang.String com o valor a ser buscado, pode ser
+     * null ou vazio.
      * @return java.lang.String tratada para SQL like.
      */
     private String acertaNomeMeio(final String nome) {
