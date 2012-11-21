@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
@@ -35,7 +33,6 @@ import org.apache.commons.lang3.StringUtils;
  * @author Guilherme
  */
 @Stateless
-@RunAs("SYSTEM")
 @Interceptors({LogTime.class})
 public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
 
@@ -46,8 +43,9 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
     @EJB
     private EmailSendBusiness emailSendBusiness;
 
-    @Schedule(hour = "*", minute = "*", second="10", dayOfWeek = "*")
-    public void iniciarAvisoVencimento(Timer timer) {
+    @Override
+    @Schedule(hour = "4", minute = "20", second="10", dayOfWeek = "*")
+    public void iniciarAvisoVencimento() {
         List<Scheduler> schedules = schedulerBean.buscarTodosSchelersPorStatus(true);
         Calendar[] intervalo = getIntervalo();
         for (Scheduler sc : schedules) {
@@ -146,8 +144,8 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
                 toReturn += "<td align='center' class=\"red\">" + dpp.getParcelaAtual().toString() + "</td>";
                 toReturn += "<td align='center' class=\"red\">" + dpp.getParcelaTotal().toString() + "</td>";
             } else {
-                toReturn += "<td align='center' class=\"red\"> 0 </td>";
-                toReturn += "<td align='center' class=\"red\"> 0 </td>";
+                toReturn += "<td align='center' class=\"red\"> </td>";
+                toReturn += "<td align='center' class=\"red\"> </td>";
             }
             toReturn += "<td align='center' class=\"red\">" + cp.getUsuario().getFirstName() + "</td>";
             toReturn += "</tr>";
@@ -163,8 +161,8 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
                 toReturn += "<td align='center'>" + dpp.getParcelaAtual().toString() + "</td>";
                 toReturn += "<td align='center'>" + dpp.getParcelaTotal().toString() + "</td>";
             } else {
-                toReturn += "<td align='center'> 0 </td>";
-                toReturn += "<td align='center'> 0 </td>";
+                toReturn += "<td align='center'> </td>";
+                toReturn += "<td align='center'> </td>";
             }
             toReturn += "<td align='center'>" + cp.getUsuario().getFirstName() + "</td>";
             toReturn += "</tr>";
@@ -176,14 +174,14 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
     private String buscarTablePadrao(String body) {
         body += " <style type=\"text/css\">";
         body += " table.reference td.red {color: red; }"
-                + " table.reference td.green{color: #B2D1FF;}";
+                + " table.reference td.green{color: #008200;}";
         body += " table.reference { ";
         body += " background-color:#ffffff;";
         body += " border:1px solid #c3c3c3;";
         body += " border-collapse:collapse;";
         body += " width:95%;}";
         body += " table.reference th { ";
-        body += " background-color:#ba4c32;";
+        body += " background-color:#B2D1FF;";
         body += " color:#ffffff;";
         body += " border:1px solid #c3c3c3;";
         body += " padding:3px;";

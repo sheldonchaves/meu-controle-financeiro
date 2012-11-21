@@ -8,20 +8,25 @@ import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.EmailPropertiesFacade;
 import br.com.gbvbahia.financeiro.modelos.EmailProperties;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
+import java.util.Map;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Guilherme
  */
 @Stateless
-@RolesAllowed({"admin", "user","SYSTEM"})
+@RolesAllowed({"admin", "user", "sys"})
 public class EmailPropertiesBean extends AbstractFacade<EmailProperties, Long>
         implements EmailPropertiesFacade {
 
+    Logger logger = Logger.getLogger(EmailPropertiesBean.class);
+    
     /**
      * Unidade de persistência <i>jdbc/money</i>.
      */
@@ -35,5 +40,21 @@ public class EmailPropertiesBean extends AbstractFacade<EmailProperties, Long>
 
     public EmailPropertiesBean() {
         super(EmailProperties.class);
+    }
+
+    @Override
+    public EmailProperties buscarEmailAtivo() {
+        Map<String, Object> parans = getMapParans();
+        parans.put("status", true);
+        try {
+            EmailProperties emailProperties = pesqParam("EmailProperties.buscarAtivos", parans);
+            if(emailProperties == null){
+                logger.error("*** ATENÇÃO: deveria haver um EmailProperties estar ativo. ***");
+            }
+            return emailProperties;
+        } catch (NonUniqueResultException e) {
+            logger.error("*** ATENÇÃO: somente um EmailProperties deveria estar ativo. ***",e);
+            return listPesqParam("EmailProperties.buscarAtivos", parans).get(0);
+        }
     }
 }
