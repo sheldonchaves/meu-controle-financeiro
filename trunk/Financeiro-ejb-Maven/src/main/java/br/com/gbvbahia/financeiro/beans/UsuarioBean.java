@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
@@ -38,7 +37,6 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 @DeclareRoles({"admin", "user", "sys"})
-@RolesAllowed({"admin", "user"})
 @Interceptors({LogTime.class})
 public class UsuarioBean extends AbstractFacade<Usuario, String>
         implements UsuarioFacade {

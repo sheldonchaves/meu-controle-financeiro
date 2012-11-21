@@ -23,7 +23,6 @@ import javax.ejb.TransactionAttributeType;
  * @author Guilherme
  */
 @Stateless
-@RolesAllowed({"admin", "user","SYSTEM"})
 public class TrabalharTransferenciaBean implements TrabalharTransferenciaBusiness {
 
     @EJB

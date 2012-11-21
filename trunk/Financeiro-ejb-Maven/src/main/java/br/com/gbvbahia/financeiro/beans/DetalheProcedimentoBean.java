@@ -14,7 +14,6 @@ import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
@@ -28,7 +27,6 @@ import org.apache.commons.lang3.StringUtils;
  * @since v.3 01/04/2012
  */
 @Stateless
-@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class DetalheProcedimentoBean
         extends AbstractFacade<DetalheProcedimento, Long>

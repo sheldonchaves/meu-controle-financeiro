@@ -37,7 +37,7 @@ import javax.validation.ConstraintViolation;
  * @author Guilherme Braga
  * @since 2012/02/20
  */
-@RolesAllowed({"admin", "user", "SYSTEM"})
+@RolesAllowed({"admin", "user", "sys"})
 public abstract class AbstractFacade<T extends EntityInterface, ID extends Serializable> implements InterfaceFacade<T, ID> {
 
     /**

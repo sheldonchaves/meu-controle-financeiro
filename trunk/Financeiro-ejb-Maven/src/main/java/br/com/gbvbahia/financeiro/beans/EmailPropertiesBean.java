@@ -10,7 +10,6 @@ import br.com.gbvbahia.financeiro.beans.facades.EmailPropertiesFacade;
 import br.com.gbvbahia.financeiro.modelos.EmailProperties;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.Map;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
@@ -23,7 +22,6 @@ import org.apache.log4j.Logger;
  * @author Guilherme
  */
 @Stateless
-@RolesAllowed({"admin", "user", "sys"})
 @Interceptors({LogTime.class})
 public class EmailPropertiesBean extends AbstractFacade<EmailProperties, Long>
         implements EmailPropertiesFacade {

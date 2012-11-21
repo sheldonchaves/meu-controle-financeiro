@@ -11,6 +11,7 @@ import br.com.gbvbahia.financeiro.beans.facades.SchedulerFacade;
 import br.com.gbvbahia.financeiro.beans.jms.interfaces.EmailSendBusiness;
 import br.com.gbvbahia.financeiro.beans.jms.sends.SimpleEmail;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
+import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Scheduler;
@@ -19,7 +20,10 @@ import br.com.gbvbahia.financeiro.utils.NumberUtils;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
@@ -27,6 +31,7 @@ import javax.ejb.Stateless;
 import javax.ejb.Timer;
 import javax.interceptor.Interceptors;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -34,8 +39,10 @@ import org.apache.commons.lang3.StringUtils;
  */
 @Stateless
 @Interceptors({LogTime.class})
+@RunAs("sys")
 public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
 
+    private Logger logger = Logger.getLogger(AvisoVencimentosBean.class);
     @EJB
     private SchedulerFacade schedulerBean;
     @EJB
@@ -44,7 +51,7 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
     private EmailSendBusiness emailSendBusiness;
 
     @Override
-    @Schedule(hour = "4", minute = "20", second="10", dayOfWeek = "*")
+    @Schedule(hour = "*", minute = "*", second = "10", dayOfWeek = "*")
     public void iniciarAvisoVencimento() {
         List<Scheduler> schedules = schedulerBean.buscarTodosSchelersPorStatus(true);
         Calendar[] intervalo = getIntervalo();
@@ -52,14 +59,18 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
             List<DespesaProcedimento> dividas = this.procedimentoFacade.
                     buscarDespesaIntervalo(sc.getUser(), null, StatusPagamento.NAO_PAGA,
                     new Date[]{intervalo[0].getTime(), intervalo[1].getTime()});
-            List[] contasDivididas = separarContas(dividas, sc);
-            List<DespesaProcedimento> contasAtrasadas = contasDivididas[0];
-            List<DespesaProcedimento> contasOK = contasDivididas[1];
-            String body = corpoTableEmail(contasOK, contasAtrasadas);
-            body = StringUtils.replace(body, "null", "");
-            if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
-                String bodyFim = "<h3>Lembrete de Proximos Vencimentos:</h3>" + body;
-                enviaEmail(bodyFim, "Financeiro :: Aviso de Vencimentos", sc);
+            if (!dividas.isEmpty()) {
+                List[] contasDivididas = separarContas(dividas, sc);
+                List<DespesaProcedimento> contasAtrasadas = contasDivididas[0];
+                List<DespesaProcedimento> contasOK = contasDivididas[1];
+                String body = corpoTableEmail(contasOK, contasAtrasadas);
+                body = StringUtils.replace(body, "null", "");
+                if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
+                    String bodyFim = "<h3>Lembrete de Proximos Vencimentos:</h3>" + body;
+                    enviaEmail(bodyFim, "Financeiro :: Aviso de Vencimentos", sc);
+                }
+            } else {
+                logger.info("Não existe vencimentos para: " + sc.getUser().getUserId());
             }
         }
     }
@@ -121,6 +132,7 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
     }
 
     private String corpoTableEmail(List<DespesaProcedimento> listCPOK, List<DespesaProcedimento> listCPAtrasada) {
+        boolean cartao = false;
         String toReturn = "";
         toReturn += buscarTablePadrao(toReturn);
         toReturn += "<thead><tr>"
@@ -134,6 +146,9 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
                 + "</tr></thead>"
                 + "<tbody>";
         for (DespesaProcedimento cp : listCPAtrasada) {
+            if (!cartao && cp.getCartaoCredito() != null) {
+                cartao = true;
+            }
             toReturn += "<tr>";
             toReturn += "<td align='left' class=\"red\">" + cp.getObservacao() + "</td>";
             toReturn += "<td align='center' class=\"red\">" + DateUtils.getDataFormatada(cp.getDate(), "dd/MMM/yyyy") + "</td>";
@@ -151,6 +166,9 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
             toReturn += "</tr>";
         }
         for (DespesaProcedimento cp : listCPOK) {
+            if (!cartao && cp.getCartaoCredito() != null) {
+                cartao = true;
+            }
             toReturn += "<tr>";
             toReturn += "<td align='left'>" + cp.getObservacao() + "</td>";
             toReturn += "<td align='center'>" + DateUtils.getDataFormatada(cp.getDate(), "dd/MMM/yyyy") + "</td>";
@@ -168,7 +186,42 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
             toReturn += "</tr>";
         }
         toReturn += "</tbody></table>";
+        if (cartao) {
+            toReturn += "<br></br><br></br>";
+            toReturn += "<table class=\"reference\">";
+            toReturn += "<thead><tr>"
+                    + "<th>Cartão</th>"
+                    + "<th>Valor</th>"
+                    + "<th>Responsável</th>"
+                    + "</tr></thead>"
+                    + "<tbody>";
+            Map<CartaoCredito, Double> mapCartoes = getMapCartoes(listCPAtrasada, listCPOK);
+            Set<CartaoCredito> set = mapCartoes.keySet();
+            for (CartaoCredito cc : set) {
+                toReturn += "<tr>";
+                toReturn += "<td align='left'>" + cc.getCartao() + "</td>";
+                toReturn += "<td align='right'>" + NumberUtils.currencyFormat(mapCartoes.get(cc)) + "</td>";
+                toReturn += "<td align='center'>" + cc.getUsuario().getFirstName() + "</td>";
+                toReturn += "</tr>";
+            }
+            toReturn += "</tbody></table>";
+        }
         return toReturn;
+    }
+
+    private Map<CartaoCredito, Double> getMapCartoes(List<DespesaProcedimento>... lists) {
+        Map<CartaoCredito, Double> map = new HashMap<CartaoCredito, Double>();
+        for (List<DespesaProcedimento> list : lists) {
+            for (DespesaProcedimento dp : list) {
+                if (dp.getCartaoCredito() != null
+                        && map.containsKey(dp.getCartaoCredito())) {
+                    map.put(dp.getCartaoCredito(), map.get(dp.getCartaoCredito()) + dp.getValor().doubleValue());
+                } else if (dp.getCartaoCredito() != null) {
+                    map.put(dp.getCartaoCredito(), dp.getValor().doubleValue());
+                }
+            }
+        }
+        return map;
     }
 
     private String buscarTablePadrao(String body) {
