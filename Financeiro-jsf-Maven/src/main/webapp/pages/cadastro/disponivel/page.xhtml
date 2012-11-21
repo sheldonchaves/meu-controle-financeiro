@@ -21,7 +21,7 @@
                         </tr></thead>
                     <tbody>
                         <ui:repeat value="#{disponivelController.items}" var="item" varStatus="x">
-                            <tr >
+                            <tr class="#{item.marcadoTransient ? 'marcado' : ''}">
                                 <td align='left'><h:outputText value="#{item.nomeConta}"/></td>
                                 <td align='center'><h:outputText value="#{msg[item.tipoConta]}"/></td>
                                 <td align='right'>

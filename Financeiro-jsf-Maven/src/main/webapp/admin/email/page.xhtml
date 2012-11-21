@@ -26,7 +26,7 @@
                         </tr></thead>
                     <tbody>
                         <ui:repeat value="#{emailPropertiesController.items}" var="item" varStatus="x">
-                            <tr >
+                            <tr class="#{item.marcadoTransient ? 'marcado' : ''}">
                                 <td align='left'><h:outputText value="#{item.fromEmail}"/></td>
                                 <td align='left'><h:outputText value="#{item.hostName}"/></td>
                                 <td align='left'><h:outputText value="#{item.loginEmail}"/></td>

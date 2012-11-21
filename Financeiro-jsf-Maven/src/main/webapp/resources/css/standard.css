@@ -132,6 +132,11 @@ table.referencesmall th {
     color: #fbfcfc;
     background: #B2D1FF url("#{resource['primefaces-redmond:images/ui-bg_gloss-wave_55_5c9ccc_500x100.png']}") 50% 50% repeat-x;
 }
+
+table.referencesmall tr.marcado{
+    background-color: #FFFFCC;
+}
+
 table.referencesmall td { 
     border:1px solid #c3c3c3;
     border-radius: 5px;

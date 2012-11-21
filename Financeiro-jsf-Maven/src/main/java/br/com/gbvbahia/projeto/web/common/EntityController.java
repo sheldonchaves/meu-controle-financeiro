@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.projeto.web.common;
 
+import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import javax.faces.model.DataModel;
 
@@ -15,7 +16,7 @@ import javax.faces.model.DataModel;
  * @since 2012/03/02
  * @param <T> Entidade que o Controller representa.
  */
-public abstract class EntityController<T> {
+public abstract class EntityController<T extends EntityInterface> {
 
     /**
      * DataModel que contém os elementos Entidade que serão exibidos na
@@ -86,6 +87,11 @@ public abstract class EntityController<T> {
      * especifica.
      */
     public abstract EntityPagination getPagination();
+    /**
+     * Recupera a entidade selecionada.
+     * @return 
+     */
+    public abstract T getCurrent();
 
     /**
      * Método que deve definir o que deve ser limpo quando o usuário cancela o
@@ -127,7 +133,14 @@ public abstract class EntityController<T> {
      * @return java.lang.String Normalmente retorna contante MANTEM.
      */
     public String prepareEdit() {
-        setEntity(getItems().getRowData());
+        if (getCurrent() != null){
+            getCurrent().setMarcadoTransient(false);
+        }
+        T rowData = getItems().getRowData();
+        setEntity(rowData);
+        if(rowData != null){
+            rowData.setMarcadoTransient(true);
+        }
         newEntity = false;
         return JsfUtil.MANTEM;
     }
