@@ -50,7 +50,8 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
     private EmailSendBusiness emailSendBusiness;
 
     @Override
-    @Schedule(hour = "4", minute = "23", second = "10", dayOfWeek = "*")
+    //@Schedule(hour = "*", minute = "*", second = "10", dayOfWeek = "*")//Teste
+    @Schedule(hour = "4", minute = "23", second = "10", dayOfWeek = "*")//Real
     public void iniciarAvisoVencimento() {
         List<Scheduler> schedules = schedulerBean.buscarTodosSchelersPorStatus(true);
         Calendar[] intervalo = getIntervalo();
