@@ -34,7 +34,7 @@
                         </tr></thead>
                     <tbody>
                         <ui:repeat value="#{usuarioController.items}" var="item" varStatus="x">
-                            <tr >
+                            <tr class="#{item.marcadoTransient ? 'marcado' : ''}">
                                 <td align='left'><h:outputText value="#{item.firstName}"/></td>
                                 <td align='left'><h:outputText value="#{item.lastName}"/></td>
                                 <td align='center'><h:outputText value="#{item.userId}"/></td>

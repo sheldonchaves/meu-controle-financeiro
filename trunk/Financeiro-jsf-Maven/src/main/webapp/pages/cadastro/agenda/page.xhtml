@@ -47,7 +47,7 @@
                         </tr></thead>
                     <tbody>
                         <ui:repeat value="#{agendaController.items}" var="item" varStatus="x">
-                            <tr >
+                            <tr class="#{item.marcadoTransient ? 'marcado' : ''}">
                                 <td align='left'><h:outputText value="#{item.observacao}"/></td>
                                 <td align='right'>
                                     <h:outputText value="#{item.valorFixo}">

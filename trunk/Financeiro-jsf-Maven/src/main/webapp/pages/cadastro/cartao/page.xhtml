@@ -27,7 +27,7 @@
                         </tr></thead>
                     <tbody>
                         <ui:repeat value="#{cartaoController.items}" var="item" varStatus="x">
-                            <tr >
+                            <tr class="#{item.marcadoTransient ? 'marcado' : ''}">
                                 <td align='left'><h:outputText value="#{item.cartao}"/></td>
                                 <td align='center'>
                                     <h:outputText value="#{item.diaVencimento}">

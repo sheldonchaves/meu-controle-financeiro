@@ -54,7 +54,7 @@
                         </tr></thead>
                     <tbody>
                         <ui:repeat value="#{operacaoController.items}" var="item" varStatus="x">
-                            <tr style="height: 30px;">
+                            <tr style="height: 30px;" class="#{item.marcadoTransient ? 'marcado' : ''}">
                                 <td align='center'>
                                     <h:outputText value="#{item.dataMovimentacao}">
                                         <f:convertDateTime locale="#{localeController.localeUI}"
