@@ -14,4 +14,12 @@ import javax.ejb.Local;
  */
 @Local
 public interface EmailPropertiesFacade extends InterfaceFacade<EmailProperties, Long> {
+    /**
+     * Busca as propriedades de envio de e-mails ativo.
+     * Se houve mais de uma traz a primeira.
+     * Se não houver nenhum retorna null.
+     * Em todas as duas situações um log é escrito no sistema.
+     * @return 
+     */
+    public EmailProperties buscarEmailAtivo();
 }

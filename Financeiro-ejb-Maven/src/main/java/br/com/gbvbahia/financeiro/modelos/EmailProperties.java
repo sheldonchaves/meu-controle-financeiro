@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -21,6 +23,11 @@ import javax.validation.constraints.Pattern;
  */
 @Entity
 @Table(name = "fin_email")
+@NamedQueries({
+    @NamedQuery(name = "EmailProperties.buscarAtivos",
+    query = "SELECT distinct e FROM EmailProperties e "
+    + " WHERE e.contaAtiva = :status ")
+})
 public class EmailProperties implements EntityInterface<EmailProperties>,
         Serializable {
 

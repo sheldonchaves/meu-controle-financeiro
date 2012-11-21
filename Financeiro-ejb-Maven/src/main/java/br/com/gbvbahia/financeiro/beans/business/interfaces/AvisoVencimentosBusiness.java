@@ -5,6 +5,7 @@
 package br.com.gbvbahia.financeiro.beans.business.interfaces;
 
 import javax.ejb.Local;
+import javax.ejb.Timer;
 
 /**
  *
@@ -12,5 +13,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface AvisoVencimentosBusiness {
-    
+    /**
+     * Envia aviso de vencimento de procedimentos aos usuários.
+     */
+    public void iniciarAvisoVencimento();
 }

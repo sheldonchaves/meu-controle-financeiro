@@ -4,39 +4,37 @@
  */
 package br.com.gbvbahia.financeiro.beans.jms;
 
+import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.facades.EmailPropertiesFacade;
 import br.com.gbvbahia.financeiro.beans.jms.interfaces.EmailSendBusiness;
 import br.com.gbvbahia.financeiro.beans.jms.interfaces.EmailSendInterface;
 import br.com.gbvbahia.financeiro.modelos.EmailProperties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
+import javax.annotation.security.RunAs;
 import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
 /**
- *
+ * @RunAs("sys") Deve ser criado um usuario com grupo no filerealm do
+ * servidor para que @RunAs funcione.
  * @author Guilherme
  */
 @Stateless
+@Interceptors({LogTime.class})
+@RunAs("sys")
 public class EmailSendBean implements EmailSendBusiness {
 
     @EJB
     private EmailPropertiesFacade emailPropertiesBean;
-    private EmailProperties emailProperties;
 
-    @PostConstruct
-    public void carregarEmailProperties() {
-        for (EmailProperties e : emailPropertiesBean.findAll()) {
-            if (e.isContaAtiva()) {
-                emailProperties = e;
-                return;
-            }
-        }
+    private EmailProperties carregarEmailProperties() {
+        return emailPropertiesBean.buscarEmailAtivo();
     }
 
     @Override
@@ -47,7 +45,7 @@ public class EmailSendBean implements EmailSendBusiness {
 
     @Override
     public void enviarEmailJMS(EmailSendInterface emailSendInterface) {
-            sendEmail(emailSendInterface);
+        sendEmail(emailSendInterface);
     }
 
     private void sendEmail(EmailSendInterface emailSendInterface) {
@@ -60,6 +58,10 @@ public class EmailSendBean implements EmailSendBusiness {
     }
 
     private void sendEmailEmailInterface(EmailSendInterface messageData) throws EmailException {
+        EmailProperties emailProperties = carregarEmailProperties();
+        if (emailProperties == null) {
+            throw new EmailException("EmailProperties NAO PODE SER NULL!!!!");
+        }
         HtmlEmail email = new HtmlEmail();
         email.setDebug(false);
         email.setHostName(emailProperties.getHostName());
