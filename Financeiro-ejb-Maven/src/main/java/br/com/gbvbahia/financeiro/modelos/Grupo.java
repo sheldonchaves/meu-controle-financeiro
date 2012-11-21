@@ -48,16 +48,20 @@ public class Grupo implements EntityInterface<Grupo>, Serializable {
     @Column(name = "description", nullable = false, length = 50)
     private String descricao;
     /**
-     * Quando um usuário é cadastrado, os grupos que forem marcados
-     * como true será incluídos automaticamente no usuário a ser
-     * cadastrado.<br> Logicamente que no momento do cadastro esses
-     * grupos poderão ser alterados conforme necessidade.<br>
-     * <strong>Não existe implementação para verificar essa informação
-     * no momento.</strong>
+     * Quando um usuário é cadastrado, os grupos que forem marcados como true
+     * será incluídos automaticamente no usuário a ser cadastrado.<br>
+     * Logicamente que no momento do cadastro esses grupos poderão ser
+     * alterados conforme necessidade.<br> <strong>Não existe implementação
+     * para verificar essa informação no momento.</strong>
      */
     @Basic(optional = false)
     @Column(name = "user_dafeult", nullable = false)
     private boolean usuarioPadrao = false;
+    /**
+     * 
+     */
+    @Transient
+    private boolean marcadoTransient;
 
     /**
      * Construtor padrão.
@@ -84,8 +88,8 @@ public class Grupo implements EntityInterface<Grupo>, Serializable {
     }
 
     /**
-     * Altera o grupoId, se já estiver salvo no banco de dados esse
-     * valor não pode ser alterado.<br> Campo obrigatório.
+     * Altera o grupoId, se já estiver salvo no banco de dados esse valor não
+     * pode ser alterado.<br> Campo obrigatório.
      *
      * @param grupoId java.lang.String
      */
@@ -174,5 +178,13 @@ public class Grupo implements EntityInterface<Grupo>, Serializable {
     @Override
     public boolean verificarId() {
         return true;
+    }
+    @Override
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+    @Override
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }

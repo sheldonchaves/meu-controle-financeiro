@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -73,6 +74,11 @@ public class Scheduler implements EntityInterface<Scheduler>, Serializable {
     @OneToOne
     @JoinColumn(name = "fk_usuario", referencedColumnName = "user_id", nullable = false)
     private Usuario user;
+    /**
+     * 
+     */
+    @Transient
+    private boolean marcadoTransient;
 
     @Override
     public Long getId() {
@@ -150,5 +156,13 @@ public class Scheduler implements EntityInterface<Scheduler>, Serializable {
     @Override
     public int compareTo(Scheduler o) {
         return email.compareTo(o.email);
+    }
+    @Override
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+    @Override
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }

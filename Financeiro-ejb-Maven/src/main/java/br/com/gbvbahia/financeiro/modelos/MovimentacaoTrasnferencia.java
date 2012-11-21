@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 import javax.persistence.*;
 
 /**
- * Representa uma movimentação financeira entre uma conta e outra conta,
- * uma conta é debitada e outra creditada.
+ * Representa uma movimentação financeira entre uma conta e outra conta, uma
+ * conta é debitada e outra creditada.
  *
  * @since v.3 03/06/2012
  * @author Guilherme
@@ -51,6 +51,11 @@ public class MovimentacaoTrasnferencia extends MovimentacaoFinanceira {
     @ManyToOne
     @JoinColumn(name = "fk_conta_bancaria_transferida_id")
     private ContaBancaria contaBancariaTransferida;
+    /**
+     * 
+     */
+    @Transient
+    private boolean marcadoTransient;
 
     @Override
     public String getLabel() {
@@ -113,5 +118,15 @@ public class MovimentacaoTrasnferencia extends MovimentacaoFinanceira {
      */
     public void setSaldoTransferidaPosterior(final BigDecimal vSaldoPosterior) {
         this.saldoTransferidaPosterior = vSaldoPosterior;
+    }
+    
+    @Override
+    public boolean isMarcadoTransient() {
+        return marcadoTransient;
+    }
+    
+    @Override
+    public void setMarcadoTransient(boolean marcadoTransient) {
+        this.marcadoTransient = marcadoTransient;
     }
 }
