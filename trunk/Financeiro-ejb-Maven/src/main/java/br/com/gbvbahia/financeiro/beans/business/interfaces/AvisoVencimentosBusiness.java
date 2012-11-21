@@ -5,7 +5,6 @@
 package br.com.gbvbahia.financeiro.beans.business.interfaces;
 
 import javax.ejb.Local;
-import javax.ejb.Timer;
 
 /**
  *
