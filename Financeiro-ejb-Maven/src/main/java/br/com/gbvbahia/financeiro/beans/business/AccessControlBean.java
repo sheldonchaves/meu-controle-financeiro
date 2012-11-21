@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
  * @author Guilherme Braga
  */
 @Stateless
-@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class AccessControlBean implements AccessControlBusiness {
 

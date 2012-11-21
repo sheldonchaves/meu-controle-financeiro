@@ -26,7 +26,6 @@ import javax.ejb.TransactionAttributeType;
  * @author Usuário do Windows
  */
 @Stateless
-@RolesAllowed({"admin", "user","SYSTEM"})
 public class TrabalharOperacaoBean implements TrabalharOperacaoBusiness {
 
     @EJB

@@ -13,7 +13,6 @@ import br.com.gbvbahia.financeiro.utils.StringBeanUtils;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
@@ -27,7 +26,6 @@ import org.apache.commons.lang3.StringUtils;
  * @since 2012/04/13
  */
 @Stateless
-@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class CartaoCreditoBean extends AbstractFacade<CartaoCredito, Long>
         implements CartaoCreditoFacade {

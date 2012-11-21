@@ -38,7 +38,6 @@ import org.apache.commons.lang3.time.DateUtils;
  * @author Guilherme
  */
 @Stateless
-@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class ProvisaoBean implements ProvisaoBusiness {
 

@@ -17,7 +17,6 @@ import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
@@ -28,7 +27,6 @@ import javax.persistence.PersistenceContext;
  * @author Usuário do Windows
  */
 @Stateless
-@RolesAllowed({"admin", "user","SYSTEM"})
 @Interceptors({LogTime.class})
 public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinanceira, Long>
         implements MovimentacaoFinanceiraFacade {
