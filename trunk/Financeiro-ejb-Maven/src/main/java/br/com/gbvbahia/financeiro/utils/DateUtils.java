@@ -40,7 +40,7 @@ public final class DateUtils {
         return sd.format(date);
     }
 
-        /**
+    /**
      * Formata a data para o pattern passado.
      *
      * @param date Se nulo retorna a data atual.
@@ -54,7 +54,7 @@ public final class DateUtils {
         }
         return sd.format(date);
     }
-    
+
     /**
      * Retorna uma data no formato de String DD/MM/AAAA HH:mm:ss.
      *
@@ -209,5 +209,72 @@ public final class DateUtils {
         toReturn[0] = ini.getTime();
         toReturn[1] = fim.getTime();
         return toReturn;
+    }
+
+    /**
+     * Retorna um array de java.util.Date com o primeiro dia do mês e o ultimo
+     * dia do mês, com base na data de referência passada
+     *
+     * @param referencia
+     * @return
+     */
+    public static Date[] primeiroUltimoDia(Date referencia) {
+        Date[] toReturn = new Date[2];
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(referencia);
+        c1.set(Calendar.DAY_OF_MONTH, 1);
+        c1.set(Calendar.HOUR_OF_DAY, 00);
+        c1.set(Calendar.MINUTE, 00);
+        c1.set(Calendar.SECOND, 00);
+        c1.set(Calendar.MILLISECOND, 0);
+        toReturn[0] = c1.getTime();
+
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(referencia);
+        c2.set(Calendar.DAY_OF_MONTH, c2.getActualMaximum(Calendar.DAY_OF_MONTH));
+        c2.set(Calendar.HOUR_OF_DAY, 23);
+        c2.set(Calendar.MINUTE, 59);
+        c2.set(Calendar.SECOND, 59);
+        c2.set(Calendar.MILLISECOND, 999);
+        toReturn[1] = c2.getTime();
+        return toReturn;
+    }
+
+    /**
+     * Retorna um array de java.util.Date com a primeira hora do dia e a
+     * ultima hora do dia, com base na data de referência passada
+     *
+     * @param referencia
+     * @return Data 0 : 00:00:00.000 Data 1 : 23:59:59.999
+     */
+    public static Date[] primeiroUltimoHorario(Date referencia) {
+        Date[] toReturn = new Date[2];
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(referencia);
+        c1.set(Calendar.HOUR_OF_DAY, 00);
+        c1.set(Calendar.MINUTE, 00);
+        c1.set(Calendar.SECOND, 00);
+        c1.set(Calendar.MILLISECOND, 0);
+        toReturn[0] = c1.getTime();
+
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(referencia);
+        c2.set(Calendar.HOUR_OF_DAY, 23);
+        c2.set(Calendar.MINUTE, 59);
+        c2.set(Calendar.SECOND, 59);
+        c2.set(Calendar.MILLISECOND, 999);
+        toReturn[1] = c2.getTime();
+        return toReturn;
+    }
+
+    /**
+     * Converte um java.util.Date em um java.util.Calendar
+     * @param date Obrigatorio.
+     * @return 
+     */
+    public static Calendar dateToCalendar(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        return c;
     }
 }
