@@ -28,7 +28,6 @@ import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
-import javax.ejb.Timer;
 import javax.interceptor.Interceptors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -142,6 +141,7 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
                 + "<th>Detalhe</th>"
                 + "<th>Parcela Atual</th>"
                 + "<th>Total Parcelas</th>"
+                + "<th>Cartão de Crédito</th>"
                 + "<th>Responsável</th>"
                 + "</tr></thead>"
                 + "<tbody>";
@@ -162,6 +162,7 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
                 toReturn += "<td align='center' class=\"red\"> </td>";
                 toReturn += "<td align='center' class=\"red\"> </td>";
             }
+            toReturn += "<td align='center' class=\"red\">" + cp.getCartaoCredito() != null ? cp.getCartaoCredito().getCartao() : " " + "</td>";
             toReturn += "<td align='center' class=\"red\">" + cp.getUsuario().getFirstName() + "</td>";
             toReturn += "</tr>";
         }
@@ -182,6 +183,7 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
                 toReturn += "<td align='center'> </td>";
                 toReturn += "<td align='center'> </td>";
             }
+            toReturn += "<td align='center'>" + cp.getCartaoCredito() != null ? cp.getCartaoCredito().getCartao() : " " + "</td>";
             toReturn += "<td align='center'>" + cp.getUsuario().getFirstName() + "</td>";
             toReturn += "</tr>";
         }
