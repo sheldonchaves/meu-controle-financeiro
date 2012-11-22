@@ -18,6 +18,17 @@
                             <arq:fixavariavel/>
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p:lineChart value="#{cartaoMensalReport.categoryModel}" legendPosition="ne" shadow="true"
+                                         yaxisLabel="#{msg.yLabelGraficoAcumuladoMensal}"
+                                         xaxisLabel="#{msg.xLabelGraficoAcumuladoMensal}"
+                                         title="#{msg.tituloGraficoCartaoMensal}"
+                                         minY="0"
+                                         showMarkers="true"
+                                         style="width:100%;height:255px; margin-top: 5px;"/> 
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </h:panelGroup>
