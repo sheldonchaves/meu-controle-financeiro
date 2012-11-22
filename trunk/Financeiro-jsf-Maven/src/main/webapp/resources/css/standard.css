@@ -52,6 +52,7 @@ a:visited {
     min-height: 300px;
     _height: auto !important;
     height: 300px;
+    vertical-align: top;
 }
 
 .menu {
@@ -275,7 +276,6 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     border-radius: 5px;
     padding-bottom: 10px;
 }
-
 
 table.grafprincipal
 {
