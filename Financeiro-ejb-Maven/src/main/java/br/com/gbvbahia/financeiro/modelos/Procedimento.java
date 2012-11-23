@@ -78,7 +78,14 @@ discriminatorType = DiscriminatorType.STRING)
     + " AND (:observacao2 = 'todos' OR p.observacao LIKE :observacao) "
     + " AND (:dataMovimentacao2 = 'todos' OR p.dataMovimentacao = :dataMovimentacao) "
     + " AND p.id NOT IN (Select d.id From DespesaProcedimento d Join d.cartaoCredito c) "
-    + " ORDER BY p.dataMovimentacao, p.valorReal DESC, p.valorEstimado DESC")
+    + " ORDER BY p.dataMovimentacao, p.valorReal DESC, p.valorEstimado DESC"),
+    @NamedQuery(name = "Procedimento.acumuladoReceitaDespesaPeriodo",
+    query = " SELECT p.tipoProcedimento, "
+    + " SUM(CASE WHEN p.valorReal is null THEN p.valorEstimado ELSE p.valorReal END) "
+    + " From Procedimento p "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND p.dataMovimentacao between :dataI and :dataF "
+    + " GROUP BY p.tipoProcedimento ")
 })
 public class Procedimento
         implements EntityInterface<Procedimento>, Serializable {
