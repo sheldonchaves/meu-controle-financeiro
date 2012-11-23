@@ -5,13 +5,10 @@
 package br.com.gbvbahia.financeiro.beans.facades;
 
 import br.com.gbvbahia.financeiro.beans.commons.InterfaceFacade;
-import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
-import br.com.gbvbahia.financeiro.constantes.Periodo;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
