@@ -10,8 +10,20 @@
             <table width="100%" >
                 <tbody><tr style="vertical-align: top;">
                         <td align='left'>
-                            <div style="margin-top: 8px;">
+                            <div style="margin-top: 8px; margin-left: 10px;">
                                 <arq:disponiveis width="70%"/>
+                            </div><br></br>
+                            <div class="formedit" style="width:99% !important;">
+                                <div class="formedit-head" >
+                                    <h:outputText value="#{msg.tituloGraficoAcumuladoMensal} "/>
+                                </div>
+                                <h:form id="formBarClassPrincipal">
+                                    <p:barChart value="#{acumuladoMensalReport.categoryModel}" style="width:90%;height:255px; margin-top: 5px;"
+                                                legendPosition="se"   shadow="true" barMargin="5" orientation="horizontal"
+                                                seriesColors="09d03c,e0150b" xaxisLabel="#{msg.yLabelGraficoAcumuladoMensal}"
+                                                yaxisLabel="#{msg.xLabelGraficoAcumuladoMensal}"
+                                                min="0" /> 
+                                </h:form>
                             </div>
                         </td>
                         <td align='center'>
