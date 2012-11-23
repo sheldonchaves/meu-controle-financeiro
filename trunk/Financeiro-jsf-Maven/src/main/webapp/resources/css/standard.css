@@ -152,6 +152,8 @@ table.referencesmall td {
             margin-top: 10px;
             _margin-bottom:30px; 
             width: 95%; 
+            min-width: 400px;
+            _min-width: 400px;
 }
 .formedit-head { 
     height:32px; 
@@ -225,6 +227,7 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     padding: 0 10px;
     line-height:32px;
     white-space:nowrap;
+    border: 1px solid #aaaaaa; 
     border-bottom:solid 1px #fff; 
     border-radius: 5px;
     text-align: left;
