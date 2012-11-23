@@ -119,12 +119,12 @@ public class ChartsReport implements Serializable {
     private PieChartModel makeClassPie() {
         List<DespesaProcedimento> lDesp = despesas();
         pieClassModel = new PieChartModel();
+        listFinxa = new ArrayList<DespesaProcedimento>();
+        listVariavel = new ArrayList<DespesaProcedimento>();
         if (lDesp.isEmpty()) {
             pieClassModel.set(MensagemUtils.getResourceBundle("semInformacao",
                     FacesContext.getCurrentInstance()), 100);
         } else {
-            listFinxa = new ArrayList<DespesaProcedimento>();
-            listVariavel = new ArrayList<DespesaProcedimento>();
             totalFixa = 0;
             totalVariavel = 0;
             Map<ClassificacaoProcedimento, Double> map = new EnumMap<ClassificacaoProcedimento, Double>(ClassificacaoProcedimento.class);
