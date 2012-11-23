@@ -53,7 +53,6 @@ public class AgendaProcedimentoFixoBean
     }
 
     @Override
-    @Interceptors({LogTime.class})
     public Date buscarUltimaData(final AgendaProcedimentoFixo agenda) {
         UtilBeans.checkNull(agenda);
         Query q = em.createNamedQuery("AgendaProcedimentoFixo.UltimaData");
@@ -62,7 +61,6 @@ public class AgendaProcedimentoFixoBean
     }
 
     @Override
-    @Interceptors({LogTime.class})
     public Long countarAgendaPorUserDetalheObservacaoTipo(final Usuario user,
             final DetalheProcedimento detalhe, final String observacao,
             final TipoProcedimento tipo) {
@@ -72,7 +70,6 @@ public class AgendaProcedimentoFixoBean
     }
 
     @Override
-    @Interceptors({LogTime.class})
     public List<AgendaProcedimentoFixo> buscarAgendaPorUserDetalheObservacaoTipoPaginado(
             final Usuario user, final DetalheProcedimento detalhe,
             final String observacao, final TipoProcedimento tipo,
@@ -94,5 +91,14 @@ public class AgendaProcedimentoFixoBean
         parans.put("observacao", StringBeanUtils.acertaNomeParaLike(observacao, StringBeanUtils.LIKE_END));
         parans.put("tipo", tipo);
         parans.put("tipo2", tipo == null ? "todos" : "filtro");
+    }
+    
+    @Override
+    public List<AgendaProcedimentoFixo> buscarAgendasPorStatus(boolean status,
+            int[] range){
+         Map<String, Object> parans = getMapParans();
+         parans.put("status", status);
+          return listPesqParam("AgendaProcedimentoFixo.selectStatus",
+                parans, range[1] - range[0], range[0]);
     }
 }

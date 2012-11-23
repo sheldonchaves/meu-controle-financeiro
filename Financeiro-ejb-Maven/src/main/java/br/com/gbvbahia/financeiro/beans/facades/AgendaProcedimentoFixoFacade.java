@@ -57,4 +57,15 @@ public interface AgendaProcedimentoFixoFacade
             final Usuario user, final DetalheProcedimento detalhe,
             final String observacao, final TipoProcedimento tipo,
             final int[] range);
+
+    /**
+     * Busca agendas por status, devido grande quantidade de agendas a
+     * paginação é necessária.
+     *
+     * @param status Obrigatorio
+     * @param range Obrigatorio
+     * @return
+     */
+    List<AgendaProcedimentoFixo> buscarAgendasPorStatus(boolean status,
+            int[] range);
 }
