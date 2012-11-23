@@ -84,7 +84,7 @@ public class CartaoMensalReport {
                 if(temp == null){
                     temp = 0d;//Se não encontrar define valor 0;
                 }
-                serie.set(DateUtils.getDataFormatada(datas[dataPos++],"MM/yyyy"), temp);//Adiciona o periodo com o valor na linha
+                serie.set(DateUtils.getDataFormatada(datas[dataPos++],"MM/yy"), temp);//Adiciona o periodo com o valor na linha
             }
             categoryModel.addSeries(serie);//Adiciona a linha no gráfico
         }
