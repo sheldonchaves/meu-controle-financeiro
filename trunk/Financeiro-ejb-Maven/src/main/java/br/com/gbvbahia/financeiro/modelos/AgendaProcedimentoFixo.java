@@ -44,7 +44,11 @@ import javax.validation.constraints.*;
     + " AND (:detalhe2 = 'todos' OR a.detalhe = :detalhe) "
     + " AND (:observacao2 = 'todos' OR a.observacao LIKE :observacao) "
     + " AND (:tipo2 = 'todos' OR a.detalhe.tipo = :tipo) "
-    + " ORDER BY a.dataPrimeiroVencimento DESC, a.periodo, a.observacao ")
+    + " ORDER BY a.dataPrimeiroVencimento DESC, a.periodo, a.observacao "),
+    @NamedQuery(name = "AgendaProcedimentoFixo.selectStatus",
+    query = " SELECT distinct a From AgendaProcedimentoFixo a "
+    + " WHERE a.ativa = :status "
+    + " ORDER BY a.codigo ")
 })
 public class AgendaProcedimentoFixo
         implements EntityInterface<AgendaProcedimentoFixo>, Serializable {
