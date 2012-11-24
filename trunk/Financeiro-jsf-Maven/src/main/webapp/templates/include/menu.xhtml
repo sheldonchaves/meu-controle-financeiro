@@ -10,7 +10,7 @@
             <p:menubar styleClass="menuSup" id="menuSup">  
                 <p:submenu label="#{msg.cadastro}" icon="addIco" id="menu1"> 
                     <p:submenu label="#{msg.operacoes}" icon="contasIco" id="menu1_0_0">
-                        <p:menuitem value="#{msg.agenda}" url="/pages/cadastro/agenda/page.xhtml" icon="addAgendaIco" id="menu1_0_1"
+                        <p:menuitem value="#{msg.procedimentosFixos}" url="/pages/cadastro/agenda/page.xhtml" icon="addAgendaIco" id="menu1_0_1"
                                     rendered="#{loginController.user or loginController.admin}"/> 
                         <p:menuitem value="#{msg.despesa}" url="/pages/cadastro/despesaunica/page.xhtml" icon="despesaUnicaIco" id="menu1_0_2"
                                     rendered="#{loginController.user or loginController.admin}"/> 
@@ -56,7 +56,7 @@
                                 icon="schedulerIco" id="menu2_2"/>
                 </p:submenu>
 
-                <p:submenu label="#{msg.ajuda}" icon="ajudaIco" id="menu3">  
+                <!--p:submenu label="#{msg.ajuda}" icon="ajudaIco" id="menu3">  
                     <p:menuitem value="#{msg.conteudo}" url="#" id="menu3_1"/>  
                     <p:submenu label="#{msg.pesquisar}" icon="ui-icon-search" id="menu3_2">  
                         <p:submenu label="#{msg.texto}" id="menu3_2_1">  
@@ -64,7 +64,7 @@
                         </p:submenu>  
                         <p:menuitem value="#{msg.arquivo}" url="#" id="menu3_3"/>  
                     </p:submenu>  
-                </p:submenu>  
+                </p:submenu-->  
 
                 <p:menuitem value="#{msg.sair}" action="#{loginController.logout()}" id="menu4"
                             icon="sairIco"/>

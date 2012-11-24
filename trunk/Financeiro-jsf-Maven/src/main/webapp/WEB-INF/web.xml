@@ -107,7 +107,15 @@
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
-    
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6Lf13cYSAAAAAGR_YoSolQHqUYATD2Vy0cpsCqIT</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6Lf13cYSAAAAALV7eud_LVRQg5uSNgcJqRZXUTVo</param-value>
+    </context-param>
+        
     <error-page>
         <error-code>403</error-code>
         <location>/semPermissao.xhtml</location>

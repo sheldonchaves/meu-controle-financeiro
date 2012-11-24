@@ -49,6 +49,10 @@ public final class JsfUtil {
      * <b>Menssagens GROWL são ignoradas.</b>
      */
     public static final String PASSWORD_PAGE = "password";
+    /**
+     * Direciona para a página de boas vindas do sistema.
+     */
+    public static final String SAIR_PAGE = "sair";
 
 
     /**

@@ -9,6 +9,7 @@ import br.com.gbvbahia.financeiro.beans.facades.ReportFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
+import br.com.gbvbahia.utils.MensagemUtils;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +20,7 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
@@ -38,12 +40,14 @@ public class CartaoMensalReport {
     @EJB
     private UsuarioFacade usuarioFacade;
     @EJB
-    private ReportFacade reportFacade;    
+    private ReportFacade reportFacade;
     @EJB
     private CartaoCreditoFacade cartaoCreditoFacade;
     //Grafico
     private CartesianChartModel categoryModel;
     private static final Integer PERIODO = 13;
+    private boolean cartaoEmty = false;
+
     /**
      * Creates a new instance of CartaoMensalReport
      */
@@ -76,17 +80,20 @@ public class CartaoMensalReport {
         for (Date date : datas) {//Busca todos os pagamentos de cartão por data do periodo
             list.add(reportFacade.acumuladoCartaoPeriodo(date, usuarioFacade.getUsuario()));
         }
-        for(CartaoCredito cc : cartoes){//Percorre todas as contas cartão de credito
+        for (CartaoCredito cc : cartoes) {//Percorre todas as contas cartão de credito
             ChartSeries serie = new ChartSeries(cc.getLabel());//Cria uma serie(linha) para inserir no gráfico por cartao ou conta
             int dataPos = 0;//Contador para a data
-            for(Map<CartaoCredito, Double> map : list){
+            for (Map<CartaoCredito, Double> map : list) {
                 Double temp = map.get(cc);//Procura a conta bancaria no map
-                if(temp == null){
+                if (temp == null) {
                     temp = 0d;//Se não encontrar define valor 0;
                 }
-                serie.set(DateUtils.getDataFormatada(datas[dataPos++],"MM/yy"), temp);//Adiciona o periodo com o valor na linha
+                serie.set(DateUtils.getDataFormatada(datas[dataPos++], "MM/yy"), temp);//Adiciona o periodo com o valor na linha
             }
             categoryModel.addSeries(serie);//Adiciona a linha no gráfico
+        }
+        if (cartoes.isEmpty()) {
+            cartaoEmty = true;
         }
     }
 
@@ -110,5 +117,13 @@ public class CartaoMensalReport {
 
     public void setCategoryModel(CartesianChartModel categoryModel) {
         this.categoryModel = categoryModel;
+    }
+
+    public boolean isCartaoEmty() {
+        return cartaoEmty;
+    }
+
+    public void setCartaoEmty(boolean cartaoEmty) {
+        this.cartaoEmty = cartaoEmty;
     }
 }
