@@ -12,16 +12,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Manager Bean jsf responsável por gerenciar a internacionalização
- * da aplicação.
+ * Manager Bean jsf responsável por gerenciar a internacionalização da
+ * aplicação.
+ *
  * @author Guilherme Braga
  * @since 29/04/2012
  */
 @ManagedBean
 @SessionScoped
 public class LocaleController {
-    
-        /**
+
+    /**
      * Registra os eventos para debug em desenvolvimento.
      */
     private Logger logger = Logger.getLogger(LocaleController.class);
@@ -38,11 +39,18 @@ public class LocaleController {
     public void init() {
         FacesContext jsf = FacesContext.getCurrentInstance();
         locale = jsf.getExternalContext().getRequestLocale();
+        if (locale == null
+                || (!locale.getLanguage().equals(new Locale("en").getLanguage())
+                && !locale.getLanguage().equals(new Locale("pt").getLanguage()))) {
+            logger.warn("LOCALE ATENÇÂO: Locale definido como padrão, não reconhecido: " + locale.getLanguage());
+            locale = new Locale("en");
+        }
         localeUI = locale;
     }
 
     /**
      * Getter to Locale.
+     *
      * @return Locale atual.
      */
     public Locale getLocale() {
@@ -51,6 +59,7 @@ public class LocaleController {
 
     /**
      * Seter to locale.
+     *
      * @param localeDefinido Locale a ser definido.
      */
     public void setLocale(final Locale localeDefinido) {
@@ -60,6 +69,7 @@ public class LocaleController {
 
     /**
      * Devolve os locales do facesConfig.xml.
+     *
      * @return SelectItem[] com locales.
      */
     public SelectItem[] getLocales() {
@@ -72,11 +82,12 @@ public class LocaleController {
             items.add(new SelectItem(loc.toString(),
                     loc.getDisplayName()));
         }
-        return items.toArray(new SelectItem[] {});
+        return items.toArray(new SelectItem[]{});
     }
 
     /**
      * Devolve o Locale atual.
+     *
      * @return String locale, pt_BR...
      */
     public String getSelectedLocale() {
@@ -95,9 +106,10 @@ public class LocaleController {
 
     /**
      * Define o locale selecionado.
+     *
      * @param localeString Locale selecionado.
      */
-   public void setSelectedLocale(final String localeString) {
+    public void setSelectedLocale(final String localeString) {
         FacesContext jsf = FacesContext.getCurrentInstance();
         Application app = jsf.getApplication();
         Iterator<Locale> supportedLocales = app.getSupportedLocales();
@@ -108,9 +120,9 @@ public class LocaleController {
                 break;
             }
         }
-        if(StringUtils.equalsIgnoreCase("en", localeString)){
+        if (StringUtils.equalsIgnoreCase("en", localeString)) {
             localeUI = new Locale("en", "US");
-        }else {
+        } else {
             localeUI = new Locale("pt", "BR");
         }
     }

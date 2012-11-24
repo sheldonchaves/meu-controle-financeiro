@@ -1,8 +1,145 @@
-<html>
-   <head>
-      <meta http-equiv="Refresh" content= "0; URL=login.xhtml"/>
-      <title>Redirect...</title>
-   </head>
-   <body>
-   </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view locale="#{localeController.locale}" contentType="text/html" encoding="UTF-8" id="principal">
+        <h:head>
+            <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"
+                  type="image/x-icon" />
+            <title>
+                <ui:insert name="pageTitle">
+                    <h:outputText value="#{msg.tituloPrincipal}"/>
+                </ui:insert>
+            </title>
+            <h:outputStylesheet library="css" name="style.css" />
+            <h:outputStylesheet library="css" name="layout.css" />
+        </h:head>
+        <h:body id="page3">
+            <div class="conteudoCentral">
+                <!-- header -->
+                <div id="header">
+                    <div class="container">
+                        <!-- .logo logo_big -->
+                        <div class="logo">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h:graphicImage name="logo_big.png" library="images"/>
+                                        
+                                    </td>
+                                    <td align="center" style="width: 600px;">
+                                        <h1>#{msg.controleFinanceirotitlePrincipal}</h1>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                        <!-- /.logo -->
+                        <!-- .nav -->
+
+                        <!-- /.nav -->
+                    </div>
+                </div>
+                <!-- content -->
+                <div id="content">
+                    <div class="container">
+                        <div class="inside">
+                            <div class="wrapper">
+                                <div class="aside">
+                                    <ul class="list1">
+                                        <li><h:form><h:commandLink value="#{msg.entrar}" action="principal"/></h:form></li>
+                                        <li><h:form><h:commandLink value="#{msg.registro}" action="registro.xhtml"/></h:form></li>
+                                    </ul>
+                                </div>
+                                <div class="mainContent">
+                                    <div class="section">
+                                        <div class="wrapper">
+                                            <!-- .servises -->
+                                            <ul class="servises">
+                                                <li>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <h:graphicImage name="icon3.png" library="images" />
+                                                            </td>
+                                                            <td>
+                                                                <h2>#{msg.contasPrincipal}</h2>
+                                                                <p>#{msg.contasPrincipalInfo}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                                <li>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <h:graphicImage name="icon6.png" library="images" />
+                                                            </td>
+                                                            <td>
+                                                                <h2>#{msg.fixoVariavelPrincipal}</h2>
+                                                                <p>#{msg.fixoVariavelPrincipalInfo}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                                <li>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <h:graphicImage name="icon4.png" library="images" />
+                                                            </td>
+                                                            <td>
+                                                                <h2>#{msg.agendaPrincipal}</h2>
+                                                                <p>#{msg.agendaPrincipalInfo}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                                <li>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <h:graphicImage name="icon5.png" library="images" />
+                                                            </td>
+                                                            <td>
+                                                                <h2>#{msg.infoPrincipal}</h2>
+                                                                <p>#{msg.infoPrincipalInfo}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                                <li>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <h:graphicImage name="icon2.png" library="images" />
+                                                            </td>
+                                                            <td>
+                                                                <h2>#{msg.emailPrincipal}</h2>
+                                                                <p>#{msg.emailPrincipalInfo}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                            </ul>
+                                            <!-- /.servises -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- footer -->
+                <div id="footer">
+                    <div class="container">
+                        <div class="inside">
+                            V.3.0 © 2012
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:body>
+    </f:view>
 </html>
