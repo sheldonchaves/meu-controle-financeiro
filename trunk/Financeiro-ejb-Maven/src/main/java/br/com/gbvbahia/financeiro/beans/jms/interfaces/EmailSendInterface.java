@@ -32,4 +32,9 @@ public interface EmailSendInterface extends Serializable {
      * @return
      */
     public String getBody();
+    /**
+     * Define se deve ser inserido uma url no finald o corpo da MSG
+     * @return 
+     */
+    public boolean addUrlBody();
 }

@@ -69,7 +69,11 @@ public class EmailSendBean implements EmailSendBusiness {
         email.setSmtpPort(emailProperties.getSmtpPort());
         email.setAuthenticator(new DefaultAuthenticator(emailProperties.getLoginEmail(), emailProperties.getSenhaEmail()));
         email.setTLS(emailProperties.isTls());
+        if(messageData.addUrlBody()){
         email.setHtmlMsg(messageData.getBody() + "</br> http://sabercertificacao.com.br/money");
+        }else {
+            email.setHtmlMsg(messageData.getBody());
+        }
         email.addTo(messageData.getEmail());
         email.setFrom(emailProperties.getFromEmail(), emailProperties.getAssuntoDefault());
         email.setSubject(messageData.getSubject());
