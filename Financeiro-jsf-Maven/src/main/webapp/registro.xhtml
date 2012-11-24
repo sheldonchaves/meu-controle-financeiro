@@ -18,59 +18,62 @@
         </h:head>
         <h:body>
 
-            <div class="formedit">
+            <div class="formedit" style="width: 450px !important;">
                 <div class="formedit-head">
                     <h:outputText value="#{msg.registro}"/>
                 </div>
-                <h:form>
-                    <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
-                        <f:facet name="header">
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
-                        </f:facet>
+                <h:panelGroup id="groupDetalhe">
+                    <h:form style="margin-top: 0px !important;">
+                        <h:panelGrid columns="3" style="font-size: 0.9em; margin-left: 10px;" class="gridForm">
+                            <f:facet name="header">
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+                            </f:facet>
 
-                        <h:outputLabel value="#{msg.login}:" id="labellogin" title="#{msg.titleLoginCadUser3}"/>
-                        <p:inputText value="#{regisrtoController.login}" id="userloginCad" required="true"
-                                     requiredMessage="#{msg.campoObrigatorio}" title="#{msg.titleLoginCadUser3}" label="#{msg.login}"
-                                     maxlength="10" size="30">
-                            <f:validateLength minimum="5" maximum="10"/>
-                        </p:inputText>
-                        <p:message for="userloginCad"/>
+                            <h:outputLabel value="#{msg.login}:" id="labellogin" title="#{msg.titleLoginCadUser3}"/>
+                            <p:inputText value="#{regisrtoController.login}" id="userloginCad" required="true"
+                                         requiredMessage="#{msg.campoObrigatorio}" title="#{msg.titleLoginCadUser3}" label="#{msg.login}"
+                                         maxlength="10" size="30">
+                                <f:validateLength minimum="5" maximum="10"/>
+                            </p:inputText>
+                            <p:message for="userloginCad"/>
 
-                        <h:outputLabel value="#{msg.email}:" id="labelemail2" title="#{msg.titleEmailCadUser3}"/>
-                        <p:inputText value="#{regisrtoController.email}" id="useremailCad2" required="true"
-                                     requiredMessage="#{msg.campoObrigatorio}" title="#{msg.titleEmailCadUser3}" label="#{msg.email}"
-                                     maxlength="100" size="30" >
-                            <f:validateLength minimum="3" maximum="100"/>
-                            <f:validator validatorId="emailValidador"/>
-                        </p:inputText>
-                        <p:message for="useremailCad2"/>
-                        
-                        <h:outputLabel value="#{msg.confirmeEmail}:" id="labelemail" title="#{msg.titleEmailCadUser3}"/>
-                        <p:inputText value="#{regisrtoController.email2}" id="useremailCad" required="true"
-                                     requiredMessage="#{msg.campoObrigatorio}" title="#{msg.titleEmailCadUser3}" label="#{msg.confirmeEmail}"
-                                     maxlength="100" size="30" >
-                            <f:validateLength minimum="3" maximum="100"/>
-                            <f:validator validatorId="emailValidador"/>
-                        </p:inputText>
-                        <p:message for="useremailCad"/>
+                            <h:outputLabel value="#{msg.email}:" id="labelemail2" title="#{msg.titleEmailCadUser3}"/>
+                            <p:inputText value="#{regisrtoController.email}" id="useremailCad2" required="true"
+                                         requiredMessage="#{msg.campoObrigatorio}" title="#{msg.titleEmailCadUser3}" label="#{msg.email}"
+                                         maxlength="100" size="30" >
+                                <f:validateLength minimum="3" maximum="100"/>
+                                <f:validator validatorId="emailValidador"/>
+                            </p:inputText>
+                            <p:message for="useremailCad2"/>
+
+                            <h:outputLabel value="#{msg.confirmeEmail}:" id="labelemail" title="#{msg.titleEmailCadUser3}"/>
+                            <p:inputText value="#{regisrtoController.email2}" id="useremailCad" required="true"
+                                         requiredMessage="#{msg.campoObrigatorio}" title="#{msg.titleEmailCadUser3}" label="#{msg.confirmeEmail}"
+                                         maxlength="100" size="30" >
+                                <f:validateLength minimum="3" maximum="100"/>
+                                <f:validator validatorId="emailValidador"/>
+                            </p:inputText>
+                            <p:message for="useremailCad"/>
 
 
-                        <h:outputText value=""/>
-                        <p:captcha label="Captcha" language="pt" theme="white" id="captcha"/>
-                        <p:message for="captcha"/>
+                            <h:outputText value=""/>
+                            <p:captcha label="Captcha" language="pt" theme="white" id="captcha"/>
+                            <p:message for="captcha"/>
 
-                        <h:outputText value=""/>
-                        <h:panelGroup id="buttons" styleClass="pagging">
-                            <h:commandLink action="#{regisrtoController.registro()}" value="#{msg.registrar}" id="saveButton" >
+                            <h:outputText value=""/>
+                            <h:panelGroup id="buttons" styleClass="pagging">
+                                <h:commandLink action="#{regisrtoController.registro()}" value="#{msg.registrar}" id="saveButton" >
 
-                            </h:commandLink>
-                            <h:commandLink action="index" value="#{msg.cancelar}" 
-                                           immediate="true" id="cancelButton" >
-                            </h:commandLink>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                </h:form>
+                                </h:commandLink>
+                                <h:commandLink action="index" value="#{msg.cancelar}" 
+                                               immediate="true" id="cancelButton" >
+                                </h:commandLink>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                    </h:form>
+                </h:panelGroup>
             </div>
+
         </h:body>
     </f:view>
 </html>
