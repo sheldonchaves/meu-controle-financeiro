@@ -147,4 +147,19 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
         return StringBeanUtils.acertaNomeParaLike(nome,
                 StringBeanUtils.LIKE_MIDDLE);
     }
+
+    @Override
+    public void create(Usuario entity) throws NegocioException {
+        try{
+        super.create(entity);
+        } catch (NegocioException e){
+            if(e.getMessage().equals("AbstractFacade.entityExiste")){
+                throw new NegocioException("UsuarioBean.LoginExiste");
+            }else{
+                throw e;
+            }
+        }
+    }
+    
+    
 }

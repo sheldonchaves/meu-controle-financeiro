@@ -57,4 +57,9 @@ public class SimpleEmail implements EmailSendInterface {
     public void setSubject(String subject) {
         this.subject = subject;
     }
+
+    @Override
+    public boolean addUrlBody() {
+        return true;
+    }
 }
