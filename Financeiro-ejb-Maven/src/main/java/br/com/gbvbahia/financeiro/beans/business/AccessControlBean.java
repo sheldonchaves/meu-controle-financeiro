@@ -9,7 +9,6 @@ import br.com.gbvbahia.financeiro.beans.business.interfaces.AccessControlBusines
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import javax.annotation.Resource;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
