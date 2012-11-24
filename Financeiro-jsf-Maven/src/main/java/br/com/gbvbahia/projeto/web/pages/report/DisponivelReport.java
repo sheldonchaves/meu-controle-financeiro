@@ -8,12 +8,11 @@ import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import org.apache.log4j.Logger;
 
 /**
@@ -32,7 +31,7 @@ public class DisponivelReport implements Serializable {
     private ContaBancariaFacade disponivelFacade;
     @EJB
     private UsuarioFacade usuarioFacade;
-    private DataModel<ContaBancaria> disponiveis;
+    private List<ContaBancaria> disponiveis;
 
     /**
      * Creates a new instance of DisponivelReport
@@ -56,10 +55,10 @@ public class DisponivelReport implements Serializable {
     }
     
     private void criateContas() {
-        this.disponiveis = new ListDataModel<ContaBancaria>(disponivelFacade.findAll(usuarioFacade.getUsuario(), Boolean.TRUE));
+        this.disponiveis = disponivelFacade.findAll(usuarioFacade.getUsuario(), Boolean.TRUE);
     }
 
-    public DataModel<ContaBancaria> getDisponiveis() {
+    public List<ContaBancaria> getDisponiveis() {
         if (disponiveis == null) {
             criateContas();
         }

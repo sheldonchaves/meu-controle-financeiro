@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.projeto.web.pages.report;
 
+import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
@@ -47,6 +48,8 @@ public class ChartsReport implements Serializable {
     private UsuarioFacade usuarioFacade;
     @EJB
     private ProcedimentoFacade procedimentoFacade;
+    @EJB
+    private DetalheProcedimentoFacade detalheProcedimentoFacade;
     @ManagedProperty("#{localeController}")
     private LocaleController localeController;
     //SelectItem
@@ -60,6 +63,7 @@ public class ChartsReport implements Serializable {
     private List<DespesaProcedimento> listVariavel;
     private double totalVariavel;
     private double totalFixa;
+    private boolean detalheNotNull = true;
 
     /**
      * Executado após o bean JSF ser criado.
@@ -73,6 +77,9 @@ public class ChartsReport implements Serializable {
         Date agora = new Date();
         anoOperacao = DateUtils.getFieldDate(agora, Calendar.YEAR);
         mesOperacao = Meses.getByMonth(DateUtils.getFieldDate(agora, Calendar.MONTH));
+        if (detalheProcedimentoFacade.countarDetalhePorUsuario(usuarioFacade.getUsuario(), null).equals(0L)) {
+            detalheNotNull = false;
+        }
     }
 
     //====================
@@ -168,7 +175,7 @@ public class ChartsReport implements Serializable {
 
     public PieChartModel getPieClassModel() {
         if (pieClassModel == null) {
-            makeClassPie();
+            buscarDespesasPie();
         }
         return pieClassModel;
     }
@@ -213,5 +220,13 @@ public class ChartsReport implements Serializable {
 
     public double getTotalFixa() {
         return totalFixa;
+    }
+
+    public boolean isDetalheNotNull() {
+        return detalheNotNull;
+    }
+
+    public void setDetalheNotNull(boolean detalheNotNull) {
+        this.detalheNotNull = detalheNotNull;
     }
 }

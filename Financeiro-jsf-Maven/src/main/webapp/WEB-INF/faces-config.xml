@@ -41,6 +41,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>sair</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>admin_principal</from-outcome>
             <to-view-id>/admin/principal.xhtml</to-view-id>
             <redirect/>

@@ -61,6 +61,6 @@ public class LoginController implements Serializable {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().
                 getExternalContext().getSession(false);
         session.invalidate();
-        return JsfUtil.LOGIN_PAGE;
+        return JsfUtil.SAIR_PAGE;
     }
 }

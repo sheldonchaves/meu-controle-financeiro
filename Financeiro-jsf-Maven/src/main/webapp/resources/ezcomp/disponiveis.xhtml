@@ -37,6 +37,14 @@
                             </TD>
                         </tr>
                     </ui:repeat>
+                    <h:panelGroup rendered="#{empty disponivelReport.disponiveis}">
+                        <tr>
+                            <td colspan="3" align='left'>
+                                <h:outputText value="#{msg.disponivelEmpty}"/><br></br>
+                                <h:outputText value="#{msg.disponivelEmpty2}"/>
+                            </td>
+                        </tr>
+                    </h:panelGroup>
                 </TABLE>
             </div>
         </div>

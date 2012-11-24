@@ -37,6 +37,8 @@
                                     <h:outputText value="#{msg.tituloGraficoCartaoMensal} "/>
                                 </div>
                                 <h:form id="formLineClassPrincipal">
+                                    <h:outputText value="#{msg.cartaoEmptyChartSerie}" rendered="#{cartaoMensalReport.cartaoEmty}"/><br></br>
+                                    <h:outputText value="#{msg.cartaoEmptyChartSerie2}" rendered="#{cartaoMensalReport.cartaoEmty}"/>
                                     <p:lineChart value="#{cartaoMensalReport.categoryModel}" legendPosition="nw" shadow="true"
                                                  yaxisLabel="#{msg.yLabelGraficoAcumuladoMensal}"
                                                  xaxisLabel="#{msg.xLabelGraficoAcumuladoMensal}"
