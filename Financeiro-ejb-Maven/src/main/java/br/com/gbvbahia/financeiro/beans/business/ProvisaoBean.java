@@ -57,6 +57,11 @@ public class ProvisaoBean implements ProvisaoBusiness {
 
     @Override
     public void criarAgendaEProvisionar(AgendaProcedimentoFixo agenda) throws NegocioException {
+        if (agenda.getDataPrimeiroVencimento().compareTo(br.com.gbvbahia.financeiro.utils.DateUtils.zerarHora(new Date())) < 0) {
+            throw new NegocioException("DataInicialMenorHoje",
+                    new String[]{br.com.gbvbahia.financeiro.utils.DateUtils.getDateToString(agenda.getDataPrimeiroVencimento()),
+                        br.com.gbvbahia.financeiro.utils.DateUtils.getDateToString(new Date())});
+        }
         agendaBean.create(agenda);
         if (agenda.isAtiva()) {
             provisionar(agenda);
@@ -76,13 +81,13 @@ public class ProvisaoBean implements ProvisaoBusiness {
     public void alterarStatusProvisao(AgendaProcedimentoFixo agenda) throws NegocioException {
         agenda.setAtiva(!agenda.isAtiva());
         agendaBean.update(agenda);
-        if(!agenda.isAtiva()){
+        if (!agenda.isAtiva()) {
             procedimentoBean.removerProcedimentos(agenda);
-        }else {
+        } else {
             provisionar(agenda);
         }
     }
-    
+
     @Override
     public void provisionar(final AgendaProcedimentoFixo agenda) {
         UtilBeans.checkNull(agenda);
