@@ -38,9 +38,7 @@ public class ReportBean implements ReportFacade {
     public Map<CartaoCredito, Double> acumuladoCartaoPeriodo(Date mesAno, Usuario usuario) {
         Date[] periodo = DateUtils.primeiroUltimoDia(mesAno);
         Query q = em.createNamedQuery("DespesaProcedimento.acumuladoCartaoPeriodo");
-        q.setParameter("dataI", periodo[0]);
-        q.setParameter("dataF", periodo[1]);
-        q.setParameter("usuario", usuario);
+        parans(q, periodo, usuario);
         List<Object[]> valores = q.getResultList();
         Map<CartaoCredito, Double> toReturn = new HashMap<CartaoCredito, Double>();
         for (Object[] valor : valores) {
@@ -52,15 +50,22 @@ public class ReportBean implements ReportFacade {
     @Override
     public Map<TipoProcedimento, Double> acumuladoReceitaDespesaPeriodo(Date mesAno, Usuario usuario){
         Date[] periodo = DateUtils.primeiroUltimoDia(mesAno);
-        Query q = em.createNamedQuery("Procedimento.acumuladoReceitaDespesaPeriodo");
-        q.setParameter("dataI", periodo[0]);
-        q.setParameter("dataF", periodo[1]);
-        q.setParameter("usuario", usuario);
+        Query q = em.createNamedQuery("Procedimento.acumuladoReceitaPeriodo");
+        parans(q, periodo, usuario);
+        Query q2 = em.createNamedQuery("DespesaProcedimento.acumuladoDespesaPeriodo");
+        parans( q2, periodo, usuario);
         List<Object[]> valores = q.getResultList();
+        valores.addAll(q2.getResultList());
         Map<TipoProcedimento, Double> toReturn = new EnumMap<TipoProcedimento, Double>(TipoProcedimento.class);
          for (Object[] valor : valores) {
             toReturn.put((TipoProcedimento) valor[0], ((BigDecimal) valor[1]).doubleValue());
         }
         return toReturn;
+    }
+
+    private void parans(Query q2, Date[] periodo, Usuario usuario) {
+        q2.setParameter("dataI", periodo[0]);
+        q2.setParameter("dataF", periodo[1]);
+        q2.setParameter("usuario", usuario);
     }
 }

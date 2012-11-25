@@ -46,13 +46,6 @@ import javax.persistence.*;
     + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
     + " AND CASE WHEN d.dataCartao is null THEN d.dataMovimentacao "
     + " ELSE d.dataCartao END between :dataI and :dataF "),
-    @NamedQuery(name = "DespesaProcedimento.buscarDespesaUsuarioIntervaloMovimentacao",
-    query = " SELECT distinct d From DespesaProcedimento d "
-    + " WHERE (:cartao2 = 'todos' OR d.cartaoCredito = :cartao) "
-    + " AND (:status2 = 'todos' OR d.statusPagamento = :status) "
-    + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
-    + " AND d.dataMovimentacao "
-    + " between :dataI and :dataF "),
     @NamedQuery(name = "DespesaProcedimento.countProcedimento",
     query = " SELECT count(p) From DespesaProcedimento p "
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
@@ -82,7 +75,16 @@ import javax.persistence.*;
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
     + " AND (CASE WHEN p.dataCartao is null THEN p.dataMovimentacao "
         + "  ELSE p.dataCartao END) between :dataI and :dataF "
-    + " GROUP BY p.cartaoCredito ")
+    + " GROUP BY p.cartaoCredito "),
+    @NamedQuery(name = "DespesaProcedimento.acumuladoDespesaPeriodo",
+    query = " SELECT p.tipoProcedimento, "
+    + " SUM(CASE WHEN p.valorReal is null THEN p.valorEstimado ELSE p.valorReal END) "
+    + " From DespesaProcedimento p "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND (CASE WHEN p.dataCartao is null THEN p.dataMovimentacao "
+        + "  ELSE p.dataCartao END) between :dataI and :dataF "
+    + " AND p.tipoProcedimento = br.com.gbvbahia.financeiro.constantes.TipoProcedimento.DESPESA_FINANCEIRA "
+    + " GROUP BY p.tipoProcedimento ")
 })
 @DiscriminatorValue("DESPESA_UNICA")
 public class DespesaProcedimento extends Procedimento
