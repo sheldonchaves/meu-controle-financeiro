@@ -26,14 +26,16 @@ import javax.validation.ConstraintViolation;
 
 /**
  * Classe abstrata que realiza as tarefas básicas para os beans que a
- * estendem. <br> Métodos sem JavaDoc possuem a documentação na
- * interface InterfaceFacade. <br> T = Entidade que o bean representa,
- * Usuario, Órgão, etc.<br>ID = Tipo de variável que foi anotada com
- * '@'Id na classe T.
+ * estendem. <br> Métodos sem JavaDoc possuem a documentação na interface
+ * InterfaceFacade. <br> T = Entidade que o bean representa, Usuario,
+ * Órgão, etc.<br>ID = Tipo de variável que foi anotada com
+ * '
+ *
+ * @'Id na classe T.
  *
  * @param <T> T Classe de Entidade.
- * @param <ID> ID O tipo de ID da classe de entidade, um Long,
- * Integer, IdServidor...
+ * @param <ID> ID O tipo de ID da classe de entidade, um Long, Integer,
+ * IdServidor...
  * @author Guilherme Braga
  * @since 2012/02/20
  */
@@ -58,8 +60,7 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
      * Recebe o tipo de classe de entidade que quem o implementa
      * representa.
      *
-     * @param entityClasss Classe de Entidate que o bean irá
-     * representar.
+     * @param entityClasss Classe de Entidate que o bean irá representar.
      */
     public AbstractFacade(final Class<T> entityClasss) {
         this.entityClass = entityClasss;
@@ -159,20 +160,17 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq =
-                getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
+        String query = "Select obj From " + entityClass.getSimpleName().toString() + " obj";
+        Query q = getEntityManager().createQuery(query);
+        return q.getResultList();
     }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<T> findRange(final int[] range) {
         UtilBeans.checkNull(range);
-        javax.persistence.criteria.CriteriaQuery cq =
-                getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass)).distinct(true);
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
+        String query = "Select obj From " + entityClass.getSimpleName().toString() + " obj";
+        Query q = getEntityManager().createQuery(query);
         q.setMaxResults(range[1] - range[0]);
         q.setFirstResult(range[0]);
         return q.getResultList();
@@ -271,12 +269,11 @@ public abstract class AbstractFacade<T extends EntityInterface, ID extends Seria
     }
 
     /**
-     * Transforma um set de erros em uma Excecao NegocioException para
-     * ser lancada na camada de negocio.
+     * Transforma um set de erros em uma Excecao NegocioException para ser
+     * lancada na camada de negocio.
      *
      * @param erros Set de erros.
-     * @throws NegocioException ConstraintViolation em
-     * NegocioException.
+     * @throws NegocioException ConstraintViolation em NegocioException.
      */
     protected void validadionException(
             final Set<ConstraintViolation<?>> erros)

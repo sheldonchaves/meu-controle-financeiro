@@ -62,15 +62,16 @@ public interface ProcedimentoFacade
      * Busca contas/receitas por tipo e usuario
      *
      * @param user Usuario obrigatorio Obrigatorio
-     * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA, Obrigatorio
+     * @param tipo Tipo DESPESA_FINANCEIRA ou RECEITA_FINANCEIRA,
+     * Obrigatorio
      * @return Lista com contas no padrao, lista vazia se nao achar.
      */
     List<Procedimento> buscarPorUsuarioTipoProcedimento(
             final Usuario user, final TipoProcedimento tipo);
 
     /**
-     * Retorna uma lista com Procedimento que são DespesaParceladaProcedimento
-     * pode ser feito cast sem problemas.
+     * Retorna uma lista com Procedimento que são
+     * DespesaParceladaProcedimento pode ser feito cast sem problemas.
      *
      * @param usuario Proprietário ou conjuge do proprietario. Obrigatório
      * @param cartao Cartao onde foi feito pagamento. Opcional.
@@ -99,8 +100,8 @@ public interface ProcedimentoFacade
 
     /**
      * Atualiza o procedimento que tenha sido criado pela agenda informada.
-     * Somente procedimento não pagos serão atualizados. Todos os campos serão
-     * utilizados.
+     * Somente procedimento não pagos serão atualizados. Todos os campos
+     * serão utilizados.
      *
      * @param agenda Filtro
      * @throws NegocioException
@@ -143,8 +144,8 @@ public interface ProcedimentoFacade
     void removerParcelamento(String idParcelamento) throws NegocioException;
 
     /**
-     * Conta procedimetos de acordo com filtros. Sem o que for vinculado a um
-     * cartão de crédito.
+     * Conta procedimetos de acordo com filtros. Sem o que for vinculado a
+     * um cartão de crédito.
      *
      * @param usr Obrigatório.
      * @param detalhe Opcional.
@@ -196,7 +197,22 @@ public interface ProcedimentoFacade
             final Date[] intervalo);
 
     /**
+     * Busca por intervalo da movimentação, ignora data do cartão de
+     * credito, mesmo se houver.
+     *
+     * @param usr
+     * @param cartao
+     * @param status
+     * @param intervalo
+     * @return
+     */
+    List<DespesaProcedimento> buscarDespesaIntervaloMovimentacao(final Usuario usr,
+            final CartaoCredito cartao, final StatusPagamento status,
+            final Date[] intervalo);
+
+    /**
      * Busca despesas por filtros paginado.
+     *
      * @param usr Obrigatorio
      * @param detalhe Opcional
      * @param status Opcional
@@ -204,7 +220,7 @@ public interface ProcedimentoFacade
      * @param dataMovimentacao Opcional
      * @param cartao Opcional
      * @param range Obrigatorio.
-     * @return 
+     * @return
      */
     List<DespesaProcedimento> buscarDespesas(final Usuario usr, final DetalheTipoProcedimento detalhe,
             final StatusPagamento status, String observacao, Date dataMovimentacao,
@@ -212,20 +228,23 @@ public interface ProcedimentoFacade
 
     /**
      * Conta as despesas por filtros.
+     *
      * @param usr Obrigatorio
      * @param detalhe Opcional
      * @param status Opcional
      * @param observacao Opcional
      * @param dataMovimentacao Opcional
      * @param cartao Opcional.
-     * @return 
+     * @return
      */
     Long contarDespesas(final Usuario usr, final DetalheTipoProcedimento detalhe,
             final StatusPagamento status, String observacao, Date dataMovimentacao,
             CartaoCredito cartao);
-    
+
     /**
-     * Busca as despesas de um usuário que foram realizadas em um cartão de crédito.
+     * Busca as despesas de um usuário que foram realizadas em um cartão de
+     * crédito.
+     *
      * @param usr Obrigatorio
      * @param dataI Obrigatorio
      * @param dataF Obrigatorio

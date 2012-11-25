@@ -136,8 +136,8 @@ public class ProcedimentoBean
     }
 
     /**
-     * Retorna uma lista com Procedimento que são DespesaParceladaProcedimento
-     * pode ser feito cast sem problemas.
+     * Retorna uma lista com Procedimento que são
+     * DespesaParceladaProcedimento pode ser feito cast sem problemas.
      *
      * @param usuario Proprietário ou conjuge do proprietario. Obrigatório
      * @param cartao Cartao onde foi feito pagamento. Opcional.
@@ -255,6 +255,22 @@ public class ProcedimentoBean
     }
 
     @Override
+    public List<DespesaProcedimento> buscarDespesaIntervaloMovimentacao(final Usuario usr,
+            final CartaoCredito cartao, final StatusPagamento status,
+            final Date[] intervalo) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("cartao", cartao);
+        parans.put("cartao2", cartao == null ? "todos" : "filtro");
+        parans.put("status", status);
+        parans.put("status2", status == null ? "todos" : "filtro");
+        parans.put("usuario", usr);
+        parans.put("dataI", intervalo[0]);
+        parans.put("dataF", intervalo[1]);
+        List toReturn = listPesqParam("DespesaProcedimento.buscarDespesaUsuarioIntervaloMovimentacao", parans);
+        return toReturn;
+    }
+
+    @Override
     public MinMaxDateDTO buscarIntervalodDatas(final CartaoCredito cartao,
             final StatusPagamento status, final Usuario usr) {
         Query q = getEntityManager().createNamedQuery("DespesaProcedimento.intervaloDatas");
@@ -304,13 +320,14 @@ public class ProcedimentoBean
     }
 
     /**
-     * Valida as parcelas:<br> Total de parcelas não pode ser menor que 2.<br>
-     * A parcela atual não pode ser menor que 1.<br> O total de parcelas não
-     * pode ser menor que a parcela atual.<br>
+     * Valida as parcelas:<br> Total de parcelas não pode ser menor que
+     * 2.<br> A parcela atual não pode ser menor que 1.<br> O total de
+     * parcelas não pode ser menor que a parcela atual.<br>
      *
      * @param parAtual Parcela atual.
      * @param parTotal Parcela total.
-     * @throws NegocioException se as parcelas não estiverem em conformidade.
+     * @throws NegocioException se as parcelas não estiverem em
+     * conformidade.
      */
     private void validarParcelas(final int parTotal,
             final int parAtual) throws NegocioException {
