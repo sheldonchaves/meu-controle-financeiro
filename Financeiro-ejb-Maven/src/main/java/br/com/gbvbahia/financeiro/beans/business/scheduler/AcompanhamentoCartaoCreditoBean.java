@@ -47,7 +47,7 @@ public class AcompanhamentoCartaoCreditoBean implements AcompanhamentoCartaoCred
 
     @Override
     //@Schedule(hour = "*", minute = "*", second = "10", dayOfWeek = "*")//Teste
-    @Schedule(hour = "2", minute = "23", second = "10", dayOfWeek = "Mon-Fri")//Real
+    @Schedule(hour = "2", minute = "23", second = "10", dayOfWeek = "5-0")//Real
     public void avisarCartaoCredito() {
         List<Scheduler> schedules = schedulerBean.buscarTodosSchelersPorStatus(true);
         Calendar[] intervalo = primeiroUltimoDiasMes();
