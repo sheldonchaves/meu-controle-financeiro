@@ -19,7 +19,7 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <p:calendar id="#{cc.attrs.id}" readonly="#{cc.attrs.readonly}"  value="#{cc.attrs.valor}" title="#{cc.attrs.title}" 
-                    size="#{cc.attrs.size}" locale="pt" timeZone="#{initParam['timezone']}" pattern="#{cc.attrs.pattern}" 
+                    size="#{cc.attrs.size}" locale="pt" pattern="#{cc.attrs.pattern}" 
                     showOn="button" required="#{cc.attrs.requerido}" requiredMessage="#{msg.campoObrigatorio}" 
                     onkeyup="formatar(this, '##/##/####', event)" maxlength="10" disabled="#{cc.attrs.disabled}" 
                     navigator="true">
