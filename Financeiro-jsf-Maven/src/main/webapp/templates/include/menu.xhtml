@@ -11,7 +11,7 @@
                 <p:submenu label="#{msg.cadastro}" icon="addIco" id="menu1"> 
                     <p:submenu label="#{msg.operacoes}" icon="contasIco" id="menu1_0_0">
                         <p:menuitem value="#{msg.procedimentosFixos}" url="/pages/cadastro/agenda/page.xhtml" icon="addAgendaIco" id="menu1_0_1"
-                                    rendered="#{loginController.user or loginController.admin}"/> 
+                                    rendered="#{loginController.user or loginController.admin}" /> 
                         <p:menuitem value="#{msg.despesa}" url="/pages/cadastro/despesaunica/page.xhtml" icon="despesaUnicaIco" id="menu1_0_2"
                                     rendered="#{loginController.user or loginController.admin}"/> 
                         <p:menuitem value="#{msg.despesaParcelada}" url="/pages/cadastro/despesaparcelada/page.xhtml" icon="despesaParceladaIco" id="menu1_0_3"

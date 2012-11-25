@@ -194,7 +194,7 @@ a.fecb { background-image:url("#{resource['images:cb_13.png']}");}
 a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
 
 .pagging { height:20px; line-height:19px; color:#949494; }
-.pagging a{ background:url("#{resource['images:pagging.gif']}") repeat-x 0 0; height:20px; float:left; padding:0 8px; border:solid 1px #d5d5d5; text-decoration: none; color:#92b224; margin-left: 5px; }
+.pagging a{ background:url("#{resource['images:pagging.gif']}") repeat-x 0 0; height:20px; float:left; padding:0 8px; border:solid 1px #d5d5d5; text-decoration: none; color:#4b3a2e; margin-left: 5px; }
 .pagging a:hover { background: #B2D1FF url("#{resource['primefaces-redmond:images/ui-bg_gloss-wave_55_5c9ccc_500x100.png']}") 50% 50% repeat-x; color: #585b57; }
 .pagging span{ float:left; margin-left:5px; padding-top:2px; }
 
@@ -264,7 +264,7 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     margin-left: 10px;
 }
 .boxtitle-head { 
-    background: #92b224 url("#{resource['images/bg_gloss_wave.png']}") 50% 50% repeat-x;
+    background: #4b3a2e url("#{resource['images/bg_gloss_light.png']}") 50% 50% repeat-x;
     height:32px; color:#fff;
     padding: 0 10px;
     line-height:32px;
@@ -272,6 +272,7 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
     border-bottom:solid 1px #fff; 
     border-radius: 5px;
     text-align: left;
+    width: 97%;
 }
 .boxtitle-content {
     /*border:1px solid #92b224;*/
@@ -307,4 +308,8 @@ table.grafprincipal td
 table.grafprincipal td.example_code
 {
     vertical-align:bottom;
+}
+
+.ui-menuitem-text{
+    color: #4b3a2e;
 }
