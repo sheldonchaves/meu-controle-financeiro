@@ -27,7 +27,10 @@ import javax.validation.constraints.Pattern;
 @NamedQueries({
     @NamedQuery(name = "EmailProperties.buscarAtivos",
     query = "SELECT distinct e FROM EmailProperties e "
-    + " WHERE e.contaAtiva = :status ")
+    + " WHERE e.contaAtiva = :status "),
+    @NamedQuery(name = "EmailProperties.count",
+    query = "SELECT count(e) FROM EmailProperties e "
+    + "  ")
 })
 public class EmailProperties implements EntityInterface<EmailProperties>,
         Serializable {

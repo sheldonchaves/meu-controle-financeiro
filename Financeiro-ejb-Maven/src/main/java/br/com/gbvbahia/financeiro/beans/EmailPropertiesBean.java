@@ -15,6 +15,7 @@ import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.apache.log4j.Logger;
 
 /**
@@ -57,5 +58,11 @@ public class EmailPropertiesBean extends AbstractFacade<EmailProperties, Long>
             logger.error("*** ATENÇÃO: somente um EmailProperties deveria estar ativo. ***",e);
             return listPesqParam("EmailProperties.buscarAtivos", parans).get(0);
         }
+    }
+
+    @Override
+    public int count() {
+         Query q = em.createNamedQuery("EmailProperties.count");
+        return ((Long) q.getSingleResult()).intValue();
     }
 }
