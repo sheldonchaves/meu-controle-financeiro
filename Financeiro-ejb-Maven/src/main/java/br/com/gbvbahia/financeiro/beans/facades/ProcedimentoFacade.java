@@ -197,20 +197,6 @@ public interface ProcedimentoFacade
             final Date[] intervalo);
 
     /**
-     * Busca por intervalo da movimentação, ignora data do cartão de
-     * credito, mesmo se houver.
-     *
-     * @param usr
-     * @param cartao
-     * @param status
-     * @param intervalo
-     * @return
-     */
-    List<DespesaProcedimento> buscarDespesaIntervaloMovimentacao(final Usuario usr,
-            final CartaoCredito cartao, final StatusPagamento status,
-            final Date[] intervalo);
-
-    /**
      * Busca despesas por filtros paginado.
      *
      * @param usr Obrigatorio
