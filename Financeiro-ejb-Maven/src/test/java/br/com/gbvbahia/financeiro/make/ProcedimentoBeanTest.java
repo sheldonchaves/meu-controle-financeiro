@@ -98,14 +98,16 @@ public class ProcedimentoBeanTest
         assertEquals("Quantidade PROCEDIMENTOS DESPESA NAO PAGA não bate.", exp, result);
         result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), null, null,
                 DateUtils.incrementar(despesa.getDataCartao(), 1, Calendar.DAY_OF_MONTH), null).size();
+        exp = 2;
         assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO DATAI não bate.", exp, result);
         result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), null, null,
                 null, DateUtils.incrementar(despesa.getDataCartao(), 1, Calendar.DAY_OF_MONTH)).size();
+        exp = 0;
         assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO DATAF não bate.", exp, result);
         exp = 2;
         result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), despesa.getCartaoCredito(), null, null, null).size();
         assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO CARTAO não bate.", exp, result);
-        exp = 1;
+        exp = 0;
         result = facade.buscarPorUsuarioCartaoStatusData(despesa.getUsuario(), despesa.getCartaoCredito(), null, null,
                 DateUtils.incrementar(despesa.getDataCartao(), 1, Calendar.DAY_OF_MONTH)).size();
         assertEquals("Quantidade PROCEDIMENTOS DESPESA FILTRO CARTAO E DATAF não bate.", exp, result);

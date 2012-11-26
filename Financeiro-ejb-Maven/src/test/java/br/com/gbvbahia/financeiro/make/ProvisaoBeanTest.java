@@ -52,6 +52,7 @@ public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoBusiness> {
     @Test
     public void testProvisionar() throws Exception {
         AgendaProcedimentoFixo agenda = MakeEntity.makeEntity("test_2", AgendaProcedimentoFixo.class);
+        agenda.setDataPrimeiroVencimento(new Date());
         agenda.setPeriodo(Periodo.MESES);
         agenda.setUsuario(TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false));
         DetalheProcedimento detalhe = MakeEntity.makeEntity("test_1", DetalheProcedimento.class);
@@ -64,15 +65,15 @@ public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoBusiness> {
         TestesMake.getAgendaFacade().create(agenda);
         getBean().provisionar(agenda);
         getEntityManager().getTransaction().commit();
-        int exp = 12;
+        int exp = 13;
         int result = TestesMake.getProcedimentoFacade().findAll().size();
         assertEquals("Quantidade PROCEDIMENTOS Provisionados não bate,"
                 + " data agenda: "
                 + DateUtils.getDateDiaMesAno(agenda.getDataPrimeiroVencimento()),
                 exp, result);
         for (Procedimento pro : TestesMake.getProcedimentoFacade().findAll()) {
-            Date hoje = new Date();
-            assertTrue("Data anterior criado em provisão", hoje.compareTo(pro.getDataMovimentacao()) < 0);
+            Date hoje = DateUtils.zerarHora(new Date());
+            assertTrue("Data anterior criado em provisão", hoje.compareTo(pro.getDataMovimentacao()) <= 0);
         }
     }
 
@@ -80,6 +81,7 @@ public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoBusiness> {
     public void testCriarProvisoesEProvisionar() throws Exception {
         for (int i = 0; i < 20; i++) {
             AgendaProcedimentoFixo agenda = MakeEntity.makeEntity("test_2", AgendaProcedimentoFixo.class);
+            agenda.setDataPrimeiroVencimento(new Date());
             agenda.setAtiva(true);
             agenda.setPeriodo(Periodo.MESES);
             agenda.setUsuario(TestesMake.makeEntityBD(getEntityManager(), Usuario.class, "test_1", false));
@@ -95,7 +97,7 @@ public class ProvisaoBeanTest extends BaseSessionBeanFixture<ProvisaoBusiness> {
             getEntityManager().getTransaction().begin();
             getBean().criarAgendaEProvisionar(agenda);
             getEntityManager().getTransaction().commit();
-            int exp = 12;
+            int exp = 13;
             int result = TestesMake.getProcedimentoFacade().findAll().size();
             assertEquals("Quantidade PROCEDIMENTOS Provisionados não bate,"
                     + " data agenda: "
