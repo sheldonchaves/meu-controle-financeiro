@@ -23,7 +23,7 @@
 
                         <h:outputLabel value="#{msg.cartaoCredito}:" for="cartao" />
                         <p:selectOneMenu value="#{despesaParceladaController.current.cartaoCredito}"
-                                         id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
+                                         id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 250px;" >
                             <p:ajax event="change" update="dataGroup" listener="#{despesaParceladaController.dataListener}"/> 
                             <f:selectItems value="#{despesaParceladaController.cartoes}"/>
                             <f:converter converterId="cartaoConverter"/>
@@ -58,7 +58,7 @@
                         <h:outputLabel value="#{msg.detalhe}:" for="tipo" />
                         <p:selectOneMenu value="#{despesaParceladaController.current.detalhe}"
                                          required="true" requiredMessage="#{msg.campoObrigatorio}"
-                                         id="tipo" label="#{msg.detalhe}" style="font-size: 0.9em;" >
+                                         id="tipo" label="#{msg.detalhe}" style="font-size: 0.9em; width: 250px;" >
                             <f:selectItems value="#{despesaParceladaController.detalhes}"/>
                             <f:converter converterId="detalheConverter"/>
                         </p:selectOneMenu>
