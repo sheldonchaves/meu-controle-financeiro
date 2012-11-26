@@ -354,8 +354,8 @@ public class ProcedimentoBean
         dpp.setParcelaTotal(parTotal);
         if (cartao != null) {
             dpp.setCartaoCredito(cartao);
-            dpp.setDataCartao(cartao.getProximoVencimento(DateUtils.incrementar(dpp.getDataCartao(),
-                    incrementData, Calendar.MONTH)));
+            dpp.setDataCartao(DateUtils.incrementar(dpp.getDataCartao(),
+                    incrementData, Calendar.MONTH));
             dpp.setDataMovimentacao(dpp.getDataMovimentacao());
         } else {
             dpp.setDataMovimentacao(DateUtils.incrementar(dpp.getDataMovimentacao(),
