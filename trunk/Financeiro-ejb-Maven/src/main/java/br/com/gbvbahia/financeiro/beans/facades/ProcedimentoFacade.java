@@ -11,6 +11,7 @@ import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
+import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
@@ -31,16 +32,16 @@ public interface ProcedimentoFacade
         extends InterfaceFacade<Procedimento, Long> {
 
     /**
-     * Cria contas parceladas a partir de qualquer Procedimento passado. As
+     * Cria contas parceladas a partir do DespesaParceladaProcedimento passado. As
      * contas terão as datas de vencimento incrementadas em um mês.
      *
-     * @param entity Procedimento.
+     * @param entity DespesaParceladaProcedimento.
      * @param parTotal Quantidade de parcelas do parcelamento. Obrigatório.
      * @param parAtual Parcela atual do parcelamento. Obrigatório.
      * @param cartao Cartão de crédito onde foi parcelado. Opcional.
      * @throws NegocioException Caso alguma validação seja violada.
      */
-    void create(final Procedimento entity,
+    void create(final DespesaParceladaProcedimento entity,
             final int parTotal, final int parAtual,
             final CartaoCredito cartao) throws NegocioException;
 

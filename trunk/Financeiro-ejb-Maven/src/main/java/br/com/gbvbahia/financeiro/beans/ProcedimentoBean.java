@@ -74,7 +74,7 @@ public class ProcedimentoBean
     }
 
     @Override
-    public void create(final Procedimento entity,
+    public void create(final DespesaParceladaProcedimento entity,
             final int parTotal, final int parAtual,
             final CartaoCredito cartao) throws NegocioException {
         UtilBeans.checkNull(entity);
@@ -344,16 +344,17 @@ public class ProcedimentoBean
      * @return DespesaParceladaProcedimento crada.
      */
     private DespesaParceladaProcedimento criarDespesaParcelada(
-            final Procedimento entity, final int parAtual,
+            final DespesaParceladaProcedimento entity, final int parAtual,
             final int parTotal, final CartaoCredito cartao,
             final int incrementData) {
         DespesaParceladaProcedimento dpp =
                 new DespesaParceladaProcedimento(entity);
+        dpp.setDataCartao(entity.getDataCartao());
         dpp.setParcelaAtual(parAtual);
         dpp.setParcelaTotal(parTotal);
         if (cartao != null) {
             dpp.setCartaoCredito(cartao);
-            dpp.setDataCartao(cartao.getProximoVencimento(DateUtils.incrementar(dpp.getDataMovimentacao(),
+            dpp.setDataCartao(cartao.getProximoVencimento(DateUtils.incrementar(dpp.getDataCartao(),
                     incrementData, Calendar.MONTH)));
             dpp.setDataMovimentacao(dpp.getDataMovimentacao());
         } else {
