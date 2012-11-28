@@ -45,7 +45,8 @@ import javax.persistence.*;
     + " AND (:status2 = 'todos' OR d.statusPagamento = :status) "
     + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "
     + " AND CASE WHEN d.dataCartao is null THEN d.dataMovimentacao "
-    + " ELSE d.dataCartao END between :dataI and :dataF "),
+    + " ELSE d.dataCartao END between :dataI and :dataF "
+    + " ORDER BY d.dataMovimentacao, d.observacao "),
     @NamedQuery(name = "DespesaProcedimento.countProcedimento",
     query = " SELECT count(p) From DespesaProcedimento p "
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
@@ -74,7 +75,7 @@ import javax.persistence.*;
     + " JOIN p.cartaoCredito c "
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
     + " AND (CASE WHEN p.dataCartao is null THEN p.dataMovimentacao "
-        + "  ELSE p.dataCartao END) between :dataI and :dataF "
+    + "  ELSE p.dataCartao END) between :dataI and :dataF "
     + " GROUP BY p.cartaoCredito "),
     @NamedQuery(name = "DespesaProcedimento.acumuladoDespesaPeriodo",
     query = " SELECT p.tipoProcedimento, "
@@ -82,7 +83,7 @@ import javax.persistence.*;
     + " From DespesaProcedimento p "
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
     + " AND (CASE WHEN p.dataCartao is null THEN p.dataMovimentacao "
-        + "  ELSE p.dataCartao END) between :dataI and :dataF "
+    + "  ELSE p.dataCartao END) between :dataI and :dataF "
     + " AND p.tipoProcedimento = br.com.gbvbahia.financeiro.constantes.TipoProcedimento.DESPESA_FINANCEIRA "
     + " GROUP BY p.tipoProcedimento ")
 })
