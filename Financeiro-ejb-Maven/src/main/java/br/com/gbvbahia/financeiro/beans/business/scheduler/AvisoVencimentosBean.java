@@ -50,8 +50,8 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
     private EmailSendBusiness emailSendBusiness;
 
     @Override
-    //@Schedule(hour = "*", minute = "*", second = "10", dayOfWeek = "*")//Teste
-    @Schedule(hour = "4", minute = "23", second = "10", dayOfWeek = "*")//Real
+    @Schedule(hour = "*", minute = "*", second = "10", dayOfWeek = "*")//Teste
+    //@Schedule(hour = "4", minute = "23", second = "10", dayOfWeek = "*")//Real
     public void iniciarAvisoVencimento() {
         List<Scheduler> schedules = schedulerBean.buscarTodosSchelersPorStatus(true);
         Calendar[] intervalo = getIntervalo();
@@ -184,7 +184,7 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
                 toReturn += "<td align='center'> </td>";
                 toReturn += "<td align='center'> </td>";
             }
-            toReturn += "<td align='center'>" + cp.getCartaoCredito() != null ? cp.getCartaoCredito().getCartao() : " " + "</td>";
+            toReturn += "<td align='center'>" + ((cp.getCartaoCredito() != null) ? cp.getCartaoCredito().getCartao() : " ") + "</td>";
             toReturn += "<td align='center'>" + cp.getUsuario().getFirstName() + "</td>";
             toReturn += "</tr>";
         }
