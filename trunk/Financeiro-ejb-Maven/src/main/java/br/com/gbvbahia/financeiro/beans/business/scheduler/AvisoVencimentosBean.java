@@ -50,8 +50,8 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
     private EmailSendBusiness emailSendBusiness;
 
     @Override
-    //@Schedule(hour = "*", minute = "*", second = "10", dayOfWeek = "*")//Teste
-    @Schedule(hour = "4", minute = "23", second = "10", dayOfWeek = "*")//Real
+    @Schedule(hour = "*", minute = "*", second = "10", dayOfWeek = "*")//Teste
+    //@Schedule(hour = "4", minute = "23", second = "10", dayOfWeek = "*")//Real
     public void iniciarAvisoVencimento() {
         List<Scheduler> schedules = schedulerBean.buscarTodosSchelersPorStatus(true);
         Calendar[] intervalo = getIntervalo();
@@ -63,11 +63,13 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
                 List[] contasDivididas = separarContas(dividas, sc);
                 List<DespesaProcedimento> contasAtrasadas = contasDivididas[0];
                 List<DespesaProcedimento> contasOK = contasDivididas[1];
-                String body = corpoTableEmail(contasOK, contasAtrasadas);
-                body = StringUtils.replace(body, "null", "");
-                if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
-                    String bodyFim = "<h3>Lembrete de Proximos Vencimentos:</h3>" + body;
-                    enviaEmail(bodyFim, "Financeiro :: Aviso de Vencimentos", sc);
+                if (!contasAtrasadas.isEmpty() || !contasOK.isEmpty()) {
+                    String body = corpoTableEmail(contasOK, contasAtrasadas);
+                    body = StringUtils.replace(body, "null", "");
+                    if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
+                        String bodyFim = "<h3>Lembrete de Proximos Vencimentos:</h3>" + body;
+                        enviaEmail(bodyFim, "Financeiro :: Aviso de Vencimentos", sc);
+                    }
                 }
             } else {
                 logger.info("Não existe vencimentos para: " + sc.getUser().getUserId());
@@ -229,8 +231,9 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
 
     /**
      * Retorna o cabeçalho padrão de uma table html.
+     *
      * @param body
-     * @return 
+     * @return
      */
     protected static String buscarTablePadrao(String body) {
         body += " <style type=\"text/css\">";
