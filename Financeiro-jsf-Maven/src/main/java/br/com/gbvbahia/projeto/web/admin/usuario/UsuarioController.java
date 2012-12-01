@@ -9,6 +9,7 @@ import br.com.gbvbahia.financeiro.beans.facades.GrupoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.Grupo;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.utils.Base64Encoder;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.common.EntityController;
 import br.com.gbvbahia.projeto.web.common.EntityPagination;
@@ -132,7 +133,7 @@ public class UsuarioController extends EntityController<Usuario>
     @Override
     protected String create() {
         try {
-            current.setPass(senha);
+            current.setPass(Base64Encoder.encryptPassword(senha));
             getFacade().create(current);
             MensagemUtils.messageFactoringFull("UsuarioCreated",
                     new Object[]{current.getUserId()},

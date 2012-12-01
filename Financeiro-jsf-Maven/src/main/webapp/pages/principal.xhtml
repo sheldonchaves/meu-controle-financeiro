@@ -41,9 +41,46 @@
                                     <p:lineChart value="#{cartaoMensalReport.categoryModel}" legendPosition="nw" shadow="true"
                                                  yaxisLabel="#{msg.yLabelGraficoAcumuladoMensal}"
                                                  xaxisLabel="#{msg.xLabelGraficoAcumuladoMensal}"
-                                                 minY="0"
+                                                 minY="0" rendered="#{!cartaoMensalReport.cartaoEmty}"
                                                  showMarkers="true"
                                                  style="width:100%;height:255px; margin-top: 5px;"/> 
+                                </h:form>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="formedit" style="width:99% !important;">
+                                <div class="formedit-head" >
+                                    <h:outputText value="#{msg.tituloGraficoDetalheMensal} "/>
+                                </div>
+                                <h:form id="formPieClassPrincipal">
+                                    <h:outputText value="#{msg.detalheNullPieChart}" rendered="#{!detalheReport.detalheNotNull}"/><br></br>
+                                    <h:outputText value="#{msg.detalheNullPieChart2}" rendered="#{!detalheReport.detalheNotNull}"/>
+                                    <table width="100%" >
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <p:pieChart id="pieClassPrincipalAnterior" value="#{detalheReport.pieClassModelAnterior}" legendPosition="w"  
+                                                                title="#{detalheReport.pieClassModelTitleAnterior}" 
+                                                                rendered="#{detalheReport.detalheNotNull}"
+                                                                style="margin-top: 5px; width: 300px; height: 255px;" showDataLabels="true"/> 
+                                                </td>
+                                                <td>
+                                                    <p:pieChart id="pieClassPrincipalAtual" value="#{detalheReport.pieClassModel}" legendPosition="w"  
+                                                                title="#{detalheReport.pieClassModelTitle}" 
+                                                                rendered="#{detalheReport.detalheNotNull}"
+                                                                style="margin-top: 5px; width: 300px; height: 255px;" showDataLabels="true"/> 
+                                                </td>
+                                                <td>
+                                                    <p:pieChart id="pieClassPrincipalPosterior" value="#{detalheReport.pieClassModelPosterior}" legendPosition="w"  
+                                                                title="#{detalheReport.pieClassModelTitlePosterior}" 
+                                                                rendered="#{detalheReport.detalheNotNull}"
+                                                                style="margin-top: 5px; width: 300px; height: 255px;" showDataLabels="true"/> 
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </h:form>
                             </div>
                         </td>
