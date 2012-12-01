@@ -126,6 +126,11 @@
     width:16px !important;
 }
 .transferenciaIcon{
+     background: url("#{resource['images:gear_replace.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
+.pagarreceberIcon{
      background: url("#{resource['images:movimentacao_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
@@ -138,6 +143,18 @@
 
 .schedulerIco{
      background: url("#{resource['images:scheduler_16.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
+
+.settingsIco {
+    background: url("#{resource['images:settings.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
+
+.avisosIcon{
+        background: url("#{resource['images:email_edit_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
