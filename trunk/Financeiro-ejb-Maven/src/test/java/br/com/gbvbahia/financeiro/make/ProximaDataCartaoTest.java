@@ -5,6 +5,7 @@
 package br.com.gbvbahia.financeiro.make;
 
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
+import br.com.gbvbahia.financeiro.utils.DateUtils;
 import java.util.Calendar;
 import java.util.Date;
 import org.junit.Test;
@@ -83,5 +84,14 @@ public class ProximaDataCartaoTest {
         assertEquals(compare.get(Calendar.DAY_OF_MONTH), 6);
         assertEquals(0, compare.get(Calendar.MONTH));
         assertEquals(2013, compare.get(Calendar.YEAR));
+    }
+
+    @Test
+    public void testMinMaxDateTest() throws Exception {
+        Calendar antes = Calendar.getInstance();
+        antes.add(Calendar.DAY_OF_MONTH, -2);
+        Calendar agora = Calendar.getInstance();
+        assertEquals(antes.getTime(), DateUtils.getMenor(antes.getTime(), agora.getTime()));
+        assertEquals(agora.getTime(), DateUtils.getMaior(antes.getTime(), agora.getTime()));
     }
 }

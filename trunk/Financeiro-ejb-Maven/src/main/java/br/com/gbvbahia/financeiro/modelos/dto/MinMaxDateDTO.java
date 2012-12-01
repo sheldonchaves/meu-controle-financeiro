@@ -30,12 +30,24 @@ public class MinMaxDateDTO {
 
     /**
      * Recebe a menor e maior data de um intervalo.
+     *
      * @param minData
-     * @param maxDate 
+     * @param maxDate
      */
     public MinMaxDateDTO(Date minData, Date maxData) {
         this.minData = minData;
         this.maxData = maxData;
+    }
+
+    /**
+     * Recebe a menor e maior data de um intervalo.
+     *
+     * @param minData
+     * @param maxDate
+     */
+    public MinMaxDateDTO(Date minData, Date minData2, Date maxData, Date maxData2) {
+        this.minData = DateUtils.getMenor(minData, minData2);
+        this.maxData = DateUtils.getMaior(maxData, maxData2);
     }
 
     public Date getMinData() {
@@ -47,8 +59,8 @@ public class MinMaxDateDTO {
     }
 
     /**
-     * Devolve uma lista sem repetições de modo ordenado do menor para o maior
-     * do intervalo em anos do menor para a maior data.
+     * Devolve uma lista sem repetições de modo ordenado do menor para o
+     * maior do intervalo em anos do menor para a maior data.
      *
      * @return
      */

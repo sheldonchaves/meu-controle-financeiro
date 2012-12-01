@@ -76,8 +76,8 @@ public final class DateUtils {
     }
 
     /**
-     * Formata a data, formato AAAAMMDD, para ser incluida na nomenclatura de
-     * um método.
+     * Formata a data, formato AAAAMMDD, para ser incluida na nomenclatura
+     * de um método.
      *
      * @return java.lang.String yyyMMdd
      */
@@ -118,8 +118,8 @@ public final class DateUtils {
      * Zera a hora, minuto e segunda de uma data.
      *
      * @param data
-     * @return Data zerada nas horas, minutos e segundos ou nulo se parametro
-     * for nulo.
+     * @return Data zerada nas horas, minutos e segundos ou nulo se
+     * parametro for nulo.
      */
     public static Date zerarHora(Date data) {
         if (data != null) {
@@ -190,8 +190,8 @@ public final class DateUtils {
 
     /**
      * Retorna um array com a menor data de um mês, 01/XX/XXXX 00:00:00 000
-     * posição 0 e maior data de um mês se Jan: 31/01/2012 23:59:59 posição 1.
-     * 30/03/2012 23:59:59
+     * posição 0 e maior data de um mês se Jan: 31/01/2012 23:59:59 posição
+     * 1. 30/03/2012 23:59:59
      *
      * @param date
      * @return
@@ -212,8 +212,8 @@ public final class DateUtils {
     }
 
     /**
-     * Retorna um array de java.util.Date com o primeiro dia do mês e o ultimo
-     * dia do mês, com base na data de referência passada
+     * Retorna um array de java.util.Date com o primeiro dia do mês e o
+     * ultimo dia do mês, com base na data de referência passada
      *
      * @param referencia
      * @return
@@ -269,12 +269,51 @@ public final class DateUtils {
 
     /**
      * Converte um java.util.Date em um java.util.Calendar
+     *
      * @param date Obrigatorio.
-     * @return 
+     * @return
      */
     public static Calendar dateToCalendar(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         return c;
+    }
+
+    /**
+     * Retorna a que for mais antiga.
+     * @param data1
+     * @param data2
+     * @return 
+     */
+    public static Date getMenor(Date data1, Date data2) {
+        if (data1 == null) {
+            return data2;
+        } else if (data2 == null) {
+            return data1;
+        }
+        if (data1.compareTo(data2) < 0) {
+            return data1;
+        } else {
+            return data2;
+        }
+    }
+
+    /**
+     * Retorna a que for mais recente.
+     * @param data1
+     * @param data2
+     * @return 
+     */
+    public static Date getMaior(Date data1, Date data2) {
+        if (data1 == null) {
+            return data2;
+        } else if (data2 == null) {
+            return data1;
+        }
+        if (data1.compareTo(data2) < 0) {
+            return data2;
+        } else {
+            return data1;
+        }
     }
 }
