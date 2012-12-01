@@ -33,6 +33,8 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import org.apache.log4j.Logger;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.CloseEvent;
 
 /**
  *
@@ -54,10 +56,8 @@ public class OperacaoController extends EntityController<Procedimento> implement
     private ContaBancariaFacade disponivelFacade;
     @EJB
     private TrabalharOperacaoBusiness operacaoBusiness;
-
     @ManagedProperty("#{disponivelReport}")
     private DisponivelReport disponivelReport;
-    
     private ContaBancaria disponivel;
     private Procedimento current;
     //Filtros
@@ -65,6 +65,9 @@ public class OperacaoController extends EntityController<Procedimento> implement
     private String observacaoFiltro;
     private DetalheTipoProcedimento detalheFiltro;
     private Date dataFiltro;
+    //Conta Editar
+    private Procedimento proToEdit;
+    private boolean showDialog = false;
 
     //====================
     //Iniciadores
@@ -99,7 +102,7 @@ public class OperacaoController extends EntityController<Procedimento> implement
         try {
             setEntity(getItems().getRowData());
             if (disponivel == null) {
-                MensagemUtils.messageFactoringFull("formOperacaoTable:contaDeb","MovimentacaoProcedimentoSemConta",
+                MensagemUtils.messageFactoringFull("formOperacaoTable:contaDeb", "MovimentacaoProcedimentoSemConta",
                         new String[]{current.getObservacao()}, FacesMessage.SEVERITY_WARN,
                         FacesContext.getCurrentInstance());
                 return JsfUtil.MANTEM;
@@ -169,6 +172,39 @@ public class OperacaoController extends EntityController<Procedimento> implement
     public void cleanDate() {
         this.dataFiltro = null;
         recreateTable();
+    }
+
+    public void alterarProcedimento() {
+        try {
+            if (proToEdit.getDataMovimentacao() == null) {
+                MensagemUtils.messageFactoringFull("dataMovimentacaoNull",
+                        null, FacesMessage.SEVERITY_WARN,
+                        FacesContext.getCurrentInstance());
+                return;
+            } else if (proToEdit.getValorReal() == null) {
+                MensagemUtils.messageFactoringFull("valorRealNull",
+                        null, FacesMessage.SEVERITY_WARN,
+                        FacesContext.getCurrentInstance());
+                return;
+            }
+            procedimentoFacade.update(proToEdit);
+            MensagemUtils.messageFactoringFull("OperacaoValorAlterado",
+                    new Object[]{proToEdit.getObservacao()},
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            showDialog = false;
+            proToEdit = null;
+        } catch (NegocioException ex) {
+            MensagemUtils.messageFactoringFull(ex.getMessage(),
+                    ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            logger.info(I18nLogger.getMsg("createError", current.toString()));
+        }
+    }
+
+    public void handleClose(CloseEvent event) {
+        setShowDialog(false);
+        this.proToEdit = null;
     }
 
     @Override
@@ -271,5 +307,26 @@ public class OperacaoController extends EntityController<Procedimento> implement
 
     public void setDisponivel(ContaBancaria disponivel) {
         this.disponivel = disponivel;
+    }
+
+    public Procedimento getProToEdit() {
+        return proToEdit;
+    }
+
+    public void setProToEdit(Procedimento proToEdit) {
+        this.proToEdit = proToEdit;
+        if (proToEdit == null) {
+            setShowDialog(false);
+        } else {
+            setShowDialog(true);
+        }
+    }
+
+    public boolean isShowDialog() {
+        return showDialog;
+    }
+
+    public void setShowDialog(boolean showDialog) {
+        this.showDialog = showDialog;
     }
 }
