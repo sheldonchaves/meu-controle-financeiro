@@ -50,7 +50,7 @@
                                     <f:selectItems value="#{operacaoController.status}"/>
                                 </p:selectOneMenu>
                             </th>
-                            <th width="70" class="ac"></th>
+                            <th width="130" class="ac"></th>
                         </tr></thead>
                     <tbody>
                         <ui:repeat value="#{operacaoController.items}" var="item" varStatus="x">
@@ -83,6 +83,13 @@
                                     <h:commandLink action="#{operacaoController.abrirOperacao()}" styleClass="ico fecb" value="#{msg.abrir}"
                                                    rendered="#{item.statusPagamento eq 'PAGA'}"
                                                    id="fechabLink" onclick="return confirm('#{msg.desejaAbrir}: #{item.observacao}?');"/>
+                                     <p:spacer width="15px" height="5px"/>
+                                    <p:commandLink styleClass="ico edit" value="#{msg.editar}"
+                                                   rendered="#{item.statusPagamento ne 'PAGA'}"
+                                                   id="editLink" update=":dialogGroup" oncomplete="dlg.show()">
+                                        <f:setPropertyActionListener target="#{operacaoController.proToEdit}" value="#{item}" />
+
+                                    </p:commandLink>
                                 </td>
                             </tr>
                         </ui:repeat>
@@ -114,6 +121,51 @@
             <arq:paginator entityBean="#{operacaoController}" renderedNew="#{false}"/>
             <p:spacer width="100%" height="20"/>
         </h:form>
+        <h:panelGroup id="dialogGroup">
+            <p:dialog visible="#{operacaoController.showDialog}" header="#{msg.alterarValorProcedimento}" widgetVar="dlg" id="dialog"
+                      dynamic="true" modal="true">
+                <p:ajax event="close"  listener="#{operacaoController.handleClose}"/>
+                <h:form id="dialogForm">
+                    <h:panelGrid columns="3">
+                        <h:outputText value="#{msg.movimentacao}:"/>
+                        <arq:calendar id="dataDialog" valor="#{operacaoController.proToEdit.dataMovimentacao}" title="#{msg.data}"
+                                      size="15" />
+                        <p:message for="dataDialog" display="icon"/>
+
+                        <h:outputText value="#{msg.valor}:"/>
+                        <p:inputText id="valorDialog" value="#{operacaoController.proToEdit.valorReal}" title="#{msg.valor}" 
+                                     size="15" onkeypress="return(MascaraMoeda(this,'.',',',event))" required="true"
+                                     >
+                            <f:converter converterId="moneyBigConverter"/>
+                        </p:inputText>
+                        <p:message for="valorDialog" display="icon"/>
+
+                        <h:outputText value="#{msg.observacao}:"/>
+                        <h:outputText value="#{operacaoController.proToEdit.observacao}" id="observacaoDialog"/>
+                        <p:message for="observacaoDialog" display="icon"/>
+
+                        <h:outputText value="#{msg.detalhe}:"/>
+                        <h:outputText value="#{operacaoController.proToEdit.detalhe.detalhe}" id="detalheDialog"/>
+                        <p:message for="detalheDialog" display="icon"/>
+
+                        <h:outputText value="#{msg.tipo}:"/>
+                        <h:outputText value="#{msg[operacaoController.proToEdit.detalheProcedimento]}" id="detalheProcedimentoDialog"/>
+                        <p:message for="detalheProcedimentoDialog" display="icon"/>
+
+                        <h:outputText value="#{msg.status}:"/>
+                        <h:outputText value="#{msg[operacaoController.proToEdit.statusPagamento]}" id="statusPagamentoDialog"/>
+                        <p:message for="statusPagamentoDialog" display="icon"/>
+
+                        <h:outputText value=""/>
+                        <h:panelGroup id="buttons" styleClass="pagging">
+                            <p:commandLink action="#{operacaoController.alterarProcedimento()}" value="#{msg.salvar}" id="alterarButton" 
+                                           style="margin-left: 0px !important;" update=":dialogGroup :formOperacaoTable:groupOperacao">
+                            </p:commandLink>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+        </h:panelGroup>
         <div style="margin-left: 10px;">
             <h:panelGroup id="disponiveis" >
                 <arq:disponiveis/>
