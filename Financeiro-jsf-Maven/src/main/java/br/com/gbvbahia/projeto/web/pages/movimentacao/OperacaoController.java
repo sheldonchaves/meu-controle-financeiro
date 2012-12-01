@@ -198,7 +198,7 @@ public class OperacaoController extends EntityController<Procedimento> implement
             MensagemUtils.messageFactoringFull(ex.getMessage(),
                     ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
                     FacesContext.getCurrentInstance());
-            logger.info(I18nLogger.getMsg("createError", current.toString()));
+            logger.info(I18nLogger.getMsg("createError", proToEdit.toString()));
         }
     }
 
