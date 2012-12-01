@@ -19,6 +19,7 @@ import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
+import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.constante.Meses;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.projeto.web.pages.report.DisponivelReport;
@@ -38,6 +39,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.apache.log4j.Logger;
+import org.primefaces.event.CloseEvent;
 import org.primefaces.model.chart.PieChartModel;
 
 /**
@@ -48,6 +51,10 @@ import org.primefaces.model.chart.PieChartModel;
 @ViewScoped
 public class CartaoFecharOperacaoController implements Serializable {
 
+    /**
+     * Registra os eventos para debug em desenvolvimento.
+     */
+    private Logger logger = Logger.getLogger(CartaoFecharOperacaoController.class);
     @EJB
     private TrabalharOperacaoBusiness operacaoBusiness;
     @EJB
@@ -74,6 +81,9 @@ public class CartaoFecharOperacaoController implements Serializable {
     private double total;
     //Gráfico
     private PieChartModel pieClassModel;
+    //Conta Editar
+    private Procedimento proToEdit;
+    private boolean showDialog = false;
 //====================
 // Acoes
 //====================    
@@ -180,6 +190,39 @@ public class CartaoFecharOperacaoController implements Serializable {
                         FacesContext.getCurrentInstance());
             }
         }
+    }
+
+    public void alterarProcedimento() {
+        try {
+            if (proToEdit.getDataMovimentacao() == null) {
+                MensagemUtils.messageFactoringFull("dataMovimentacaoNull",
+                        null, FacesMessage.SEVERITY_WARN,
+                        FacesContext.getCurrentInstance());
+                return;
+            } else if (proToEdit.getValorReal() == null) {
+                MensagemUtils.messageFactoringFull("valorRealNull",
+                        null, FacesMessage.SEVERITY_WARN,
+                        FacesContext.getCurrentInstance());
+                return;
+            }
+            procedimentoFacade.update(proToEdit);
+            MensagemUtils.messageFactoringFull("OperacaoValorAlterado",
+                    new Object[]{proToEdit.getObservacao()},
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            showDialog = false;
+            proToEdit = null;
+        } catch (NegocioException ex) {
+            MensagemUtils.messageFactoringFull(ex.getMessage(),
+                    ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            logger.info(I18nLogger.getMsg("createError", proToEdit.toString()));
+        }
+    }
+
+    public void handleClose(CloseEvent event) {
+        setShowDialog(false);
+        this.proToEdit = null;
     }
 //====================
 // Select Itens
@@ -309,5 +352,26 @@ public class CartaoFecharOperacaoController implements Serializable {
                     FacesContext.getCurrentInstance()), map.get(ClassificacaoProcedimento.VARIAVEL));
         }
         return pieClassModel;
+    }
+
+    public Procedimento getProToEdit() {
+        return proToEdit;
+    }
+
+    public void setProToEdit(Procedimento proToEdit) {
+        this.proToEdit = proToEdit;
+        if (proToEdit == null) {
+            setShowDialog(false);
+        } else {
+            setShowDialog(true);
+        }
+    }
+
+    public boolean isShowDialog() {
+        return showDialog;
+    }
+
+    public void setShowDialog(boolean showDialog) {
+        this.showDialog = showDialog;
     }
 }

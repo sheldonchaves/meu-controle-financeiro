@@ -74,6 +74,7 @@
                                                         <p:ajax event="change" update="despCartoesGroup2" listener="#{cartaoFecharOperacaoController.todosListener}"/>
                                                     </p:selectBooleanCheckbox>
                                                 </th>
+                                                 <th width="65" class="ac"></th>
                                             </tr></thead>
                                         <tbody>
                                             <ui:repeat value="#{cartaoFecharOperacaoController.despesas}" var="item" varStatus="x">
@@ -106,6 +107,14 @@
                                                     </td>
                                                     <td align='center'>
                                                         <p:selectBooleanCheckbox value="#{item.marcadoTransient}"/>
+                                                    </td>
+                                                    <td align='center'>
+                                                        <p:commandLink styleClass="ico edit" value="#{msg.editar}"
+                                                                       rendered="#{item.statusPagamento ne 'PAGA'}"
+                                                                       id="editLink" update=":dialogGroup" oncomplete="dlg.show()">
+                                                            <f:setPropertyActionListener target="#{cartaoFecharOperacaoController.proToEdit}" value="#{item}" />
+
+                                                        </p:commandLink>
                                                     </td>
                                                 </tr>
                                             </ui:repeat>
@@ -156,6 +165,51 @@
                             </h:panelGroup>
 
                         </h:form>
+                        <h:panelGroup id="dialogGroup">
+                            <p:dialog visible="#{cartaoFecharOperacaoController.showDialog}" header="#{msg.alterarValorProcedimento}" widgetVar="dlg" id="dialog"
+                                      dynamic="true" modal="true">
+                                <p:ajax event="close"  listener="#{cartaoFecharOperacaoController.handleClose}"/>
+                                <h:form id="dialogForm">
+                                    <h:panelGrid columns="3">
+                                        <h:outputText value="#{msg.movimentacao}:"/>
+                                        <arq:calendar id="dataDialog" valor="#{cartaoFecharOperacaoController.proToEdit.dataMovimentacao}" title="#{msg.data}"
+                                                      size="15" />
+                                        <p:message for="dataDialog" display="icon"/>
+
+                                        <h:outputText value="#{msg.valor}:"/>
+                                        <p:inputText id="valorDialog" value="#{cartaoFecharOperacaoController.proToEdit.valorReal}" title="#{msg.valor}" 
+                                                     size="15" onkeypress="return(MascaraMoeda(this,'.',',',event))" required="true"
+                                                     >
+                                            <f:converter converterId="moneyBigConverter"/>
+                                        </p:inputText>
+                                        <p:message for="valorDialog" display="icon"/>
+
+                                        <h:outputText value="#{msg.observacao}:"/>
+                                        <h:outputText value="#{cartaoFecharOperacaoController.proToEdit.observacao}" id="observacaoDialog"/>
+                                        <p:message for="observacaoDialog" display="icon"/>
+
+                                        <h:outputText value="#{msg.detalhe}:"/>
+                                        <h:outputText value="#{cartaoFecharOperacaoController.proToEdit.detalhe.detalhe}" id="detalheDialog"/>
+                                        <p:message for="detalheDialog" display="icon"/>
+
+                                        <h:outputText value="#{msg.tipo}:"/>
+                                        <h:outputText value="#{msg[cartaoFecharOperacaoController.proToEdit.detalheProcedimento]}" id="detalheProcedimentoDialog"/>
+                                        <p:message for="detalheProcedimentoDialog" display="icon"/>
+
+                                        <h:outputText value="#{msg.status}:"/>
+                                        <h:outputText value="#{msg[cartaoFecharOperacaoController.proToEdit.statusPagamento]}" id="statusPagamentoDialog"/>
+                                        <p:message for="statusPagamentoDialog" display="icon"/>
+
+                                        <h:outputText value=""/>
+                                        <h:panelGroup id="buttons" styleClass="pagging">
+                                            <p:commandLink action="#{cartaoFecharOperacaoController.alterarProcedimento()}" value="#{msg.salvar}" id="alterarButton" 
+                                                           style="margin-left: 0px !important;" update=":dialogGroup :formCartaoOperacaoTable">
+                                            </p:commandLink>
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+                                </h:form>
+                            </p:dialog>
+                        </h:panelGroup>
                     </td>
                     <td align='left' style="vertical-align: top;">
                         <h:panelGroup id="disponiveis">
