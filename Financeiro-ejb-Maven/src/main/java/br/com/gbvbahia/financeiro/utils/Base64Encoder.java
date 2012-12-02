@@ -9,6 +9,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
+ * encrypting and decrypting a text...
+ *
+ * BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+ * textEncryptor.setPassword(myEncryptionPassword); String myEncryptedText
+ * = textEncryptor.encrypt(myText); ... String plainText =
+ * textEncryptor.decrypt(myEncryptedText);
  *
  * @author Guilherme
  */
@@ -44,8 +50,8 @@ public final class Base64Encoder {
     }
 
     /**
-     * Criptograva uma String utilizando MD5 com encoding UTF8.
-     * Utiliza a classe Base64Encoder para auxiliar na criptografia
+     * Criptograva uma String utilizando MD5 com encoding UTF8. Utiliza a
+     * classe Base64Encoder para auxiliar na criptografia
      *
      * @param string
      * @return
@@ -70,8 +76,8 @@ public final class Base64Encoder {
     }
 
     /**
-     * Encodes a string into Base64 format. No blanks or line breaks
-     * are inserted.
+     * Encodes a string into Base64 format. No blanks or line breaks are
+     * inserted.
      *
      * @param s a String to be encoded.
      * @return A String with the Base64 encoded data.
@@ -81,8 +87,8 @@ public final class Base64Encoder {
     }
 
     /**
-     * Encodes a byte array into Base64 format. No blanks or line
-     * breaks are inserted.
+     * Encodes a byte array into Base64 format. No blanks or line breaks
+     * are inserted.
      *
      * @param in an array containing the data bytes to be encoded.
      * @return A character array with the Base64 encoded data.
@@ -92,12 +98,11 @@ public final class Base64Encoder {
     }
 
     /**
-     * Encodes a byte array into Base64 format. No blanks or line
-     * breaks are inserted.
+     * Encodes a byte array into Base64 format. No blanks or line breaks
+     * are inserted.
      *
      * @param in an array containing the data bytes to be encoded.
-     * @param iLen number of bytes to process in
-     * <code>in</code>.
+     * @param iLen number of bytes to process in <code>in</code>.
      * @return A character array with the Base64 encoded data.
      */
     private static char[] encode(final byte[] in, final int iLen) {
@@ -129,8 +134,8 @@ public final class Base64Encoder {
      *
      * @param s a Base64 String to be decoded.
      * @return A String containing the decoded data.
-     * @throws IllegalArgumentException if the input is not valid
-     * Base64 encoded data.
+     * @throws IllegalArgumentException if the input is not valid Base64
+     * encoded data.
      */
     private static String decodeString(final String s) {
         return new String(decode(s));
@@ -141,21 +146,21 @@ public final class Base64Encoder {
      *
      * @param s a Base64 String to be decoded.
      * @return An array containing the decoded data bytes.
-     * @throws IllegalArgumentException if the input is not valid
-     * Base64 encoded data.
+     * @throws IllegalArgumentException if the input is not valid Base64
+     * encoded data.
      */
     private static byte[] decode(final String s) {
         return decode(s.toCharArray());
     }
 
     /**
-     * Decodes a byte array from Base64 format. No blanks or line
-     * breaks are allowed within the Base64 encoded data.
+     * Decodes a byte array from Base64 format. No blanks or line breaks
+     * are allowed within the Base64 encoded data.
      *
      * @param in a character array containing the Base64 encoded data.
      * @return An array containing the decoded data bytes.
-     * @throws IllegalArgumentException if the input is not valid
-     * Base64 encoded data.
+     * @throws IllegalArgumentException if the input is not valid Base64
+     * encoded data.
      */
     private static byte[] decode(final char[] in)
             throws IllegalArgumentException {
