@@ -60,7 +60,7 @@
                     </tbody>
                 </table>
             </h:panelGroup>
-            <arq:paginator entityBean="#{emailPropertiesController}"/>
+            <arq:paginator entityBean="#{emailPropertiesController}" formName=":formEmailTable"/>
             <p:spacer width="100%" height="20"/>
         </h:form>
         <h:panelGroup id="groupDetalhe" rendered="#{emailPropertiesController.current != null}">

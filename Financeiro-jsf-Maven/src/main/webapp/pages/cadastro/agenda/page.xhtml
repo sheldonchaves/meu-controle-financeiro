@@ -81,7 +81,7 @@
                     </tbody>
                 </table>
             </h:panelGroup>
-            <arq:paginator entityBean="#{agendaController}"/>
+            <arq:paginator entityBean="#{agendaController}" formName=":formAgendaTable"/>
             <p:spacer width="100%" height="20"/>
         </h:form>
         <h:panelGroup id="groupDetalhe" rendered="#{agendaController.current != null}">

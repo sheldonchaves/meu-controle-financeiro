@@ -52,7 +52,7 @@
                     </tbody>
                 </table>
             </h:panelGroup>
-            <arq:paginator entityBean="#{usuarioController}"/>
+            <arq:paginator entityBean="#{usuarioController}" formName=":formUserTable"/>
             <p:spacer width="100%" height="20"/>
         </h:form>
         <p:tabView id="tabUser" rendered="#{usuarioController.current != null}">

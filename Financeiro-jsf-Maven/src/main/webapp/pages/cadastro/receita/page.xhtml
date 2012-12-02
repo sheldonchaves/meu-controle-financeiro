@@ -80,7 +80,7 @@
                     </tbody>
                 </table>
             </h:panelGroup>
-            <arq:paginator entityBean="#{receitaController}"/>
+            <arq:paginator entityBean="#{receitaController}" formName=":formReceitaTable"/>
             <p:spacer width="100%" height="20"/>
         </h:form>
         <h:panelGroup id="groupDetalhe" rendered="#{receitaController.current != null}">
