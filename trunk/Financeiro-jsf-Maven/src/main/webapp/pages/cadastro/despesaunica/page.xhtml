@@ -99,7 +99,7 @@
                     </tbody>
                 </table>
             </h:panelGroup>
-            <arq:paginator entityBean="#{despesaUnicaController}"/>
+            <arq:paginator entityBean="#{despesaUnicaController}" formName=":formDespesaTable"/>
             <p:spacer width="100%" height="20"/>
         </h:form>
         <h:panelGroup id="groupDetalhe" rendered="#{despesaUnicaController.current != null}">

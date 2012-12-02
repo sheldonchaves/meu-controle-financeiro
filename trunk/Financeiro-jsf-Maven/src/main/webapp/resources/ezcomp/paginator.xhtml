@@ -9,6 +9,7 @@
     <!-- INTERFACE -->
     <cc:interface>
         <cc:attribute name="entityBean" required="true" />
+        <cc:attribute name="formName" required="false" default="@form"/>
         <cc:attribute name="renderedNew" required="false" default="#{true}" />
     </cc:interface>
     <!-- Update Keyword Description
@@ -31,13 +32,13 @@
                                            value="#{msg.previous} #{cc.attrs.entityBean.pagination.pageSize}" 
                                            id="previousLink"
                                            disabled="#{!cc.attrs.entityBean.pagination.hasPreviousPage}" >
-                               <p:ajax update="@form"/>
+                                <p:ajax update="#{cc.attrs.formName}"/>
                             </h:commandLink>
                             <h:commandLink actionListener="#{cc.attrs.entityBean.next}" 
                                            value="#{msg.next} #{cc.attrs.entityBean.pagination.pageSize}" 
                                            id="nextLink"
                                            disabled="#{!cc.attrs.entityBean.pagination.hasNextPage}" >
-                                <p:ajax update="@form"/>
+                                <p:ajax update="#{cc.attrs.formName}"/>
                             </h:commandLink>
                             <h:commandLink action="#{cc.attrs.entityBean.prepareCreate}" value="#{msg.novo}" 
                                            id="novoLink" rendered="#{cc.attrs.renderedNew}">
