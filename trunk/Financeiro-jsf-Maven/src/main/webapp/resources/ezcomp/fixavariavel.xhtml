@@ -66,15 +66,16 @@
                                     <ui:repeat value="#{chartsReport.listVariavel}" var="item" rendered="#{not empty chartsReport.listVariavel}">
                                         <tr>
                                             <td  align='left'>
-                                                <h:outputText value="#{item.observacao}" title="#{item.label}"/>
+                                                <h:outputText value="#{item.observacao}" title="#{item.label} - #{item.detalhe.detalhe}" id="obsItemV"/>
+                                                <p:tooltip for="obsItemV" value="#{item.label} - #{item.detalhe.detalhe}" showEffect="fade" hideEffect="fade" />
                                             </td>
 
                                             <td align='center'>
-                                                <h:outputText value="#{item.dataMovimentacao}" rendered="#{item.dataMovimentacao ne null}">
-                                                    <f:convertDateTime locale="#{localeController.localeUI}"
+                                                <h:outputText value="#{item.dataMovimentacao}" rendered="#{item.dataCartao eq null}" title="#{msg.movimentacao}">
+                                                    <f:convertDateTime locale="#{localeController.localeUI}" 
                                                                        type="date" timeZone="#{initParam['timezone']}"/>
                                                 </h:outputText>
-                                                <h:outputText value="#{item.dataCartao}" rendered="#{item.dataMovimentacao eq null}">
+                                                <h:outputText value="#{item.dataCartao}" rendered="#{item.dataCartao ne null}" title="#{msg.cartaoCredito}">
                                                     <f:convertDateTime locale="#{localeController.localeUI}"
                                                                        type="date" timeZone="#{initParam['timezone']}"/>
                                                 </h:outputText>
@@ -123,15 +124,16 @@
                                     <ui:repeat value="#{chartsReport.listFinxa}" var="item" rendered="#{not empty chartsReport.listFinxa}">
                                         <tr>
                                             <td  align='left'>
-                                                <h:outputText value="#{item.observacao}" title="#{item.label}"/>
+                                                <h:outputText value="#{item.observacao}" id="obsItem"/>
+                                                <p:tooltip for="obsItem" value="#{item.label} - #{item.detalhe.detalhe}" showEffect="fade" hideEffect="fade" />
                                             </td>
 
                                             <td align='center'>
-                                                <h:outputText value="#{item.dataCartao}" rendered="#{item.dataCartao ne null}">
-                                                    <f:convertDateTime locale="#{localeController.localeUI}"
+                                                <h:outputText value="#{item.dataMovimentacao}" rendered="#{item.dataCartao eq null}" title="#{msg.movimentacao}">
+                                                    <f:convertDateTime locale="#{localeController.localeUI}" 
                                                                        type="date" timeZone="#{initParam['timezone']}"/>
                                                 </h:outputText>
-                                                <h:outputText value="#{item.dataMovimentacao}" rendered="#{item.dataCartao eq null}">
+                                                <h:outputText value="#{item.dataCartao}" rendered="#{item.dataCartao ne null}" title="#{msg.cartaoCredito}">
                                                     <f:convertDateTime locale="#{localeController.localeUI}"
                                                                        type="date" timeZone="#{initParam['timezone']}"/>
                                                 </h:outputText>

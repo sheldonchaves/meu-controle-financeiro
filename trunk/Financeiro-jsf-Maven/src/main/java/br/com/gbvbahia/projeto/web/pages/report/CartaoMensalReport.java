@@ -11,6 +11,7 @@ import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +75,7 @@ public class CartaoMensalReport {
         categoryModel = new CartesianChartModel();
         //Busca todas as contas cartão de credito
         List<CartaoCredito> cartoes = cartaoCreditoFacade.buscarCartoesAtivos(usuarioFacade.getUsuario());
+        Collections.sort(cartoes);
         List<Map<CartaoCredito, Double>> list = new ArrayList<Map<CartaoCredito, Double>>();
         for (Date date : datas) {//Busca todos os pagamentos de cartão por data do periodo
             list.add(reportFacade.acumuladoCartaoPeriodo(date, usuarioFacade.getUsuario()));

@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:cc="http://java.sun.com/jsf/composite"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
 
     <!-- INTERFACE -->
@@ -30,13 +31,13 @@
                                            value="#{msg.previous} #{cc.attrs.entityBean.pagination.pageSize}" 
                                            id="previousLink"
                                            disabled="#{!cc.attrs.entityBean.pagination.hasPreviousPage}" >
-                                <f:ajax render="@form"/>
+                               <p:ajax update="@form"/>
                             </h:commandLink>
                             <h:commandLink actionListener="#{cc.attrs.entityBean.next}" 
                                            value="#{msg.next} #{cc.attrs.entityBean.pagination.pageSize}" 
                                            id="nextLink"
                                            disabled="#{!cc.attrs.entityBean.pagination.hasNextPage}" >
-                                <f:ajax render="@form"/>
+                                <p:ajax update="@form"/>
                             </h:commandLink>
                             <h:commandLink action="#{cc.attrs.entityBean.prepareCreate}" value="#{msg.novo}" 
                                            id="novoLink" rendered="#{cc.attrs.renderedNew}">
