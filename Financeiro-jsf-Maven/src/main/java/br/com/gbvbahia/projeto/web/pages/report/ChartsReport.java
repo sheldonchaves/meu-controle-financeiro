@@ -14,10 +14,12 @@ import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.projeto.web.constante.Meses;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.projeto.web.jsfutil.LocaleController;
+import br.com.gbvbahia.projeto.web.pages.report.comparator.DespesaProcedimentoDataComparator;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
@@ -204,6 +206,7 @@ public class ChartsReport implements Serializable {
         if (listFinxa == null) {
             listFinxa = new ArrayList<DespesaProcedimento>();
         }
+        Collections.sort(listFinxa, new DespesaProcedimentoDataComparator());
         return listFinxa;
     }
 
@@ -211,6 +214,7 @@ public class ChartsReport implements Serializable {
         if (listVariavel == null) {
             listVariavel = new ArrayList<DespesaProcedimento>();
         }
+        Collections.sort(listVariavel, new DespesaProcedimentoDataComparator());
         return listVariavel;
     }
 

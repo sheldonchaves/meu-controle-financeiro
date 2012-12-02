@@ -8,6 +8,7 @@ import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -62,6 +63,7 @@ public class DisponivelReport implements Serializable {
         if (disponiveis == null) {
             criateContas();
         }
+        Collections.sort(disponiveis);
         return disponiveis;
     }
 }
