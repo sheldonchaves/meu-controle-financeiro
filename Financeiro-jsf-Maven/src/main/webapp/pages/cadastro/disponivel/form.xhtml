@@ -32,6 +32,11 @@
                             <f:converter converterId="moneyBigConverter"/>
                         </p:inputText>
                         <p:message for="saldo" />
+                        
+                        <h:outputLabel value="#{msg.saldoNegativo}:" for="saldoNegativo" />
+                        <p:selectBooleanCheckbox id="saldoNegativo" value="#{disponivelController.saldoNegativo}" 
+                                                 label="#{msg.saldoNegativoTitle}" disabled="#{disponivelController.current.id ne null}"/>
+                        <p:message for="saldoNegativo" />
 
                         <h:outputLabel value="#{msg.ativo}:" for="status" />
                         <p:selectBooleanCheckbox id="status" value="#{disponivelController.current.status}" 
