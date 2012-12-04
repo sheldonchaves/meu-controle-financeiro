@@ -205,7 +205,7 @@ a.fecr { background-image:url("#{resource['images:cr_13.png']}");}
 }
 
 .ui-growl{
-    left: 10px;
+    right: 10px;
 }
 
 .menuSup{
