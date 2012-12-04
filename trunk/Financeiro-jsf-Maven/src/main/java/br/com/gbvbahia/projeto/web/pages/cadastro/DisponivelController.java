@@ -15,6 +15,7 @@ import br.com.gbvbahia.projeto.web.common.EntityPagination;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -46,6 +47,7 @@ public class DisponivelController extends EntityController<ContaBancaria>
     @EJB
     private ContaBancariaFacade disponivelFacade;
     private ContaBancaria current;
+    private boolean saldoNegativo;
 
     //====================
     //Métodos Sobrescritos
@@ -78,6 +80,9 @@ public class DisponivelController extends EntityController<ContaBancaria>
     @Override
     protected String create() {
         try {
+            if(saldoNegativo){
+                current.setSaldo(current.getSaldo().multiply(new BigDecimal("-1")));
+            }
             getFacade().create(current);
             MensagemUtils.messageFactoringFull("ContaCreated",
                     new Object[]{current.getNomeConta()},
@@ -188,5 +193,13 @@ public class DisponivelController extends EntityController<ContaBancaria>
      */
     public ContaBancaria getCurrent() {
         return current;
+    }
+
+    public boolean isSaldoNegativo() {
+        return saldoNegativo;
+    }
+
+    public void setSaldoNegativo(boolean saldoNegativo) {
+        this.saldoNegativo = saldoNegativo;
     }
 }
