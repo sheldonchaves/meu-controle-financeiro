@@ -54,6 +54,7 @@ public class DisponivelController extends EntityController<ContaBancaria>
     //====================
     @Override
     public String clean() {
+        saldoNegativo = false;
         super.clean();
         return JsfUtil.MANTEM;
     }
