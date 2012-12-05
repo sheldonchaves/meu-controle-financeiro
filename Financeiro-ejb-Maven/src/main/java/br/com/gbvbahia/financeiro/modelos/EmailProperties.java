@@ -67,7 +67,7 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     @Column(name = "login", nullable = false, length = 255)
     private String loginEmail;
     /**
-     * 
+     * iqpk1xEoYmMAl3kDDvMI2L48zYruCdqw
      */
     @NotNull(message="{EmailProperties.senhaEmail.null}")
     @Column(name = "pass", nullable = false, length = 255)
