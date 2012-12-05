@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.PermitAll;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
@@ -24,8 +25,8 @@ import javax.persistence.PersistenceContext;
 
 /**
  * <strong>SEGURANCA</strong> <br> RolesAllowed pode ser aplicada na classe
- * e/ou em metodos, aplicada na classe tem valor em todos os métodos, menos
- * os que a sobrescreverem ou utilizar outra aotação, como:<br> PermitAll,
+ * e/ou em metodos, aplicada na classe tem valor em todos os métodos, menos os
+ * que a sobrescreverem ou utilizar outra aotação, como:<br> PermitAll,
  * DenyAll e RolesAllowed.<br> Sendo que esta ultima pode ser menos ou mais
  * restringida:
  *
@@ -139,8 +140,8 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
      * Insere % no inicio e final, mas se for null ou vazio faz tratamento
      * para buscar todos na consulta.
      *
-     * @param nome java.lang.String com o valor a ser buscado, pode ser
-     * null ou vazio.
+     * @param nome java.lang.String com o valor a ser buscado, pode ser null
+     * ou vazio.
      * @return java.lang.String tratada para SQL like.
      */
     private String acertaNomeMeio(final String nome) {
@@ -150,16 +151,31 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
 
     @Override
     public void create(Usuario entity) throws NegocioException {
-        try{
-        super.create(entity);
-        } catch (NegocioException e){
-            if(e.getMessage().equals("AbstractFacade.entityExiste")){
+        try {
+            if(buscarPorEmail(entity.getEmail()) != null){
+                throw new NegocioException("emailJaCadastrado",
+                        new String[]{entity.getEmail()});
+            }
+            super.create(entity);
+        } catch (NegocioException e) {
+            if (e.getMessage().equals("AbstractFacade.entityExiste")) {
                 throw new NegocioException("UsuarioBean.LoginExiste");
-            }else{
+            } else {
                 throw e;
             }
         }
     }
-    
-    
+
+    /**
+     * 
+     * @param email
+     * @return 
+     */
+    @Override
+    @PermitAll
+    public Usuario buscarPorEmail(String email) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("email", email);
+        return pesqParam("Usuario.findByEmail", parans);
+    }
 }
