@@ -69,4 +69,11 @@ public interface UsuarioFacade extends InterfaceFacade<Usuario, String> {
       */
      public List<Usuario> buscarUsuarioPorNomeLogin(final String nome,
             final String login, final int[] range);
+     
+     /**
+      * Busca usuário com e-mail informado.
+      * @param email Obrigatório.
+      * @return 
+      */
+     public Usuario buscarPorEmail(String email);
 }

@@ -112,7 +112,7 @@ public class Usuario implements EntityInterface<Usuario>, Serializable {
     + "[a-z0-9-]*[a-z0-9])?",
     message = "{email.invalido}")
     @Size(max = 100)
-    @Column(name = "email", length = 100)
+    @Column(name = "email", length = 100, unique=true)
     private String email;
     /**
      * Nome do usuário. Não pode ser nulo.
