@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.PermitAll;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
@@ -172,7 +171,6 @@ public class UsuarioBean extends AbstractFacade<Usuario, String>
      * @return 
      */
     @Override
-    @PermitAll
     public Usuario buscarPorEmail(String email) {
         Map<String, Object> parans = getMapParans();
         parans.put("email", email);
