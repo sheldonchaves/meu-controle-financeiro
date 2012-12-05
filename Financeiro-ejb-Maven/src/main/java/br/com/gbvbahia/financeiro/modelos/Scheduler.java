@@ -55,7 +55,7 @@ public class Scheduler implements EntityInterface<Scheduler>, Serializable {
      *
      */
     @Column(name = "ds_email_contato", nullable = false, length = 255)
-    @NotNull
+    @NotNull(message="{Scheduler.email.null}")
     @Size(max = 255)
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`"
     + "{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:"
@@ -70,7 +70,7 @@ public class Scheduler implements EntityInterface<Scheduler>, Serializable {
     /**
      *
      */
-    @NotNull
+    @NotNull(message="{Scheduler.user.null}")
     @OneToOne
     @JoinColumn(name = "fk_usuario", referencedColumnName = "user_id", nullable = false)
     private Usuario user;

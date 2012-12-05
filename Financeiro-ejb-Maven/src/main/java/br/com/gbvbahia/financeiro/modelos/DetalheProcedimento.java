@@ -64,7 +64,7 @@ public class DetalheProcedimento
     @Column(name = "ds_detalhe",
     length = QUANTIDADE_MAX_CARACTERES_DETALHE,
     unique = false, nullable = false)
-    @NotNull
+    @NotNull(message="{DetalheProcedimento.detalhe.null}")
     @Size(max = QUANTIDADE_MAX_CARACTERES_DETALHE,
     min = QUANTIDADE_MIN_CARACTERES_DETALHE)
     private String detalhe;
@@ -74,7 +74,7 @@ public class DetalheProcedimento
      */
     @ManyToOne(optional = false)
     @JoinColumn(name = "fk_usuario", referencedColumnName = "user_id")
-    @NotNull
+    @NotNull(message="{DetalheProcedimento.usuario.null}")
     private Usuario usuario;
     /**
      * Se true será utilizado.<br> Se false não será exibido.
@@ -86,7 +86,7 @@ public class DetalheProcedimento
      * DESPESA.<br> Deposito determina uma RECEITA.
      */
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message="{DetalheProcedimento.tipo.null}")
     @Column(name = "tipo")
     private TipoProcedimento tipo;
     

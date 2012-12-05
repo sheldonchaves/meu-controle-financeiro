@@ -45,28 +45,31 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     /**
      * Gmail: gmail-smtp.l.google.com
      */
-    @NotNull
+    @NotNull(message="{EmailProperties.hostName.null}")
     @Column(name = "host_name", nullable = false, length = 100)
     private String hostName = "gmail-smtp.l.google.com";
     /**
      * Enconding da msg
      */
-    @NotNull
+    @NotNull(message="{EmailProperties.characterCoding.null}")
     @Column(name = "encoding", nullable = false, length = 100)
     private String characterCoding = "ISO-8859-1";
     /**
      * Porta SMTP gmail = 465
      */
-    @NotNull
+    @NotNull(message="{EmailProperties.smtpPort.null}")
     @Column(name = "smtp_port", nullable = false)
     private Integer smtpPort = 465;
     /**
      * Login email:
      */
-    @NotNull
+    @NotNull(message="{EmailProperties.loginEmail.null}")
     @Column(name = "login", nullable = false, length = 255)
     private String loginEmail;
-    @NotNull
+    /**
+     * 
+     */
+    @NotNull(message="{EmailProperties.senhaEmail.null}")
     @Column(name = "pass", nullable = false, length = 255)
     private String senhaEmail;
     /**
@@ -82,13 +85,13 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     + "{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:"
     + "[a-z0-9-]*[a-z0-9])?",
     message = "{email.invalido}")
-    @NotNull
+    @NotNull(message="{EmailProperties.fromEmail.null}")
     @Column(name = "from_email", nullable = false, length = 255)
     private String fromEmail;
     /**
      * Assunto default utilizado.
      */
-    @NotNull
+    @NotNull(message="{EmailProperties.assuntoDefault.null}")
     @Column(name = "from_assunto_default", nullable = false, length = 255)
     private String assuntoDefault = "Money";
     /**
@@ -100,7 +103,7 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     /**
      * Porta SSL, Gmail = 465
      */
-    @NotNull
+    @NotNull(message="{EmailProperties.sslSmtpPort.null}")
     @Column(name = "ssl_port", nullable = false, length = 255)
     private String sslSmtpPort = "465";
     /**

@@ -32,7 +32,7 @@ public class MovimentacaoProcedimento extends MovimentacaoFinanceira {
      * quando a movimentação for atualizada as alterações em procedimento
      * serão confirmadas no banco, no procedimento relacionado.
      */
-    @NotNull
+    @NotNull(message="{MovimentacaoProcedimento.procedimento.null}")
     @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "fk_procedimento_id", referencedColumnName = "id")
     private Procedimento procedimento;

@@ -106,7 +106,7 @@ public class Procedimento
      */
     @Temporal(TemporalType.DATE)
     @Column(name = "data_movimentacao", nullable = false)
-    @NotNull
+    @NotNull(message="{Procedimento.dataMovimentacao.null}")
     private Date dataMovimentacao = new Date();
     /**
      * Valor estimado a pagar/receber do procedimento, este valor sempre
@@ -114,7 +114,7 @@ public class Procedimento
      * considerado em calculos de estimativas.<br> Em contas Variaveis, em
      * que o valor real já existe, setar este igual ao real.
      */
-    @NotNull
+    @NotNull(message="{Procedimento.valorEstimado.null}")
     @Column(name = "valor_estimado", nullable = false)
     @Digits(fraction = 2, integer = 12)
     private BigDecimal valorEstimado;
@@ -131,7 +131,7 @@ public class Procedimento
      * Representa o detalhe do gasto/receita.
      */
     @ManyToOne
-    @NotNull
+    @NotNull(message="{Procedimento.detalhe.null}")
     @JoinColumn(name = "fk_detalhe_procedimento", nullable = false)
     private DetalheProcedimento detalhe;
     /**
@@ -141,7 +141,7 @@ public class Procedimento
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "classe_procedimento", nullable = false)
-    @NotNull
+    @NotNull(message="{Procedimento.classificacaoProcedimento.null}")
     private ClassificacaoProcedimento classificacaoProcedimento =
             ClassificacaoProcedimento.VARIAVEL;
     /**
@@ -149,12 +149,12 @@ public class Procedimento
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "status_pagamento", nullable = false)
-    @NotNull
+    @NotNull(message="{Procedimento.statusPagamento.null}")
     private StatusPagamento statusPagamento = StatusPagamento.NAO_PAGA;
     /**
      * Qualquer informação relativa ao pagamento.
      */
-    @NotNull
+    @NotNull(message="{Procedimento.observacao.null}")
     @Size(max = 150, min = 5)
     @Column(name = "observacao", nullable = false, length = 150)
     private String observacao;
@@ -173,7 +173,7 @@ public class Procedimento
     @JoinColumn(name = "fk_user_id",
     referencedColumnName = "user_id",
     nullable = false)
-    @NotNull
+    @NotNull(message="{Procedimento.usuario.null}")
     private Usuario usuario;
     /**
      * Deve ser informado no construtor de quem implementa.<br> Define se o
@@ -181,7 +181,7 @@ public class Procedimento
      * dinheiro.
      */
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message="{Procedimento.tipoProcedimento.null}")
     @Column(name = "tipo_procedimento", nullable = false)
     private TipoProcedimento tipoProcedimento = TipoProcedimento.RECEITA_FINANCEIRA;
     /**
@@ -190,9 +190,12 @@ public class Procedimento
      * parcelada, saída de dinheiro.
      */
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message="{Procedimento.detalheProcedimento.null}")
     @Column(name = "detalhe_procedimento", nullable = false)
     private DetalheTipoProcedimento detalheProcedimento = DetalheTipoProcedimento.RECEITA_UNICA;
+    /**
+     * 
+     */
     @Transient
     private boolean marcadoTransient;
 
