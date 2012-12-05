@@ -45,7 +45,7 @@
                         <h:outputLabel value="#{msg.detalhe}:" for="detalhe" />
                         <p:selectOneMenu value="#{agendaController.current.detalhe}" disabled="#{agendaController.tipo == null}"
                                          required="true" requiredMessage="#{msg.campoObrigatorio}"
-                                         id="detalhe" label="#{msg.detalhe}" style="font-size: 0.9em;" >
+                                         id="detalhe" label="#{msg.detalhe}" style="font-size: 0.9em; width: 250px;" >
                             <f:selectItems value="#{agendaController.detalhes}"/>
                             <f:converter converterId="detalheConverter"/>
                         </p:selectOneMenu>

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -110,7 +111,9 @@ public final class JsfUtil {
     public static SelectItem[] getSelectItems(
             final Collection<? extends EntityInterface> entities,
             final boolean selectOne, final FacesContext contex) {
-        int size = selectOne ? entities.size() + 1 : entities.size();
+        List<? extends EntityInterface> list = new ArrayList<EntityInterface>(entities);
+        Collections.sort(list);
+        int size = selectOne ? list.size() + 1 : list.size();
         SelectItem[] items = new SelectItem[size];
         int i = 0;
         if (selectOne) {
@@ -118,7 +121,7 @@ public final class JsfUtil {
                     MensagemUtils.getResourceBundle("selecione", contex));
             i++;
         }
-        for (EntityInterface x : entities) {
+        for (EntityInterface x : list) {
             items[i++] = new SelectItem(x, x.getLabel());
         }
         return items;
