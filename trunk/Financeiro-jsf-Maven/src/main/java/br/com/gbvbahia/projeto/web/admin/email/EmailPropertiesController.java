@@ -7,6 +7,7 @@ package br.com.gbvbahia.projeto.web.admin.email;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.EmailPropertiesFacade;
 import br.com.gbvbahia.financeiro.modelos.EmailProperties;
+import br.com.gbvbahia.financeiro.utils.Encryption;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.common.EntityController;
 import br.com.gbvbahia.projeto.web.common.EntityPagination;
@@ -69,6 +70,10 @@ public class EmailPropertiesController extends EntityController<EmailProperties>
     @Override
     protected void setEntity(EmailProperties t) {
         this.current = t;
+        if(current != null && current.getSenhaEmail() != null){
+            //logger.info("Senha criptografada: "+Encryption.encrypting(current.getSenhaEmail()));
+            current.setSenhaEmail(Encryption.decrypting(current.getSenhaEmail()));
+        }
     }
 
     @Override
@@ -97,6 +102,7 @@ public class EmailPropertiesController extends EntityController<EmailProperties>
     @Override
     protected String create() {
         try {
+            current.setSenhaEmail(Encryption.encrypting(current.getSenhaEmail()));
             getFacade().create(current);
             MensagemUtils.messageFactoringFull("EmailCreated",
                     new Object[]{current.getLabel()},
@@ -116,6 +122,7 @@ public class EmailPropertiesController extends EntityController<EmailProperties>
     @Override
     protected String update() {
         try {
+            current.setSenhaEmail(Encryption.encrypting(current.getSenhaEmail()));
             getFacade().update(current);
             MensagemUtils.messageFactoringFull("EmailUpdated",
                     new Object[]{current.getLabel()},
