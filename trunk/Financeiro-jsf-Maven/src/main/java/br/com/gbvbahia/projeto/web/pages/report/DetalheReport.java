@@ -14,7 +14,6 @@ import br.com.gbvbahia.projeto.web.jsfutil.LocaleController;
 import br.com.gbvbahia.projeto.web.pages.report.comparator.DetalheValorComprator;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
