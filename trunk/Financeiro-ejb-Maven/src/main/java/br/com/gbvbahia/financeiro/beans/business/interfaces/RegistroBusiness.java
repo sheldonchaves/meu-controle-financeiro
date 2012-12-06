@@ -20,4 +20,11 @@ public interface RegistroBusiness {
      * @param url 
      */
     public void registroUsuario(String login, String email, String url) throws NegocioException;
+    /**
+     * Reseta a senha do usuário e envia a mesma por e-mail.
+     * @param email Email do usuário
+     * @param url URL do sistema
+     * @throws NegocioException Se não encontrar o e-mail informado.
+     */
+    public void recuperarSenha(String email, String url) throws NegocioException;
 }

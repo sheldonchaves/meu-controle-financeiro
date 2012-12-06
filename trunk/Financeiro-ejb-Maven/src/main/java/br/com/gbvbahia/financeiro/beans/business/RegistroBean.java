@@ -44,10 +44,28 @@ public class RegistroBean implements RegistroBusiness {
         final String senha = geraSenha();
         usuario.setPass(Base64Encoder.encryptPassword(senha));
         usuarioBean.create(usuario);
-        PassEmail emailSend = new PassEmail(email, login, senha, url);
+        PassEmail emailSend = new PassEmail(email, login, senha, url, false);
         emailSendBean.enviarEmailJMSAsynchronous(emailSend);
     }
 
+    @Override
+    public void recuperarSenha(String email, String url) throws NegocioException {
+        Usuario usr = usuarioBean.buscarPorEmail(email);
+        if (usr == null) {
+            throw new NegocioException("userEmailNotFound", new String[]{email});
+        }
+        final String senha = geraSenha();
+        usr.setPass(Base64Encoder.encryptPassword(senha));
+        usuarioBean.update(usr);
+        PassEmail emailSend = new PassEmail(email, usr.getUserId(), senha, url, true);
+        emailSendBean.enviarEmailJMSAsynchronous(emailSend);
+    }
+
+    /**
+     * Gera uma senha de forma aleatoria.
+     *
+     * @return
+     */
     private String geraSenha() {
         Random r = new Random();
         String[] a = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
@@ -78,12 +96,14 @@ public class RegistroBean implements RegistroBusiness {
         private String login;
         private String senha;
         private String url;
+        private boolean recover = false;
 
-        public PassEmail(String email, String login, String senha, String url) {
+        public PassEmail(String email, String login, String senha, String url, boolean recover) {
             this.email = email;
             this.login = login;
             this.senha = senha;
             this.url = url;
+            this.recover = recover;
         }
 
         @Override
@@ -103,11 +123,19 @@ public class RegistroBean implements RegistroBusiness {
 
         @Override
         public String getBody() {
-            return "Bem vindo ao controle financeiro pessoal, seus dados de acesso são:" + "<br></br>"
-                    + "Welcome to my personal financial control, your data access:" + "<br></br><br></br>"
-                    + "Login:    " + login + "<br></br>"
-                    + "Password: " + senha + "<br></br><br></br>"
-                    + url;
+            if (!recover) {
+                return "Bem vindo ao controle financeiro pessoal, seus dados de acesso são:" + "<br></br>"
+                        + "Welcome to my personal financial control, your data access:" + "<br></br><br></br>"
+                        + "Login:    " + login + "<br></br>"
+                        + "Password: " + senha + "<br></br><br></br>"
+                        + url;
+            } else {
+                return "Oi, seus dados de acesso são:" + "<br></br>"
+                        + "Hi, your data access:" + "<br></br><br></br>"
+                        + "Login:    " + login + "<br></br>"
+                        + "Password: " + senha + "<br></br><br></br>"
+                        + url;
+            }
         }
     }
 }
