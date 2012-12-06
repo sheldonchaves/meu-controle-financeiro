@@ -6,7 +6,7 @@ package br.com.gbvbahia.projeto.web.free;
 
 import br.com.gbvbahia.financeiro.beans.business.interfaces.RegistroBusiness;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
-import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
+import br.com.gbvbahia.financeiro.utils.Encryption;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
@@ -46,12 +46,32 @@ public class RegisrtoController {
     }
 
     /**
+     * Reseta a senha do usuario.
+     * @return 
+     */
+    public String recuperarSenha() {
+        try {
+            registroBusiness.recuperarSenha(email, url);
+            MensagemUtils.messageFactoringFull("recoverOk",
+                    new Object[]{email},
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+        } catch (NegocioException ex) {
+            MensagemUtils.messageFactoringFull(ex.getMessage(),
+                    ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
+                    FacesContext.getCurrentInstance());
+            logger.warn(I18nLogger.getMsg("RESET SENHA ERROR.", ex));
+        }
+        return JsfUtil.MANTEM;
+    }
+
+    /**
      * http://#{request.serverName}:#{request.serverPort}#{request.contextPath}/
      *
      * @return
      */
     public String registro() {
-        if(!email.equals(email2)){
+        if (!email.equals(email2)) {
             MensagemUtils.messageFactoringFull("registroEmailNaoConfere",
                     new Object[]{email, email2},
                     FacesMessage.SEVERITY_WARN,
