@@ -1,0 +1,90 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view locale="#{localeController.locale}" contentType="text/html" encoding="UTF-8" id="principal">
+        <h:head>
+            <link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"
+                  type="image/x-icon" />
+            <title>
+                <ui:insert name="pageTitle">
+                    <h:outputText value="#{msg.registro}"/>
+                </ui:insert>
+            </title>
+            <h:outputStylesheet library="css" name="standard.css" />
+            <h:outputStylesheet library="css" name="icons.css" />
+            <h:outputScript library="js" name="js.js" />
+        </h:head>
+        <h:body>
+            <style>
+                h1 {
+                    line-height:1.2em;
+                    margin-bottom:20px;
+                    border-bottom:solid 1px #fff; 
+                    font-family:"Times New Roman", Times, serif;
+                    font-style:italic;
+                    font-weight:bold;
+                    font-size:44px;
+                    color:#B24700;
+                }
+                .conteudoCentral{
+                    text-align: center;
+                }
+            </style>
+            <div class="conteudoCentral">
+                <TABLE>
+                    <TR>
+                        <TD>
+                            <h:graphicImage name="logo_big.png" library="images"/>
+                        </TD>
+                        <TD align="center" style="width: 600px;">
+                            <h1>#{msg.controleFinanceirotitlePrincipal}</h1>
+                        </TD>
+                    </TR>
+                    <TR>
+                        <TD colspan="2" aling="center">
+                            <div class="formedit" style="width: 550px !important; ">
+                                <div class="formedit-head">
+                                    <h:outputText value="#{msg.recover}"/>
+                                </div>
+                                <h:panelGroup id="groupDetalhe">
+                                    <h:form style="margin-top: 0px !important;">
+                                        <h:panelGrid columns="3" style="font-size: 0.9em; margin-left: 10px;" class="gridForm">
+                                            <f:facet name="header">
+                                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+                                            </f:facet>
+
+                                            <h:outputLabel value="#{msg.email}:" id="labelemail2" title="#{msg.titleEmailCadUser3}"/>
+                                            <h:inputText value="#{regisrtoController.email}" id="useremailCad2" required="true"
+                                                         requiredMessage="#{msg.campoObrigatorio}" title="#{msg.titleEmailCadUser3}" label="#{msg.email}"
+                                                         maxlength="100" size="50" >
+                                                <f:validateLength minimum="3" maximum="100"/>
+                                                <f:validator validatorId="emailValidador"/>
+                                            </h:inputText>
+                                            <p:message for="useremailCad2"/>
+
+                                            <h:outputText value=""/>
+                                            <p:captcha label="Captcha" language="pt" theme="white" id="captcha"/>
+                                            <p:message for="captcha"/>
+
+                                            <h:outputText value=""/>
+                                            <h:panelGroup id="buttons" styleClass="pagging">
+                                                <h:commandLink action="#{regisrtoController.recuperarSenha()}" value="#{msg.recuperar}" id="recoverButton" >
+
+                                                </h:commandLink>
+                                                <h:commandLink action="index" value="#{msg.cancelar}" 
+                                                               immediate="true" id="cancelButton" >
+                                                </h:commandLink>
+                                            </h:panelGroup>
+                                        </h:panelGrid>
+                                    </h:form>
+                                </h:panelGroup>
+                            </div>
+                        </TD>
+                    </TR>
+                </TABLE>
+            </div>
+        </h:body>
+    </f:view>
+</html>
