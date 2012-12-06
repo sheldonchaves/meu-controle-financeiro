@@ -13,14 +13,12 @@ import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.constantes.Periodo;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
-import br.com.gbvbahia.financeiro.modelos.commons.EntityInterface;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.common.EntityController;
 import br.com.gbvbahia.projeto.web.common.EntityPagination;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
-import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
@@ -203,8 +201,8 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     }
 
     public SelectItem[] getDetalhes() {
-        return JsfUtil.getSelectItems(new TreeSet<EntityInterface>(this.detalheFacade.findAllDetalhe(usuarioFacade.getUsuario(),
-                Boolean.TRUE, tipo)), true, FacesContext.getCurrentInstance());
+        return JsfUtil.getSelectItems(this.detalheFacade.findAllDetalhe(usuarioFacade.getUsuario(),
+                Boolean.TRUE, tipo), true, FacesContext.getCurrentInstance());
     }
 
     public SelectItem[] getPeriodos() {
@@ -213,7 +211,7 @@ public class AgendaController extends EntityController<AgendaProcedimentoFixo>
     }
 
     public SelectItem[] getCartoes() {
-        return JsfUtil.getSelectItems(new TreeSet<EntityInterface>(this.cartaoFacade.buscarCartoesAtivos(usuarioFacade.getUsuario())),
+        return JsfUtil.getSelectItems(this.cartaoFacade.buscarCartoesAtivos(usuarioFacade.getUsuario()),
                 true, FacesContext.getCurrentInstance());
     }
     //====================
