@@ -180,6 +180,9 @@ public class ConverterController {
             }
             ConverterController controller =
                     JsfUtil.getController("converterController", facesContext);
+             if (StringUtils.isBlank(value) || !StringUtils.isNumeric(value)) {
+                return null;
+            }
             return controller.detalheFacade.find(Long.parseLong(value));
         }
 
