@@ -12,7 +12,7 @@ import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.projeto.web.constante.Meses;
 import br.com.gbvbahia.projeto.web.jsfutil.LocaleController;
 import br.com.gbvbahia.projeto.web.pages.report.comparator.DetalheValorComparator;
-import br.com.gbvbahia.utils.MensagemUtils;
+import br.com.gbvbahia.projeto.web.pages.report.utils.DetalheMakePie;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,26 +85,7 @@ public class DetalheReport implements Serializable {
         Integer anoOperacao = DateUtils.getFieldDate(agora, Calendar.YEAR);
         Meses mesOperacao = Meses.getByMonth(DateUtils.getFieldDate(agora, Calendar.MONTH));
         List<DespesaProcedimento> lDesp = despesas(anoOperacao, mesOperacao);
-        if (lDesp.isEmpty()) {
-            pieClassModel.set(MensagemUtils.getResourceBundle("semInformacao",
-                    FacesContext.getCurrentInstance()), 100);
-        } else {
-            List<DetalheValorComparator> detalhes = gerarDetalheValorComparator(lDesp);
-            int laco = 0;
-            double totalOutros = 0;
-            String outros = MensagemUtils.getResourceBundle("outros", FacesContext.getCurrentInstance());
-            for (DetalheValorComparator dv : detalhes) {
-                if (laco++ > LIMITE_DETALHES) {
-                    totalOutros += dv.getValor();
-                } else {
-                    pieClassModel.set(dv.getDetalhe(), dv.getValor());
-                }
-            }
-            if (totalOutros > 0) {
-                pieClassModel.set(outros, totalOutros);
-            }
-        }
-        return pieClassModel;
+        return new DetalheMakePie(lDesp, pieClassModel, FacesContext.getCurrentInstance()).makePie();
     }
 
     //Atual
@@ -118,7 +99,7 @@ public class DetalheReport implements Serializable {
         return DateUtils.getDataFormatada(new Date(),
                 localeController.getLocale(), "MMMM-yyyy");
     }
-    
+
     //Anterior
     public PieChartModel getPieClassModelAnterior() {
         PieChartModel pieClassModel = new PieChartModel();
@@ -130,7 +111,7 @@ public class DetalheReport implements Serializable {
         return DateUtils.getDataFormatada(DateUtils.incrementar(new Date(), -1, Calendar.MONTH),
                 localeController.getLocale(), "MMMM-yyyy");
     }
-    
+
     //Posterior
     public PieChartModel getPieClassModelPosterior() {
         PieChartModel pieClassModel = new PieChartModel();
