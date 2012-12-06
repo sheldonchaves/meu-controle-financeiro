@@ -22,7 +22,9 @@ import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.constante.Meses;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
+import br.com.gbvbahia.projeto.web.pages.report.DetalheReport;
 import br.com.gbvbahia.projeto.web.pages.report.DisponivelReport;
+import br.com.gbvbahia.projeto.web.pages.report.comparator.DetalheValorComparator;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -81,6 +83,7 @@ public class CartaoFecharOperacaoController implements Serializable {
     private double total;
     //Gráfico
     private PieChartModel pieClassModel;
+    private PieChartModel pieClassDetalhe;
     //Conta Editar
     private Procedimento proToEdit;
     private boolean showDialog = false;
@@ -330,6 +333,34 @@ public class CartaoFecharOperacaoController implements Serializable {
     public PieChartModel getPieClassModel() {
         pieClassModel = makeClassPie();
         return pieClassModel;
+    }
+
+    public PieChartModel getPieClassDetalhe() {
+        pieClassDetalhe = makeClassDetPie();
+        return pieClassDetalhe;
+    }
+
+    private PieChartModel makeClassDetPie() {
+        pieClassDetalhe = new PieChartModel();
+        if (getDespesas().isEmpty()) {
+            pieClassDetalhe.set(MensagemUtils.getResourceBundle("semInformacao",
+                    FacesContext.getCurrentInstance()), 100);
+        }
+        List<DetalheValorComparator> detalhes = DetalheReport.gerarDetalheValorComparator(getDespesas());
+        int laco = 0;
+        double totalOutros = 0;
+        String outros = MensagemUtils.getResourceBundle("outros", FacesContext.getCurrentInstance());
+        for (DetalheValorComparator dv : detalhes) {
+            if (laco++ > DetalheReport.LIMITE_DETALHES) {
+                totalOutros += dv.getValor();
+            } else {
+                pieClassDetalhe.set(dv.getDetalhe(), dv.getValor());
+            }
+        }
+        if (totalOutros > 0) {
+            pieClassDetalhe.set(outros, totalOutros);
+        }
+        return pieClassDetalhe;
     }
 
     private PieChartModel makeClassPie() {
