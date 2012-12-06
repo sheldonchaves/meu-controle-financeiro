@@ -18,7 +18,7 @@
                                 <p:selectOneMenu value="#{cartaoAbrirOperacaoController.cartaoOperacao}"
                                                  required="true" requiredMessage="#{msg.campoObrigatorio}"
                                                  id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
-                                    <p:ajax event="change" update=":pieClassGroup labelPeriodo dataGroup despCartoesGroup" listener="#{cartaoAbrirOperacaoController.dataListener}"/> 
+                                    <p:ajax event="change" update=":pieClassGroup :pieClassDetGroup labelPeriodo dataGroup despCartoesGroup" listener="#{cartaoAbrirOperacaoController.dataListener}"/> 
                                     <f:selectItems value="#{cartaoAbrirOperacaoController.cartoes}"/>
                                     <f:converter converterId="cartaoConverter"/>
                                 </p:selectOneMenu>
@@ -41,7 +41,7 @@
                                             <f:selectItems value="#{cartaoAbrirOperacaoController.anos}"/>
                                         </p:selectOneMenu>
                                         <p:commandButton icon="lupaIco" actionListener="#{cartaoAbrirOperacaoController.buscarDespesas}"
-                                                         style="width: 23px; height: 23px;" update=":pieClassGroup despCartoesGroup dataGroup " />
+                                                         style="width: 23px; height: 23px;" update=":pieClassGroup :pieClassDetGroup despCartoesGroup dataGroup " />
                                     </h:panelGrid>
                                 </h:panelGroup>
                             </h:panelGrid>
@@ -146,6 +146,11 @@
                             <p:pieChart id="pieClass" value="#{cartaoAbrirOperacaoController.pieClassModel}" legendPosition="w"  
                                         title="#{msg.classificacaoMovimentacao}" seriesColors="92b224, F00000"
                                         style="margin-top: 20px;" showDataLabels="true"/>  
+                        </h:panelGroup>
+                        <h:panelGroup id="pieClassDetGroup">
+                            <p:pieChart id="pieClassPrincipalDetAtual" value="#{cartaoAbrirOperacaoController.pieClassDetalhe}" legendPosition="w"  
+                                        title="#{msg.detalheGraficoCartao}" 
+                                        style="margin-top: 5px;" showDataLabels="true"/> 
                         </h:panelGroup>
                     </td>
                 </tr>

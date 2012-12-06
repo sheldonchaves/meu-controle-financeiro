@@ -8,12 +8,12 @@ package br.com.gbvbahia.projeto.web.pages.report.comparator;
  *
  * @author Guilherme
  */
-public class DetalheValorComprator implements Comparable<DetalheValorComprator> {
+public class DetalheValorComparator implements Comparable<DetalheValorComparator> {
 
     private String detalhe;
     private double valor;
 
-    public DetalheValorComprator(String detalhe, double valor) {
+    public DetalheValorComparator(String detalhe, double valor) {
         this.detalhe = detalhe;
         this.valor = valor;
     }
@@ -37,7 +37,7 @@ public class DetalheValorComprator implements Comparable<DetalheValorComprator> 
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DetalheValorComprator other = (DetalheValorComprator) obj;
+        final DetalheValorComparator other = (DetalheValorComparator) obj;
         if ((this.detalhe == null) ? (other.detalhe != null) : !this.detalhe.equals(other.detalhe)) {
             return false;
         }
@@ -61,7 +61,7 @@ public class DetalheValorComprator implements Comparable<DetalheValorComprator> 
     }
 
     @Override
-    public int compareTo(DetalheValorComprator o) {
+    public int compareTo(DetalheValorComparator o) {
         return Double.compare(valor, o.valor) * (-1);
     }
 }

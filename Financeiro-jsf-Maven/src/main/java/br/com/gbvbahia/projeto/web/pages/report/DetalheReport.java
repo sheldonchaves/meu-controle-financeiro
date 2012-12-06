@@ -11,7 +11,7 @@ import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.projeto.web.constante.Meses;
 import br.com.gbvbahia.projeto.web.jsfutil.LocaleController;
-import br.com.gbvbahia.projeto.web.pages.report.comparator.DetalheValorComprator;
+import br.com.gbvbahia.projeto.web.pages.report.comparator.DetalheValorComparator;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ import org.primefaces.model.chart.PieChartModel;
 @ViewScoped
 public class DetalheReport implements Serializable {
 
-    private static final int LIMITE_DETALHES = 4;
+    public static final int LIMITE_DETALHES = 4;
     /**
      * Registra os eventos para debug em desenvolvimento.
      */
@@ -89,35 +89,20 @@ public class DetalheReport implements Serializable {
             pieClassModel.set(MensagemUtils.getResourceBundle("semInformacao",
                     FacesContext.getCurrentInstance()), 100);
         } else {
-            Map<String, Double> map = new HashMap<String, Double>();
-            for (DespesaProcedimento dp : lDesp) {
-                if (map.containsKey(dp.getDetalhe().getDetalhe())) {
-                    map.put(dp.getDetalhe().getDetalhe(), map.get(dp.getDetalhe().getDetalhe()) + dp.getValor().doubleValue());
-                } else {
-                    map.put(dp.getDetalhe().getDetalhe(), dp.getValor().doubleValue());
-                }
-            }
-            List<DetalheValorComprator> detalhes = new ArrayList<DetalheValorComprator>();
-            for (String key : map.keySet()) {
-                DetalheValorComprator det = new DetalheValorComprator(key, map.get(key));
-                if (detalhes.contains(det)) {
-                    detalhes.get(detalhes.indexOf(det)).addValor(map.get(key));
-                } else {
-                    detalhes.add(det);
-                }
-            }
-            Collections.sort(detalhes);
+            List<DetalheValorComparator> detalhes = gerarDetalheValorComparator(lDesp);
             int laco = 0;
             double totalOutros = 0;
             String outros = MensagemUtils.getResourceBundle("outros", FacesContext.getCurrentInstance());
-            for (DetalheValorComprator dv : detalhes) {
+            for (DetalheValorComparator dv : detalhes) {
                 if (laco++ > LIMITE_DETALHES) {
                     totalOutros += dv.getValor();
                 } else {
                     pieClassModel.set(dv.getDetalhe(), dv.getValor());
                 }
             }
-            pieClassModel.set(outros, totalOutros);
+            if (totalOutros > 0) {
+                pieClassModel.set(outros, totalOutros);
+            }
         }
         return pieClassModel;
     }
@@ -172,5 +157,27 @@ public class DetalheReport implements Serializable {
 
     public void setDetalheNotNull(boolean detalheNotNull) {
         this.detalheNotNull = detalheNotNull;
+    }
+
+    public static List<DetalheValorComparator> gerarDetalheValorComparator(List<DespesaProcedimento> lDesp) {
+        Map<String, Double> map = new HashMap<String, Double>();
+        for (DespesaProcedimento dp : lDesp) {
+            if (map.containsKey(dp.getDetalhe().getDetalhe())) {
+                map.put(dp.getDetalhe().getDetalhe(), map.get(dp.getDetalhe().getDetalhe()) + dp.getValor().doubleValue());
+            } else {
+                map.put(dp.getDetalhe().getDetalhe(), dp.getValor().doubleValue());
+            }
+        }
+        List<DetalheValorComparator> detalhes = new ArrayList<DetalheValorComparator>();
+        for (String key : map.keySet()) {
+            DetalheValorComparator det = new DetalheValorComparator(key, map.get(key));
+            if (detalhes.contains(det)) {
+                detalhes.get(detalhes.indexOf(det)).addValor(map.get(key));
+            } else {
+                detalhes.add(det);
+            }
+        }
+        Collections.sort(detalhes);
+        return detalhes;
     }
 }
