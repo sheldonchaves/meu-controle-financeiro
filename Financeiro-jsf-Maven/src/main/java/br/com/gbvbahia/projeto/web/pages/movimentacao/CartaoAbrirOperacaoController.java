@@ -20,9 +20,8 @@ import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.projeto.web.constante.Meses;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
-import br.com.gbvbahia.projeto.web.pages.report.DetalheReport;
 import br.com.gbvbahia.projeto.web.pages.report.DisponivelReport;
-import br.com.gbvbahia.projeto.web.pages.report.comparator.DetalheValorComparator;
+import br.com.gbvbahia.projeto.web.pages.report.utils.DetalheMakePie;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -276,30 +275,7 @@ public class CartaoAbrirOperacaoController implements Serializable {
     }
 
     public PieChartModel getPieClassDetalhe() {
-        pieClassDetalhe = makeClassDetPie();
-        return pieClassDetalhe;
-    }
-
-    private PieChartModel makeClassDetPie() {
-        pieClassDetalhe = new PieChartModel();
-        if (getDespesas().isEmpty()) {
-            pieClassDetalhe.set(MensagemUtils.getResourceBundle("semInformacao",
-                    FacesContext.getCurrentInstance()), 100);
-        }
-        List<DetalheValorComparator> detalhes = DetalheReport.gerarDetalheValorComparator(getDespesas());
-        int laco = 0;
-        double totalOutros = 0;
-        String outros = MensagemUtils.getResourceBundle("outros", FacesContext.getCurrentInstance());
-        for (DetalheValorComparator dv : detalhes) {
-            if (laco++ > DetalheReport.LIMITE_DETALHES) {
-                totalOutros += dv.getValor();
-            } else {
-                pieClassDetalhe.set(dv.getDetalhe(), dv.getValor());
-            }
-        }
-        if (totalOutros > 0) {
-            pieClassDetalhe.set(outros, totalOutros);
-        }
+        pieClassDetalhe = new DetalheMakePie(getDespesas(), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
         return pieClassDetalhe;
     }
 
