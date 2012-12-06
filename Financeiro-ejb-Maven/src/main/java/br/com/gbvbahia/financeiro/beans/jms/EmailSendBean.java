@@ -9,6 +9,7 @@ import br.com.gbvbahia.financeiro.beans.facades.EmailPropertiesFacade;
 import br.com.gbvbahia.financeiro.beans.jms.interfaces.EmailSendBusiness;
 import br.com.gbvbahia.financeiro.beans.jms.interfaces.EmailSendInterface;
 import br.com.gbvbahia.financeiro.modelos.EmailProperties;
+import br.com.gbvbahia.financeiro.utils.Encryption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.RunAs;
@@ -67,7 +68,7 @@ public class EmailSendBean implements EmailSendBusiness {
         email.setHostName(emailProperties.getHostName());
         email.setCharset(emailProperties.getCharacterCoding());
         email.setSmtpPort(emailProperties.getSmtpPort());
-        email.setAuthenticator(new DefaultAuthenticator(emailProperties.getLoginEmail(), emailProperties.getSenhaEmail()));
+        email.setAuthenticator(new DefaultAuthenticator(emailProperties.getLoginEmail(), Encryption.decrypting(emailProperties.getSenhaEmail())));
         email.setTLS(emailProperties.isTls());
         if(messageData.addUrlBody()){
         email.setHtmlMsg(messageData.getBody() + "</br> http://sabercertificacao.com.br/money");
