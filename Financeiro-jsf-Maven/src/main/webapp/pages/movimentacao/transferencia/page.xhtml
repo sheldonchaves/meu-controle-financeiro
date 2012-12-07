@@ -68,6 +68,14 @@
                                 </td>
                             </tr>
                         </ui:repeat>
+                        <h:panelGroup rendered="#{transferenciaFinanceiraController.pagination.itemsCount eq 0}">
+                            <tr>
+                                <td colspan="8" align='left'>
+                                    <h:outputText value="#{msg.semInformacaoTransferencia}"/><br></br>
+                                    <h:outputText value="#{msg.semInformacaoDisponivelRequerido}"/>
+                                </td>
+                            </tr>
+                        </h:panelGroup>
                     </tbody>
                 </table>
             </h:panelGroup>

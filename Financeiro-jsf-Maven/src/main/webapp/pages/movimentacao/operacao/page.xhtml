@@ -93,6 +93,13 @@
                                 </td>
                             </tr>
                         </ui:repeat>
+                        <h:panelGroup rendered="#{operacaoController.pagination.itemsCount eq 0}">
+                            <tr>
+                                <td colspan="8" align='left'>
+                                    <h:outputText value="#{msg.semInformacaoProcedimentoRequerido}"/>
+                                </td>
+                            </tr>
+                        </h:panelGroup>
                     </tbody>
                     <tfoot>
                         <tr>
