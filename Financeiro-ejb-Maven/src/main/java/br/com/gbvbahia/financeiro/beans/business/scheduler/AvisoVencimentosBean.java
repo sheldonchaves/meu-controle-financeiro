@@ -165,7 +165,7 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
                 toReturn += "<td align='center' class=\"red\"> </td>";
                 toReturn += "<td align='center' class=\"red\"> </td>";
             }
-            toReturn += "<td align='center' class=\"red\">" + cp.getCartaoCredito() != null ? cp.getCartaoCredito().getCartao() : " " + "</td>";
+            toReturn += "<td align='center' class=\"red\">" + ((cp.getCartaoCredito() != null) ? cp.getCartaoCredito().getCartao() : " ") + "</td>";
             toReturn += "<td align='center' class=\"red\">" + cp.getUsuario().getFirstName() + "</td>";
             toReturn += "</tr>";
         }
