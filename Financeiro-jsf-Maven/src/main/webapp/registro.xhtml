@@ -31,6 +31,17 @@
                 .conteudoCentral{
                     text-align: center;
                 }
+                .list1 li {
+                    background:url(images/bull.gif) no-repeat 0 5px;
+                    padding:0 0 12px 22px;
+                    text-align: left;
+                }
+                .list1 a {
+                    color:#0484fb;
+                    font-size:11px;
+                    text-transform:uppercase;
+
+                }
             </style>
             <div class="conteudoCentral">
                 <TABLE>
@@ -43,6 +54,14 @@
                         </TD>
                     </TR>
                     <TR>
+                        <TD style="vertical-align: top;">
+                            <div style=" margin-top: 10px;">
+                                <div class="list1">
+                                    <h:form><h:commandLink value="#{msg.entrar}" action="principal"/></h:form>
+                                    <h:form><h:commandLink value="#{msg.voltar}" action="index"/></h:form>
+                                </div>
+                            </div>
+                        </TD>
                         <TD colspan="2" aling="center">
                             <div class="formedit" style="width: 550px !important; ">
                                 <div class="formedit-head">
