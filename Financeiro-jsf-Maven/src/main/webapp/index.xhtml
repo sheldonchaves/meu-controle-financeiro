@@ -12,6 +12,8 @@
                     <h:outputText value="#{msg.tituloPrincipal}"/>
                 </ui:insert>
             </title>
+             <h:outputStylesheet library="css" name="standard.css" />
+            <h:outputStylesheet library="css" name="icons.css" />
             <h:outputStylesheet library="css" name="style.css" />
             <h:outputStylesheet library="css" name="layout.css" />
         </h:head>
@@ -47,6 +49,7 @@
                             <div class="wrapper">
                                 <div class="aside">
                                     <ul class="list1">
+                                        <li><ui:include src="templates/include/idioma.xhtml" /></li>
                                         <li><h:form><h:commandLink value="#{msg.entrar}" action="principal"/></h:form></li>
                                         <li><h:form><h:commandLink value="#{msg.registro}" action="registro.xhtml"/></h:form></li>
                                         <li><h:form><h:commandLink value="#{msg.esqueci}" action="recover.xhtml"/></h:form></li>
