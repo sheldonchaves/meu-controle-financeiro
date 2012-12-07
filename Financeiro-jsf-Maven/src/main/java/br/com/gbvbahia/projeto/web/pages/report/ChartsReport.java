@@ -15,6 +15,7 @@ import br.com.gbvbahia.projeto.web.constante.Meses;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.projeto.web.jsfutil.LocaleController;
 import br.com.gbvbahia.projeto.web.pages.report.comparator.DespesaProcedimentoDataComparator;
+import br.com.gbvbahia.projeto.web.pages.report.utils.ClassificacaoMakePie;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -127,36 +128,26 @@ public class ChartsReport implements Serializable {
 
     private PieChartModel makeClassPie() {
         List<DespesaProcedimento> lDesp = despesas();
-        pieClassModel = new PieChartModel();
         listFinxa = new ArrayList<DespesaProcedimento>();
         listVariavel = new ArrayList<DespesaProcedimento>();
-        if (lDesp.isEmpty()) {
-            pieClassModel.set(MensagemUtils.getResourceBundle("semInformacao",
-                    FacesContext.getCurrentInstance()), 100);
-        } else {
-            totalFixa = 0;
-            totalVariavel = 0;
-            Map<ClassificacaoProcedimento, Double> map = new EnumMap<ClassificacaoProcedimento, Double>(ClassificacaoProcedimento.class);
-            for (DespesaProcedimento dp : lDesp) {
-                if (map.containsKey(dp.getClassificacaoProcedimento())) {
-                    map.put(dp.getClassificacaoProcedimento(), map.get(dp.getClassificacaoProcedimento()) + dp.getValor().doubleValue());
-                } else {
-                    map.put(dp.getClassificacaoProcedimento(), dp.getValor().doubleValue());
-                }
-                if (ClassificacaoProcedimento.FIXA.equals(dp.getClassificacaoProcedimento())) {
-                    totalFixa += dp.getValor().doubleValue();
-                    listFinxa.add(dp);
-                } else {
-                    listVariavel.add(dp);
-                    totalVariavel += dp.getValor().doubleValue();
-                }
+        totalFixa = 0;
+        totalVariavel = 0;
+        Map<ClassificacaoProcedimento, Double> map = new EnumMap<ClassificacaoProcedimento, Double>(ClassificacaoProcedimento.class);
+        for (DespesaProcedimento dp : lDesp) {
+            if (map.containsKey(dp.getClassificacaoProcedimento())) {
+                map.put(dp.getClassificacaoProcedimento(), map.get(dp.getClassificacaoProcedimento()) + dp.getValor().doubleValue());
+            } else {
+                map.put(dp.getClassificacaoProcedimento(), dp.getValor().doubleValue());
             }
-            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.FIXA.toString(),
-                    FacesContext.getCurrentInstance()), map.get(ClassificacaoProcedimento.FIXA));
-            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.VARIAVEL.toString(),
-                    FacesContext.getCurrentInstance()), map.get(ClassificacaoProcedimento.VARIAVEL));
+            if (ClassificacaoProcedimento.FIXA.equals(dp.getClassificacaoProcedimento())) {
+                totalFixa += dp.getValor().doubleValue();
+                listFinxa.add(dp);
+            } else {
+                listVariavel.add(dp);
+                totalVariavel += dp.getValor().doubleValue();
+            }
         }
-        return pieClassModel;
+        return  pieClassModel = new ClassificacaoMakePie(lDesp, new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
     }
 
     public Meses getMesOperacao() {
