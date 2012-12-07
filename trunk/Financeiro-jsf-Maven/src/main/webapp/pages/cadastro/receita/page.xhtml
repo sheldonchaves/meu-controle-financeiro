@@ -77,6 +77,14 @@
                                 </td>
                             </tr>
                         </ui:repeat>
+                        <h:panelGroup rendered="#{receitaController.pagination.itemsCount eq 0}">
+                            <tr>
+                                <td colspan="8" align='left'>
+                                    <h:outputText value="#{msg.semInformacaoReceita}"/><br></br>
+                                    <h:outputText value="#{msg.semInformacaoDetalheRequerido}"/>
+                                </td>
+                            </tr>
+                        </h:panelGroup>
                     </tbody>
                 </table>
             </h:panelGroup>
