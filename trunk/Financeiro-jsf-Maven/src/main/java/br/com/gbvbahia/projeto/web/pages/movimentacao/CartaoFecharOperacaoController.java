@@ -23,6 +23,7 @@ import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.constante.Meses;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.projeto.web.pages.report.DisponivelReport;
+import br.com.gbvbahia.projeto.web.pages.report.utils.ClassificacaoMakePie;
 import br.com.gbvbahia.projeto.web.pages.report.utils.DetalheMakePie;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
@@ -330,35 +331,13 @@ public class CartaoFecharOperacaoController implements Serializable {
     }
 
     public PieChartModel getPieClassModel() {
-        pieClassModel = makeClassPie();
+        pieClassModel = new ClassificacaoMakePie(getDespesas(), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
         return pieClassModel;
     }
 
     public PieChartModel getPieClassDetalhe() {
         pieClassDetalhe = new DetalheMakePie(getDespesas(), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
         return pieClassDetalhe;
-    }
-
-    private PieChartModel makeClassPie() {
-        pieClassModel = new PieChartModel();
-        if (getDespesas().isEmpty()) {
-            pieClassModel.set(MensagemUtils.getResourceBundle("semInformacao",
-                    FacesContext.getCurrentInstance()), 100);
-        } else {
-            Map<ClassificacaoProcedimento, Double> map = new EnumMap<ClassificacaoProcedimento, Double>(ClassificacaoProcedimento.class);
-            for (DespesaProcedimento dp : getDespesas()) {
-                if (map.containsKey(dp.getClassificacaoProcedimento())) {
-                    map.put(dp.getClassificacaoProcedimento(), map.get(dp.getClassificacaoProcedimento()) + dp.getValor().doubleValue());
-                } else {
-                    map.put(dp.getClassificacaoProcedimento(), dp.getValor().doubleValue());
-                }
-            }
-            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.FIXA.toString(),
-                    FacesContext.getCurrentInstance()), map.get(ClassificacaoProcedimento.FIXA));
-            pieClassModel.set(MensagemUtils.getResourceBundle(ClassificacaoProcedimento.VARIAVEL.toString(),
-                    FacesContext.getCurrentInstance()), map.get(ClassificacaoProcedimento.VARIAVEL));
-        }
-        return pieClassModel;
     }
 
     public Procedimento getProToEdit() {
