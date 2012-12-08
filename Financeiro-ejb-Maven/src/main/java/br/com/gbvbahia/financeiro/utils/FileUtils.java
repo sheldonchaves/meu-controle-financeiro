@@ -36,7 +36,7 @@ public final class FileUtils {
         if (StringUtils.containsIgnoreCase(so, "win")) {
             CAMINHO_IMAGENS_PERMANENTE = "C:\\glassfish3\\imagens";
         } else {//105
-            CAMINHO_IMAGENS_PERMANENTE = "/appservers/glassfish-3x/imagens";
+            CAMINHO_IMAGENS_PERMANENTE = "/home/guilherm/appservers/glassfish-3x/imagens";
         }
         try {
             LOGO_EMAIL_FILE = new File(CAMINHO_IMAGENS_PERMANENTE + File.separator + LOGO_MONEI_MAIL);
