@@ -21,7 +21,7 @@ public final class FileUtils {
     /**
      * Caminho para a pasta de imagens utilizadas pelo sistema
      */
-    public static final String CAMINHO_IMAGENS_PERMANENTE;
+    public static String CAMINHO_IMAGENS_PERMANENTE;
     /**
      * Nome do logo do hiper cash para utilizacao no e-mail.
      */
@@ -32,16 +32,17 @@ public final class FileUtils {
     public static File LOGO_EMAIL_FILE;
 
     static {
-        final String so = System.getProperty("os.name");
-        if (StringUtils.containsIgnoreCase(so, "win")) {
-            CAMINHO_IMAGENS_PERMANENTE = "C:\\glassfish3\\imagens";
-        } else {//105
-            CAMINHO_IMAGENS_PERMANENTE = "/home/guilherm/appservers/glassfish-3x/imagens";
-        }
         try {
-            LOGO_EMAIL_FILE = new File(CAMINHO_IMAGENS_PERMANENTE + File.separator + LOGO_MONEI_MAIL);
+            final String so = System.getProperty("os.name");
+            if (StringUtils.containsIgnoreCase(so, "win")) {
+                CAMINHO_IMAGENS_PERMANENTE = "C:\\glassfish3\\imagens";
+                LOGO_EMAIL_FILE = new File(CAMINHO_IMAGENS_PERMANENTE + File.separator + LOGO_MONEI_MAIL);
+            } else {
+                CAMINHO_IMAGENS_PERMANENTE = "/home/guilherm/appservers/glassfish-3x/domains/domain1/config";
+                LOGO_EMAIL_FILE = new File(LOGO_MONEI_MAIL);
+            }
         } catch (Exception e) {
-            logger.error("Erro ao tentar criar o logo file referenciado em: " + CAMINHO_IMAGENS_PERMANENTE + File.separator + LOGO_MONEI_MAIL);
+            logger.error("Erro ao tentar criar o logo file referenciado em: " + LOGO_EMAIL_FILE.getAbsolutePath());
             logger.error("O DIRETORIO ATUAL: " + new File(".").getAbsolutePath());
             logger.error("Erro: ", e);
             LOGO_EMAIL_FILE = null;
@@ -85,8 +86,8 @@ public final class FileUtils {
     }
 
     /**
-     * Para dar feedback ao usuário é necessário saber a quantidade de linhas
-     * do arquivo, este método possibilita esta tarefa.
+     * Para dar feedback ao usuário é necessário saber a quantidade de
+     * linhas do arquivo, este método possibilita esta tarefa.
      *
      * @param File arquivoLeitura !
      * @return Um int que representa a quantidade de linhas do arquivo
@@ -120,8 +121,8 @@ public final class FileUtils {
     }
 
     /**
-     * Para dar feedback ao usuário é necessário saber a quantidade de linhas
-     * do arquivo, este método possibilita esta tarefa.
+     * Para dar feedback ao usuário é necessário saber a quantidade de
+     * linhas do arquivo, este método possibilita esta tarefa.
      *
      * @param arquivoLeitura Stream que representa o arquivo que terá as
      * linhas contadas.
@@ -137,8 +138,8 @@ public final class FileUtils {
     }
 
     /**
-     * Cria um arquivo com o nome especificado dentro do diretorio padrão da
-     * aplicação na pasta temp.
+     * Cria um arquivo com o nome especificado dentro do diretorio padrão
+     * da aplicação na pasta temp.
      *
      * @param nomeArquivo Nome do arquivo que será criado.
      * @param loginUser Será criada uma pasta para os arquivos do usuário.
@@ -152,9 +153,9 @@ public final class FileUtils {
     }
 
     /**
-     * Retorna um java.io.File que representa o diretório padrão da aplicação.
-     * tempdir/solida.<br> Sendo tempdir uma referência ao diretório
-     * temporário da aplicação.
+     * Retorna um java.io.File que representa o diretório padrão da
+     * aplicação. tempdir/solida.<br> Sendo tempdir uma referência ao
+     * diretório temporário da aplicação.
      *
      * @param loginUser Será criada uma pasta para os arquivos do usuário.
      * @return File apontando para tempdir/solida.
@@ -170,7 +171,8 @@ public final class FileUtils {
     }
 
     /**
-     * Converte um InputStream em arquivo, necessário para leitura do mesmo.
+     * Converte um InputStream em arquivo, necessário para leitura do
+     * mesmo.
      *
      * @param stream
      * @param nomeUser Login do usuário logado, obrigatório.
@@ -211,7 +213,8 @@ public final class FileUtils {
      * apaga todos</strong> os arquivos dentro dele e de suas
      * <strong>subpastas</strong>.
      *
-     * @param f Arquivo a ser removido ou diretório a ter arquivos removidos.
+     * @param f Arquivo a ser removido ou diretório a ter arquivos
+     * removidos.
      * @param somenteArquivos True para apagar somente arquivos, deixando
      * estrutura de diretórios. False apaga o que vier pela frente.
      */
