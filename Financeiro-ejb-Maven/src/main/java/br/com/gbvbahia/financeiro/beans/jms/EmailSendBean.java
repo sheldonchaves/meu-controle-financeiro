@@ -73,7 +73,7 @@ public class EmailSendBean implements EmailSendBusiness {
         email.setSmtpPort(emailProperties.getSmtpPort());
         email.setAuthenticator(new DefaultAuthenticator(emailProperties.getLoginEmail(), Encryption.decrypting(emailProperties.getSenhaEmail())));
         email.setTLS(emailProperties.isTls());
-        if (FileUtils.LOGO_EMAIL_FILE != null) {
+        if (FileUtils.LOGO_EMAIL_FILE != null && FileUtils.LOGO_EMAIL_FILE.exists()) {
             String cid = email.embed(FileUtils.LOGO_EMAIL_FILE, "Money Logo");
             if (messageData.addUrlBody()) {
                 email.setHtmlMsg("<img src=\"cid:" + cid + "\"><br></br>" + messageData.getBody() + "</br> http://sabercertificacao.com.br/money");
