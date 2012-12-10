@@ -15,6 +15,7 @@ import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
@@ -278,6 +279,19 @@ public class ProcedimentoBean
         parans.put("dataI", dataI);
         parans.put("dataF", dataF);
         List toReturn = listPesqParam("DespesaProcedimento.buscarDespesasCartao", parans);
+        return toReturn;
+    }
+
+    @Override
+    public List<DespesaProcedimento> pesquisaDetalheProcedimento(final Usuario usr,
+            final Date[] intervalo, DetalheProcedimento detalhe) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", usr);
+        parans.put("dataI", intervalo[0]);
+        parans.put("dataF", intervalo[1]);
+        parans.put("detalhe2", detalhe == null ? "todos" : "filtro");
+        parans.put("detalhe", detalhe);
+        List toReturn = listPesqParam("DespesaProcedimento.pesquisaDetalheProcedimento", parans);
         return toReturn;
     }
 

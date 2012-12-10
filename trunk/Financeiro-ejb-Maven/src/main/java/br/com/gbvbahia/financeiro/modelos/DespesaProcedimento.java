@@ -87,7 +87,14 @@ import javax.persistence.*;
     + " AND (CASE WHEN p.dataCartao is null THEN p.dataMovimentacao "
     + "  ELSE p.dataCartao END) between :dataI and :dataF "
     + " AND p.tipoProcedimento = br.com.gbvbahia.financeiro.constantes.TipoProcedimento.DESPESA_FINANCEIRA "
-    + " GROUP BY p.tipoProcedimento ")
+    + " GROUP BY p.tipoProcedimento "),
+    @NamedQuery(name = "DespesaProcedimento.pesquisaDetalheProcedimento",
+    query = " SELECT p  From DespesaProcedimento p "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND (CASE WHEN p.dataCartao is null THEN p.dataMovimentacao "
+    + " ELSE p.dataCartao END) between :dataI and :dataF "
+    + " AND (:detalhe2 = 'todos' OR p.detalhe = :detalhe) "
+    + " ORDER BY p.dataMovimentacao, p.dataCartao, p.valorReal DESC, p.valorEstimado DESC ")
 })
 @DiscriminatorValue("DESPESA_UNICA")
 public class DespesaProcedimento extends Procedimento
