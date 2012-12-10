@@ -115,34 +115,34 @@
 }
 
 .onIcon{
-     background: url("#{resource['images:tag_ok.png']}") no-repeat !important;
+    background: url("#{resource['images:tag_ok.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
 
 .offIcon{
-     background: url("#{resource['images:tag_blq.png']}") no-repeat !important;
+    background: url("#{resource['images:tag_blq.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
 .transferenciaIcon{
-     background: url("#{resource['images:gear_replace.png']}") no-repeat !important;
+    background: url("#{resource['images:gear_replace.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
 .pagarreceberIcon{
-     background: url("#{resource['images:movimentacao_16.png']}") no-repeat !important;
+    background: url("#{resource['images:movimentacao_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
 .emailIcon{
-     background: url("#{resource['images:email_16.png']}") no-repeat !important;
+    background: url("#{resource['images:email_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
 
 .schedulerIco{
-     background: url("#{resource['images:scheduler_16.png']}") no-repeat !important;
+    background: url("#{resource['images:scheduler_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
@@ -154,7 +154,13 @@
 }
 
 .avisosIcon{
-        background: url("#{resource['images:email_edit_16.png']}") no-repeat !important;
+    background: url("#{resource['images:email_edit_16.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
+
+.historicoIcon{
+    background: url("#{resource['images:file_starred_13.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }
