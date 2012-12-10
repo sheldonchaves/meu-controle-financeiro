@@ -160,7 +160,13 @@
 }
 
 .historicoIcon{
-    background: url("#{resource['images:file_starred_13.png']}") no-repeat !important;
+    background: url("#{resource['images:file_starred_16.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
+
+.printerIcon{
+    background: url("#{resource['images:printer_16.png']}") no-repeat !important;
     height:16px !important;
     width:16px !important;
 }

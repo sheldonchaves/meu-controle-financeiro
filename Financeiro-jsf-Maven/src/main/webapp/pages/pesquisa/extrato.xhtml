@@ -1,0 +1,109 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:arq="http://java.sun.com/jsf/composite/ezcomp"
+                template="../../templates/layout.xhtml"
+                >
+    <ui:param name="titulomenu" value="#{msg.pesquisaExtrato}" />
+    <ui:define name="content">
+        <table style="width: 100%;">
+            <tbody>
+                <tr>
+                    <td align='left' style="vertical-align: top; width: 60%;">
+                        <h:form id="formPesquisaExtratoTable" style="margin-top: 12px;">
+                            <h:panelGrid columns="1">
+                                <h:panelGrid columns="3">
+                                    <h:outputLabel value="#{msg.disponivel}:" for="disponivel" />
+                                    <p:selectOneMenu value="#{extratoPesquisa.conta}"
+                                                     id="disponivel" label="#{msg.disponivel}" style="font-size: 0.9em; width: 230px;"
+                                                     required="true" requiredMessage="#{msg.campoObrigatorio}">
+                                        <f:selectItems value="#{extratoPesquisa.contas}"/>
+                                        <f:converter converterId="disponivelConverter"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="disponivel" display="icon"/>
+
+                                    <h:outputLabel value="#{msg.periodo}:"/>
+                                    <h:panelGrid columns="3">
+                                        <p:selectOneMenu value="#{extratoPesquisa.mesOperacao}" required="true"
+                                                         requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
+                                                         style="font-size: 0.9em; width: 120px;">
+                                            <f:selectItems value="#{extratoPesquisa.meses}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:selectOneMenu value="#{extratoPesquisa.anoOperacao}" required="true"
+                                                         requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
+                                                         style="font-size: 0.9em;">
+                                            <f:selectItems value="#{extratoPesquisa.anos}"/>
+                                        </p:selectOneMenu>
+                                        <p:commandButton icon="lupaIco" actionListener="#{extratoPesquisa.buscarMovimentacoes()}"
+                                                         style="width: 23px; height: 23px;" update="formPesquisaExtratoTable" />
+                                    </h:panelGrid>
+
+                                </h:panelGrid>
+                                <p:dataTable id="dataTable" var="mov" value="#{extratoPesquisa.movimentacoes}"
+                                             emptyMessage="#{msg.semInformacao}"  style="font-size: 0.8em;">
+
+                                    <p:column id="dataMovimentacao" sortBy="#{mov.dataMovimentacao}">  
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{msg.data}" />  
+                                        </f:facet>  
+                                        <h:outputText value="#{mov.dataMovimentacao}" style="font-size: 0.9em;">
+                                            <f:convertDateTime locale="#{localeController.localeUI}"
+                                                               type="date" timeZone="#{initParam['timezone']}"/>
+                                        </h:outputText>  
+                                    </p:column>
+
+                                    <p:column id="saldoAnterior" >  
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{msg.saldoAnterior}" />  
+                                        </f:facet>  
+                                        <h:outputText value="#{mov.saldoAnterior}" style="font-size: 0.9em;">
+                                            <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                        </h:outputText>  
+                                    </p:column>
+                                    
+                                    <p:column id="valorMov" >  
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{msg.valor}" />  
+                                        </f:facet>  
+                                        <h:outputText value="#{mov.valorTransferencia}" style="font-size: 0.9em;">
+                                            <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                        </h:outputText>  
+                                    </p:column>
+                                    
+                                    <p:column id="saldoPosterior" >  
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{msg.saldoPosterior}" />  
+                                        </f:facet>  
+                                        <h:outputText value="#{mov.saldoPosterior}" style="font-size: 0.9em;">
+                                            <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
+                                        </h:outputText>  
+                                    </p:column>
+
+                                    <p:column id="conta"  >  
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{msg.disponivel}" />  
+                                        </f:facet>  
+                                        <h:outputText value="#{mov.contaBancariaDebitada.label}" style="font-size: 0.9em;">
+                                        </h:outputText>  
+                                    </p:column>
+
+                                    <p:column id="label" >  
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{msg.detalhe}" />  
+                                        </f:facet>  
+                                        <h:outputText value="#{mov.label}" style="font-size: 0.9em;">
+                                        </h:outputText>  
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGrid>
+                        </h:form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </ui:define>
+</ui:composition>
+
