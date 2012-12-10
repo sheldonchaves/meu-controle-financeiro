@@ -13,6 +13,7 @@ import br.com.gbvbahia.financeiro.modelos.AgendaProcedimentoFixo;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaParceladaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
 import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
@@ -239,4 +240,14 @@ public interface ProcedimentoFacade
      */
     List<DespesaProcedimento> buscarDespesasCartao(final Usuario usr,
             final Date dataI, final Date dataF);
+    
+    /**
+     * Busca despesas com filtros passados.
+     * @param usr Obrigatório
+     * @param intervalo Obrigatorio, duas datas, posicao 0 ini posicao 1 fim.
+     * @param detalhe Opcional, se nul trará todos.
+     * @return 
+     */
+    public List<DespesaProcedimento> pesquisaDetalheProcedimento(final Usuario usr,
+            final Date[] intervalo, DetalheProcedimento detalhe);
 }
