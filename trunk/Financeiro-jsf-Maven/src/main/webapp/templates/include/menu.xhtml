@@ -60,6 +60,14 @@
                     </p:column>
                 </p:submenu>
 
+                <p:submenu label="#{msg.pesquisar}" icon="lupaIco" id="menu6">
+                    <p:column>
+                        <p:submenu label="#{msg.historico}" icon="historicoIcon" id="menu6_0">
+                            <p:menuitem value="#{msg.detalhePagamento}" url="/pages/pesquisa/detalhe.xhtml" icon="addDetIco" id="menu6_0_1"/>
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+
                 <p:submenu label="#{msg.configuracao}" icon="settingsIco" id="menu2">
                     <p:column>
                         <p:submenu label="#{msg.pessoal}"  id="menu2_1">
