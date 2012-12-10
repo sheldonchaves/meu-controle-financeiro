@@ -60,7 +60,7 @@ public class MovimentacaoTrasnferencia extends MovimentacaoFinanceira {
     @Override
     public String getLabel() {
         return getContaBancariaDebitada().getLabel()
-                + " => "
+                + " - "
                 + contaBancariaTransferida.getLabel();
     }
 

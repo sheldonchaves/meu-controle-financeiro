@@ -29,6 +29,19 @@ import javax.validation.constraints.NotNull;
 @DiscriminatorColumn(name = "tipo",
 discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("MOVIMENTACAO")
+@NamedQueries({
+    @NamedQuery(name = "MovimentacaoFinanceira.pesquisarMovimentacaoPorPeriodo",
+    query = "Select distinct m From MovimentacaoFinanceira m "
+    + " WHERE (m.dataMovimentacao between :dataI AND :dataF) "
+    + " AND (m.contaBancariaDebitada = :contaBancariaDebitada) "
+    + " ORDER BY m.dataMovimentacao "),
+    @NamedQuery(name = "MovimentacaoFinanceira.intervaloDatas",
+    query = " SELECT new br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO("
+    + "min(d.dataMovimentacao),  "
+    + "max(d.dataMovimentacao)) "
+    + " From MovimentacaoFinanceira d "
+    + " WHERE (d.contaBancariaDebitada.usuario = :usuario OR d.contaBancariaDebitada.usuario.conjuge = :usuario) ")
+})
 public abstract class MovimentacaoFinanceira
         implements EntityInterface<MovimentacaoFinanceira>, Serializable {
 

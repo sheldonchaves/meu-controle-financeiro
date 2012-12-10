@@ -7,11 +7,14 @@ package br.com.gbvbahia.financeiro.beans;
 import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.MovimentacaoFinanceiraFacade;
+import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
+import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.MovimentacaoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.MovimentacaoTrasnferencia;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
 import br.com.gbvbahia.financeiro.modelos.superclass.MovimentacaoFinanceira;
 import br.com.gbvbahia.financeiro.utils.UtilBeans;
 import java.util.Date;
@@ -20,7 +23,9 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -77,6 +82,27 @@ public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinan
         Map<String, Object> parans = getMapParans();
         parans(parans, data, debitada, creditada, usr);
         return pesqCount("MovimentacaoTrasnferencia.countMovimentacao", parans);
+    }
+
+    @Override
+    public List<MovimentacaoFinanceira> pesquisarMovimentacaoPorPeriodo(final Date[] periodo,
+            final ContaBancaria conta) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("dataI", periodo[0]);
+        parans.put("dataF", periodo[1]);
+        parans.put("contaBancariaDebitada", conta);
+        return listPesqParam("MovimentacaoFinanceira.pesquisarMovimentacaoPorPeriodo", parans);
+    }
+
+    @Override
+    public MinMaxDateDTO buscarIntervalodDatas(final Usuario usr) {
+        Query q = getEntityManager().createNamedQuery("MovimentacaoFinanceira.intervaloDatas");
+        q.setParameter("usuario", usr);
+        try {
+            return (MinMaxDateDTO) q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

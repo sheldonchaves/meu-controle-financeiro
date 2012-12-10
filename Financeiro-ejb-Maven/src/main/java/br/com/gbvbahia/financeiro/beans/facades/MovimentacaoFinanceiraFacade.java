@@ -10,6 +10,7 @@ import br.com.gbvbahia.financeiro.modelos.MovimentacaoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.MovimentacaoTrasnferencia;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.Usuario;
+import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
 import br.com.gbvbahia.financeiro.modelos.superclass.MovimentacaoFinanceira;
 import java.util.Date;
 import java.util.List;
@@ -56,4 +57,21 @@ public interface MovimentacaoFinanceiraFacade extends InterfaceFacade<Movimentac
     List<MovimentacaoTrasnferencia> buscarTransferencias(Usuario usr,
             Date data, ContaBancaria debitada, ContaBancaria creditada,
             int[] range);
+    
+    /**
+     * Retorna a lista de Movimentacao, podendo ser de pagamentos ou transferencias
+     * por filtros.
+     * @param periodo Obrigatório
+     * @param conta Obrigatório.
+     * @return 
+     */
+    public List<MovimentacaoFinanceira> pesquisarMovimentacaoPorPeriodo(final Date[] periodo,
+            final ContaBancaria conta);
+    
+    /**
+     * Retorna objeto que representa a maior e menor da de movimentação financiera.
+     * @param usr obrigatório.
+     * @return 
+     */
+    public MinMaxDateDTO buscarIntervalodDatas(final Usuario usr);
 }
