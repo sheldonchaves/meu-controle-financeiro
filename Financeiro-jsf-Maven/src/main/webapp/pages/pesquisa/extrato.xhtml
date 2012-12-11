@@ -50,8 +50,8 @@
                                             <h:outputText value="#{msg.data}" />  
                                         </f:facet>  
                                         <h:outputText value="#{mov.dataMovimentacao}" style="font-size: 0.9em;">
-                                            <f:convertDateTime locale="#{localeController.localeUI}"
-                                                               type="date" timeZone="#{initParam['timezone']}"/>
+                                            <f:convertDateTime locale="#{localeController.localeUI}" 
+                                                               pattern="dd/MMM/yy HH:mm" timeZone="#{initParam['timezone']}"/>
                                         </h:outputText>  
                                     </p:column>
 
@@ -68,7 +68,7 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{msg.valor}" />  
                                         </f:facet>  
-                                        <h:outputText value="#{mov.valorTransferencia}" style="font-size: 0.9em;">
+                                        <h:outputText value="#{mov.valorTransferenciaDiferenca}" style="font-size: 0.9em;" styleClass="#{mov.valorTransferenciaDiferenca lt 0 ? 'red' : 'green'}">
                                             <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
                                         </h:outputText>  
                                     </p:column>
@@ -79,14 +79,6 @@
                                         </f:facet>  
                                         <h:outputText value="#{mov.saldoPosterior}" style="font-size: 0.9em;">
                                             <f:convertNumber locale="#{localeController.localeUI}" type="currency"/> 
-                                        </h:outputText>  
-                                    </p:column>
-
-                                    <p:column id="conta"  >  
-                                        <f:facet name="header">  
-                                            <h:outputText value="#{msg.disponivel}" />  
-                                        </f:facet>  
-                                        <h:outputText value="#{mov.contaBancariaDebitada.label}" style="font-size: 0.9em;">
                                         </h:outputText>  
                                     </p:column>
 
