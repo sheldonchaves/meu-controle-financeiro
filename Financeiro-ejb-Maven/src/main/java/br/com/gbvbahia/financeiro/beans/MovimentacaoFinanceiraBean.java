@@ -7,8 +7,6 @@ package br.com.gbvbahia.financeiro.beans;
 import br.com.gbvbahia.financeiro.beans.aop.LogTime;
 import br.com.gbvbahia.financeiro.beans.commons.AbstractFacade;
 import br.com.gbvbahia.financeiro.beans.facades.MovimentacaoFinanceiraFacade;
-import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
-import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.ContaBancaria;
 import br.com.gbvbahia.financeiro.modelos.MovimentacaoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.MovimentacaoTrasnferencia;
