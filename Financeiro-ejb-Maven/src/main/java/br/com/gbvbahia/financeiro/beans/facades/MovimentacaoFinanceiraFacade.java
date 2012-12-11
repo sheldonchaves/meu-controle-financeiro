@@ -74,4 +74,13 @@ public interface MovimentacaoFinanceiraFacade extends InterfaceFacade<Movimentac
      * @return 
      */
     public MinMaxDateDTO buscarIntervalodDatas(final Usuario usr);
+    
+    /**
+     * Retorna todas movimentacoes do usuário e/ou seu conjuge.
+     * @param periodo obrigatorio
+     * @param usuario obrigatorio
+     * @return 
+     */
+    public List<MovimentacaoFinanceira> pesquisarMovimentacaoPorPeriodoUsuario(final Date[] periodo,
+            final Usuario usuario);
 }

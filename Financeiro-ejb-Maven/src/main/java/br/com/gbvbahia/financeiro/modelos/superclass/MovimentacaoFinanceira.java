@@ -13,12 +13,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * Representa uma movimentação financeira, uma movimentação pode ser a
- * saída de dinherio de uma conta para um procedimento (uma conta a pagar)
- * ou pode ser uma transferência de uma conta para outra.<br> Essa classe
- * abstrata contêm as informações comum de uma transferência que são comuns
- * as duas situações, cada implementação irá ter suas informações
- * pertinentes a situação que deseja representar.
+ * Representa uma movimentação financeira, uma movimentação pode ser a saída
+ * de dinherio de uma conta para um procedimento (uma conta a pagar) ou pode
+ * ser uma transferência de uma conta para outra.<br> Essa classe abstrata
+ * contêm as informações comum de uma transferência que são comuns as duas
+ * situações, cada implementação irá ter suas informações pertinentes a
+ * situação que deseja representar.
  *
  * @since v.3 03/06/2012
  * @author Guilherme
@@ -34,6 +34,11 @@ discriminatorType = DiscriminatorType.STRING)
     query = "Select distinct m From MovimentacaoFinanceira m "
     + " WHERE (m.dataMovimentacao between :dataI AND :dataF) "
     + " AND (m.contaBancariaDebitada = :contaBancariaDebitada) "
+    + " ORDER BY m.dataMovimentacao "),
+    @NamedQuery(name = "MovimentacaoFinanceira.pesquisarMovimentacaoPorPeriodoUsuario",
+    query = "Select distinct m From MovimentacaoFinanceira m "
+    + " WHERE (m.dataMovimentacao between :dataI AND :dataF) "
+    + " AND (m.contaBancariaDebitada.usuario = :usuario OR m.contaBancariaDebitada.usuario.conjuge = :usuario) "
     + " ORDER BY m.dataMovimentacao "),
     @NamedQuery(name = "MovimentacaoFinanceira.intervaloDatas",
     query = " SELECT new br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO("
@@ -80,7 +85,6 @@ public abstract class MovimentacaoFinanceira
     @NotNull
     private ContaBancaria contaBancariaDebitada;
 
-
     /**
      * Construtor nunca executado, se for uma runtime será lançada.
      */
@@ -104,6 +108,7 @@ public abstract class MovimentacaoFinanceira
 
     /**
      * A conta bancária que sofreu a movimentação.
+     *
      * @return Conta Movimentada.
      */
     public ContaBancaria getContaBancariaDebitada() {
@@ -112,6 +117,7 @@ public abstract class MovimentacaoFinanceira
 
     /**
      * A conta bancária que sofreu a movimentação.
+     *
      * @param vContaDebitada Conta Movimentada.
      */
     public void setContaBancariaDebitada(final ContaBancaria vContaDebitada) {
@@ -120,6 +126,7 @@ public abstract class MovimentacaoFinanceira
 
     /**
      * Data em que a movimentação ocorreu.
+     *
      * @return Data Movimentação.
      */
     public Date getDataMovimentacao() {
@@ -128,6 +135,7 @@ public abstract class MovimentacaoFinanceira
 
     /**
      * Data em que a movimentação ocorreu.
+     *
      * @param vDataMovimentacao Data Movimentação.
      */
     public void setDataMovimentacao(final Date vDataMovimentacao) {
@@ -141,6 +149,7 @@ public abstract class MovimentacaoFinanceira
 
     /**
      * ID único do BD.
+     *
      * @param vId único do BD
      */
     public void setId(final Long vId) {
@@ -149,6 +158,7 @@ public abstract class MovimentacaoFinanceira
 
     /**
      * Saldo da conta debitada antes da movimentação.
+     *
      * @return Saldo da conta antes.
      */
     public BigDecimal getSaldoAnterior() {
@@ -157,6 +167,7 @@ public abstract class MovimentacaoFinanceira
 
     /**
      * Saldo da conta debitada antes da movimentação.
+     *
      * @param vSaldoAnterior Saldo da conta antes.
      */
     public void setSaldoAnterior(final BigDecimal vSaldoAnterior) {
@@ -165,6 +176,7 @@ public abstract class MovimentacaoFinanceira
 
     /**
      * Saldo após a movimentação.
+     *
      * @return Saldo posterior a movimentação.
      */
     public BigDecimal getSaldoPosterior() {
@@ -173,24 +185,28 @@ public abstract class MovimentacaoFinanceira
 
     /**
      * Saldo após a movimentação.
+     *
      * @param vSaldoPosterior Saldo posterior a movimentação.
      */
     public void setSaldoPosterior(final BigDecimal vSaldoPosterior) {
         this.saldoPosterior = vSaldoPosterior;
     }
+
     /**
      * Subtrai saldoAnterior de saldoPosterior (valor absoluto).
-     * @return 
+     *
+     * @return
      */
-    public BigDecimal getValorTransferencia(){
+    public BigDecimal getValorTransferencia() {
         return saldoAnterior.subtract(saldoPosterior).abs();
     }
-    
+
     /**
      * Subtrai saldoAnterior de saldoPosterior (valor absoluto).
-     * @return 
+     *
+     * @return
      */
-    public BigDecimal getValorTransferenciaDiferenca(){
+    public BigDecimal getValorTransferenciaDiferenca() {
         return saldoPosterior.subtract(saldoAnterior);
     }
 }
