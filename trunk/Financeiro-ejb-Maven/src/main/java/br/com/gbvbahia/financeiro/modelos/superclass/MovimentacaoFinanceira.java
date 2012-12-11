@@ -56,7 +56,7 @@ public abstract class MovimentacaoFinanceira
      * Data que a movimentação foi realizada.
      */
     @Column(name = "dt_movimentacao", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private Date dataMovimentacao = new Date();
     /**
@@ -179,10 +179,18 @@ public abstract class MovimentacaoFinanceira
         this.saldoPosterior = vSaldoPosterior;
     }
     /**
-     * Subtrai saldoAnterior de saldoPosterior.
+     * Subtrai saldoAnterior de saldoPosterior (valor absoluto).
      * @return 
      */
     public BigDecimal getValorTransferencia(){
         return saldoAnterior.subtract(saldoPosterior).abs();
+    }
+    
+    /**
+     * Subtrai saldoAnterior de saldoPosterior (valor absoluto).
+     * @return 
+     */
+    public BigDecimal getValorTransferenciaDiferenca(){
+        return saldoPosterior.subtract(saldoAnterior);
     }
 }
