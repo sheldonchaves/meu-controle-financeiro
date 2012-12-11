@@ -93,6 +93,16 @@ public class MovimentacaoFinanceiraBean extends AbstractFacade<MovimentacaoFinan
     }
 
     @Override
+    public List<MovimentacaoFinanceira> pesquisarMovimentacaoPorPeriodoUsuario(final Date[] periodo,
+            final Usuario usuario) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("dataI", periodo[0]);
+        parans.put("dataF", periodo[1]);
+        parans.put("usuario", usuario);
+        return listPesqParam("MovimentacaoFinanceira.pesquisarMovimentacaoPorPeriodoUsuario", parans);
+    }
+    
+    @Override
     public MinMaxDateDTO buscarIntervalodDatas(final Usuario usr) {
         Query q = getEntityManager().createNamedQuery("MovimentacaoFinanceira.intervaloDatas");
         q.setParameter("usuario", usr);
