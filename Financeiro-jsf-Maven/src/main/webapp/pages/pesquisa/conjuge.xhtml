@@ -8,8 +8,10 @@
                 >
     <ui:param name="titulomenu" value="#{msg.pesquisaConjuge}" />
     <ui:define name="content">
-        <p:barChart id="basic" value="#{conjugePesquisa.bar}" legendPosition="nw"  
-            title="#{msg.gastoPorConjuge}" min="0" style="height:300px"/> 
+        
+        <p:barChart id="basic" value="#{conjugePesquisa.bar}" legendPosition="nw" 
+                     seriesColors="70a8d2, F00000"
+            title="#{msg.gastoPorConjuge}" min="0" style="height:300px; margin-top: 20px;"/> 
     </ui:define>
 </ui:composition>
 
