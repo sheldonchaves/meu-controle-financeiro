@@ -87,7 +87,7 @@ public class DetalhePesquisa implements Serializable {
 
     public void dataListener() {
         MinMaxDateDTO intervalodDatas = procedimentoFacade.buscarIntervalodDatas(null,
-                StatusPagamento.NAO_PAGA, usuarioFacade.getUsuario());
+                null, usuarioFacade.getUsuario());
         listAnosSelect = intervalodDatas.intervaloMinMaxAnos();
         if (listAnosSelect.isEmpty()) {
             listAnosSelect.add(DateUtils.getFieldDate(new Date(), Calendar.YEAR));
