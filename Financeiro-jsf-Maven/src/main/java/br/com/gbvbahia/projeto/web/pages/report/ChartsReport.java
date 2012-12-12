@@ -9,6 +9,7 @@ import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.projeto.web.constante.Meses;
@@ -16,7 +17,6 @@ import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.projeto.web.jsfutil.LocaleController;
 import br.com.gbvbahia.projeto.web.pages.report.comparator.DespesaProcedimentoDataComparator;
 import br.com.gbvbahia.projeto.web.pages.report.utils.ClassificacaoMakePie;
-import br.com.gbvbahia.utils.MensagemUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -147,7 +147,7 @@ public class ChartsReport implements Serializable {
                 totalVariavel += dp.getValor().doubleValue();
             }
         }
-        return  pieClassModel = new ClassificacaoMakePie(lDesp, new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
+        return  pieClassModel = new ClassificacaoMakePie(new ArrayList<Procedimento>(lDesp), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
     }
 
     public Meses getMesOperacao() {

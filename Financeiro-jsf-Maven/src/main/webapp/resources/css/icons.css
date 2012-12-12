@@ -38,6 +38,17 @@
     height:16px !important;
     width:16px !important;
 }
+.addDetRIco {
+    background: url("#{resource['images:detalhe_r_16.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
+
+.addDetGIco {
+    background: url("#{resource['images:detalhe_g_16.png']}") no-repeat !important;
+    height:16px !important;
+    width:16px !important;
+}
 
 .addAgendaIco {
     background: url("#{resource['images:date_16.png']}") no-repeat !important;

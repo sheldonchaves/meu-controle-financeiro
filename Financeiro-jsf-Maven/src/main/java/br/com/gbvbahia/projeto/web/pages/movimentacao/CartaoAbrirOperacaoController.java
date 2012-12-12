@@ -10,7 +10,6 @@ import br.com.gbvbahia.financeiro.beans.facades.CartaoCreditoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ContaBancariaFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
-import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
 import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.modelos.CartaoCredito;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
@@ -28,9 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -271,12 +268,12 @@ public class CartaoAbrirOperacaoController implements Serializable {
     }
 
     public PieChartModel getPieClassModel() {
-        pieClassModel = new ClassificacaoMakePie(getDespesas(), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
+        pieClassModel = new ClassificacaoMakePie(new ArrayList<Procedimento>(getDespesas()), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
         return pieClassModel;
     }
 
     public PieChartModel getPieClassDetalhe() {
-        pieClassDetalhe = new DetalheMakePie(getDespesas(), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
+        pieClassDetalhe = new DetalheMakePie(new ArrayList<Procedimento>(getDespesas()), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
         return pieClassDetalhe;
     }
 }

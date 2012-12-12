@@ -8,6 +8,7 @@ import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.utils.DateUtils;
 import br.com.gbvbahia.projeto.web.constante.Meses;
 import br.com.gbvbahia.projeto.web.jsfutil.LocaleController;
@@ -85,7 +86,7 @@ public class DetalheReport implements Serializable {
         Integer anoOperacao = DateUtils.getFieldDate(agora, Calendar.YEAR);
         Meses mesOperacao = Meses.getByMonth(DateUtils.getFieldDate(agora, Calendar.MONTH));
         List<DespesaProcedimento> lDesp = despesas(anoOperacao, mesOperacao);
-        return new DetalheMakePie(lDesp, pieClassModel, FacesContext.getCurrentInstance()).makePie();
+        return new DetalheMakePie(new ArrayList<Procedimento>(lDesp), pieClassModel, FacesContext.getCurrentInstance()).makePie();
     }
 
     //Atual
