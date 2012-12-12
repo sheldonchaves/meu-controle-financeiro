@@ -7,7 +7,6 @@ package br.com.gbvbahia.projeto.web.pages.pesquisa;
 import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
-import br.com.gbvbahia.financeiro.constantes.StatusPagamento;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
