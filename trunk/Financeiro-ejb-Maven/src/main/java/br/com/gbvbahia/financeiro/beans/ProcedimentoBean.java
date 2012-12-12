@@ -272,6 +272,19 @@ public class ProcedimentoBean
     }
 
     @Override
+    public MinMaxDateDTO buscarIntervaloReceitaDatas(final StatusPagamento status, final Usuario usr) {
+        Query q = getEntityManager().createNamedQuery("Procedimento.intervaloReceitaDatas");
+        q.setParameter("status", status);
+        q.setParameter("status2", status == null ? "todos" : "filtro");
+        q.setParameter("usuario", usr);
+        try {
+            return (MinMaxDateDTO) q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
     public List<DespesaProcedimento> buscarDespesasCartao(final Usuario usr,
             final Date dataI, final Date dataF) {
         Map<String, Object> parans = getMapParans();
@@ -295,6 +308,19 @@ public class ProcedimentoBean
         return toReturn;
     }
 
+        @Override
+    public List<Procedimento> pesquisaDetalheReceitaProcedimento(final Usuario usr,
+            final Date[] intervalo, DetalheProcedimento detalhe) {
+        Map<String, Object> parans = getMapParans();
+        parans.put("usuario", usr);
+        parans.put("dataI", intervalo[0]);
+        parans.put("dataF", intervalo[1]);
+        parans.put("detalhe2", detalhe == null ? "todos" : "filtro");
+        parans.put("detalhe", detalhe);
+        List toReturn = listPesqParam("Procedimento.pesquisaDetalheProcedimento", parans);
+        return toReturn;
+    }
+    
     /**
      * Popula map para paginacao de Procedimentos
      *
