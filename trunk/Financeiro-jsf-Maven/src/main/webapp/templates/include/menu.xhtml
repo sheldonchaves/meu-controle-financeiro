@@ -63,7 +63,8 @@
                 <p:submenu label="#{msg.pesquisar}" icon="lupaIco" id="menu6">
                     <p:column>
                         <p:submenu label="#{msg.historico}" icon="historicoIcon" id="menu6_0">
-                            <p:menuitem value="#{msg.detalhePagamento}" url="/pages/pesquisa/detalhe.xhtml" icon="addDetIco" id="menu6_0_1"/>
+                            <p:menuitem value="#{msg.detalhePagamento}" url="/pages/pesquisa/detalhe_r.xhtml" icon="addDetRIco" id="menu6_0_1"/>
+                            <p:menuitem value="#{msg.detalhePagamento}" url="/pages/pesquisa/detalhe_g.xhtml" icon="addDetGIco" id="menu6_0_4"/>
                             <p:menuitem value="#{msg.movimentacao}" url="/pages/pesquisa/extrato.xhtml" icon="printerIcon" id="menu6_0_2"/>
                             <p:menuitem value="#{msg.conjuge}" url="/pages/pesquisa/conjuge.xhtml" icon="conjugeIcon" id="menu6_0_3" rendered="#{loginController.usuario.conjuge ne null}"/>
                         </p:submenu>

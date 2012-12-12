@@ -4,7 +4,7 @@
  */
 package br.com.gbvbahia.projeto.web.pages.report.utils;
 
-import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.projeto.web.pages.report.DetalheReport;
 import br.com.gbvbahia.projeto.web.pages.report.comparator.DetalheValorComparator;
 import br.com.gbvbahia.utils.MensagemUtils;
@@ -22,11 +22,11 @@ import org.primefaces.model.chart.PieChartModel;
  */
 public class DetalheMakePie {
 
-    private List<DespesaProcedimento> detalhes;
+    private List<Procedimento> detalhes;
     private PieChartModel pieChartModel;
     private FacesContext context;
 
-    public DetalheMakePie(List<DespesaProcedimento> detalhes, PieChartModel pieChartModel, FacesContext context) {
+    public DetalheMakePie(List<Procedimento> detalhes, PieChartModel pieChartModel, FacesContext context) {
         this.detalhes = detalhes;
         this.pieChartModel = pieChartModel;
         this.context = context;
@@ -54,9 +54,9 @@ public class DetalheMakePie {
         return pieChartModel;
     }
 
-    private List<DetalheValorComparator> gerarDetalheValorComparator(List<DespesaProcedimento> lDesp) {
+    private List<DetalheValorComparator> gerarDetalheValorComparator(List<Procedimento> lDesp) {
         Map<String, Double> map = new HashMap<String, Double>();
-        for (DespesaProcedimento dp : lDesp) {
+        for (Procedimento dp : lDesp) {
             if (map.containsKey(dp.getDetalhe().getDetalhe())) {
                 map.put(dp.getDetalhe().getDetalhe(), map.get(dp.getDetalhe().getDetalhe()) + dp.getValor().doubleValue());
             } else {

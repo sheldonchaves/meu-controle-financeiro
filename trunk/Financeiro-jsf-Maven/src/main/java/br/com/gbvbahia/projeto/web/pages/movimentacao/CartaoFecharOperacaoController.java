@@ -328,12 +328,12 @@ public class CartaoFecharOperacaoController implements Serializable {
     }
 
     public PieChartModel getPieClassModel() {
-        pieClassModel = new ClassificacaoMakePie(getDespesas(), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
+        pieClassModel = new ClassificacaoMakePie(new ArrayList<Procedimento>(getDespesas()), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
         return pieClassModel;
     }
 
     public PieChartModel getPieClassDetalhe() {
-        pieClassDetalhe = new DetalheMakePie(getDespesas(), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
+        pieClassDetalhe = new DetalheMakePie(new ArrayList<Procedimento>(getDespesas()), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
         return pieClassDetalhe;
     }
 

@@ -8,7 +8,6 @@ import br.com.gbvbahia.financeiro.beans.facades.DetalheProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.ProcedimentoFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
 import br.com.gbvbahia.financeiro.constantes.TipoProcedimento;
-import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
 import br.com.gbvbahia.financeiro.modelos.DetalheProcedimento;
 import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO;
@@ -38,12 +37,12 @@ import org.primefaces.model.chart.PieChartModel;
  */
 @ManagedBean
 @ViewScoped
-public class DetalhePesquisa implements Serializable {
+public class DetalheReceitaPesquisa implements Serializable {
 
     /**
      * Registra os eventos para debug em desenvolvimento.
      */
-    private Logger logger = Logger.getLogger(DetalhePesquisa.class);
+    private Logger logger = Logger.getLogger(DetalheReceitaPesquisa.class);
     @EJB
     private ProcedimentoFacade procedimentoFacade;
     @EJB
@@ -56,13 +55,13 @@ public class DetalhePesquisa implements Serializable {
     private Integer anoOperacao;
     private DetalheProcedimento detalhe;
     //Info tela
-    private List<DespesaProcedimento> procedimentos;
+    private List<Procedimento> procedimentos;
     private Double total;
 
     /**
      * Creates a new instance of DetalhePesquisa
      */
-    public DetalhePesquisa() {
+    public DetalheReceitaPesquisa() {
     }
     //====================
     //Iniciadores
@@ -86,22 +85,22 @@ public class DetalhePesquisa implements Serializable {
     }
 
     public void dataListener() {
-        MinMaxDateDTO intervalodDatas = procedimentoFacade.buscarIntervalodDatas(null,
-                null, usuarioFacade.getUsuario());
+        MinMaxDateDTO intervalodDatas = procedimentoFacade.buscarIntervaloReceitaDatas(null,
+                usuarioFacade.getUsuario());
         listAnosSelect = intervalodDatas.intervaloMinMaxAnos();
         if (listAnosSelect.isEmpty()) {
             listAnosSelect.add(DateUtils.getFieldDate(new Date(), Calendar.YEAR));
         }
     }
 
-    public void buscarDespesas() {
+    public void buscarReceitas() {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, anoOperacao);
         c.set(Calendar.MONTH, mesOperacao.getMes());
         final Date[] intervalo = DateUtils.getIntervalo(c.getTime());
-        procedimentos = procedimentoFacade.pesquisaDetalheProcedimento(usuarioFacade.getUsuario(), intervalo, detalhe);
+        procedimentos = procedimentoFacade.pesquisaDetalheReceitaProcedimento(usuarioFacade.getUsuario(), intervalo, detalhe);
         total = 0d;
-        for (DespesaProcedimento dp : procedimentos) {
+        for (Procedimento dp : procedimentos) {
             total += dp.getValor().doubleValue();
         }
     }
@@ -123,19 +122,19 @@ public class DetalhePesquisa implements Serializable {
 
     public SelectItem[] getDetalhesSelect() {
         return JsfUtil.getSelectItems(detalheFacade.findAllDetalhe(usuarioFacade.getUsuario(),
-                Boolean.TRUE, TipoProcedimento.DESPESA_FINANCEIRA), false, FacesContext.getCurrentInstance());
+                Boolean.TRUE, TipoProcedimento.RECEITA_FINANCEIRA), false, FacesContext.getCurrentInstance());
     }
     //===================
     //Getter and Setters
     //===================
 
     public PieChartModel getPieClassDetalhe() {
-        PieChartModel pieClassDetalhe = new DetalheMakePie(new ArrayList<Procedimento>(getProcedimentos()), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
+        PieChartModel pieClassDetalhe = new DetalheMakePie(getProcedimentos(), new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
         return pieClassDetalhe;
     }
 
     public PieChartModel getPieClassModel() {
-        PieChartModel pieClassModel = new ClassificacaoMakePie(new ArrayList<Procedimento>(getProcedimentos()),
+        PieChartModel pieClassModel = new ClassificacaoMakePie(getProcedimentos(),
                 new PieChartModel(), FacesContext.getCurrentInstance()).makePie();
         return pieClassModel;
     }
@@ -156,14 +155,14 @@ public class DetalhePesquisa implements Serializable {
         this.anoOperacao = anoOperacao;
     }
 
-    public List<DespesaProcedimento> getProcedimentos() {
+    public List<Procedimento> getProcedimentos() {
         if (procedimentos == null) {
-            procedimentos = new ArrayList<DespesaProcedimento>();
+            procedimentos = new ArrayList<Procedimento>();
         }
         return procedimentos;
     }
 
-    public void setProcedimentos(List<DespesaProcedimento> procedimentos) {
+    public void setProcedimentos(List<Procedimento> procedimentos) {
         this.procedimentos = procedimentos;
     }
 

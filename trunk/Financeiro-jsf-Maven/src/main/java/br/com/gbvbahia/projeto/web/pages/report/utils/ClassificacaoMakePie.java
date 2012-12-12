@@ -5,7 +5,7 @@
 package br.com.gbvbahia.projeto.web.pages.report.utils;
 
 import br.com.gbvbahia.financeiro.constantes.ClassificacaoProcedimento;
-import br.com.gbvbahia.financeiro.modelos.DespesaProcedimento;
+import br.com.gbvbahia.financeiro.modelos.Procedimento;
 import br.com.gbvbahia.utils.MensagemUtils;
 import java.util.EnumMap;
 import java.util.List;
@@ -19,11 +19,11 @@ import org.primefaces.model.chart.PieChartModel;
  */
 public class ClassificacaoMakePie {
 
-    private List<DespesaProcedimento> detalhes;
+    private List<Procedimento> detalhes;
     private PieChartModel pieClassModel;
     private FacesContext context;
 
-    public ClassificacaoMakePie(List<DespesaProcedimento> detalhes,
+    public ClassificacaoMakePie(List<Procedimento> detalhes,
             PieChartModel pieChartModel, FacesContext context) {
         this.detalhes = detalhes;
         this.pieClassModel = pieChartModel;
@@ -36,7 +36,7 @@ public class ClassificacaoMakePie {
                     context), 100);
         }else {
             Map<ClassificacaoProcedimento, Double> map = new EnumMap<ClassificacaoProcedimento, Double>(ClassificacaoProcedimento.class);
-            for (DespesaProcedimento dp : detalhes) {
+            for (Procedimento dp : detalhes) {
                 if (map.containsKey(dp.getClassificacaoProcedimento())) {
                     map.put(dp.getClassificacaoProcedimento(), map.get(dp.getClassificacaoProcedimento()) + dp.getValor().doubleValue());
                 } else {
