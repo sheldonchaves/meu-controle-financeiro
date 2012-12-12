@@ -86,7 +86,22 @@ discriminatorType = DiscriminatorType.STRING)
     + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
     + " AND p.dataMovimentacao between :dataI and :dataF "
     + " AND p.tipoProcedimento = br.com.gbvbahia.financeiro.constantes.TipoProcedimento.RECEITA_FINANCEIRA "
-    + " GROUP BY p.tipoProcedimento ")
+    + " GROUP BY p.tipoProcedimento "),
+    @NamedQuery(name = "Procedimento.intervaloReceitaDatas",
+    query = " SELECT new br.com.gbvbahia.financeiro.modelos.dto.MinMaxDateDTO("
+    + "min(d.dataMovimentacao), "
+    + "max(d.dataMovimentacao)) "
+    + " From Procedimento d "
+    + " WHERE (d.tipoProcedimento = br.com.gbvbahia.financeiro.constantes.TipoProcedimento.RECEITA_FINANCEIRA) "
+    + " AND (:status2 = 'todos' OR d.statusPagamento = :status) "
+    + " AND (d.usuario = :usuario OR d.usuario.conjuge = :usuario) "),
+    @NamedQuery(name = "Procedimento.pesquisaDetalheProcedimento",
+    query = " SELECT p  From Procedimento p "
+    + " WHERE (p.usuario = :usuario OR p.usuario.conjuge = :usuario) "
+    + " AND (p.dataMovimentacao between :dataI and :dataF) "
+    + " AND (p.tipoProcedimento = br.com.gbvbahia.financeiro.constantes.TipoProcedimento.RECEITA_FINANCEIRA) "
+    + " AND (:detalhe2 = 'todos' OR p.detalhe = :detalhe) "
+    + " ORDER BY p.dataMovimentacao, p.valorReal DESC, p.valorEstimado DESC ")
 })
 public class Procedimento
         implements EntityInterface<Procedimento>, Serializable {
@@ -106,23 +121,23 @@ public class Procedimento
      */
     @Temporal(TemporalType.DATE)
     @Column(name = "data_movimentacao", nullable = false)
-    @NotNull(message="{Procedimento.dataMovimentacao.null}")
+    @NotNull(message = "{Procedimento.dataMovimentacao.null}")
     private Date dataMovimentacao = new Date();
     /**
      * Valor estimado a pagar/receber do procedimento, este valor sempre
      * deverá ser informado. Caso não se tenha o valor real este será
-     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
-     * que o valor real já existe, setar este igual ao real.
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em que
+     * o valor real já existe, setar este igual ao real.
      */
-    @NotNull(message="{Procedimento.valorEstimado.null}")
+    @NotNull(message = "{Procedimento.valorEstimado.null}")
     @Column(name = "valor_estimado", nullable = false)
     @Digits(fraction = 2, integer = 12)
     private BigDecimal valorEstimado;
     /**
      * Valor real pago na conta, utilizado nas receitas fixas, em que
      * estimativas futuras são realizadas. Não é obrigatório nas
-     * despesas/receitas fixas, nas variaveis sempre deverá ser
-     * informado.<br> <b>PODE SER NULO</b>
+     * despesas/receitas fixas, nas variaveis sempre deverá ser informado.<br>
+     * <b>PODE SER NULO</b>
      */
     @Column(name = "valor_real")
     @Digits(fraction = 2, integer = 12)
@@ -131,7 +146,7 @@ public class Procedimento
      * Representa o detalhe do gasto/receita.
      */
     @ManyToOne
-    @NotNull(message="{Procedimento.detalhe.null}")
+    @NotNull(message = "{Procedimento.detalhe.null}")
     @JoinColumn(name = "fk_detalhe_procedimento", nullable = false)
     private DetalheProcedimento detalhe;
     /**
@@ -141,7 +156,7 @@ public class Procedimento
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "classe_procedimento", nullable = false)
-    @NotNull(message="{Procedimento.classificacaoProcedimento.null}")
+    @NotNull(message = "{Procedimento.classificacaoProcedimento.null}")
     private ClassificacaoProcedimento classificacaoProcedimento =
             ClassificacaoProcedimento.VARIAVEL;
     /**
@@ -149,18 +164,18 @@ public class Procedimento
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "status_pagamento", nullable = false)
-    @NotNull(message="{Procedimento.statusPagamento.null}")
+    @NotNull(message = "{Procedimento.statusPagamento.null}")
     private StatusPagamento statusPagamento = StatusPagamento.NAO_PAGA;
     /**
      * Qualquer informação relativa ao pagamento.
      */
-    @NotNull(message="{Procedimento.observacao.null}")
+    @NotNull(message = "{Procedimento.observacao.null}")
     @Size(max = 150, min = 5)
     @Column(name = "observacao", nullable = false, length = 150)
     private String observacao;
     /**
-     * Se essa conta for criada por uma agenda, a mesma deverá ser
-     * cadastrada para fins de atualização.
+     * Se essa conta for criada por uma agenda, a mesma deverá ser cadastrada
+     * para fins de atualização.
      */
     @ManyToOne
     @JoinColumn(name = "fk_agenda_procedimento_fixo")
@@ -173,7 +188,7 @@ public class Procedimento
     @JoinColumn(name = "fk_user_id",
     referencedColumnName = "user_id",
     nullable = false)
-    @NotNull(message="{Procedimento.usuario.null}")
+    @NotNull(message = "{Procedimento.usuario.null}")
     private Usuario usuario;
     /**
      * Deve ser informado no construtor de quem implementa.<br> Define se o
@@ -181,7 +196,7 @@ public class Procedimento
      * dinheiro.
      */
     @Enumerated(EnumType.STRING)
-    @NotNull(message="{Procedimento.tipoProcedimento.null}")
+    @NotNull(message = "{Procedimento.tipoProcedimento.null}")
     @Column(name = "tipo_procedimento", nullable = false)
     private TipoProcedimento tipoProcedimento = TipoProcedimento.RECEITA_FINANCEIRA;
     /**
@@ -190,11 +205,11 @@ public class Procedimento
      * parcelada, saída de dinheiro.
      */
     @Enumerated(EnumType.STRING)
-    @NotNull(message="{Procedimento.detalheProcedimento.null}")
+    @NotNull(message = "{Procedimento.detalheProcedimento.null}")
     @Column(name = "detalhe_procedimento", nullable = false)
     private DetalheTipoProcedimento detalheProcedimento = DetalheTipoProcedimento.RECEITA_UNICA;
     /**
-     * 
+     *
      */
     @Transient
     private boolean marcadoTransient;
@@ -206,8 +221,8 @@ public class Procedimento
     }
 
     /**
-     * Obrigatório informar o tipo de procedimento.<br> Retirada determina
-     * uma DESPESA.<br> Deposito determina uma RECEITA.
+     * Obrigatório informar o tipo de procedimento.<br> Retirada determina uma
+     * DESPESA.<br> Deposito determina uma RECEITA.
      *
      * @param tipoEnum Tipo de Procedimento.
      */
@@ -384,8 +399,8 @@ public class Procedimento
     /**
      * Valor estimado a pagar/receber do procedimento, este valor sempre
      * deverá ser informado. Caso não se tenha o valor real este será
-     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
-     * que o valor real já existe, setar este igual ao real.
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em que
+     * o valor real já existe, setar este igual ao real.
      *
      * @return Valor.
      */
@@ -396,8 +411,8 @@ public class Procedimento
     /**
      * Valor estimado a pagar/receber do procedimento, este valor sempre
      * deverá ser informado. Caso não se tenha o valor real este será
-     * considerado em calculos de estimativas.<br> Em contas Variaveis, em
-     * que o valor real já existe, setar este igual ao real.
+     * considerado em calculos de estimativas.<br> Em contas Variaveis, em que
+     * o valor real já existe, setar este igual ao real.
      *
      * @param valor Valor
      */
@@ -408,8 +423,8 @@ public class Procedimento
     /**
      * Valor real pago na conta, utilizado nas receitas fixas, em que
      * estimativas futuras são realizadas. Não é obrigatório nas
-     * despesas/receitas fixas, nas variaveis sempre deverá ser
-     * informado.<br> <b>PODE SER NULO</b>
+     * despesas/receitas fixas, nas variaveis sempre deverá ser informado.<br>
+     * <b>PODE SER NULO</b>
      *
      * @return Valor <b>PODE SER NULO</b>
      */
@@ -429,8 +444,8 @@ public class Procedimento
     }
 
     /**
-     * Define se o Procedimento é uma receita, entra dinheiro ou uma
-     * despesa, saída de dinheiro.
+     * Define se o Procedimento é uma receita, entra dinheiro ou uma despesa,
+     * saída de dinheiro.
      *
      * @return TipoProcedimento.DESPESA_FINANCEIRA para gasto e
      * TipoProcedimento.RECEITA_FINANCEIRA para receita.
@@ -467,8 +482,8 @@ public class Procedimento
     }
 
     /**
-     * Retorna o valor real se o mesmo não for nulo, se for, retorna o
-     * valor estimado.
+     * Retorna o valor real se o mesmo não for nulo, se for, retorna o valor
+     * estimado.
      *
      * @return Real se houver ou estimado.
      */
@@ -480,8 +495,8 @@ public class Procedimento
     }
 
     /**
-     * Retorna o valor, real ou estimado e negativo se for despesa e
-     * positivo se for receita.
+     * Retorna o valor, real ou estimado e negativo se for despesa e positivo
+     * se for receita.
      *
      * @see getValor()
      * @return Positivo de receita negativo se despesa.

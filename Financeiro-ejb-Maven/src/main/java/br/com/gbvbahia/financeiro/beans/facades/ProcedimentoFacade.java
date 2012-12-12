@@ -250,4 +250,22 @@ public interface ProcedimentoFacade
      */
     public List<DespesaProcedimento> pesquisaDetalheProcedimento(final Usuario usr,
             final Date[] intervalo, DetalheProcedimento detalhe);
+    
+    /**
+     * intervalo de datas para receitas recebidas ou não, dependendo do filtro status.
+     * @param status Opcional
+     * @param usr Obrigatorio.
+     * @return 
+     */
+    public MinMaxDateDTO buscarIntervaloReceitaDatas(final StatusPagamento status, final Usuario usr);
+    
+    /**
+     * Busca receitas por detalhe.
+     * @param usr brigatorio
+     * @param intervalo obrigatório
+     * @param detalhe opcional
+     * @return 
+     */
+    public List<Procedimento> pesquisaDetalheReceitaProcedimento(final Usuario usr,
+            final Date[] intervalo, DetalheProcedimento detalhe);
 }
