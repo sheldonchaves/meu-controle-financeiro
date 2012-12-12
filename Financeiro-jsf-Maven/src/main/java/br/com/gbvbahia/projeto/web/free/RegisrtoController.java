@@ -6,7 +6,6 @@ package br.com.gbvbahia.projeto.web.free;
 
 import br.com.gbvbahia.financeiro.beans.business.interfaces.RegistroBusiness;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
-import br.com.gbvbahia.financeiro.utils.Encryption;
 import br.com.gbvbahia.projeto.logger.I18nLogger;
 import br.com.gbvbahia.projeto.web.jsfutil.JsfUtil;
 import br.com.gbvbahia.utils.MensagemUtils;
