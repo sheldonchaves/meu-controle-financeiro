@@ -112,7 +112,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                               <td align="right" colspan="2">
+                                                <td align="right" colspan="2">
                                                     <h:outputText value="#{msg.total}:" style="font-weight: bold;"/>
                                                 </td>
                                                 <td align="right" style="font-weight: bold; min-width: 80px;">
@@ -136,17 +136,29 @@
 
                         </h:form>
                     </td>
-                    <td align='left' style="vertical-align: top;">
+                </tr>
+            </tbody>
+        </table>
+        <h:panelGroup id="panel">
+            <table style="width: 100%;">
+                <tr>
+                    <td colspan="2" align='left' style="vertical-align: top;">
                         <h:panelGroup id="disponiveis">
                             <div style="margin-left: 10px;">
-                                <arq:disponiveis width="90%"/>
+                                <arq:disponiveis width="50%"/>
                             </div>
                         </h:panelGroup>
+                    </td>
+                </tr>
+                <tr>
+                    <td  style="vertical-align: top;" width="50%">
                         <h:panelGroup id="pieClassGroup">
                             <p:pieChart id="pieClass" value="#{cartaoAbrirOperacaoController.pieClassModel}" legendPosition="w"  
                                         title="#{msg.classificacaoMovimentacao}" seriesColors="70a8d2, F00000"
                                         style="margin-top: 20px;" showDataLabels="true"/>  
                         </h:panelGroup>
+                    </td>
+                    <td  style="vertical-align: top;" width="50%">
                         <h:panelGroup id="pieClassDetGroup">
                             <p:pieChart id="pieClassPrincipalDetAtual" value="#{cartaoAbrirOperacaoController.pieClassDetalhe}" legendPosition="w"  
                                         title="#{msg.detalheGraficoCartao}" 
@@ -154,8 +166,8 @@
                         </h:panelGroup>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+            </table>
+            </h:panelGroup>
     </ui:define>
 </ui:composition>
 

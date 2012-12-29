@@ -212,6 +212,7 @@ public class CartaoFecharOperacaoController implements Serializable {
                     FacesContext.getCurrentInstance());
             showDialog = false;
             proToEdit = null;
+            buscarDespesas();
         } catch (NegocioException ex) {
             MensagemUtils.messageFactoringFull(ex.getMessage(),
                     ex.getVariacoes(), FacesMessage.SEVERITY_ERROR,
