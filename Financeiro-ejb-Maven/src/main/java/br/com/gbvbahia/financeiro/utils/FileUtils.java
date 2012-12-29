@@ -4,7 +4,6 @@
  */
 package br.com.gbvbahia.financeiro.utils;
 
-import br.com.gbvbahia.financeiro.beans.business.scheduler.AvisoVencimentosBean;
 import java.io.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -38,7 +37,7 @@ public final class FileUtils {
                 CAMINHO_IMAGENS_PERMANENTE = "C:\\glassfish3\\imagens";
                 LOGO_EMAIL_FILE = new File(CAMINHO_IMAGENS_PERMANENTE + File.separator + LOGO_MONEI_MAIL);
             } else {
-                CAMINHO_IMAGENS_PERMANENTE = "/home/guilherm/appservers/glassfish-3x/domains/domain1/config";
+                CAMINHO_IMAGENS_PERMANENTE = "/usr/share/glassfish3/glassfish/domains/domain1/config";
                 LOGO_EMAIL_FILE = new File(LOGO_MONEI_MAIL);
             }
         } catch (Exception e) {
