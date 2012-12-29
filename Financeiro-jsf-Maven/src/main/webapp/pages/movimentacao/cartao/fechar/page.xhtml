@@ -18,30 +18,33 @@
                                 <p:selectOneMenu value="#{cartaoFecharOperacaoController.cartaoOperacao}"
                                                  required="true" requiredMessage="#{msg.campoObrigatorio}"
                                                  id="cartao" label="#{msg.cartaoCredito}" style="font-size: 0.9em; width: 220px;" >
-                                    <p:ajax event="change" update=":pieClassGroup :pieClassDetGroup labelPeriodo dataGroup despCartoesGroup" listener="#{cartaoFecharOperacaoController.dataListener}"/> 
+                                    <p:ajax event="change" update=":panel labelPeriodo dataGroup despCartoesGroup" listener="#{cartaoFecharOperacaoController.dataListener}"/> 
                                     <f:selectItems value="#{cartaoFecharOperacaoController.cartoes}"/>
                                     <f:converter converterId="cartaoConverter"/>
                                 </p:selectOneMenu>
                                 <p:message for="cartao"/>
 
                                 <h:panelGroup id="labelPeriodo">
-                                    <h:outputLabel value="#{msg.periodo}:" rendered="#{not empty cartaoFecharOperacaoController.listAnosSelect}"/>
+                                    <h:outputLabel value="#{msg.periodo}:"/>
                                 </h:panelGroup>
                                 <h:panelGroup id="dataGroup">
-                                    <h:panelGrid columns="3" rendered="#{not empty cartaoFecharOperacaoController.listAnosSelect}">
+                                    <h:panelGrid columns="3" >
                                         <p:selectOneMenu value="#{cartaoFecharOperacaoController.mesOperacao}" required="true"
                                                          requiredMessage="#{msg.campoObrigatorio}" id="meses" label="#{msg.periodo}"
-                                                         style="font-size: 0.9em; width: 120px;">
+                                                         style="font-size: 0.9em; width: 120px;"
+                                                         disabled="#{empty cartaoFecharOperacaoController.listAnosSelect}">
                                             <f:selectItems value="#{cartaoFecharOperacaoController.meses}"/>
                                         </p:selectOneMenu>
 
                                         <p:selectOneMenu value="#{cartaoFecharOperacaoController.anoOperacao}" required="true"
                                                          requiredMessage="#{msg.campoObrigatorio}" id="anos" label="#{msg.periodo}"
-                                                         style="font-size: 0.9em;">
+                                                         style="font-size: 0.9em;"
+                                                         disabled="#{empty cartaoFecharOperacaoController.listAnosSelect}">
                                             <f:selectItems value="#{cartaoFecharOperacaoController.anos}"/>
                                         </p:selectOneMenu>
                                         <p:commandButton icon="lupaIco" actionListener="#{cartaoFecharOperacaoController.buscarDespesas}"
-                                                         style="width: 23px; height: 23px;" update=":pieClassGroup :pieClassDetGroup despCartoesGroup dataGroup " />
+                                                         style="width: 23px; height: 23px;" update=":panel despCartoesGroup dataGroup "
+                                                         disabled="#{empty cartaoFecharOperacaoController.listAnosSelect}"/>
                                     </h:panelGrid>
                                 </h:panelGroup>
                             </h:panelGrid>
@@ -203,7 +206,7 @@
                                         <h:outputText value=""/>
                                         <h:panelGroup id="buttons" styleClass="pagging">
                                             <p:commandLink action="#{cartaoFecharOperacaoController.alterarProcedimento()}" value="#{msg.salvar}" id="alterarButton" 
-                                                           style="margin-left: 0px !important;" update=":dialogGroup :formCartaoOperacaoTable">
+                                                           style="margin-left: 0px !important;" update=":dialogGroup :formCartaoOperacaoTable :panel">
                                             </p:commandLink>
                                         </h:panelGroup>
                                     </h:panelGrid>
@@ -211,17 +214,29 @@
                             </p:dialog>
                         </h:panelGroup>
                     </td>
-                    <td align='left' style="vertical-align: top;">
+                </tr>
+            </tbody>
+        </table>
+        <h:panelGroup id="panel">
+            <table style="width: 100%;">
+                <tr>
+                    <td colspan="2" align='left' style="vertical-align: top;">
                         <h:panelGroup id="disponiveis">
                             <div style="margin-left: 10px;">
-                                <arq:disponiveis width="90%"/>
+                                <arq:disponiveis width="50%"/>
                             </div>
                         </h:panelGroup>
+                    </td>
+                </tr>
+                <tr>
+                    <td  style="vertical-align: top;" width="50%">
                         <h:panelGroup id="pieClassGroup">
                             <p:pieChart id="pieClass" value="#{cartaoFecharOperacaoController.pieClassModel}" legendPosition="w"  
                                         title="#{msg.classificacaoMovimentacao}" seriesColors="70a8d2, F00000"
-                                        style="margin-top: 20px;" showDataLabels="true"/>  
+                                        style="margin-top: 5px;" showDataLabels="true"/>  
                         </h:panelGroup>
+                    </td>
+                    <td  style="vertical-align: top;" width="50%">
                         <h:panelGroup id="pieClassDetGroup">
                             <p:pieChart id="pieClassPrincipalDetAtual" value="#{cartaoFecharOperacaoController.pieClassDetalhe}" legendPosition="w"  
                                         title="#{msg.detalheGraficoCartao}" 
@@ -229,8 +244,8 @@
                         </h:panelGroup>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+            </table>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>
 
