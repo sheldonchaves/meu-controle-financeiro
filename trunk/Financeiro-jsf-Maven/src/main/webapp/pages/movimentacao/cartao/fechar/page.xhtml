@@ -68,6 +68,9 @@
                                                 <th align='center'>
                                                     <h:outputText value="#{msg.tipo}"/>
                                                 </th>
+                                                <th align='center'>
+                                                    <h:outputText value="#{msg.detalhe}"/>
+                                                </th>
                                                 <th align='center' >
                                                     <h:outputText value="#{msg.responsavel}"/>
                                                 </th>
@@ -104,6 +107,9 @@
                                                     </td>
                                                     <td align='center'>
                                                         <h:outputText value="#{msg[item.classificacaoProcedimento]}"/>
+                                                    </td>
+                                                    <td align='center'>
+                                                        <h:outputText value="#{item.detalhe.detalhe}"/>
                                                     </td>
                                                     <td align='center'>
                                                         <h:outputText value="#{item.usuario.firstName}"/>
