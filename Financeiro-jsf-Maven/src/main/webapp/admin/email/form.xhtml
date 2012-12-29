@@ -71,6 +71,12 @@
                         <p:selectBooleanCheckbox id="status" value="#{emailPropertiesController.current.contaAtiva}" />
                         <p:message for="status"/>
                         
+                        <h:outputLabel value="#{msg.urlBody}:" for="urlsys" />
+                        <p:inputText id="urlsys" value="#{emailPropertiesController.current.urlBody}" title="#{msg.urlBody}" 
+                                     required="true" requiredMessage="#{msg.campoObrigatorio}" maxlength="255"
+                                     size="50" />
+                        <p:message for="urlsys"/>
+                        
                         <h:outputText value=""/>
                         <h:panelGroup id="buttons" styleClass="pagging">
                             <h:commandLink action="#{emailPropertiesController.createOrEdit}" value="#{msg.salvar}" id="saveButton" >
