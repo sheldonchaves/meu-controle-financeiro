@@ -117,6 +117,15 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     /**
      *
      */
+       /**
+     * Assunto default utilizado.
+     */
+    @NotNull(message="{EmailProperties.urlBody.null}")
+    @Column(name = "url_body", nullable = false, length = 255)
+    private String urlBody = "http://198.98.101.224";
+    /**
+     * 
+     */
     @Transient
     private boolean marcadoTransient;
 
@@ -265,5 +274,13 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     @Override
     public void setMarcadoTransient(boolean marcadoTransient) {
         this.marcadoTransient = marcadoTransient;
+    }
+
+    public String getUrlBody() {
+        return urlBody;
+    }
+
+    public void setUrlBody(String urlBody) {
+        this.urlBody = urlBody;
     }
 }
