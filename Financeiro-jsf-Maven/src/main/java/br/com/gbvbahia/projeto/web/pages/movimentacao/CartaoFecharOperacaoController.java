@@ -113,6 +113,7 @@ public class CartaoFecharOperacaoController implements Serializable {
 
     private Date[] despesasSearch() {
         Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
         c.set(Calendar.YEAR, anoOperacao);
         c.set(Calendar.MONTH, mesOperacao.getMes());
         final Date[] intervalo = DateUtils.getIntervalo(c.getTime());

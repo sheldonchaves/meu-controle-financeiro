@@ -75,6 +75,7 @@ public class DetalheReport implements Serializable {
     private List<DespesaProcedimento> despesas(Integer anoOperacao, Meses mesOperacao) {
         List<DespesaProcedimento> toReturn;
         Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
         c.set(Calendar.YEAR, anoOperacao);
         c.set(Calendar.MONTH, mesOperacao.getMes());
         final Date[] intervalo = DateUtils.getIntervalo(c.getTime());

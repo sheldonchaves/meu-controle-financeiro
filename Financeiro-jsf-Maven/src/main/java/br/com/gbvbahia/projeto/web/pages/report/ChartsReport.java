@@ -118,6 +118,7 @@ public class ChartsReport implements Serializable {
             mesOperacao = Meses.getByMonth(DateUtils.getFieldDate(agora, Calendar.MONTH));
         }
         Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
         c.set(Calendar.YEAR, anoOperacao);
         c.set(Calendar.MONTH, mesOperacao.getMes());
         dataClassModel = c.getTime();
