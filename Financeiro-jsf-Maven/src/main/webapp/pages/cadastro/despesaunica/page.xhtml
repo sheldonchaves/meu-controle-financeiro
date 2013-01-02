@@ -15,7 +15,7 @@
                             <th align='center' style="min-width: 100px;">
                                 <h:outputText value="#{msg.movimentacao}" /><br></br>
                                 <p:calendar value="#{despesaUnicaController.dataFiltro}"  size="11" maxlength="10"  id="searchData"
-                                            title="#{msg.tipoBuscaIgual}" pattern="dd/MM/yyyy" locale="pt" mode="popup"
+                                            title="#{msg.tipoBuscaIgual}" pattern="dd/MM/yyyy" locale="#{localeController.localeUI}" mode="popup"
                                             navigator="true" readonlyInput="true" 
                                             timeZone="#{initParam['timezone']}" >
                                     <p:ajax event="dateSelect" listener="#{despesaUnicaController.recreateTable()}" update="formDespesaTable"/>
