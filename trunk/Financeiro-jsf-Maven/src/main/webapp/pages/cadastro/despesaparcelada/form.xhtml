@@ -14,10 +14,12 @@
                     <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
                         <h:outputLabel value="#{msg.movimentacao}:" for="dataMovimentacao" />
                         <p:calendar value="#{despesaParceladaController.current.dataMovimentacao}"  maxlength="10"  id="dataMovimentacao"
-                                    title="#{msg.data}" pattern="dd/MM/yyyy" locale="pt"  onkeyup="formatar(this, '##/##/####', event)"
+                                    title="#{msg.data}" pattern="dd/MM/yyyy" onkeyup="formatar(this, '##/##/####', event)"
                                     navigator="true" showOn="button" required="true" requiredMessage="#{msg.campoObrigatorio}" 
                                     timeZone="#{initParam['timezone']}" >
                             <p:ajax event="dateSelect" listener="#{despesaParceladaController.dataListener}" update="dataGroup"/>
+                            <f:convertDateTime locale="#{localeController.localeUI}" 
+                                                               pattern="dd/MMM/yyyy" timeZone="#{initParam['timezone']}"/>
                         </p:calendar>
                         <p:message for="dataMovimentacao"/>
 
