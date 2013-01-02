@@ -8,7 +8,7 @@
       <description>Keep a copy of the generated servlet class' java code.</description>
     </property>
   </jsp-config>
-  <context-root>/money</context-root>
+  <context-root>/fin</context-root>
   <security-role-mapping>
     <role-name>admin</role-name>
     <group-name>admins</group-name>
@@ -18,7 +18,7 @@
     <group-name>users</group-name>
     <group-name>admins</group-name>
   </security-role-mapping>
-    <security-role-mapping>
+  <security-role-mapping>
     <role-name>sys</role-name>
     <principal-name>sys</principal-name>
   </security-role-mapping>
