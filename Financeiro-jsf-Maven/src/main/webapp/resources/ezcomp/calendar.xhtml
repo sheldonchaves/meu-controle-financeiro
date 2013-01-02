@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <!-- INTERFACE -->
@@ -19,11 +20,12 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <p:calendar id="#{cc.attrs.id}" readonly="#{cc.attrs.readonly}"  value="#{cc.attrs.valor}" title="#{cc.attrs.title}" 
-                    size="#{cc.attrs.size}" locale="pt" pattern="#{cc.attrs.pattern}" 
+                    size="#{cc.attrs.size}" locale="#{localeController.localeUI}"  pattern="#{cc.attrs.pattern}" 
                     showOn="button" required="#{cc.attrs.requerido}" requiredMessage="#{msg.campoObrigatorio}" 
                     onkeyup="formatar(this, '##/##/####', event)" maxlength="10" disabled="#{cc.attrs.disabled}" 
                     navigator="true">
-
+            <f:convertDateTime locale="#{localeController.localeUI}" 
+                                                               pattern="#{cc.attrs.pattern}" timeZone="#{initParam['timezone']}"/>
         </p:calendar>
     </cc:implementation>
 </html>
