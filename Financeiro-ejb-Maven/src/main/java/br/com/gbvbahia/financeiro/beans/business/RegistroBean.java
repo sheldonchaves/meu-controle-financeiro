@@ -111,7 +111,7 @@ public class RegistroBean implements RegistroBusiness {
 
         @Override
         public String getSubject() {
-            return "Money :: Access";
+            return "Financeiro :: Acesso/Financial :: Access";
         }
 
         @Override
