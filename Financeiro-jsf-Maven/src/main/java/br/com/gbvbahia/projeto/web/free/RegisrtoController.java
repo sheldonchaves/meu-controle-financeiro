@@ -35,13 +35,12 @@ public class RegisrtoController {
     private String login;
     private String email;
     private String email2;
-    private String url;
 
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest rq = (HttpServletRequest) context.getExternalContext().getRequest();
-        url = "http://" + rq.getServerName() + ":" + rq.getServerPort() + rq.getContextPath() + "/pages/principal.xhtml";
+        //HttpServletRequest rq = (HttpServletRequest) context.getExternalContext().getRequest();
+        //url = "http://" + rq.getServerName() + ":" + rq.getServerPort() + rq.getContextPath() + "/pages/principal.xhtml";
     }
 
     /**
@@ -50,7 +49,7 @@ public class RegisrtoController {
      */
     public String recuperarSenha() {
         try {
-            registroBusiness.recuperarSenha(email, url);
+            registroBusiness.recuperarSenha(email);
             MensagemUtils.messageFactoringFull("recoverOk",
                     new Object[]{email},
                     FacesMessage.SEVERITY_INFO,
@@ -78,7 +77,7 @@ public class RegisrtoController {
             return JsfUtil.MANTEM;
         }
         try {
-            registroBusiness.registroUsuario(login, email, url);
+            registroBusiness.registroUsuario(login, email);
             MensagemUtils.messageFactoringFull("registroOk",
                     new Object[]{login, email},
                     FacesMessage.SEVERITY_INFO,
