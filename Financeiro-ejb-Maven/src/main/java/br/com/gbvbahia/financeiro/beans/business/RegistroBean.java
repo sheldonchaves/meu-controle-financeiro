@@ -33,7 +33,7 @@ public class RegistroBean implements RegistroBusiness {
     private UsuarioFacade usuarioBean;
 
     @Override
-    public void registroUsuario(String login, String email, String url) throws NegocioException {
+    public void registroUsuario(String login, String email) throws NegocioException {
         Usuario usuario = new Usuario();
         usuario.setUserId(login);
         usuario.setEmail(email);
@@ -44,12 +44,12 @@ public class RegistroBean implements RegistroBusiness {
         final String senha = geraSenha();
         usuario.setPass(Base64Encoder.encryptPassword(senha));
         usuarioBean.create(usuario);
-        PassEmail emailSend = new PassEmail(email, login, senha, url, false);
+        PassEmail emailSend = new PassEmail(email, login, senha, false);
         emailSendBean.enviarEmailJMSAsynchronous(emailSend);
     }
 
     @Override
-    public void recuperarSenha(String email, String url) throws NegocioException {
+    public void recuperarSenha(String email) throws NegocioException {
         Usuario usr = usuarioBean.buscarPorEmail(email);
         if (usr == null) {
             throw new NegocioException("userEmailNotFound", new String[]{email});
@@ -57,7 +57,7 @@ public class RegistroBean implements RegistroBusiness {
         final String senha = geraSenha();
         usr.setPass(Base64Encoder.encryptPassword(senha));
         usuarioBean.update(usr);
-        PassEmail emailSend = new PassEmail(email, usr.getUserId(), senha, url, true);
+        PassEmail emailSend = new PassEmail(email, usr.getUserId(), senha, true);
         emailSendBean.enviarEmailJMSAsynchronous(emailSend);
     }
 
@@ -95,14 +95,12 @@ public class RegistroBean implements RegistroBusiness {
         private String email;
         private String login;
         private String senha;
-        private String url;
         private boolean recover = false;
 
-        public PassEmail(String email, String login, String senha, String url, boolean recover) {
+        public PassEmail(String email, String login, String senha, boolean recover) {
             this.email = email;
             this.login = login;
             this.senha = senha;
-            this.url = url;
             this.recover = recover;
         }
 
@@ -118,7 +116,7 @@ public class RegistroBean implements RegistroBusiness {
 
         @Override
         public boolean addUrlBody() {
-            return false;
+            return true;
         }
 
         @Override
@@ -127,14 +125,13 @@ public class RegistroBean implements RegistroBusiness {
                 return "Bem vindo ao controle financeiro pessoal, seus dados de acesso são:" + "<br></br>"
                         + "Welcome to my personal financial control, your data access:" + "<br></br><br></br>"
                         + "Login:    " + login + "<br></br>"
-                        + "Password: " + senha + "<br></br><br></br>"
-                        + url;
+                        + "Password: " + senha + "<br></br><br></br>";
             } else {
                 return "Oi, seus dados de acesso são:" + "<br></br>"
                         + "Hi, your data access:" + "<br></br><br></br>"
                         + "Login:    " + login + "<br></br>"
-                        + "Password: " + senha + "<br></br><br></br>"
-                        + url;
+                        + "Password: " + senha + "<br></br><br></br>";
+                       
             }
         }
     }
