@@ -65,8 +65,9 @@ public class EmailSendBean implements EmailSendBusiness {
         if (emailProperties == null) {
             throw new EmailException("EmailProperties NAO PODE SER NULL!!!!");
         }
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO,
+                "Propriedades email: {0}", emailProperties.toString());
         HtmlEmail email = new HtmlEmail();
-
         email.setDebug(false);
         email.setHostName(emailProperties.getHostName());
         email.setCharset(emailProperties.getCharacterCoding());

@@ -45,32 +45,31 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     /**
      * Gmail: gmail-smtp.l.google.com
      */
-    @NotNull(message="{EmailProperties.hostName.null}")
+    @NotNull(message = "{EmailProperties.hostName.null}")
     @Column(name = "host_name", nullable = false, length = 100)
     private String hostName = "gmail-smtp.l.google.com";
     /**
      * Enconding da msg
      */
-    @NotNull(message="{EmailProperties.characterCoding.null}")
+    @NotNull(message = "{EmailProperties.characterCoding.null}")
     @Column(name = "encoding", nullable = false, length = 100)
     private String characterCoding = "ISO-8859-1";
     /**
      * Porta SMTP gmail = 465
      */
-    @NotNull(message="{EmailProperties.smtpPort.null}")
+    @NotNull(message = "{EmailProperties.smtpPort.null}")
     @Column(name = "smtp_port", nullable = false)
     private Integer smtpPort = 465;
     /**
      * Login email:
      */
-    @NotNull(message="{EmailProperties.loginEmail.null}")
+    @NotNull(message = "{EmailProperties.loginEmail.null}")
     @Column(name = "login", nullable = false, length = 255)
     private String loginEmail;
     /**
-     * iqpk1xEoYmMAl3kDDvMI2L48zYruCdqw
-     * pKLANmYX5W4qLUDPXOr8n5WOYQFYpRv8
+     * iqpk1xEoYmMAl3kDDvMI2L48zYruCdqw pKLANmYX5W4qLUDPXOr8n5WOYQFYpRv8
      */
-    @NotNull(message="{EmailProperties.senhaEmail.null}")
+    @NotNull(message = "{EmailProperties.senhaEmail.null}")
     @Column(name = "pass", nullable = false, length = 255)
     private String senhaEmail;
     /**
@@ -86,13 +85,13 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     + "{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:"
     + "[a-z0-9-]*[a-z0-9])?",
     message = "{email.invalido}")
-    @NotNull(message="{EmailProperties.fromEmail.null}")
+    @NotNull(message = "{EmailProperties.fromEmail.null}")
     @Column(name = "from_email", nullable = false, length = 255)
     private String fromEmail;
     /**
      * Assunto default utilizado.
      */
-    @NotNull(message="{EmailProperties.assuntoDefault.null}")
+    @NotNull(message = "{EmailProperties.assuntoDefault.null}")
     @Column(name = "from_assunto_default", nullable = false, length = 255)
     private String assuntoDefault = "Money";
     /**
@@ -104,12 +103,13 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     /**
      * Porta SSL, Gmail = 465
      */
-    @NotNull(message="{EmailProperties.sslSmtpPort.null}")
+    @NotNull(message = "{EmailProperties.sslSmtpPort.null}")
     @Column(name = "ssl_port", nullable = false, length = 255)
     private String sslSmtpPort = "465";
     /**
      * Determina se e para utilizar esta conta de e-mail para envio de
-     * informacao. Havendo mais de uma conta ativa, a primeira será utilizada.
+     * informacao. Havendo mais de uma conta ativa, a primeira será
+     * utilizada.
      */
     @NotNull
     @Column(name = "status", nullable = false, length = 255)
@@ -117,14 +117,14 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
     /**
      *
      */
-       /**
+    /**
      * Assunto default utilizado.
      */
-    @NotNull(message="{EmailProperties.urlBody.null}")
+    @NotNull(message = "{EmailProperties.urlBody.null}")
     @Column(name = "url_body", nullable = false, length = 255)
     private String urlBody = "http://198.98.101.224";
     /**
-     * 
+     *
      */
     @Transient
     private boolean marcadoTransient;
@@ -282,5 +282,18 @@ public class EmailProperties implements EntityInterface<EmailProperties>,
 
     public void setUrlBody(String urlBody) {
         this.urlBody = urlBody;
+    }
+
+    @Override
+    public String toString() {
+        return "EmailProperties{" + "id=" + id + ", hostName=" + hostName
+                + ", characterCoding=" + characterCoding 
+                + ", smtpPort=" + smtpPort + ", loginEmail=" + loginEmail
+                + ", tls=" + tls
+                + ", fromEmail=" + fromEmail
+                + ", assuntoDefault=" + assuntoDefault + ", ssl=" + ssl
+                + ", sslSmtpPort=" + sslSmtpPort
+                + ", contaAtiva=" + contaAtiva + ", urlBody=" + urlBody
+                + ", marcadoTransient=" + marcadoTransient + '}';
     }
 }
