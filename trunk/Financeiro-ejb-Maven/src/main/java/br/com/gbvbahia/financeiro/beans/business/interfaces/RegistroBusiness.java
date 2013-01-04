@@ -17,14 +17,12 @@ public interface RegistroBusiness {
      * Registra o usuário e envia e-mail com a senha do mesmo.
      * @param login
      * @param email
-     * @param url 
      */
-    public void registroUsuario(String login, String email, String url) throws NegocioException;
+    public void registroUsuario(String login, String email) throws NegocioException;
     /**
      * Reseta a senha do usuário e envia a mesma por e-mail.
      * @param email Email do usuário
-     * @param url URL do sistema
      * @throws NegocioException Se não encontrar o e-mail informado.
      */
-    public void recuperarSenha(String email, String url) throws NegocioException;
+    public void recuperarSenha(String email) throws NegocioException;
 }
