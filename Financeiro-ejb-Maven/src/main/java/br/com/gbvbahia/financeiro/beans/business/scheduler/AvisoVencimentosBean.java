@@ -67,8 +67,8 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
                     String body = corpoTableEmail(contasOK, contasAtrasadas);
                     body = StringUtils.replace(body, "null", "");
                     if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
-                        String bodyFim = "<h3>Lembrete de Proximos Vencimentos:</h3>" + body;
-                        enviaEmail(bodyFim, "Financeiro :: Aviso de Vencimentos", sc);
+                        String bodyFim = "<h3>Lembrete de Proximos Vencimentos:</h3><h3>Reminder of Upcoming Maturities:</h3>" + body;
+                        enviaEmail(bodyFim, "Financeiro :: Aviso de Vencimentos/Financial :: Notice of Maturity", sc);
                     }
                 }
             } else {
@@ -138,14 +138,14 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
         String toReturn = "";
         toReturn += buscarTablePadrao(toReturn);
         toReturn += "<thead><tr>"
-                + "<th>Observação</th>"
-                + "<th>Vencimento</th>"
-                + "<th>Valor</th>"
-                + "<th>Detalhe</th>"
-                + "<th>Parcela Atual</th>"
-                + "<th>Total Parcelas</th>"
-                + "<th>Cartão de Crédito</th>"
-                + "<th>Responsável</th>"
+                + "<th>Observação/Observation</th>"
+                + "<th>Vencimento/Maturity</th>"
+                + "<th>Valor/Value</th>"
+                + "<th>Detalhe/Detail</th>"
+                + "<th>Atual/Portion</th>"
+                + "<th>Parcelas/Plots</th>"
+                + "<th>Cartão/Card</th>"
+                + "<th>Responsável/Responsible</th>"
                 + "</tr></thead>"
                 + "<tbody>";
         for (DespesaProcedimento cp : listCPAtrasada) {
@@ -195,9 +195,9 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
             toReturn += "<br></br><br></br>";
             toReturn += "<table class=\"reference\">";
             toReturn += "<thead><tr>"
-                    + "<th>Cartão</th>"
-                    + "<th>Valor</th>"
-                    + "<th>Responsável</th>"
+                    + "<th>Cartão/Card</th>"
+                    + "<th>Valor/Value</th>"
+                    + "<th>Responsável/Responsible</th>"
                     + "</tr></thead>"
                     + "<tbody>";
             Map<CartaoCredito, Double> mapCartoes = getMapCartoes(listCPAtrasada, listCPOK);

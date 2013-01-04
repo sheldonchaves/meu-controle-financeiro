@@ -70,9 +70,9 @@ public class AcompanhamentoCartaoCreditoBean implements AcompanhamentoCartaoCred
                 String body = defineCartaoValor(contaValorMap);
                 body = StringUtils.replace(body, "null", "");
                 if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
-                    String bodyFim = "<h3>Aviso semanal de cartão de crédito:</h3>" + body;
+                    String bodyFim = "<h3>Aviso semanal de cartão de crédito:</h3><h3>Warning weekly credit card:</h3>" + body;
                     logger.info("Enviando e-mail para: " + sc.getUser().getUserId());
-                    enviaEmail(bodyFim, "Financeiro :: Cartão de Crédito", sc);
+                    enviaEmail(bodyFim, "Financeiro :: Resumo Cartão/Financial :: Resume Card", sc);
                 }
             }else{
                 logger.info("Usuario: " + sc.getUser().getUserId() + " sem contas no cartão.");
@@ -100,8 +100,8 @@ public class AcompanhamentoCartaoCreditoBean implements AcompanhamentoCartaoCred
         String body = "";
         body = AvisoVencimentosBean.buscarTablePadrao(body);
         body += " <tr> ";
-        body += " <th align=\"left\">Cartão</th> ";
-        body += " <th align=\"left\">Período</th> ";
+        body += " <th align=\"left\">Cartão/Card</th> ";
+        body += " <th align=\"left\">Período/Period</th> ";
         body += " <th align=\"left\">Total</th> ";
         body += " </tr> ";
         for (CartaoMesDTO dto : contaValorMap.keySet()) {
