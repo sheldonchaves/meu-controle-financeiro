@@ -54,27 +54,37 @@ public class AvisoVencimentosBean implements AvisoVencimentosBusiness {
     @Schedule(hour = "4", minute = "23", second = "10", dayOfWeek = "*")//Real
     public void iniciarAvisoVencimento() {
         List<Scheduler> schedules = schedulerBean.buscarTodosSchelersPorStatus(true);
-        Calendar[] intervalo = getIntervalo();
         for (Scheduler sc : schedules) {
-            List<DespesaProcedimento> dividas = this.procedimentoFacade.
-                    buscarDespesaIntervalo(sc.getUser(), null, StatusPagamento.NAO_PAGA,
-                    new Date[]{intervalo[0].getTime(), intervalo[1].getTime()});
-            if (!dividas.isEmpty()) {
-                List[] contasDivididas = separarContas(dividas, sc);
-                List<DespesaProcedimento> contasAtrasadas = contasDivididas[0];
-                List<DespesaProcedimento> contasOK = contasDivididas[1];
-                if (!contasAtrasadas.isEmpty() || !contasOK.isEmpty()) {
-                    String body = corpoTableEmail(contasOK, contasAtrasadas);
-                    body = StringUtils.replace(body, "null", "");
-                    if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
-                        String bodyFim = "<h3>Lembrete de Proximos Vencimentos:</h3><h3>Reminder of Upcoming Maturities:</h3>" + body;
-                        enviaEmail(bodyFim, "Financeiro :: Aviso de Vencimentos/Financial :: Notice of Maturity", sc);
-                    }
-                }
-            } else {
-                logger.info("Não existe vencimentos para: " + sc.getUser().getUserId());
-            }
+            enviarAvisoVencimento(sc);
         }
+    }
+
+    @Override
+    public String enviarAvisoVencimento(Scheduler sc) {
+        if(!sc.isStatus()){
+            return "contasSchedulerFalse";
+        }
+        Calendar[] intervalo = getIntervalo();
+        List<DespesaProcedimento> dividas = this.procedimentoFacade.
+                buscarDespesaIntervalo(sc.getUser(), null, StatusPagamento.NAO_PAGA,
+                new Date[]{intervalo[0].getTime(), intervalo[1].getTime()});
+        if (!dividas.isEmpty()) {
+            List[] contasDivididas = separarContas(dividas, sc);
+            List<DespesaProcedimento> contasAtrasadas = contasDivididas[0];
+            List<DespesaProcedimento> contasOK = contasDivididas[1];
+            if (!contasAtrasadas.isEmpty() || !contasOK.isEmpty()) {
+                String body = corpoTableEmail(contasOK, contasAtrasadas);
+                body = StringUtils.replace(body, "null", "");
+                if (body != null && !body.trim().equals("") && !body.trim().equals("null")) {
+                    String bodyFim = "<h3>Lembrete de Proximos Vencimentos:</h3><h3>Reminder of Upcoming Maturities:</h3>" + body;
+                    enviaEmail(bodyFim, "Financeiro :: Aviso de Vencimentos/Financial :: Notice of Maturity", sc);
+                    return contasAtrasadas.size() + contasOK.size() + "::" + sc.getEmail();
+                }
+            }
+        } else {
+            logger.info("Não existe vencimentos para: " + sc.getUser().getUserId());
+        }
+        return "contasNaoEncontradas";
     }
 
     private Calendar[] getIntervalo() {
