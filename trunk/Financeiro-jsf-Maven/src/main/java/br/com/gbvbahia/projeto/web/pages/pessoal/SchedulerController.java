@@ -4,6 +4,7 @@
  */
 package br.com.gbvbahia.projeto.web.pages.pessoal;
 
+import br.com.gbvbahia.financeiro.beans.business.interfaces.AvisoVencimentosBusiness;
 import br.com.gbvbahia.financeiro.beans.exceptions.NegocioException;
 import br.com.gbvbahia.financeiro.beans.facades.SchedulerFacade;
 import br.com.gbvbahia.financeiro.beans.facades.UsuarioFacade;
@@ -18,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -31,6 +33,8 @@ public class SchedulerController {
 
     @EJB
     private SchedulerFacade schedulerFacade;
+    @EJB
+    private AvisoVencimentosBusiness vencimentosBusiness;
     @EJB
     private UsuarioFacade usuarioFacade;
     private Scheduler current;
@@ -85,6 +89,27 @@ public class SchedulerController {
         }
     }
 
+    public void avisarVecimentos() {
+        if (this.current != null) {
+            String result = vencimentosBusiness.enviarAvisoVencimento(current);
+            if("contasSchedulerFalse".equals(result)
+                    || "contasNaoEncontradas".equals(result)){
+                MensagemUtils.messageFactoringFull(result, null,
+                    FacesMessage.SEVERITY_WARN,
+                    FacesContext.getCurrentInstance());
+            }else {
+                MensagemUtils.messageFactoringFull("contasEnviadasOk",new Object[]{
+                StringUtils.substringBefore(result, "::"), StringUtils.substringAfter(result, "::")},
+                    FacesMessage.SEVERITY_INFO,
+                    FacesContext.getCurrentInstance());
+            }
+        } else {
+            MensagemUtils.messageFactoringFull("schedulerNaoExiste", null,
+                    FacesMessage.SEVERITY_WARN,
+                    FacesContext.getCurrentInstance());
+        }
+    }
+
     public Scheduler getCurrent() {
         return current;
     }
@@ -92,5 +117,4 @@ public class SchedulerController {
     public void setCurrent(Scheduler current) {
         this.current = current;
     }
-    
 }

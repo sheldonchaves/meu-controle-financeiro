@@ -21,11 +21,11 @@
                                      size="50" >
                         </p:inputText>
                         <p:message for="email"/>
-                        
+
                         <h:outputLabel value="#{msg.ativo}:" title="#{msg.schedulerstatusTitle}"/>
                         <p:selectBooleanCheckbox value="#{schedulerController.current.status}" id="status"/>
                         <p:message for="status"/>
-                        
+
                         <h:outputLabel value="#{msg.dias}:" title="#{msg.schedulerDiasTitle}"/>
                         <p:spinner id="spinnerBasic" value="#{schedulerController.current.dias}" min="0" max="5"
                                    required="true" requiredMessage="#{msg.campoObrigatorio}" label="#{msg.dias}">
@@ -44,6 +44,16 @@
                         </h:panelGroup>
                     </h:panelGrid>
                 </h:form>
+                    <h:panelGroup id="schedulerTestGroup">
+                        <h:form id="schedulerNotificacaoForm">
+                            <h:panelGrid columns="3" style="font-size: 0.9em;" class="gridForm">
+                                <h:panelGroup id="buttons" styleClass="pagging">
+                                    <h:commandLink action="#{schedulerController.avisarVecimentos()}" value="#{msg.schedulerContasTeste}" id="schedulerContasTeste" >
+                                    </h:commandLink>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </h:form>
+                    </h:panelGroup>
             </h:panelGroup>
         </div>
     </ui:define>
