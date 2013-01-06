@@ -92,7 +92,8 @@ public class ProvisaoBean implements ProvisaoBusiness {
     public void provisionar(final AgendaProcedimentoFixo agenda) {
         UtilBeans.checkNull(agenda);
         Date lastDate = agendaBean.buscarUltimaData(agenda);
-        if (lastDate == null) {
+        if (lastDate == null
+                || lastDate.before(br.com.gbvbahia.financeiro.utils.DateUtils.zerarHora(new Date()))) {
             lastDate = agenda.getDataPrimeiroVencimento();
         } else {
             lastDate = incrementarData(agenda, lastDate);
