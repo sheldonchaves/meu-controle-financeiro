@@ -20,7 +20,7 @@
                                     timeZone="#{initParam['timezone']}" >
                             <p:ajax event="dateSelect" listener="#{despesaUnicaController.dataListener}" update="dataGroup"/>
                              <f:convertDateTime locale="#{localeController.localeUI}" 
-                                                               pattern="dd/MMM/yyyy" timeZone="#{initParam['timezone']}"/>
+                                                               pattern="dd/MM/yyyy" timeZone="#{initParam['timezone']}"/>
                         </p:calendar>
                         <p:message for="dataMovimentacao"/>
 
