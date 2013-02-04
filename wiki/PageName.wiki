@@ -1,0 +1,15 @@
+#summary One-sentence summary of this page.
+
+= A fazer=
+
+1. Sumarizar gastos de cartão por conjuge
+2. Na tela inicial disponibilizar próximos vencimentos
+
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
