@@ -2,11 +2,11 @@
 
 = A fazer=
 
-* 1. Sumarizar gastos de cartão por conjuge.
+1. Sumarizar gastos de cartão por conjuge.
 
-* 2. Na tela inicial disponibilizar próximos vencimentos.
+2. Na tela inicial disponibilizar próximos vencimentos.
 
-
+3. Incluir no cadastro de despesas a opção de editar se é fixa ou não.
 
 = Details =
 
