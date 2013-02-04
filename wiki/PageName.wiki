@@ -2,8 +2,9 @@
 
 = A fazer=
 
-* 1. Sumarizar gastos de cartão por conjuge
-* 2. Na tela inicial disponibilizar próximos vencimentos
+* 1. Sumarizar gastos de cartão por conjuge.
+
+* 2. Na tela inicial disponibilizar próximos vencimentos.
 
 
 
